@@ -51,6 +51,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-article: #828282;
 }
 
 :root {
@@ -133,8 +134,9 @@
 
 @layer base {
   h1 {
-    font-size: var(--text-2xl);
+    font-size: var(--text-5xl);
     font-weight: 700;
+    color: #303030;
   }
 
   h2 {
@@ -151,7 +153,7 @@
     color: var(--figma-gray);
   }
   p {
-    color: var(--figma-gray);
+    color: #828282;
   }
 }
 

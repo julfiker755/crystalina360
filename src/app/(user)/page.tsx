@@ -1,10 +1,9 @@
-import { Button } from "@/components/ui";
+import HeroSec from "@/components/view/user/landing/heroSec";
 
 export default function UserHome() {
   return (
-    <div>
-      RootHome
-      <Button>Julfiker Rahaman Jim</Button>
-    </div>
+    <>
+      <HeroSec />
+    </>
   );
 }
