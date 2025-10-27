@@ -52,6 +52,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --color-article: #828282;
+  --color-figma-black: #303030;
 }
 
 :root {
