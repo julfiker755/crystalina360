@@ -4,12 +4,16 @@ import { Button, Checkbox, Label } from "@/components/ui";
 import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import FavIcon from "@/icon/favIcon";
-import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { setActiveModal } from "@/redux/features/authSlice";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { sign_In } from "@/schema";
 
 export default function SignIn() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const from = useForm({
-    // resolver: zodResolver(loginSchema),
+    resolver: zodResolver(sign_In),
     defaultValues: {
       email: "",
       password: "",
@@ -47,12 +51,12 @@ export default function SignIn() {
             <Checkbox className="" id="remember-me" />
             <Label htmlFor="remember-me">Remember me</Label>
           </div>
-          <Link
-            href="/forgot-password"
-            className="text-primary  hover:underline"
+          <div
+            className="text-primary cursor-pointer  hover:underline"
+            onClick={() => dispatch(setActiveModal("forgot"))}
           >
             Forgot Password?
-          </Link>
+          </div>
         </div>
         <Button className="w-full">Sign in</Button>
       </Form>

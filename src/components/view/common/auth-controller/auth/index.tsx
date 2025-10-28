@@ -1,14 +1,22 @@
+import { CloseIcon } from "../../btn-modal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAppDispatch } from "@/redux/hooks";
+import { toggleIsOpen } from "@/redux/features/authSlice";
 import SignIn from "./sign-in";
 import SignUp from "./sign-up";
 
-export default function AuthBox({ title }: any) {
+export default function Auth({ title }: any) {
+  const dispatch = useAppDispatch();
   return (
-    <div>
-      <div className="bg-[#EDEDED]  text-xl font-bold w-full h-12 content-center text-center top-0 left-0">
+    <>
+      <div className="bg-[#EDEDED] text-xl font-bold w-full h-12 content-center text-center top-0 left-0">
         {title}
       </div>
       <div className="mt-2">
+        <CloseIcon
+          className="top-3 right-4"
+          onClose={() => dispatch(toggleIsOpen())}
+        />
         <Tabs defaultValue="sign-in">
           <TabsList className="w-full  h-10 p-0 rounded-xs">
             <TabsTrigger
@@ -32,6 +40,6 @@ export default function AuthBox({ title }: any) {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </>
   );
 }

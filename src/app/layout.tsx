@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google"; // Importing Montserrat font
 import "@/app/style/globals.css";
+import Provider from "@/provider";
 
 // Apply Montserrat font
 const montserrat = Montserrat({
@@ -20,10 +21,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${montserrat.variable} antialiased`} // Applying the Montserrat font
-      >
-        {children}
+      <body className={`${montserrat.variable} antialiased`}>
+        <Provider>{children}</Provider>
       </body>
     </html>
   );

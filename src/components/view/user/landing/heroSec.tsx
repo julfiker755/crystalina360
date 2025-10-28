@@ -4,6 +4,8 @@ import Navber from "../shared/navber";
 export default function HeroSec() {
   return (
     <div className="flex relative h-[calc(100vh-2rem)] m-4 rounded-xl flex-col  bg-[url('/img/bg1.png')] bg-cover bg-no-repeat bg-center items-center justify-center px-8">
+      {/* =========== navber ========= */}
+      <Navber />
       <h5 className="text-center text-3xl lg:text-5xl font-bold text-figma-black mb-5">
         Plan Your Next Experience
       </h5>
@@ -19,7 +21,6 @@ export default function HeroSec() {
         {" "}
         Find Events
       </Button>
-      <Navber />
     </div>
   );
 }

@@ -135,9 +135,10 @@
 
 @layer base {
   h1 {
-    font-size: var(--text-5xl);
+    font-size: var(--text-3xl);
     font-weight: 700;
-    color: #303030;
+    color:#303030;
+    text-align: center;
   }
 
   h2 {

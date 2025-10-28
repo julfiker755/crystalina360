@@ -1,15 +1,16 @@
 import { FromInput } from "@/components/reuseable/form-input";
 import Form from "@/components/reuseable/from";
-import { Button, Checkbox, Label } from "@/components/ui";
+import { Button } from "@/components/ui";
 import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import FavIcon from "@/icon/favIcon";
-import Link from "next/link";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { sign_Up } from "@/schema";
 
 export default function SignUp() {
   const router = useRouter();
   const from = useForm({
-    // resolver: zodResolver(loginSchema),
+    resolver: zodResolver(sign_Up),
     defaultValues: {
       name: "",
       email: "",
@@ -30,7 +31,7 @@ export default function SignUp() {
       <Form className="space-y-4" from={from} onSubmit={handleSubmit}>
         <FromInput
           className="h-10"
-          name="Your full name"
+          name="name"
           label="Full Name"
           placeholder="Enter your Full Name"
           icon={<FavIcon name="user" className="size-4" color="#777777" />}

@@ -6,8 +6,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Modal2 from "@/components/reuseable/modal2";
-import AuthBox from "../../common/auth-box";
-import { CloseIcon } from "../../common/btn-modal";
+import AuthModalController from "../../common/auth-controller";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { toggleIsOpen } from "@/redux/features/authSlice";
 
 export default function Navber() {
   const [isOpen, setIsOpen] = useState(false);
@@ -136,30 +137,31 @@ export default function Navber() {
 }
 
 function SignInButton() {
-  const [isSign, setIsSign] = useState(false);
+  const dispatch = useAppDispatch();
+  const { isOpen } = useAppSelector((state: any) => state.auth);
   return (
     <>
       <Button
-        onClick={() => setIsSign(!isSign)}
+        onClick={() => dispatch(toggleIsOpen())}
         className="rounded-full bg-primary/30 hidden md:block"
       >
         Sign in as User
       </Button>
       <Button
-        onClick={() => setIsSign(!isSign)}
+        onClick={() => dispatch(toggleIsOpen())}
         size="icon-sm"
         className="rounded-full md:hidden grid place-items-center bg-primary/30"
       >
         <UserRound />
       </Button>
       <Modal2
-        open={isSign}
-        setIsOpen={setIsSign}
+        open={isOpen}
+        setIsOpen={(v) => dispatch(toggleIsOpen(v))}
         mainStyle="!p-0"
         className="sm:max-w-xl"
       >
-        <AuthBox title="Sign up as a User" />
-        <CloseIcon className="top-3 right-4" onClose={() => setIsSign(false)} />
+        <AuthModalController title="Sign up as a User" />
+        {/* <AuthBox title="Sign up as a User" /> */}
       </Modal2>
     </>
   );
