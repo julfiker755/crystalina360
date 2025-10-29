@@ -33,14 +33,12 @@ export function FromTextArea({
       render={({ field, fieldState: { error } }) => (
         <div>
           {label && (
-            <Label className={cn("mb-1 text-base", stylelabel)}>
-              {label}
-            </Label>
+            <Label className={cn("mb-1 text-base", stylelabel)}>{label}</Label>
           )}
           <div className="relative">
             <Textarea
               className={cn(
-                "min-h-16 w-full border-none resize-none rounded-sm bg-figma-input  pl-4 pr-3  text-blacks placeholder:text-blacks text-sm",
+                "min-h-16 w-full border-none resize-none rounded-sm! bg-[#F4F4F4]  pl-4 pr-3  text-blacks placeholder:text-blacks text-sm",
                 className
               )}
               placeholder={placeholder}
@@ -49,7 +47,7 @@ export function FromTextArea({
             />
           </div>
           {error?.message && (
-            <h3 className="text-sm pt-[1px] text-end text-[#f73f4e] flex gap-1 items-center justify-end">
+            <h3 className="text-sm pt-px text-end text-[#f73f4e] flex gap-1 items-center justify-end">
               {error.message}
               <CircleAlert size={14} />
             </h3>

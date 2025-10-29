@@ -53,6 +53,8 @@
   --radius-xl: calc(var(--radius) + 4px);
   --color-article: #828282;
   --color-figma-black: #303030;
+  --color-figma-gray: #fbfbfb;
+  --color-figma-input: #f4f4f4;
 }
 
 :root {
@@ -137,7 +139,7 @@
   h1 {
     font-size: var(--text-3xl);
     font-weight: 700;
-    color:#303030;
+    color: #303030;
     text-align: center;
   }
 
@@ -160,15 +162,15 @@
 }
 
 @layer components {
+  .flex-between {
+    @apply flex items-center justify-between;
+  }
+  .icon {
+    @apply size-10 grid place-items-center rounded-md cursor-pointer;
+  }
   .card {
     background-color: var(--color-white);
     border-radius: var(--radius-lg);
     padding: 30px;
-  }
-
-  .flex-between {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
   }
 }

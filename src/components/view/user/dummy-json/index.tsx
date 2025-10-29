@@ -69,3 +69,11 @@ export const featuresData = [
       " 0 2px 4px 0 rgba(171, 255, 16, 0.25), 0 -2px 4px 0 rgba(171, 255, 16, 0.25), 2px 0 4px 0 rgba(171, 255, 16, 0.25), -2px 0 4px 0 rgba(171, 255, 16, 0.25)",
   },
 ];
+
+export const dummyJson = {
+  meta: {
+    current_page: 1,
+    per_page: 10,
+    total: 20,
+  },
+};

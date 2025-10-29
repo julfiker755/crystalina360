@@ -1,9 +1,6 @@
 export const authKey = "auth_token";
 
-export enum role {
-  reviewer = "reviewer",
-  performer = "performer",
-  admin = "admin",
+export enum roleKey {
   user = "user",
 }
 

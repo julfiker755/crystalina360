@@ -1,7 +1,7 @@
 import { Button, Input } from "@/components/ui";
 import FavIcon from "@/icon/favIcon";
 import { ArrowLeft } from "lucide-react";
-import { setActiveModal, setInfo } from "@/redux/features/authSlice";
+import { setActiveModal, setOtpInfo } from "@/redux/features/authSlice";
 import { ChangeEvent, KeyboardEvent, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
@@ -11,7 +11,7 @@ export default function VarifyOtp() {
   const [error, setError] = useState<string>("");
   const [isError, setIsError] = useState<string>("");
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const item = useAppSelector((state) => state.auth.info);
+  const item = useAppSelector((state) => state.auth.otpInfo);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>, i: number) => {
     const { value } = e.target;
@@ -55,7 +55,7 @@ export default function VarifyOtp() {
       } else {
         // const value = { email, code: code.join("") };
         dispatch(
-          setInfo({
+          setOtpInfo({
             email: "email",
           })
         );

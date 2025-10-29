@@ -1,3 +1,4 @@
+import { BackBtn2 } from "@/components/reuseable/back-btn";
 import { featuresData } from "@/components/view/user/dummy-json";
 import FeatureCard from "@/components/view/user/reuse/feature-card";
 import { CircleAlert } from "lucide-react";
@@ -5,7 +6,8 @@ import { CircleAlert } from "lucide-react";
 export default function Features() {
   return (
     <div className="container">
-      <div className="space-y-10 py-10">
+      <BackBtn2 className="mt-10 mb-2" />
+      <div className="space-y-10 pb-10">
         {featuresData.map((feature) => (
           <FeatureCard key={feature.id} isText={false} {...feature} />
         ))}

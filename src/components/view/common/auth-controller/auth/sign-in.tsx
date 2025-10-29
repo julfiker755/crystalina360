@@ -5,7 +5,11 @@ import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import FavIcon from "@/icon/favIcon";
 import { useDispatch } from "react-redux";
-import { setActiveModal } from "@/redux/features/authSlice";
+import {
+  setActiveModal,
+  setUser,
+  toggleIsOpen,
+} from "@/redux/features/authSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { sign_In } from "@/schema";
 
@@ -22,6 +26,14 @@ export default function SignIn() {
 
   const handleSubmit = async (values: FieldValues) => {
     console.log(values);
+    dispatch(
+      setUser({
+        name: "John Doe",
+        email: values.email,
+        role: "user",
+      })
+    );
+    dispatch(toggleIsOpen());
     // toast.success("Login Successfully", {
     //   description: "You have successfully logged in",
     // });

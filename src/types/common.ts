@@ -1,3 +1,5 @@
+import { SignKey } from "@/redux/features/authSlice";
+
 export interface childrenProps {
   children: React.ReactNode;
 }
@@ -10,8 +12,14 @@ export type SlugParams = {
   params: Promise<{ slug: string }>;
 };
 
-
 export interface Args {
   id?: any;
   arg?: Record<string, any>;
+}
+
+export interface AuthState {
+  user: { name: string; email: string; role: string };
+  otpInfo: { email: string; otp: string };
+  activeModal: SignKey;
+  isOpen: boolean;
 }

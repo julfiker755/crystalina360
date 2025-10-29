@@ -6,7 +6,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import FavIcon from "@/icon/favIcon";
 import { ArrowLeft } from "lucide-react";
 import { useDispatch } from "react-redux";
-import { setActiveModal, setInfo } from "@/redux/features/authSlice";
+import { setActiveModal, setOtpInfo } from "@/redux/features/authSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { sign_In } from "@/schema";
 
@@ -24,7 +24,7 @@ export default function ForgetPassword() {
     console.log(values);
     dispatch(setActiveModal("verify"));
     dispatch(
-      setInfo({
+      setOtpInfo({
         email: values.email,
       })
     );

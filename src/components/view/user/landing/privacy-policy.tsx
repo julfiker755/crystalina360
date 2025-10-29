@@ -1,8 +1,8 @@
 import FavIcon from "@/icon/favIcon";
-import { Clipboard, Lock, Shield, Zap } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import privacyImg from "@/assets/user/privacy-center.png";
+import Image from "next/image";
 
-const cards = [
+const privacyItem = [
   {
     id: 1,
     title: "Data Collection",
@@ -47,14 +47,33 @@ const cards = [
 
 export default function PrivacyPolicy() {
   return (
-    <div className="py-10 container">
+    <div id="privacy-Policy" className="py-10 container">
       <h1 className="mb-10">Privacy Policy</h1>
-      <div className="flex flex-col lg:flex-row gap-6 lg:gap-4">
-        {cards.map((card) => (
-          <div key={card.id} className="flex-1">
-            <PrivacyPolicyCard card={card} />
-          </div>
-        ))}
+      <div className="grid grid-cols-1 lg:grid-cols-3 ">
+        <div className="space-y-10 mb-10 md:mb-0">
+          {privacyItem.slice(0, 2).map((card) => (
+            <div key={card.id} className="flex-1">
+              <PrivacyPolicyCard card={card} />
+            </div>
+          ))}
+        </div>
+        <div className="hidden md:block relative h-[300px] self-center">
+          <Image
+            alt="title"
+            fill
+            loading="eager"
+            // className="object-cover z-0"
+            src={privacyImg}
+            quality={100}
+          />
+        </div>
+        <div className="space-y-10">
+          {privacyItem.slice(-2).map((card) => (
+            <div key={card.id} className="flex-1">
+              <PrivacyPolicyCard card={card} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

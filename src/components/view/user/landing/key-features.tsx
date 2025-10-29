@@ -2,8 +2,9 @@ import { Button } from "@/components/ui";
 import Link from "next/link";
 import FeatureCard from "../reuse/feature-card";
 import { featuresData } from "../dummy-json";
+import { roleKey } from "@/lib";
 
-export default function KeyFeature() {
+export default function KeyFeature({ role }: any) {
   return (
     <div className="py-10 container">
       <h1 className="mb-10">Key Features</h1>
@@ -12,13 +13,15 @@ export default function KeyFeature() {
           <FeatureCard key={feature.id} {...feature} />
         ))}
       </div>
-      <div className="flex justify-center">
-        <Link href="/feature">
-          <Button size="lg" className="mt-10">
-            Learn More
-          </Button>
-        </Link>
-      </div>
+      {role == roleKey.user && (
+        <div className="flex justify-center">
+          <Link href="/feature">
+            <Button size="lg" className="mt-10">
+              Learn More
+            </Button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

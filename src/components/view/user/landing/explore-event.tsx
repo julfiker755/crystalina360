@@ -1,16 +1,15 @@
 "use client";
-import Avatars from "@/components/reuseable/avater";
 import Modal2 from "@/components/reuseable/modal2";
-import { Button } from "@/components/ui";
-import FavIcon from "@/icon/favIcon";
-import { PlaceholderImg } from "@/lib";
 import { toggleIsOpen } from "@/redux/features/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { Calendar, MapPin, Tag } from "lucide-react";
 import AuthModalController from "../../common/auth-controller";
+import EventCard from "@/components/reuseable/event-card";
+import { Button } from "@/components/ui";
+import { AppState } from "@/redux/store";
 import Link from "next/link";
+import { roleKey } from "@/lib";
 
-const eventsData = [
+export const eventsData = [
   {
     id: "1",
     title: "Event title",
@@ -102,85 +101,31 @@ const eventsData = [
 
 export default function ExploreEvents() {
   const dispatch = useAppDispatch();
-  const { isOpen } = useAppSelector((state: any) => state.auth);
+  const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
   return (
-    <div className="py-10 container">
+    <div id="explore" className="py-10 container">
       <h1 className="mb-10">Explore Events</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {eventsData.map((event) => (
-          <div
-            key={event.id}
-            className="overflow-hidden  transition-shadow bg-[#FBFBFB] rounded-lg p-3"
-          >
-            {/* Event Image */}
-            <div className="relative h-60 rounded-md bg-muted overflow-hidden">
-              <img
-                src={PlaceholderImg()}
-                alt={event.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="size-10 grid place-items-center cursor-pointer absolute right-3 top-3 rounded-full bg-white">
-                <FavIcon name="love" />
-              </div>
-            </div>
-
-            {/* Event Content */}
-            <div className="pt-5">
-              {/* Organizer Info */}
-              <div className="flex justify-between items-center">
-                <div className="flex items-center h-fit gap-3">
-                  <Avatars
-                    alt={event.organizer.name}
-                    src={event.organizer.avatar}
-                    fallback={event.organizer.name}
-                  />
-                  <span className="text-lg font-bold text-foreground">
-                    {event.organizer.name}
-                  </span>
-                </div>
-                <div className="border rounded-md w-fit h-fit bg-[#F2F2F2] font-medium py-1 px-3">
-                  {event.badge || "1.1"}
-                </div>
-              </div>
-
-              <div className="py-5 space-y-1">
-                {/* Event Title */}
-                <h3 className="text-lg font-semibold  text-foreground">
-                  {event.title}
-                </h3>
-
-                {/* Event Description */}
-                <p className="text-muted-foreground line-clamp-2">
-                  {event.description}
-                </p>
-
-                {/* Event Details */}
-                <div className="space-y-1 text-sm">
-                  <div className="flex  gap-2  items-center text-muted-foreground">
-                    <MapPin size={20} />
-                    <span className="text-base">{event.location}</span>
-                  </div>
-                  <div className="flex  gap-2  items-center text-muted-foreground">
-                    <Calendar size={20} />
-                    <span className="text-base">{event.date}</span>
-                  </div>
-                  <div className="flex  gap-2  items-center text-muted-foreground">
-                    <Tag size={20} />
-                    <span className="text-base">{event.price}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <EventCard key={event.id} item={event} />
         ))}
       </div>
-      <div
-        onClick={() => dispatch(toggleIsOpen())}
-        className="flex justify-center"
-      >
-        <Button size="lg" className="mt-10">
-          Create account to get access
-        </Button>
+      <div className="flex justify-center">
+        {user.role == roleKey.user ? (
+          <Link href="/explore-all">
+            <Button size="lg" className="mt-10">
+              Explore More
+            </Button>
+          </Link>
+        ) : (
+          <Button
+            onClick={() => dispatch(toggleIsOpen())}
+            size="lg"
+            className="mt-10"
+          >
+            Create account to get access
+          </Button>
+        )}
       </div>
       <Modal2
         open={isOpen}

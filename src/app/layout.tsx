@@ -20,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${montserrat.variable} antialiased`}>
+    <html lang="en" className="scroll-smooth!">
+      <body className={`${montserrat.variable}`}>
         <Provider>{children}</Provider>
       </body>
     </html>

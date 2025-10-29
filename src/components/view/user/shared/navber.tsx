@@ -3,20 +3,32 @@ import assets from "@/assets";
 import { Button } from "@/components/ui";
 import { Menu, UserRound, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Modal2 from "@/components/reuseable/modal2";
 import AuthModalController from "../../common/auth-controller";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { toggleIsOpen } from "@/redux/features/authSlice";
+import { cn, roleKey } from "@/lib";
+import { AppState } from "@/redux/store";
+import FavIcon from "@/icon/favIcon";
 
-export default function Navber() {
+export default function Navber({ className }: any) {
   const [isOpen, setIsOpen] = useState(false);
-  const navItems = [
+  const [scrolled, setScrolled] = useState(false);
+  const { user } = useAppSelector((state: AppState) => state.auth);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navNoUserItems = [
     { name: "Home", href: "/" },
-    { name: "Explore", href: "/explore" },
-    { name: "Privacy Policy", href: "/privacy-Policy" },
-    { name: "Contact Us", href: "/contact-us" },
+    { name: "Explore", href: "#explore" },
+    { name: "Privacy Policy", href: "#privacy-Policy" },
+    { name: "Contact Us", href: "#contact-us" },
   ];
   const navUserItems = [
     { name: "Home", href: "/" },
@@ -27,10 +39,26 @@ export default function Navber() {
     { name: "Profile", href: "/profile" },
   ];
 
+  const navItems = user.role == roleKey.user ? navUserItems : navNoUserItems;
+
   return (
     <>
       {/* Navbar */}
-      <div className="absolute top-5 w-[95%] md:w-full h-13 container rounded-full px-3 content-center bg-[#000000]/10 backdrop-blur-xl z-50">
+      <motion.div
+        layout
+        initial={{ y: 0, opacity: 1 }}
+        animate={{
+          y: scrolled ? -4 : 0,
+          opacity: scrolled ? 0.95 : 1,
+        }}
+        transition={{ type: "spring", stiffness: 100, damping: 20 }}
+        className={cn(
+          `w-[95%] absolute top-5 md:w-full h-13 container rounded-full px-3 content-center bg-[#000000]/10 backdrop-blur-xl z-50 ${
+            scrolled && "fixed! top-4 left-1/2 -translate-x-1/2"
+          }`,
+          className
+        )}
+      >
         <div className="flex justify-between items-center">
           {/* Logo */}
           <picture>
@@ -63,7 +91,7 @@ export default function Navber() {
             </Button>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Sidebar */}
       <AnimatePresence>
@@ -138,31 +166,50 @@ export default function Navber() {
 
 function SignInButton() {
   const dispatch = useAppDispatch();
-  const { isOpen } = useAppSelector((state: any) => state.auth);
+  const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
   return (
     <>
-      <Button
-        onClick={() => dispatch(toggleIsOpen())}
-        className="rounded-full bg-primary/30 hidden md:block"
-      >
-        Sign in as User
-      </Button>
-      <Button
-        onClick={() => dispatch(toggleIsOpen())}
-        size="icon-sm"
-        className="rounded-full md:hidden grid place-items-center bg-primary/30"
-      >
-        <UserRound />
-      </Button>
-      <Modal2
-        open={isOpen}
-        setIsOpen={(v) => dispatch(toggleIsOpen(v))}
-        mainStyle="!p-0"
-        className="sm:max-w-xl"
-      >
-        <AuthModalController title="Sign up as a User" />
-        {/* <AuthBox title="Sign up as a User" /> */}
-      </Modal2>
+      {/* sign In User */}
+      {user.role === roleKey.user ? (
+        <ul className="flex items-center space-x-3">
+          <li>
+            <FavIcon className="size-7" name="nv_love" />
+          </li>
+          <li>
+            {" "}
+            <FavIcon className="size-6" name="nv_coment" />
+          </li>
+          <li>
+            {" "}
+            <FavIcon className="size-7" name="nv_notification" />
+          </li>
+        </ul>
+      ) : (
+        // not Sign In User
+        <>
+          <Button
+            onClick={() => dispatch(toggleIsOpen())}
+            className="rounded-full bg-primary/30 hidden md:block"
+          >
+            Sign in as User
+          </Button>
+          <Button
+            onClick={() => dispatch(toggleIsOpen())}
+            size="icon-sm"
+            className="rounded-full md:hidden grid place-items-center bg-primary/30"
+          >
+            <UserRound />
+          </Button>
+          <Modal2
+            open={isOpen}
+            setIsOpen={(v) => dispatch(toggleIsOpen(v))}
+            mainStyle="!p-0"
+            className="sm:max-w-xl"
+          >
+            <AuthModalController title="Sign up as a User" />
+          </Modal2>
+        </>
+      )}
     </>
   );
 }
