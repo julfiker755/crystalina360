@@ -38,7 +38,7 @@ export default function Footer() {
                 <Input
                   placeholder="Enter your email"
                   type="email"
-                  className="w-full pl-10 border-none bg-[#F4F4F4] rounded-sm"
+                  className="w-full pl-10 border-none text-black bg-[#F4F4F4] rounded-sm"
                 />
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                   <FavIcon name="mail" className="size-4" color="#777777" />

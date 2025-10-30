@@ -70,6 +70,99 @@ export const featuresData = [
   },
 ];
 
+export const addOns = [
+  {
+    title: "Featured event",
+    price: 500,
+    bio: "Add-on bio goes here",
+    keyBenefits: [
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+    ],
+    primaryColor: "#F28B82",
+    secondaryColor: "#FDCFCF",
+  },
+  {
+    title: "Mini PDF Course",
+    price: 500,
+    bio: "Add-on bio goes here",
+    keyBenefits: [
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+    ],
+    primaryColor: "#6C33D3",
+    secondaryColor: "#DCC7F7",
+  },
+  {
+    title: "Exclusive Post",
+    price: 500,
+    bio: "Add-on bio goes here",
+    keyBenefits: [
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+    ],
+    primaryColor: "#7DA16F",
+    secondaryColor: "#D8E4D4",
+  },
+  {
+    title: "Exclusive Video",
+    price: 500,
+    bio: "Add-on bio goes here",
+    keyBenefits: [
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+    ],
+    primaryColor: "#F9A825",
+    secondaryColor: "#FFE4A0",
+  },
+  {
+    title: "Newsletter",
+    price: 500,
+    bio: "Add-on bio goes here",
+    keyBenefits: [
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+    ],
+    primaryColor: "#5D4037",
+    secondaryColor: "#E9DAD8",
+  },
+  {
+    title: "Video Masterclass",
+    price: 500,
+    bio: "Add-on bio goes here",
+    keyBenefits: [
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+      "Lorem ipsum dolor sit amet consectetur.",
+    ],
+    primaryColor: "#009688",
+    secondaryColor: "#B2DFDB",
+  },
+];
+
 export const dummyJson = {
   meta: {
     current_page: 1,

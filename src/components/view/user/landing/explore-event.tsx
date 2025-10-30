@@ -112,7 +112,7 @@ export default function ExploreEvents() {
       </div>
       <div className="flex justify-center">
         {user.role == roleKey.user ? (
-          <Link href="/explore-all">
+          <Link href="/events-all">
             <Button size="lg" className="mt-10">
               Explore More
             </Button>

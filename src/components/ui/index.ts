@@ -7,3 +7,5 @@ export * from "./checkbox";
 export * from "./dialog";
 export * from "./table";
 export * from "./skeleton";
+export * from "./alert";
+export * from "./select";

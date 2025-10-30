@@ -19,7 +19,7 @@ export function BackBtn({ className }: any) {
 }
 
 // BackBtn2
-export function BackBtn2({ className }: any) {
+export function BackBtn2({ className, label = "Back" }: any) {
   const router = useRouter();
   return (
     <div
@@ -31,7 +31,7 @@ export function BackBtn2({ className }: any) {
     >
       <span className="flex gap-x-1 *:text-primary items-center">
         {" "}
-        <ChevronLeft /> <span className="text-lg font-medium">Back</span>
+        <ChevronLeft /> <span className="text-lg font-medium">{label}</span>
       </span>
     </div>
   );

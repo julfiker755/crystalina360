@@ -1,7 +1,9 @@
-import { Button } from "@/components/ui";
+import { buttonVariants } from "@/components/ui";
 import Navber from "../shared/navber";
+import { roleKey } from "@/lib";
+import Link from "next/link";
 
-export default function HeroSec() {
+export default function HeroSec({ role }: any) {
   return (
     <div className="flex relative h-[calc(100vh-2rem)] m-4 rounded-xl flex-col  bg-[url('/img/bg1.png')] bg-cover bg-no-repeat bg-center items-center justify-center px-8">
       {/* =========== navber ========= */}
@@ -16,11 +18,27 @@ export default function HeroSec() {
         smooth, reliable system. Track your bookings, invoices, and event
         updates effortlessly.
       </p>
-
-      <Button size="lg" className="text-primary bg-white">
-        {" "}
-        Find Events
-      </Button>
+      {role == roleKey.user ? (
+        <Link
+          className={buttonVariants({
+            className: "text-primary bg-white",
+            size: "lg",
+          })}
+          href="/events-all"
+        >
+          Find Events
+        </Link>
+      ) : (
+        <Link
+          className={buttonVariants({
+            className: "text-primary bg-white",
+            size: "lg",
+          })}
+          href="#explore"
+        >
+          Explore Events
+        </Link>
+      )}
     </div>
   );
 }

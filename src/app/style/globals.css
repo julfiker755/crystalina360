@@ -174,3 +174,10 @@
     padding: 30px;
   }
 }
+
+.btn-shadow1 {
+  box-shadow: 0 2px 4px 0 rgba(196, 172, 164, 0.25),
+    0 -2px 4px 0 rgba(196, 172, 164, 0.25),
+    2px 0 4px 0 rgba(196, 172, 164, 0.25),
+    -2px 0 4px 0 rgba(196, 172, 164, 0.25);
+}

@@ -10,24 +10,31 @@ import KeyFeature from "@/components/view/user/landing/key-features";
 import PrivacyPolicy from "@/components/view/user/landing/privacy-policy";
 import Subscription from "@/components/view/user/landing/subscription";
 import Testimonial from "@/components/view/user/landing/testimonial";
+import { roleKey } from "@/lib";
 import { useAppSelector } from "@/redux/hooks";
 
 export default function UserHome() {
   const { user } = useAppSelector((state: any) => state.auth);
-  console.log(user);
   return (
     <>
-      <HeroSec />
+      <HeroSec role={user?.role} />
       <KeyFeature role={user?.role} />
       <ExploreEvents />
-      <Testimonial />
-      <PrivacyPolicy />
-      <HowWorks />
-      <ContactUs />
-      <Business />
-      {/* <Advertise /> */}
-      {/* <Subscription /> */}
-      <AddOn />
+      {user.role == roleKey.user ? (
+        <>
+          <Advertise />
+          <Subscription />
+          <AddOn />
+        </>
+      ) : (
+        <>
+          <Testimonial />
+          <PrivacyPolicy />
+          <HowWorks />
+          <ContactUs />
+          <Business />
+        </>
+      )}
     </>
   );
 }

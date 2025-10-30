@@ -12,16 +12,26 @@ import { toggleIsOpen } from "@/redux/features/authSlice";
 import { cn, roleKey } from "@/lib";
 import { AppState } from "@/redux/store";
 import FavIcon from "@/icon/favIcon";
+import { usePathname } from "next/navigation";
 
 export default function Navber({ className }: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
   const { user } = useAppSelector((state: AppState) => state.auth);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (pathname !== "/") {
+      if (typeof window !== "undefined") {
+        window.scrollTo(0, 0);
+      }
+    }
   }, []);
 
   const navNoUserItems = [
@@ -45,7 +55,6 @@ export default function Navber({ className }: any) {
     <>
       {/* Navbar */}
       <motion.div
-        layout
         initial={{ y: 0, opacity: 1 }}
         animate={{
           y: scrolled ? -4 : 0,
@@ -173,15 +182,15 @@ function SignInButton() {
       {user.role === roleKey.user ? (
         <ul className="flex items-center space-x-3">
           <li>
-            <FavIcon className="size-7" name="nv_love" />
+            <FavIcon className="size-[26px] lg:size-7" name="nv_love" />
           </li>
           <li>
             {" "}
-            <FavIcon className="size-6" name="nv_coment" />
+            <FavIcon className="size-5 lg:size-6" name="nv_coment" />
           </li>
           <li>
             {" "}
-            <FavIcon className="size-7" name="nv_notification" />
+            <FavIcon className="size-6 lg:size-7" name="nv_notification" />
           </li>
         </ul>
       ) : (
