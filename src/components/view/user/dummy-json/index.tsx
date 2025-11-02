@@ -170,3 +170,93 @@ export const dummyJson = {
     total: 20,
   },
 };
+
+export const eventsData = [
+  {
+    id: "1",
+    title: "Event title",
+    description:
+      "This event organize for the music lover peoples. Every members...",
+    image: "/music-event-concert.jpg",
+    organizer: {
+      name: "Julian Ena",
+      avatar: "/diverse-profile-avatars.png",
+    },
+    location: "Event location",
+    date: "13 September, 2025",
+    price: "$485.00",
+    badge: "Group",
+  },
+  {
+    id: "2",
+    title: "Event title",
+    description:
+      "This event organize for the music lover peoples. Every members...",
+    image: "/conference-hall-event.jpg",
+    organizer: {
+      name: "Julian Ena",
+      avatar: "/diverse-profile-avatars.png",
+    },
+    location: "http://zoom.com/2532sdf",
+    date: "09:00 AM",
+    price: "$389.00",
+    badge: "Group",
+  },
+  {
+    id: "3",
+    title: "Event title",
+    description:
+      "This event organize for the music lover peoples. Every members...",
+    image: "/business-meeting-event.jpg",
+    organizer: {
+      name: "Julian Ena",
+      avatar: "/diverse-profile-avatars.png",
+    },
+    location: "Event location",
+    date: "13 September, 2025",
+    price: "$485.00",
+  },
+  {
+    id: "4",
+    title: "Event title",
+    description:
+      "This event organize for the music lover peoples. Every members...",
+    image: "/concert-stage-lights.png",
+    organizer: {
+      name: "Julian Ena",
+      avatar: "/diverse-profile-avatars.png",
+    },
+    location: "Event location",
+    date: "09:00 AM - 05:00 PM",
+    price: "$389.00",
+  },
+  {
+    id: "5",
+    title: "Event title",
+    description:
+      "This event organize for the music lover peoples. Every members...",
+    image: "/music-performance-stage.jpg",
+    organizer: {
+      name: "Julian Ena",
+      avatar: "/diverse-profile-avatars.png",
+    },
+    location: "Event location",
+    date: "13 September, 2025",
+    price: "$389.00",
+  },
+  {
+    id: "6",
+    title: "Event title",
+    description:
+      "This event organize for the music lover peoples. Every members...",
+    image: "/office-meeting-business.jpg",
+    organizer: {
+      name: "Julian Ena",
+      avatar: "/diverse-profile-avatars.png",
+    },
+    location: "Event location",
+    date: "12 Nov, 2025 at 09:00 AM - 03:00 PM",
+    price: "$485.00",
+    badge: "Repost",
+  },
+];

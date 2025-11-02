@@ -4,11 +4,19 @@ import Form from "@/components/reuseable/from";
 import { FromTextArea } from "@/components/reuseable/from-textarea";
 import { Button } from "@/components/ui";
 import FavIcon from "@/icon/favIcon";
+import { cn } from "@/lib";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
-export default function ContactUs() {
+interface ContactUsProps {
+  title?: string;
+  className?: string;
+}
+
+export default function ContactUs({
+  title = "Contact Us",
+  className,
+}: ContactUsProps) {
   const from = useForm({
     // resolver: zodResolver(sign_In),
     defaultValues: {
@@ -25,8 +33,8 @@ export default function ContactUs() {
     // router.push("/dashboard");
   };
   return (
-    <div id="contact-us" className="py-10 container">
-      <h1 className="mb-10">Contact Us</h1>
+    <div id="contact-us" className={cn("py-10 container", className)}>
+      <h1 className="mb-10">{title}</h1>
       <div className="bg-figma-gray rounded-md p-3 md:p-15">
         <Form className="space-y-4" from={from} onSubmit={handleSubmit}>
           <FromInput

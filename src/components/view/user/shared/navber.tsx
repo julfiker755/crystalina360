@@ -42,7 +42,7 @@ export default function Navber({ className }: any) {
   ];
   const navUserItems = [
     { name: "Home", href: "/" },
-    { name: "Explore", href: "/explore" },
+    { name: "Explore", href: "/events-all" },
     { name: "Booking", href: "/booking" },
     { name: "Contact Us", href: "/contact-us" },
     { name: "Resources", href: "/resources" },
@@ -182,15 +182,20 @@ function SignInButton() {
       {user.role === roleKey.user ? (
         <ul className="flex items-center space-x-3">
           <li>
-            <FavIcon className="size-[26px] lg:size-7" name="nv_love" />
+            <Link href="/favorite-events">
+              {" "}
+              <FavIcon className="size-[26px] lg:size-7" name="nv_love" />
+            </Link>
           </li>
           <li>
-            {" "}
-            <FavIcon className="size-5 lg:size-6" name="nv_coment" />
+            <Link href="/conversation">
+              <FavIcon className="size-5 lg:size-6" name="nv_coment" />
+            </Link>
           </li>
           <li>
-            {" "}
-            <FavIcon className="size-6 lg:size-7" name="nv_notification" />
+            <Link href="/notification">
+              <FavIcon className="size-6 lg:size-7" name="nv_notification" />
+            </Link>
           </li>
         </ul>
       ) : (

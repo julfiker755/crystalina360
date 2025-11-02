@@ -3,7 +3,6 @@ import Modal2 from "@/components/reuseable/modal2";
 import { Button } from "@/components/ui";
 import { CalendarDays, Lock } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 import { CloseIcon } from "../../common/btn-modal";
 import { useGlobalState } from "@/hooks";
 
@@ -16,7 +15,10 @@ export default function AddOnCard<T extends Record<string, any>>({
 }: AddOnCardProps<T>) {
   const { keyBenefits, title, price, bio, primaryColor, secondaryColor } =
     item || {};
-  const [global, updateGlobal] = useGlobalState({ show: true, data: null });
+  const [global, updateGlobal] = useGlobalState({
+    show: false,
+    data: {} as any,
+  });
 
   return (
     <>
@@ -79,7 +81,10 @@ export default function AddOnCard<T extends Record<string, any>>({
         {/* More details link */}
         <div className="text-right">
           <Button
-            onClick={() => setIsPreview(!isPreview)}
+            onClick={() => {
+              updateGlobal("show", true);
+              updateGlobal("data", item as any);
+            }}
             style={{
               backgroundColor: secondaryColor,
               color: primaryColor,
@@ -90,44 +95,78 @@ export default function AddOnCard<T extends Record<string, any>>({
           </Button>
         </div>
       </div>
-      {/* detials */}
-      <Modal2 open={isPreview} setIsOpen={setIsPreview} className="sm:max-w-lg">
+      {/*========= detials ======== */}
+      <Modal2
+        open={global.show}
+        setIsOpen={(v) => updateGlobal("show", v)}
+        className="sm:max-w-lg"
+      >
         <CloseIcon
           className="top-3 right-4"
-          onClose={() => setIsPreview(!isPreview)}
+          onClose={() => updateGlobal("show", false)}
         />
-        <h2 className="font-bold text-center">More Details</h2>
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-3">
+        <h2 className="font-bold text-center mb-2">More Details</h2>
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center space-x-1">
             <div
               style={{
-                backgroundColor: secondaryColor,
+                backgroundColor: global?.data?.secondaryColor,
               }}
               className="icon rounded-full"
             >
               <CalendarDays
                 style={{
-                  color: primaryColor,
+                  color: global?.data?.primaryColor,
                 }}
                 size={20}
               />
             </div>
-            <div>
-              <p className="text-lg font-bold text-[#E07856]">${price}</p>
-            </div>
+            <p className="text-lg font-bold text-figma-black">
+              {global?.data?.title}
+            </p>
           </div>
-          <Link href="/payment">
-            <Button
-              style={{
-                backgroundColor: primaryColor,
-              }}
-              className="rounded-full text-white"
-            >
-              <Lock className="w-4 h-4 mr-2" />
-              Buy now
-            </Button>
-          </Link>
+
+          <p
+            style={{
+              color: global?.data?.primaryColor,
+            }}
+            className="text-lg font-bold"
+          >
+            ${global?.data?.price}
+          </p>
         </div>
+        <div className="my-6">
+          <h3
+            style={{
+              color: global?.data?.primaryColor,
+            }}
+            className="text-sm font-semibold text-[#E07856] mb-3"
+          >
+            Key benefits
+          </h3>
+          <ul className="space-y-2">
+            {global?.data?.keyBenefits?.map((item: any, index: any) => (
+              <li
+                key={item + index}
+                className="flex gap-2 text-sm text-muted-foreground"
+              >
+                <span className="font-bold">•</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <Link href="/payment">
+          <Button
+            style={{
+              backgroundColor: global?.data?.primaryColor,
+            }}
+            className="rounded-full w-full text-white"
+          >
+            <Lock className="w-4 h-4 mr-2" />
+            Buy now
+          </Button>
+        </Link>
       </Modal2>
     </>
   );

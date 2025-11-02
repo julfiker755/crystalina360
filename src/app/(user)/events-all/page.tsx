@@ -3,9 +3,9 @@ import EventCard from "@/components/reuseable/event-card";
 import Modal2 from "@/components/reuseable/modal2";
 import { Pagination } from "@/components/reuseable/pagination";
 import SearchBox from "@/components/reuseable/search-box";
+import { SubTitle } from "@/components/reuseable/sub-title";
 import { Button } from "@/components/ui";
-import { dummyJson } from "@/components/view/user/dummy-json";
-import { eventsData } from "@/components/view/user/landing/explore-event";
+import { dummyJson, eventsData } from "@/components/view/user/dummy-json";
 import { SortBox } from "@/components/view/user/reuse";
 import FavIcon from "@/icon/favIcon";
 import Link from "next/link";
@@ -17,8 +17,8 @@ export default function ExploreAll() {
   return (
     <div className="container">
       <ul className="flex justify-between flex-wrap items-center pt-10 pb-5">
-        <li className="text-2xl font-bold text-figma-black">
-          Explore OLISTAMI Events
+        <li>
+          <SubTitle text="Explore OLISTAMI Events" />
         </li>
         <li className="flex items-center mt-3 md:mt-0 space-x-3">
           <SearchBox />
@@ -36,7 +36,7 @@ export default function ExploreAll() {
         </li>
       </ul>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {eventsData.map((event) => (
+        {eventsData?.map((event) => (
           <EventCard key={event.id} item={event} />
         ))}
       </div>
