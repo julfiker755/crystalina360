@@ -10,3 +10,5 @@ export * from "./skeleton";
 export * from "./alert";
 export * from "./select";
 export * from "./scroll-area";
+export * from "./tabs";
+export * from "./accordion";

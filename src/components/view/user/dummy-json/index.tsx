@@ -1,5 +1,86 @@
 import assets from "@/assets";
+// static  data
 
+export const tabItem = [
+  {
+    id: 1,
+    title: "Terms & conditions",
+    value: "terms",
+  },
+  {
+    id: 2,
+    title: "Privacy Policy",
+    value: "privacy",
+  },
+  {
+    id: 3,
+    title: "FAQ",
+    value: "faq",
+  },
+  {
+    id: 4,
+    title: "Coupons",
+    value: "coupons",
+  },
+];
+
+// dummy json data
+export const termsAndConditions = [
+  {
+    title: "Using our service",
+    description:
+      "By using our service, you agree to comply with all applicable laws and regulations. You must not use our service for any unlawful or unauthorized purpose.",
+  },
+  {
+    title: "User Accounts",
+    description:
+      "To access certain features of our service, you may need to create a user account. You are responsible for maintaining the confidentiality of your account information and for all activities that occur under your account.",
+  },
+  {
+    title: "Payment procedure",
+    description:
+      "All payments for our services must be made in accordance with the pricing and payment terms specified on our website. We reserve the right to change our pricing and payment terms at any time.",
+  },
+];
+
+export const privacyPolicy = [
+  {
+    title: "Introduction",
+    description:
+      "We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and disclose your personal information when you use our service.",
+  },
+  {
+    title: "Data Collection",
+    description:
+      "We may collect personal information from you when you use our service, including your name, email address, and payment information.",
+  },
+  {
+    title: "Payment procedure",
+    description:
+      "All payments for our services must be made in accordance with the pricing and payment terms specified on our website. We reserve the right to change our pricing and payment terms at any time.",
+  },
+];
+
+export const faqQuestions = [
+  {
+    id: 1,
+    title: "How can I book event?",
+    description:
+      "Lorem ipsum dolor sit amet consectetur. Volutpat purus nunc tellus lorem adipiscing. Convallis at mi dictumst nulla amet. Ipsum consequat vel donec ut amet ante semper. Amet tempus tellus aliquam volutpat enim dolor tristique.",
+  },
+  {
+    id: 2,
+    title: "How I can make payment?",
+    description:
+      "You can make your payment securely using credit or debit cards, PayPal, or bank transfer. Once your payment is confirmed, you’ll receive an instant booking confirmation.",
+  },
+  {
+    id: 3,
+    title: "How I can choose right suit for me?",
+    description:
+      "You can browse our suit collection and filter by style, size, and occasion. Our experts can also guide you in finding the perfect fit based on your preferences.",
+  },
+];
 export const featuresData = [
   {
     id: 1,
