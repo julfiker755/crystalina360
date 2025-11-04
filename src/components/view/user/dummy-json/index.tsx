@@ -1,28 +1,4 @@
 import assets from "@/assets";
-// static  data
-
-export const tabItem = [
-  {
-    id: 1,
-    title: "Terms & conditions",
-    value: "terms",
-  },
-  {
-    id: 2,
-    title: "Privacy Policy",
-    value: "privacy",
-  },
-  {
-    id: 3,
-    title: "FAQ",
-    value: "faq",
-  },
-  {
-    id: 4,
-    title: "Coupons",
-    value: "coupons",
-  },
-];
 
 // dummy json data
 export const termsAndConditions = [
@@ -58,6 +34,37 @@ export const privacyPolicy = [
     title: "Payment procedure",
     description:
       "All payments for our services must be made in accordance with the pricing and payment terms specified on our website. We reserve the right to change our pricing and payment terms at any time.",
+  },
+];
+
+export const couponsItem = [
+  {
+    title: "Welcome Discount",
+    offer: "Flat $25 off",
+    code: "WELCOME25",
+    expiry: "31-12-2025",
+    buttonText: "Copy code",
+  },
+  {
+    title: "Seasonal Sale",
+    offer: "Up to 30% off",
+    code: "SEASON30",
+    expiry: "15-11-2025",
+    buttonText: "Copy code",
+  },
+  {
+    title: "First Purchase",
+    offer: "15% off on first order",
+    code: "FIRST15",
+    expiry: "30-10-2025",
+    buttonText: "Copy code",
+  },
+  {
+    title: "Flash Deal",
+    offer: "50% off on selected items",
+    code: "FLASH50",
+    expiry: "05-09-2025",
+    buttonText: "Copy code",
   },
 ];
 
