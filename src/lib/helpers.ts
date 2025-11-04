@@ -69,6 +69,10 @@ export class helpers {
   static randomString(): string {
     return crypto.randomUUID();
   }
+  static slugify(value: string): string {
+    const str = value?.toString()?.trim()?.toLowerCase();
+    return str?.includes(" ") ? str?.replace(/\s+/g, "-") : str;
+  }
   // ========= from data =============
   static fromData(values: Record<string, any>): FormData {
     const formData = new FormData();
