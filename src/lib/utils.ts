@@ -11,3 +11,9 @@ export const PlaceholderImg = (
 ): string => {
   return `https://placehold.co/${width}x${height}.png`;
 };
+export const RandomImg = (
+  width: number = 1000,
+  height: number = 600
+): string => {
+  return `https://picsum.photos/${width}/${height}`;
+};

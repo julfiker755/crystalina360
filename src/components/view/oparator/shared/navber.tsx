@@ -26,30 +26,22 @@ export default function Navber({ className }: any) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    if (pathname !== "/") {
-      if (typeof window !== "undefined") {
-        window.scrollTo(0, 0);
-      }
-    }
-  }, []);
-
   const navNoUserItems = [
-    { name: "Home", href: "/" },
-    { name: "Explore", href: "#explore" },
+    { name: "Home", href: "/operator" },
+    { name: "Pricing", href: "#pricing" },
     { name: "Privacy Policy", href: "#privacy-Policy" },
-    { name: "Contact Us", href: "#contact-us" },
+    { name: "FAQ", href: "#faq" },
   ];
   const navUserItems = [
-    { name: "Home", href: "/" },
-    { name: "Explore", href: "/events-all" },
-    { name: "Booking", href: "/booking" },
-    { name: "Contact Us", href: "/contact-us" },
-    { name: "Resources", href: "/resources" },
-    { name: "Profile", href: "/profile" },
+    { name: "Dashboard", href: "/operator/dashboard" },
+    { name: "Events", href: "/operator/dashboard/events" },
+    { name: "Pricing", href: "/operator/dashboard/pricing" },
+    { name: "Privacy policy", href: "/operator/dashboard/privacy-policy" },
+    { name: "FAQ", href: "/operator/dashboard/faq" },
   ];
 
-  const navItems = user.role == roleKey.user ? navUserItems : navNoUserItems;
+  const navItems =
+    user.role == roleKey.operator ? navUserItems : navNoUserItems;
 
   return (
     <>
@@ -62,10 +54,7 @@ export default function Navber({ className }: any) {
         }}
         transition={{ type: "spring", stiffness: 100, damping: 20 }}
         className={cn(
-          `w-[95%] absolute top-5 md:w-full h-13 container rounded-full px-3 content-center bg-[#000000]/10 backdrop-blur-xl z-50 ${
-            scrolled && "fixed! top-4 left-1/2 -translate-x-1/2"
-          }`,
-          className
+          `w-[95%]  md:w-full container rounded-full px-3 py-5 content-center z-50`
         )}
       >
         <div className="flex justify-between items-center">
@@ -77,13 +66,13 @@ export default function Navber({ className }: any) {
           </Link>
 
           {/* Desktop Nav */}
-          <ul className="hidden md:flex items-center space-x-6">
+          <ul className="hidden md:flex items-center  bg-figma-gray1   rounded-md">
             {navItems.map((item) => (
-              <li key={item.name}>
-                <Link
-                  href={item.href}
-                  className="text-lg text-article hover:text-primary transition-colors"
-                >
+              <li
+                key={item.name}
+                className={`py-1.5 first:bg-primary text-figma-black first:text-white! first:rounded-md  px-10`}
+              >
+                <Link href={item.href} className="text-lg  transition-colors">
                   {item.name}
                 </Link>
               </li>
@@ -205,9 +194,10 @@ function SignInButton() {
         <>
           <Button
             onClick={() => dispatch(toggleIsOpen())}
-            className="rounded-full bg-primary/30 hidden md:block"
+            size="lg"
+            className="hidden md:block bg-primary text-white"
           >
-            Sign in as User
+            Sign up as operator
           </Button>
           <Button
             onClick={() => dispatch(toggleIsOpen())}

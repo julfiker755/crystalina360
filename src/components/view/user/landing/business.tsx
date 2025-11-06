@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui";
 import business from "@/assets/user/businessImg.jpg";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Business() {
   return (
@@ -32,9 +33,11 @@ export default function Business() {
           </p>
 
           {/* CTA Button */}
-          <Button size="lg" className="bg-[#FFF] text-primary">
-            Join as a operator
-          </Button>
+          <Link href="/operator">
+            <Button size="lg" className="bg-[#FFF] text-primary">
+              Join as a operator
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

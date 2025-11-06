@@ -9,7 +9,7 @@ export function AppAlert({ className }: AppAlertProps) {
   return (
     <div
       className={cn(
-        "bg-[#000000]/5 p-6 flex space-x-2 mt-10 rounded-lg",
+        "bg-[#000000]/5 p-6 flex space-x-2 mt-10 mb-10 rounded-lg",
         className
       )}
     >

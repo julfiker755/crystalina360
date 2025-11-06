@@ -1,5 +1,10 @@
 import TabBox from "@/components/reuseable/tab-box";
 import { TabsContent } from "@/components/ui";
+import {
+  Blogs,
+  Partnership,
+  Podcast,
+} from "@/components/view/user/simple/resources-tab";
 
 export default function Resources() {
   return (
@@ -7,16 +12,17 @@ export default function Resources() {
       <TabBox
         defaultValue="blogs"
         tabItem={["Blogs", "Podcast", "Partnership"]}
-        className="flex justify-start w-fit"
+        className="flex justify-start w-fit mt-5"
+        tabStyle="border-b border-transparent text-lg data-[state=active]:border-primary! data-[state=active]:border-b! data-[state=active]:text-primary"
       >
         <TabsContent value="blogs">
-          <h1>Blogs</h1>
+          <Blogs />
         </TabsContent>
         <TabsContent value="podcast">
-          <h1>Podcast</h1>
+          <Podcast />
         </TabsContent>
         <TabsContent value="partnership">
-          <h1>Partnership</h1>
+          <Partnership />
         </TabsContent>
       </TabBox>
     </div>

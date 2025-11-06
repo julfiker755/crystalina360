@@ -4,11 +4,13 @@ import Avatars from "../avater";
 import { Calendar, MapPin, Tag } from "lucide-react";
 import Link from "next/link";
 
-export default function EventCard({ item }: any) {
+export default function EventCard({ item, type = "event", love = true }: any) {
   const { id, title, organizer, badge, description, location, date, price } =
     item || {};
+  const url = type === "event" ? `/events-all/${id}` : `/booking/${id}`;
+
   return (
-    <Link href={`/events-all/${id}`}>
+    <Link href={url}>
       <div className="overflow-hidden  transition-shadow bg-figma-gray rounded-lg p-3">
         {/* Event Image */}
         <div className="relative h-60 rounded-md bg-muted overflow-hidden">
@@ -17,9 +19,11 @@ export default function EventCard({ item }: any) {
             alt={title}
             className="w-full h-full object-cover"
           />
-          <div className="size-10 grid place-items-center cursor-pointer absolute right-3 top-3 rounded-full bg-white">
-            <FavIcon name="love" />
-          </div>
+          {love && (
+            <div className="size-10 grid place-items-center cursor-pointer absolute right-3 top-3 rounded-full bg-white">
+              <FavIcon name="love" />
+            </div>
+          )}
         </div>
 
         {/* Event Content */}

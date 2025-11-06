@@ -1,23 +1,18 @@
 "use client";
-import { Rating, Star, RoundedStar } from "@smastrom/react-rating";
+import { Rating, Star } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { useState } from "react";
 
 const myStyles = {
-  itemShapes: RoundedStar,
-  activeFillColor: "#f59e0b",
-  inactiveFillColor: "#ffedd5",
+  itemShapes: Star,
+  activeFillColor: "#FFBB00",
+  inactiveFillColor: "#D9D9D9",
 };
 
-export function RatingScore({
-  value,
-  width = 115,
-  readOnly = true,
-  onChange,
-}: any) {
+export function RatingScore({ value, width = 115, readOnly = true, onChange }) {
   const [rating, setRating] = useState(value);
 
-  const handleChange = (value: any) => {
+  const handleChange = (value) => {
     setRating(value);
     onChange(value);
   };
