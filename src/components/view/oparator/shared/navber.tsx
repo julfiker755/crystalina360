@@ -54,7 +54,7 @@ export default function Navber({ className }: any) {
         }}
         transition={{ type: "spring", stiffness: 100, damping: 20 }}
         className={cn(
-          `w-[95%]  md:w-full container rounded-full px-3 py-5 content-center z-50`
+          `w-[95%]  md:w-full container rounded-full  h-20 content-center z-50`
         )}
       >
         <div className="flex justify-between items-center">
@@ -192,6 +192,14 @@ function SignInButton() {
       ) : (
         // not Sign In User
         <>
+          <Link href="/">
+            <Button
+              size="lg"
+              className="hidden md:block border bg-white text-figma-black"
+            >
+              Continue as a user
+            </Button>
+          </Link>
           <Button
             onClick={() => dispatch(toggleIsOpen())}
             size="lg"

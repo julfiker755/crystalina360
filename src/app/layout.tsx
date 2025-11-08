@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google"; // Importing Montserrat font
-import "@/app/style/globals.css";
+import "./style/globals.css";
 import Provider from "@/provider";
 
 // Apply Montserrat font

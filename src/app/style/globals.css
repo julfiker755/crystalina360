@@ -1,6 +1,6 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 @import "tailwind-scrollbar-hide/v4";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -56,6 +56,25 @@
   --color-figma-gray: #fbfbfb;
   --color-figma-input: #f4f4f4;
   --color-figma-gray1: #ededed;
+  --color-figma-primary: #a6a996;
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
 }
 
 :root {
@@ -132,30 +151,25 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-x-hidden;
   }
 }
 
 @layer base {
   h1 {
-    font-size: var(--text-3xl);
-    font-weight: 700;
-    color: #303030;
-    text-align: center;
+    @apply text-2xl lg:text-3xl  font-bold text-center text-figma-black;
   }
 
   h2 {
-    font-size: var(--text-xl);
-    font-weight: 500;
+    @apply text-xl font-medium text-figma-black;
   }
 
   h3 {
-    font-size: var(--text-lg);
+    @apply text-lg font-normal text-figma-black;
   }
 
   h4 {
-    font-size: var(--text-base);
-    color: var(--figma-gray);
+    @apply text-base font-normal text-figma-gray;
   }
   p {
     color: #828282;
@@ -174,6 +188,9 @@
     border-radius: var(--radius-lg);
     padding: 30px;
   }
+  .lg-hidden {
+    @apply hidden lg:block;
+  }
 }
 
 .btn-shadow1 {
@@ -185,4 +202,21 @@
 
 .coupons-shadow {
   box-shadow: 0 6px 12px 0 rgba(17, 17, 17, 0.12);
+}
+
+.homeShadow {
+  box-shadow: 0 -18px 74px 0 rgba(153, 121, 111, 0.5);
+}
+
+.pricingShadow {
+  box-shadow: 0 0 30px 0 rgba(153, 121, 111, 0.2);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
