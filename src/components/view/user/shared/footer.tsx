@@ -31,7 +31,9 @@ export default function Footer() {
             </div>
           </div>
           <div>
-            <h3 className="text-xl font-semibold mb-3 md:mb-7">Newsletter</h3>
+            <h3 className="text-xl font-semibold text-white mb-3 md:mb-7">
+              Newsletter
+            </h3>
             <div>
               <label>Email</label>
               <div className="relative mt-1">
@@ -48,7 +50,9 @@ export default function Footer() {
             <Button className="mt-3">Subscribe</Button>
           </div>
           <div>
-            <h3 className="text-xl font-semibold mb-3">Quick links</h3>
+            <h3 className="text-xl font-semibold text-white mb-3">
+              Quick links
+            </h3>
             <ul className="space-y-1">
               <li>Home</li>
               <li>Explore</li>
@@ -58,7 +62,9 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="text-xl font-semibold  mb-3">Follow us on</h3>
+            <h3 className="text-xl font-semibold  mb-3 text-white">
+              Follow us on
+            </h3>
             <div className="space-y-4">
               <ul className="flex items-center  space-x-3">
                 {socialMedia &&

@@ -40,8 +40,8 @@ export default function Navber({ className }: any) {
     { name: "FAQ", href: "/operator/dashboard/faq" },
   ];
 
-  const navItems =
-    user.role == roleKey.operator ? navUserItems : navNoUserItems;
+  const navItems = navUserItems;
+  // user.role == roleKey.operator ? navUserItems : navNoUserItems;
 
   return (
     <>
@@ -70,9 +70,9 @@ export default function Navber({ className }: any) {
             {navItems.map((item) => (
               <li
                 key={item.name}
-                className={`py-1.5 first:bg-primary text-figma-black first:text-white! first:rounded-md  px-10`}
+                className={`py-2 first:bg-primary text-figma-black first:text-white! first:rounded-md  px-10`}
               >
-                <Link href={item.href} className="text-lg  transition-colors">
+                <Link href={item.href} className="transition-colors">
                   {item.name}
                 </Link>
               </li>

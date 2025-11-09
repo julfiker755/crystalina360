@@ -12,7 +12,7 @@ export default function Footer() {
   return (
     <div className="bg-figma-black py-16 *:text-white">
       <div className="container">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr_250px_1fr] gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-50">
           <div className="space-y-4">
             <div>
               <picture>
@@ -30,25 +30,11 @@ export default function Footer() {
               </p>
             </div>
           </div>
+
           <div>
-            <h3 className="text-xl font-semibold mb-3 md:mb-7">Newsletter</h3>
-            <div>
-              <label>Email</label>
-              <div className="relative mt-1">
-                <Input
-                  placeholder="Enter your email"
-                  type="email"
-                  className="w-full pl-10 border-none text-black bg-[#F4F4F4] rounded-sm"
-                />
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                  <FavIcon name="mail" className="size-4" color="#777777" />
-                </div>
-              </div>
-            </div>
-            <Button className="mt-3">Subscribe</Button>
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold mb-3">Quick links</h3>
+            <h3 className="text-xl font-semibold mb-3 text-white">
+              Quick links
+            </h3>
             <ul className="space-y-1">
               <li>Home</li>
               <li>Explore</li>
@@ -58,7 +44,9 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="text-xl font-semibold  mb-3">Follow us on</h3>
+            <h3 className="text-xl font-semibold text-white mb-3">
+              Follow us on
+            </h3>
             <div className="space-y-4">
               <ul className="flex items-center  space-x-3">
                 {socialMedia &&

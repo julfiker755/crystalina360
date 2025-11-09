@@ -41,7 +41,7 @@ const faqItems = [
 
 export default function Fqa() {
   return (
-    <div className="container">
+    <div className="container py-16">
       <h1 className="text-3xl font-bold text-center mb-8">FAQ</h1>
 
       <Accordion type="single" collapsible className="space-y-2">
@@ -51,7 +51,7 @@ export default function Fqa() {
             value={item.id}
             className="bg-gray-100 border-none  py-1 rounded-sm"
           >
-            <AccordionTrigger className=" cursor-pointer px-4 text-lg  py-3 text-left text-figma-black ">
+            <AccordionTrigger className=" cursor-pointer px-4 text-lg  py-2 text-left text-figma-black ">
               {item.question}
             </AccordionTrigger>
             <AccordionContent className="px-4 pb-3 text-gray-700  border-gray-200">

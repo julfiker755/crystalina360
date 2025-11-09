@@ -12,3 +12,7 @@ export * from "./select";
 export * from "./scroll-area";
 export * from "./tabs";
 export * from "./accordion";
+export * from "./calendar";
+export * from "./card";
+export * from "./chart";
+export * from "./popover";
