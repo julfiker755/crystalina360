@@ -9,21 +9,20 @@ import Modal2 from "@/components/reuseable/modal2";
 import AuthModalController from "../../common/auth-controller";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { toggleIsOpen } from "@/redux/features/authSlice";
-import { cn, roleKey } from "@/lib";
+import { cn, RandomImg, roleKey } from "@/lib";
 import { AppState } from "@/redux/store";
 import FavIcon from "@/icon/favIcon";
 import { usePathname } from "next/navigation";
+import Avatars from "@/components/reuseable/avater";
 
 export default function Navber({ className }: any) {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
   const { user } = useAppSelector((state: AppState) => state.auth);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    if (typeof window !== "undefined") {
+      window.scrollTo(0, 0);
+    }
   }, []);
 
   const navNoUserItems = [
@@ -34,64 +33,60 @@ export default function Navber({ className }: any) {
   ];
   const navUserItems = [
     { name: "Dashboard", href: "/operator/dashboard" },
-    { name: "Events", href: "/operator/dashboard/events" },
-    { name: "Pricing", href: "/operator/dashboard/pricing" },
-    { name: "Privacy policy", href: "/operator/dashboard/privacy-policy" },
-    { name: "FAQ", href: "/operator/dashboard/faq" },
+    { name: "Events", href: "/operator/events" },
+    { name: "Pricing", href: "/operator/pricing" },
+    { name: "Privacy policy", href: "/operator/privacy-policy" },
+    { name: "FAQ", href: "/operator/faq" },
   ];
 
-  const navItems = navUserItems;
-  // user.role == roleKey.operator ? navUserItems : navNoUserItems;
+  const navItems =
+    user.role == roleKey.operator ? navUserItems : navNoUserItems;
 
   return (
     <>
       {/* Navbar */}
-      <motion.div
-        initial={{ y: 0, opacity: 1 }}
-        animate={{
-          y: scrolled ? -4 : 0,
-          opacity: scrolled ? 0.95 : 1,
-        }}
-        transition={{ type: "spring", stiffness: 100, damping: 20 }}
-        className={cn(
-          `w-[95%]  md:w-full container rounded-full  h-20 content-center z-50`
-        )}
-      >
-        <div className="flex justify-between items-center">
-          {/* Logo */}
-          <Link href="/">
-            <picture>
-              <img src={assets.logo.src} alt="logo" className="w-32" />
-            </picture>
-          </Link>
+      <div className={`sticky top-0 left-0 bg-background z-50`}>
+        <div
+          className={cn(
+            `w-[95%]  md:w-full container rounded-full   h-20 content-center`
+          )}
+        >
+          <div className="flex justify-between items-center">
+            {/* Logo */}
+            <Link href="/">
+              <picture>
+                <img src={assets.logo.src} alt="logo" className="w-32" />
+              </picture>
+            </Link>
 
-          {/* Desktop Nav */}
-          <ul className="hidden md:flex items-center  bg-figma-gray1   rounded-md">
-            {navItems.map((item) => (
-              <li
-                key={item.name}
-                className={`py-2 first:bg-primary text-figma-black first:text-white! first:rounded-md  px-10`}
+            {/* Desktop Nav */}
+            <ul className="hidden md:flex items-center  bg-figma-gray1   rounded-md">
+              {navItems.map((item) => (
+                <li
+                  key={item.name}
+                  className={`py-2 first:bg-primary text-figma-black first:text-white! first:rounded-md  px-10`}
+                >
+                  <Link href={item.href} className="transition-colors">
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            {/* Buttons */}
+            <div className="flex items-center space-x-2">
+              <SignInButton />
+              <Button
+                size="icon-sm"
+                className="rounded-full md:hidden bg-primary/30"
+                onClick={() => setIsOpen(true)}
               >
-                <Link href={item.href} className="transition-colors">
-                  {item.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          {/* Buttons */}
-          <div className="flex items-center space-x-2">
-            <SignInButton />
-            <Button
-              size="icon-sm"
-              className="rounded-full md:hidden bg-primary/30"
-              onClick={() => setIsOpen(true)}
-            >
-              <Menu />
-            </Button>
+                <Menu />
+              </Button>
+            </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Sidebar */}
       <AnimatePresence>
@@ -170,22 +165,32 @@ function SignInButton() {
   return (
     <>
       {/* sign In User */}
-      {user.role === roleKey.user ? (
+      {user.role === roleKey.operator ? (
         <ul className="flex items-center space-x-3">
-          <li>
-            <Link href="/favorite-events">
-              {" "}
-              <FavIcon className="size-[26px] lg:size-7" name="nv_love" />
+          <li className="icon bg-figma-gray1">
+            <Link href="/operator/conversation">
+              <FavIcon name="chat" />
+            </Link>
+          </li>
+          <li className="icon bg-figma-gray1">
+            <Link href="/operator/notification">
+              <FavIcon name="noti" />
             </Link>
           </li>
           <li>
-            <Link href="/conversation">
-              <FavIcon className="size-5 lg:size-6" name="nv_coment" />
-            </Link>
-          </li>
-          <li>
-            <Link href="/notification">
-              <FavIcon className="size-6 lg:size-7" name="nv_notification" />
+            <Link href="/operator/profile">
+              <div className="flex space-x-1 items-center">
+                <Avatars
+                  fallback="T"
+                  src={RandomImg()}
+                  className="size-10! rounded-md"
+                  alt="img"
+                />
+                <ul className="*:text-black leading-5">
+                  <li className="font-medium">Elizabeth Olson</li>
+                  <li>example@gmail.com</li>
+                </ul>
+              </div>
             </Link>
           </li>
         </ul>

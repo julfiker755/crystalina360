@@ -1,7 +1,7 @@
 import { FromInput } from "@/components/reuseable/form-input";
 import Form from "@/components/reuseable/from";
 import { Button, Checkbox, Label } from "@/components/ui";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import FavIcon from "@/icon/favIcon";
 import { useDispatch } from "react-redux";
@@ -12,10 +12,12 @@ import {
 } from "@/redux/features/authSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { sign_In } from "@/schema";
+import { roleKey } from "@/lib";
 
 export default function SignIn() {
   const dispatch = useDispatch();
   const router = useRouter();
+  const pathname = usePathname();
   const from = useForm({
     resolver: zodResolver(sign_In),
     defaultValues: {
@@ -24,13 +26,17 @@ export default function SignIn() {
     },
   });
 
+  const roleName = pathname.includes("/operator")
+    ? roleKey.operator
+    : roleKey.user;
+
   const handleSubmit = async (values: FieldValues) => {
     console.log(values);
     dispatch(
       setUser({
         name: "John Doe",
         email: values.email,
-        role: "user",
+        role: roleName,
       })
     );
     dispatch(toggleIsOpen());

@@ -16,3 +16,5 @@ export * from "./calendar";
 export * from "./card";
 export * from "./chart";
 export * from "./popover";
+export * from "./button-group";
+export * from "./badge";

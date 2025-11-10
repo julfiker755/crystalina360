@@ -13,9 +13,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    turbopackFileSystemCacheForDev: true,
-  },
+  // experimental: {
+  //   turbopackFileSystemCacheForDev: true,
+  // },
 };
 
 export default nextConfig;
