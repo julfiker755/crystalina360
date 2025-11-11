@@ -183,7 +183,7 @@ function SignInButton() {
                 <Avatars
                   fallback="T"
                   src={RandomImg()}
-                  className="size-10! rounded-md"
+                  className="size-10! rounded-md!"
                   alt="img"
                 />
                 <ul className="*:text-black leading-5">
@@ -208,7 +208,7 @@ function SignInButton() {
           <Button
             onClick={() => dispatch(toggleIsOpen())}
             size="lg"
-            className="hidden md:block bg-primary text-white"
+            className="hidden md:block bg-primary"
           >
             Sign up as operator
           </Button>

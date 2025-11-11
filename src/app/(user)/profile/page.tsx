@@ -263,7 +263,15 @@ export default function Profile() {
           className="mt-2 mr-2"
           onClose={() => setState("isPassword", false)}
         />
-        <UpdatePassword />
+        <div className="pb-2">
+          <div className="my-5">
+            <h2 className="font-bold text-center">Change Password</h2>
+            <p className="text-center text-primary text-sm">
+              Please fill in the correct information to update your account
+            </p>
+          </div>
+          <UpdatePassword btnStyle="" />
+        </div>
       </Modal2>
     </div>
   );

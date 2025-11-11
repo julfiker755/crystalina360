@@ -38,12 +38,12 @@ export default function Modal({
         onInteractOutside={(e) => e.preventDefault()}
         overlyStyle={`${style} transition-opacity duration-200`}
         className={cn(
-          "sm:max-w-md p-0  gap-0 bg-blacks rounded-2xl overflow-y-auto   max-h-[95vh] h-fit scrollbar-hide  border-none",
+          "sm:max-w-md p-0 gap-0 bg-background rounded-2xl overflow-y-auto  max-h-[95vh] h-fit scrollbar-hide border-none",
           className,
           style
         )}
       >
-        <DialogHeader className="bg-modal-figma text-white p-4">
+        <DialogHeader className="bg-primary text-white p-4">
           <DialogTitle className={cn("text-white font-medium", titleStyle)}>
             {title}
           </DialogTitle>

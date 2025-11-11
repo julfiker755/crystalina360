@@ -1,0 +1,34 @@
+import { cn } from "@/lib";
+import { childrenProps } from "@/types";
+
+interface svgProps extends childrenProps {
+  className?: string;
+}
+
+export default function SvgBox({ children, className }: svgProps) {
+  return (
+    <div
+      className={cn(
+        "bg-[#EDEDED] relative rounded-md p-6 overflow-hidden",
+        className
+      )}
+    >
+      {children}
+      <div className="absolute lg-hidden right-0 top-0 bottom-0">
+        <svg
+          width="419"
+          height="110"
+          viewBox="0 0 419 110"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M82.3152 68.931C45.0213 62.4522 12.2931 95.3861 0.59082 112.663C8.07263 125.441 31.7842 155.639 66.7761 174.212C110.516 197.427 170.946 169.353 202.024 150.996C233.103 132.639 228.498 102.405 269.936 73.2502C311.374 44.0956 400.005 84.0482 428.781 44.0956C457.557 4.1429 401.731 -49.3074 344.179 -61.7251C286.626 -74.1428 264.181 -50.3872 242.886 -5.03549C221.592 40.3162 128.933 77.0295 82.3152 68.931Z"
+            fill="#E4D5D0"
+            stroke="#EDEDED"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+}

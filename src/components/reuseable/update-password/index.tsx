@@ -5,8 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 import { FromInput } from "../form-input";
 import { change_Pass } from "@/schema";
+import { cn, roleKey } from "@/lib";
+import { useAppSelector } from "@/redux/hooks";
+import { AppState } from "@/redux/store";
+import { FromInput2 } from "../form-input2";
 
-export default function UpdatePassword() {
+export default function UpdatePassword({ btnStyle, className }: any) {
+  const { user } = useAppSelector((state: AppState) => state.auth);
   const from2 = useForm({
     resolver: zodResolver(change_Pass),
     defaultValues: {
@@ -23,48 +28,69 @@ export default function UpdatePassword() {
     // });
   };
   return (
-    <div className="pb-2">
-      <div className="my-5">
-        <h2 className="font-bold text-center">Change Password</h2>
-        <p className="text-center text-primary text-sm">
-          Please fill in the correct information to update your account
-        </p>
+    <Form from={from2} onSubmit={handlePasswordSubmit}>
+      <div className={cn("space-y-6", className)}>
+        {user.role === roleKey.user ? (
+          <>
+            <FromInput
+              label="Current Password"
+              name="current_password"
+              placeholder="Enter current password"
+              className="h-10"
+              icon={
+                <FavIcon name="password" className="size-5" color="#777777" />
+              }
+              eye={true}
+            />
+            <FromInput
+              label="New Password"
+              name="new_password"
+              placeholder="Enter new password"
+              className="h-10"
+              icon={
+                <FavIcon name="password" className="size-5" color="#777777" />
+              }
+              eye={true}
+            />
+            <FromInput
+              label="Retype New Password"
+              name="c_password"
+              placeholder="Enter retype new password"
+              className="h-10"
+              icon={
+                <FavIcon name="password" className="size-5" color="#777777" />
+              }
+              eye={true}
+            />
+          </>
+        ) : (
+          <>
+            <FromInput2
+              label="Current Password"
+              name="current_password"
+              placeholder="Enter current password"
+              className="h-10"
+              eye={true}
+            />
+            <FromInput2
+              label="New Password"
+              name="new_password"
+              placeholder="Enter new password"
+              className="h-10"
+              eye={true}
+            />
+            <FromInput2
+              label="Retype New Password"
+              name="c_password"
+              placeholder="Enter retype new password"
+              className="h-10"
+              eye={true}
+            />
+          </>
+        )}
+
+        <Button className={cn("w-full", btnStyle)}>Save Changes</Button>
       </div>
-      <Form from={from2} onSubmit={handlePasswordSubmit}>
-        <div className="space-y-6 pt-5">
-          <FromInput
-            label="Current Password"
-            name="current_password"
-            placeholder="Enter current password"
-            className="h-10"
-            icon={
-              <FavIcon name="password" className="size-5" color="#777777" />
-            }
-            eye={true}
-          />
-          <FromInput
-            label="New Password"
-            name="new_password"
-            placeholder="Enter new password"
-            className="h-10"
-            icon={
-              <FavIcon name="password" className="size-5" color="#777777" />
-            }
-            eye={true}
-          />
-          <FromInput
-            label="Retype New Password"
-            name="c_password"
-            placeholder="Enter retype new password"
-            className="h-10"
-            icon={
-              <FavIcon name="password" className="size-5" color="#777777" />
-            }
-            eye={true}
-          />
-          <Button className="w-full">Save Changes</Button>
-        </div>
-      </Form>
-    </div>
+    </Form>
   );
 }

@@ -1,9 +1,33 @@
 "use client";
-import { Button, ButtonGroup } from "@/components/ui";
+import Modal from "@/components/reuseable/modal";
+import { Button, ButtonGroup, Label } from "@/components/ui";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import EventCard from "@/components/view/oparator/reuse/event-card";
-import SvgAngle from "@/components/view/oparator/reuse/svg-angle";
+import SvgBox from "@/components/view/oparator/reuse/svg-box";
 import FavIcon from "@/icon/favIcon";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+const eventOptions = [
+  {
+    id: "one-to-one",
+    title: "One to One",
+    description:
+      "A private event designed for personal interaction and focused discussion between two individuals.",
+  },
+  {
+    id: "group",
+    title: "Group",
+    description:
+      "An exclusive gathering with a set number of participants, ensuring closer connections and meaningful engagement.",
+  },
+  {
+    id: "retreat",
+    title: "Retreat",
+    description:
+      "An immersive event. It can only be o line (therefore, it cannot be online or on demand). ",
+  },
+];
 
 const ongoingItem = [
   {
@@ -62,7 +86,11 @@ const upcomingItem = [
 ];
 
 export default function EventAll() {
+  const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>("1:1");
+  const [isStore, setIsStore] = useState(false);
+  const [selectValue, setIsSelect] = useState("");
+
   const overviewItem = [
     {
       icon: "events",
@@ -80,9 +108,14 @@ export default function EventAll() {
       count: "15",
     },
   ];
+
+  const handleSubmit = () => {
+    router.push(`/operator/events/store?`);
+  };
+
   return (
     <div className="container pb-10">
-      <div className="bg-[#EDEDED] relative rounded-md p-6 mt-7 overflow-hidden">
+      <SvgBox className="mt-6">
         <div className="flex items-center flex-wrap justify-between">
           <div className="flex items-center  gap-4 flex-wrap  space-x-5">
             {overviewItem?.map((item, idx) => (
@@ -97,14 +130,15 @@ export default function EventAll() {
               </div>
             ))}
           </div>
-          <Button className="z-10 text-white mt-3 lg:mt-0" size="lg">
+          <Button
+            onClick={() => setIsStore(!isStore)}
+            className="z-10 text-white mt-3 lg:mt-0"
+            size="lg"
+          >
             Create New Event
           </Button>
         </div>
-        <div className="absolute lg-hidden right-0 top-0 bottom-0">
-          <SvgAngle />
-        </div>
-      </div>
+      </SvgBox>
       {/* filter group item */}
       <div className="my-7 flex justify-end">
         <ButtonGroup>
@@ -143,6 +177,45 @@ export default function EventAll() {
           </div>
         </div>
       </div>
+      {/*  =============== event store ============== */}
+      <Modal
+        title="Select Event Type"
+        titleStyle="text-center"
+        open={isStore}
+        setIsOpen={setIsStore}
+      >
+        <RadioGroup value={selectValue} onValueChange={(v) => setIsSelect(v)}>
+          {eventOptions.map((option) => (
+            <div key={option.id} className="border rounded-lg">
+              <div className="flex items-center px-2 py-4 gap-4">
+                <RadioGroupItem
+                  value={option.id}
+                  id={option.id}
+                  className="border-primary cursor-pointer data-[state=checked]:bg-primary data-[state=checked]:text-primary border"
+                />
+                <Label
+                  htmlFor={option.id}
+                  className="cursor-pointer  flex flex-col items-start"
+                >
+                  <h3 className="text-lg leading-3 font-semibold text-foreground">
+                    {option.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    {option.description}
+                  </p>
+                </Label>
+              </div>
+            </div>
+          ))}
+        </RadioGroup>
+        <Button
+          className="w-full mt-4"
+          onClick={() => handleSubmit()}
+          disabled={selectValue === ""}
+        >
+          Next
+        </Button>
+      </Modal>
     </div>
   );
 }

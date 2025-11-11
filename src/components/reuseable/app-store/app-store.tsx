@@ -9,7 +9,7 @@ interface AppStoreProps {
 const AppStore = ({ className, titleStyle, mainStyle }: AppStoreProps) => {
   return (
     <div className={className}>
-      <h3 className={cn("font-semibold text-lg mb-2", titleStyle)}>
+      <h3 className={cn("font-semibold text-white text-lg mb-2", titleStyle)}>
         Download Our App
       </h3>
       <div className={cn("flex gap-3 items-start", mainStyle)}>

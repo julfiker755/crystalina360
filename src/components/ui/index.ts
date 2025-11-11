@@ -18,3 +18,4 @@ export * from "./chart";
 export * from "./popover";
 export * from "./button-group";
 export * from "./badge";
+export * from "./alert-dialog";
