@@ -13,6 +13,7 @@ import { cn, roleKey } from "@/lib";
 import { AppState } from "@/redux/store";
 import FavIcon from "@/icon/favIcon";
 import { usePathname } from "next/navigation";
+import Logo from "@/components/reuseable/logo";
 
 export default function Navber({ className }: any) {
   const [isOpen, setIsOpen] = useState(false);
@@ -71,9 +72,7 @@ export default function Navber({ className }: any) {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link href="/">
-            <picture>
-              <img src={assets.logo.src} alt="logo" className="w-32" />
-            </picture>
+            <Logo />
           </Link>
 
           {/* Desktop Nav */}

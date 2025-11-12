@@ -56,8 +56,10 @@
   --color-figma-gray: #fbfbfb;
   --color-figma-input: #f4f4f4;
   --color-figma-gray1: #ededed;
-  --color-figma-primary: #a6a996;
+  --color-figma-primary: #99796f;
   --color-figma-danger: #ff4e4e;
+  --color-figma-sidebar: #ededed;
+  --color-figma-a_gray: #535353;
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
   @keyframes marquee {

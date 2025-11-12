@@ -2,14 +2,14 @@
 import React, { useState } from "react";
 import { favIcon } from "./list";
 import { favIcon2 } from "./oparator";
+import { favIcon3 } from "./admin";
 
-const icons = { ...favIcon2, ...favIcon } as const;
+const icons = { ...favIcon, ...favIcon2, ...favIcon3 } as const;
 
 export type IconName = keyof typeof icons;
 
-interface IconProps {
+interface IconProps extends React.SVGProps<SVGSVGElement> {
   name: IconName;
-  className?: string;
   color?: string;
   hoverColor?: string;
   activeColor?: string;
@@ -23,6 +23,7 @@ export default function FavIcon({
   hoverColor,
   activeColor,
   groupHover,
+  ...rest
 }: IconProps) {
   const [internalHover, setInternalHover] = useState(false);
   const hovered = groupHover ?? internalHover;
@@ -60,12 +61,13 @@ export default function FavIcon({
     return React.cloneElement(element, newProps);
   };
 
-  // Cast the element so TypeScript allows onMouseEnter/onMouseLeave props
   const iconWithHover = React.cloneElement(
     applyFill(icon) as React.ReactElement<React.DOMAttributes<any>>,
     {
+      id: name,
       onMouseEnter: () => !groupHover && setInternalHover(true),
       onMouseLeave: () => !groupHover && setInternalHover(false),
+      ...rest,
     }
   );
 

@@ -1,0 +1,104 @@
+export const adminLinks = [
+  {
+    label: "Dashboard",
+    icon: "dashboard",
+    act_io: "dashboard_i",
+    to: "/admin",
+  },
+  {
+    label: "Users",
+    icon: "users",
+    act_io: "users_i",
+    to: "/admin/users",
+  },
+  {
+    label: "Operators",
+    icon: "operators",
+    act_io: "operators_i",
+    to: "/admin/operators",
+  },
+  {
+    label: "pricing",
+    icon: "pricing",
+    act_io: "pricing_i",
+    to: "/admin/pricing",
+  },
+  {
+    label: "Events",
+    icon: "events",
+    act_io: "events_i",
+    to: "/admin/events",
+  },
+  {
+    label: "Blogs",
+    icon: "blogs",
+    act_io: "blogs_i",
+    to: "/admin/blogs",
+  },
+  {
+    label: "Podcast",
+    icon: "podcast",
+    act_io: "podcast_i",
+    to: "/admin/podcast",
+  },
+  {
+    label: "Tickets",
+    icon: "tickets",
+    act_io: "tickets_i",
+    to: "/admin/tickets",
+  },
+  {
+    label: "Promotions",
+    icon: "promotions",
+    act_io: "promotions_i",
+    to: "/admin/promotions",
+  },
+  {
+    label: "Add-ons",
+    icon: "add_ons",
+    act_io: "add_ons_i",
+    to: "/admin/add-ons",
+  },
+  {
+    label: "Newsletter",
+    icon: "newsletter",
+    act_io: "newsletter_i",
+    to: "/admin/newsletter",
+  },
+  {
+    label: "Coupons",
+    icon: "coupons",
+    act_io: "coupons_i",
+    to: "/admin/coupons",
+  },
+  {
+    label: "Settings",
+    icon: "settings",
+    act_io: "settings_i",
+    to: "/admin/settings",
+  },
+  // {
+  //   label: "Settings",
+  //   icon: "settings",
+  //   submenu: [
+  //     {
+  //       to: "/admin/setting/change-password",
+  //       icon: "key",
+  //       label: "Change Password",
+  //     },
+  //     { to: "/admin/setting/about-us", icon: "about", label: "About us" },
+  //     {
+  //       to: "/admin/setting/terms",
+  //       icon: "terms",
+  //       label: "Terms & Conditions",
+  //     },
+  //     {
+  //       to: "/admin/setting/privacy",
+  //       icon: "privacy1",
+  //       label: "Privacy Policy",
+  //     },
+  //     { to: "/admin/setting/fqa", icon: "fqa", label: "FAQ" },
+  //     { to: "/admin/setting/contacts", icon: "contact", label: "Contacts" },
+  //   ],
+  // },
+];
