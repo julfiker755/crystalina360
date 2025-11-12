@@ -1,7 +1,13 @@
 import NavTitle from "@/components/reuseable/nav-title";
+import { ScrollArea } from "@/components/ui";
 import PreferencesChart from "@/components/view/admin/simple/preferences-chart";
 import StatisticsChart from "@/components/view/admin/simple/statistics-chart";
+import {
+  RecentCard,
+  StatsCard,
+} from "@/components/view/admin/simple/stats-card";
 import FavIcon from "@/icon/favIcon";
+import { ArrowUpRight } from "lucide-react";
 
 const totalStash = [
   {
@@ -26,6 +32,33 @@ const totalStash = [
   },
 ];
 
+const activityData = [
+  {
+    id: 1,
+    title: "Ticket booked",
+    timestamp: "5 Sep, 2025 at 10:30 AM",
+    icon: "tickets_i",
+  },
+  {
+    id: 2,
+    title: "New event posted",
+    timestamp: "5 Sep, 2025 at 10:30 AM",
+    icon: "events_i",
+  },
+  {
+    id: 3,
+    title: "New user registered",
+    timestamp: "5 Sep, 2025 at 10:30 AM",
+    icon: "users_i",
+  },
+  {
+    id: 4,
+    title: "New operator registered",
+    timestamp: "5 Sep, 2025 at 10:30 AM",
+    icon: "operators_i",
+  },
+];
+
 export default function RootPage() {
   return (
     <div>
@@ -44,18 +77,7 @@ export default function RootPage() {
             </ul>
           </div>
           {totalStash.map((item, index) => (
-            <ul key={index} className="bg-white p-4  rounded-xl">
-              <li className="size-[50px]  grid rounded-xl place-items-center  bg-primary">
-                <FavIcon
-                  color={item.icon == "t_ticket" ? "" : "#fff"}
-                  name={item.icon as any}
-                />
-              </li>
-              <li className="text-figma-a_gray mt-2">{item.title}</li>
-              <li className="font-bold text-xl leading-9 lg:text-[28px]">
-                {item.value}
-              </li>
-            </ul>
+            <StatsCard key={index} {...item} />
           ))}
         </div>
       </div>
@@ -69,6 +91,15 @@ export default function RootPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <div>
             <h2 className="text-2xl font-medium mb-3">Recent activities</h2>
+            <div className="bg-figma-sidebar p-4 rounded-xl">
+              <ScrollArea className="h-[350px]">
+                <div className="space-y-3 ">
+                  {activityData.map((item, idx) => (
+                    <RecentCard key={idx} {...item} />
+                  ))}
+                </div>
+              </ScrollArea>
+            </div>
           </div>
           <div>
             <h2 className="text-2xl font-medium mb-3">
