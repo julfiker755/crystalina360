@@ -14,8 +14,9 @@ import {
   ChartLegend,
   ChartLegendContent,
 } from "@/components/ui/chart";
+import { cn } from "@/lib";
 
-export default function TicketChart() {
+export default function TicketChart({ className }: any) {
   const chartData = [
     { day: "01", tickets: 830 },
     { day: "02", tickets: 680 },
@@ -58,11 +59,16 @@ export default function TicketChart() {
 
   return (
     <div className="bg-white p-3 border rounded-xl w-full">
-      <ChartContainer config={chartConfig} className="w-full h-[350px]">
+      <ChartContainer
+        config={chartConfig}
+        className={cn("w-full h-[350px]", className)}
+      >
         {/* Scrollable Wrapper */}
         <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300">
           {/* Minimum width ensures scroll on small screens */}
-          <div className="min-w-[700px] sm:min-w-full h-[350px]">
+          <div
+            className={cn("min-w-[700px] sm:min-w-full h-[350px]", className)}
+          >
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData}>
                 <CartesianGrid vertical={false} strokeDasharray="3 3" />

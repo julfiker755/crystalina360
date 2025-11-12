@@ -5,6 +5,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import EventCard from "@/components/view/oparator/reuse/event-card";
 import SvgBox from "@/components/view/oparator/reuse/svg-box";
 import FavIcon from "@/icon/favIcon";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -164,7 +165,9 @@ export default function EventAll() {
           <h2 className="text-2xl text-black">Ongoing Events</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {ongoingItem.map((item, idx) => (
-              <EventCard item={item} key={idx} />
+              <Link key={idx} href={`/operator/events/3`}>
+                <EventCard item={item} />
+              </Link>
             ))}
           </div>
         </div>
@@ -172,7 +175,9 @@ export default function EventAll() {
           <h2 className="text-2xl text-black">Upcoming Events</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {upcomingItem.map((item, idx) => (
-              <EventCard item={item} key={idx} />
+              <Link key={idx} href={`/operator/events/3`}>
+                <EventCard item={item} />
+              </Link>
             ))}
           </div>
         </div>
