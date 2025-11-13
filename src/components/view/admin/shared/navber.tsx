@@ -45,7 +45,7 @@ export default function Navber({ sidebarOpen, setSidebarOpen }: SidebarProps) {
                 </div>
               </Link>
 
-              <Link href={"/admin/profile"}>
+              <Link href={"/admin/settings"}>
                 <div className="relative flex items-center gap-2 rounded-full cursor-pointer">
                   <ImgBox
                     src={RandomImg()}

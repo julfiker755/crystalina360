@@ -10,7 +10,12 @@ import { useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
 import { FromInput2 } from "../form-input2";
 
-export default function UpdatePassword({ btnStyle, className }: any) {
+export default function UpdatePassword({
+  btnStyle,
+  btnStyle2,
+  className,
+  inputStyle,
+}: any) {
   const { user } = useAppSelector((state: AppState) => state.auth);
   const from2 = useForm({
     resolver: zodResolver(change_Pass),
@@ -69,27 +74,29 @@ export default function UpdatePassword({ btnStyle, className }: any) {
               label="Current Password"
               name="current_password"
               placeholder="Enter current password"
-              className="h-10"
+              className={cn("h-10", inputStyle)}
               eye={true}
             />
             <FromInput2
               label="New Password"
               name="new_password"
               placeholder="Enter new password"
-              className="h-10"
+              className={cn("h-10", inputStyle)}
               eye={true}
             />
             <FromInput2
               label="Retype New Password"
               name="c_password"
               placeholder="Enter retype new password"
-              className="h-10"
+              className={cn("h-10", inputStyle)}
               eye={true}
             />
           </>
         )}
 
-        <Button className={cn("w-full", btnStyle)}>Save Changes</Button>
+        <div className={btnStyle2}>
+          <Button className={cn("w-full", btnStyle)}>Save Changes</Button>
+        </div>
       </div>
     </Form>
   );

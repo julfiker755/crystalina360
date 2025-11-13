@@ -13,9 +13,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // experimental: {
-  //   turbopackFileSystemCacheForDev: true,
-  // },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production" ? true : false,
+  },
+  experimental: {
+    turbopackFileSystemCacheForDev: true,
+  },
 };
 
 export default nextConfig;

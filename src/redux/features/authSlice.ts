@@ -11,7 +11,7 @@ export const controlkey = {
 export type SignKey = keyof typeof controlkey;
 
 const initialState: AuthState = {
-  user: { name: "", email: "", role: "" },
+  user: { name: "", email: "", role: "admin" },
   otpInfo: { email: "", otp: "" },
   activeModal: "signIn",
   isOpen: false,

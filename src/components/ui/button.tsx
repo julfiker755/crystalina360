@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary font-bold text-primary-foreground",
+        default: "bg-primary font-bold text-[#FFFFFF]",
         primary: "bg-figma-primary text-white font-bold",
         destructive: "bg-[#FF4E4E] font-bold text-white!",
         outline:

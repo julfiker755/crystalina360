@@ -25,7 +25,7 @@ export const adminLinks = [
   },
   {
     label: "Events",
-    icon: "events",
+    icon: "events_a",
     act_io: "events_i",
     to: "/admin/events",
   },
@@ -77,28 +77,4 @@ export const adminLinks = [
     act_io: "settings_i",
     to: "/admin/settings",
   },
-  // {
-  //   label: "Settings",
-  //   icon: "settings",
-  //   submenu: [
-  //     {
-  //       to: "/admin/setting/change-password",
-  //       icon: "key",
-  //       label: "Change Password",
-  //     },
-  //     { to: "/admin/setting/about-us", icon: "about", label: "About us" },
-  //     {
-  //       to: "/admin/setting/terms",
-  //       icon: "terms",
-  //       label: "Terms & Conditions",
-  //     },
-  //     {
-  //       to: "/admin/setting/privacy",
-  //       icon: "privacy1",
-  //       label: "Privacy Policy",
-  //     },
-  //     { to: "/admin/setting/fqa", icon: "fqa", label: "FAQ" },
-  //     { to: "/admin/setting/contacts", icon: "contact", label: "Contacts" },
-  //   ],
-  // },
 ];

@@ -60,6 +60,7 @@
   --color-figma-danger: #ff4e4e;
   --color-figma-sidebar: #ededed;
   --color-figma-a_gray: #535353;
+  --color-figma-border:rgba(196, 172, 164, 0.2)
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
   @keyframes marquee {
@@ -88,7 +89,8 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.7629 0.0302 39.3146);
+  /* --primary: oklch(0.7629 0.0302 39.3146); */
+  --primary: #99796f;
   --primary-foreground: oklch(0.3092 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -149,6 +151,10 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+
+
+
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -156,9 +162,6 @@
   body {
     @apply bg-background text-foreground overflow-x-hidden;
   }
-}
-
-@layer base {
   h1 {
     @apply text-2xl lg:text-3xl  font-bold text-center text-figma-black;
   }
@@ -178,6 +181,8 @@
     color: #828282;
   }
 }
+
+
 
 @layer components {
   .flex-between {
@@ -221,11 +226,86 @@
   -moz-box-shadow: 0px 1px 2px 0px rgba(196, 172, 164, 0.75);
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
+/* ========= Quill Editor Styles ========= */
+.ql-toolbar {
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 1px solid #e5e5e5 !important;
+  background: #ffffff !important;
+}
+
+/* Make toolbar icons dark */
+.ql-toolbar .ql-stroke {
+  stroke: #202020 !important;
+}
+
+.ql-toolbar .ql-fill {
+  fill: #202020 !important;
+}
+
+.ql-toolbar button,
+.ql-toolbar .ql-picker {
+  color: #202020 !important;
+}
+
+.ql-container {
+  border: none !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  color: #202020 !important;
+  background: #ffffff !important;
+}
+
+.ql-editor {
+  padding: 10px !important;
+  min-height: 200px !important;
+  color: #202020 !important;
+  background: #ffffff !important;
+}
+
+.ql-editor.ql-blank::before {
+  color: #808080 !important;
+  font-style: normal !important;
+  left: 16px !important;
+}
+
+.ql-snow .ql-tooltip {
+  background: #f9f9f9 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+  color: #202020 !important;
+}
+
+.ql-snow .ql-picker-options {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+  color: #202020 !important;
+}
+
+/* Fix autofill styles for WebKit browsers */
+@layer utilities {
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--foreground);
+    transition: background-color 5000s ease-in-out 0s;
   }
-  body {
-    @apply bg-background text-foreground;
+
+  input:-moz-autofill,
+  textarea:-moz-autofill,
+  select:-moz-autofill {
+    -moz-text-fill-color: var(--foreground) !important;
+    transition: background-color 5000s ease-in-out 0s;
   }
 }

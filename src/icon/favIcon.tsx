@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import { favIcon } from "./list";
 import { favIcon2 } from "./oparator";
@@ -11,65 +12,60 @@ export type IconName = keyof typeof icons;
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   name: IconName;
   color?: string;
+  stroke?: string;
   hoverColor?: string;
   activeColor?: string;
-  groupHover?: boolean;
 }
 
 export default function FavIcon({
   name,
   className,
   color,
+  stroke,
   hoverColor,
   activeColor,
-  groupHover,
   ...rest
 }: IconProps) {
-  const [internalHover, setInternalHover] = useState(false);
-  const hovered = groupHover ?? internalHover;
+  const [isHovered, setIsHovered] = useState(false);
+  const iconTemplate = icons[name];
 
-  const icon = icons[name];
-  if (!icon) return null;
+  if (!React.isValidElement<SVGSVGElement>(iconTemplate)) return null;
 
-  const applyFill = (element: React.ReactElement): React.ReactElement => {
-    const props = element.props as {
-      className?: string;
-      fill?: string;
-      children?: React.ReactNode;
-      [key: string]: any;
-    };
+  const applyColors = (
+    el: React.ReactElement<React.SVGProps<SVGSVGElement>>
+  ): React.ReactElement<React.SVGProps<SVGSVGElement>> => {
+    const { fill, stroke: elStroke, children, ...props } = el.props;
 
-    const newProps: any = {
+    const resolvedFill =
+      isHovered && hoverColor
+        ? hoverColor
+        : activeColor
+        ? activeColor
+        : color || fill;
+
+    const resolvedStroke = stroke || elStroke;
+
+    return React.cloneElement(el, {
       ...props,
-      className: className
-        ? `${props.className ? props.className + " " : ""}${className}`.trim()
-        : props.className,
-      fill:
-        hovered && hoverColor
-          ? hoverColor
-          : activeColor
-          ? activeColor
-          : color || props.fill,
-    };
-
-    if (props.children) {
-      newProps.children = React.Children.map(props.children, (child) =>
-        React.isValidElement(child) ? applyFill(child) : child
-      );
-    }
-
-    return React.cloneElement(element, newProps);
+      fill: resolvedFill,
+      stroke: resolvedStroke,
+      children: React.Children.map(children, (child) =>
+        React.isValidElement(child)
+          ? applyColors(
+              child as React.ReactElement<React.SVGProps<SVGSVGElement>>
+            )
+          : child
+      ),
+    });
   };
 
-  const iconWithHover = React.cloneElement(
-    applyFill(icon) as React.ReactElement<React.DOMAttributes<any>>,
-    {
-      id: name,
-      onMouseEnter: () => !groupHover && setInternalHover(true),
-      onMouseLeave: () => !groupHover && setInternalHover(false),
-      ...rest,
-    }
-  );
+  const coloredIcon = applyColors(iconTemplate as any);
 
-  return iconWithHover;
+  return React.cloneElement(coloredIcon, {
+    id: name,
+    className,
+    onMouseEnter: () => setIsHovered(true),
+    onMouseLeave: () => setIsHovered(false),
+    ...rest,
+  });
 }
