@@ -14,7 +14,7 @@ interface SearchBoxProps {
 
 export default function SearchBox({
   onChange,
-  placeholder = "Search Hare",
+  placeholder = "Search hare",
   className,
   time = 1000,
 }: SearchBoxProps) {

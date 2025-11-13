@@ -17,3 +17,7 @@ export const RandomImg = (
 ): string => {
   return `https://picsum.photos/${width}/${height}`;
 };
+
+// return `https://picsum.photos/${width}/${height}?random=${Math.floor(
+//   Math.random() * 1000
+// )}`;

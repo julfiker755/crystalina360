@@ -11,7 +11,7 @@ interface DeleteBtnProps {
 export function DeleteBtn({ onClick, className }: DeleteBtnProps) {
   return (
     <Button className={cn("bg-[#EDEDED] size-10", className)} onClick={onClick}>
-      <FavIcon name="delete_a" />
+      <FavIcon className="size-4" name="delete_a" />
     </Button>
   );
 }
@@ -28,7 +28,7 @@ export function EditBtn({ onClick, className }: DeleteBtnProps) {
 export function PreviewBtn({ onClick, className }: DeleteBtnProps) {
   return (
     <Button className={cn("bg-[#EDEDED] size-10", className)} onClick={onClick}>
-      <FavIcon name="preview" />
+      <FavIcon className="size-5" name="preview" />
     </Button>
   );
 }
