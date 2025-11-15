@@ -180,7 +180,7 @@ export default function Profile() {
                     >
                       <div className="w-24 bg-[#5D37C5] flex items-center justify-center relative">
                         <div className="absolute -left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-figma-gray! rounded-full shadow-lg" />
-                        <span className="text-white font-bold text-xl  transform -rotate-90 whitespace-nowrap">
+                        <span className="text-white text-xl font-bold lg:text-2xl  transform -rotate-90 whitespace-nowrap">
                           Discount
                         </span>
                       </div>
@@ -188,20 +188,20 @@ export default function Profile() {
                       {/* Right White Section with Details */}
                       <div className="flex-1 p-4 flex flex-col justify-between">
                         <div>
-                          <h4 className="text-gray-500 text-base lg:text-xl font-semibold">
+                          <h4 className="text-gray-500 text-base lg:text-lg font-semibold">
                             {item.offer}
                           </h4>
-                          <h2 className="text-xl lg:text-3xl font-bold text-figma-black">
+                          <h2 className="text-xl lg:text-[28px] font-bold text-figma-black">
                             {item.code}
                           </h2>
-                          <h4 className="md:text-lg text-article mt-1">
+                          <h4 className="text-article mt-1">
                             Expiry: {item.expiry}
                           </h4>
                         </div>
 
                         <Button
                           onClick={() => handleCopy(item.code)}
-                          className={`w-fit text-lg font-normal mt-5 md:h-12 px-5 lg:px-10 rounded-full bg-transparent border `}
+                          className={`w-fit text-lg text-black font-normal mt-5 md:h-12 px-5 lg:px-10 rounded-full bg-transparent border `}
                         >
                           {copied === item.code ? "Copied!" : "Copy code"}
                         </Button>
@@ -211,22 +211,6 @@ export default function Profile() {
                 </div>
               </TabsContent>
             </TabBox>
-            {/* <Tabs defaultValue="terms" className="w-full">
-              <TabsList className="flex justify-between  w-full flex-wrap bg-transparent p-0 h-auto rounded-none">
-                {tabItem?.map((tab) => (
-                  <TabsTrigger
-                    key={tab.id}
-                    value={tab.value}
-                    className="text-article cursor-pointer border-b border-transparent data-[state=active]:border-primary!  data-[state=active]:border-b! data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-primary"
-                  >
-                    {tab.title}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-
-     
-              
-            </Tabs> */}
           </div>
         </div>
       </div>

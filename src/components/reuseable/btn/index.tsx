@@ -10,7 +10,10 @@ interface DeleteBtnProps {
 //  =========  DeleteBtn ========
 export function DeleteBtn({ onClick, className }: DeleteBtnProps) {
   return (
-    <Button className={cn("bg-[#EDEDED] size-10", className)} onClick={onClick}>
+    <Button
+      className={cn("bg-figma-delete size-10", className)}
+      onClick={onClick}
+    >
       <FavIcon className="size-4" name="delete_a" />
     </Button>
   );
@@ -19,7 +22,10 @@ export function DeleteBtn({ onClick, className }: DeleteBtnProps) {
 // =======  EditBtn =======
 export function EditBtn({ onClick, className }: DeleteBtnProps) {
   return (
-    <Button className={cn("bg-[#EDEDED] size-10", className)} onClick={onClick}>
+    <Button
+      className={cn("bg-figma-delete size-10", className)}
+      onClick={onClick}
+    >
       <FavIcon name="pencil00" />
     </Button>
   );
@@ -27,7 +33,10 @@ export function EditBtn({ onClick, className }: DeleteBtnProps) {
 // =======  previewbtn =======
 export function PreviewBtn({ onClick, className }: DeleteBtnProps) {
   return (
-    <Button className={cn("bg-[#EDEDED] size-10", className)} onClick={onClick}>
+    <Button
+      className={cn("bg-figma-delete size-10", className)}
+      onClick={onClick}
+    >
       <FavIcon className="size-5" name="preview" />
     </Button>
   );

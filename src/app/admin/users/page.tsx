@@ -1,4 +1,5 @@
 "use client";
+import useConfirmation from "@/provider/confirmation";
 import Avatars from "@/components/reuseable/avater";
 import { DeleteBtn, PreviewBtn } from "@/components/reuseable/btn";
 import { CustomTable } from "@/components/reuseable/custom-table";
@@ -12,8 +13,6 @@ import { TableCell, TableRow } from "@/components/ui";
 import { dummyJson } from "@/components/view/user/dummy-json";
 import { useGlobalState } from "@/hooks";
 import FavIcon from "@/icon/favIcon";
-import { RandomImg } from "@/lib";
-import useConfirmation from "@/provider/confirmation";
 
 const intState = {
   page: 1,
@@ -121,10 +120,12 @@ export default function Users() {
       <CustomTable
         headers={headers}
         pagination={
-          <ul>
-            <li className="flex ">
-              Total:{" "}
-              <h5 className="font-medium text-xl relative mb-3 px-2 ">500</h5>{" "}
+          <ul className="flex items-center flex-wrap justify-between py-3">
+            <li className="flex">
+              Total:
+              <sup className="font-medium text-2xl relative -top-3 px-2 ">
+                500
+              </sup>
               users
             </li>
             <li>

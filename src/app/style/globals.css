@@ -60,6 +60,7 @@
   --color-figma-danger: #ff4e4e;
   --color-figma-sidebar: #ededed;
   --color-figma-a_gray: #535353;
+  --color-figma-delete:#EDEDED;
   --color-figma-border:rgba(196, 172, 164, 0.2)
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;

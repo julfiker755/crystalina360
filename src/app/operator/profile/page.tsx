@@ -47,7 +47,7 @@ export default function Profile() {
   return (
     <div className="container py-10">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        <div className="bg-[#EDEDED] p-6 rounded-md space-y-6 *:text-figma-black">
+        <div className="bg-figma-delete p-6 rounded-md space-y-6 *:text-figma-black">
           <div>
             <ImgBox
               src={RandomImg()}
