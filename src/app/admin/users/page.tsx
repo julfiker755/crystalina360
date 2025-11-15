@@ -231,7 +231,7 @@ export default function Users() {
 
 function EventCardSm({ icon, title, value }: any) {
   return (
-    <div className="flex items-center bg-[#EDEDED] p-3 rounded-xl gap-2 text-muted-foreground">
+    <div className="flex items-center bg-figma-delete p-3 rounded-xl gap-2 text-muted-foreground">
       <span className="bg-white size-12 rounded-full grid place-items-center">
         {" "}
         <FavIcon name={icon} />

@@ -3,7 +3,7 @@ import { cn } from "@/lib";
 import { ArrowLeft, ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export function BackBtn({ className }: any) {
+export function BackBtn({ className, iconStyle }: any) {
   const router = useRouter();
   return (
     <div
@@ -13,7 +13,7 @@ export function BackBtn({ className }: any) {
         className
       )}
     >
-      <ArrowLeft />
+      <ArrowLeft className={iconStyle} />
     </div>
   );
 }

@@ -348,3 +348,54 @@ export const eventsData = [
     badge: "Repost",
   },
 ];
+
+export const blogItem = [
+  {
+    id: 1,
+    date: "March 8, 2025",
+    title: "Blog title goes here",
+    description:
+      "This event organize for the music lover peoples. Every members...",
+    link: "Read Blog",
+  },
+  {
+    id: 2,
+    date: "April 15, 2025",
+    title: "Exploring New Genres",
+    description:
+      "Join us for a deep dive into the latest music genres emerging this year. It's a celebrati...",
+    link: "Read Blog",
+  },
+  {
+    id: 3,
+    date: "May 22, 2025",
+    title: "Live Concert Experience",
+    description:
+      "Experience the thrill of live music at our annual concert featuring top artists and lo...",
+    link: "Read Blog",
+  },
+  {
+    id: 4,
+    date: "June 30, 2025",
+    title: "Music & Wellness Retreat",
+    description:
+      "Reconnect with your inner self through a unique blend of music therapy and relaxat...",
+    link: "Read Blog",
+  },
+  {
+    id: 5,
+    date: "August 10, 2025",
+    title: "Music Production Workshop",
+    description:
+      "Unleash your creativity in our hands-on workshop that covers everything fro...",
+    link: "Read Blog",
+  },
+  {
+    id: 6,
+    date: "September 5, 2025",
+    title: "Festival of Sounds",
+    description:
+      "Celebrate a weekend of diverse sounds and cultures with performances from artis...",
+    link: "Read Blog",
+  },
+];
