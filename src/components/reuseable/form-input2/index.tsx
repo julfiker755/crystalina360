@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import { CircleAlert, Eye, EyeOff } from "lucide-react";
 import {
   Controller,
@@ -22,6 +22,7 @@ interface formInputProps {
   matching?: boolean;
   icon?: any;
   [key: string]: any;
+  children?: React.ReactNode;
 }
 
 export function FromInput2({
@@ -33,6 +34,7 @@ export function FromInput2({
   stylelabel,
   className,
   icon,
+  children,
   ...rest
 }: formInputProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
@@ -73,6 +75,8 @@ export function FromInput2({
                 {icon}
               </div>
             )}
+
+            {children && children}
 
             <Label
               htmlFor={inputId}

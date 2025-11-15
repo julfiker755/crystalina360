@@ -1,4 +1,5 @@
 "use client";
+import { ADeletebtn, AEditbtn } from "@/components/view/admin/reuse/btn";
 import { FromInput2 } from "@/components/reuseable/form-input2";
 import { FromSelect2 } from "@/components/reuseable/from-select2";
 import ModalHeading from "@/components/reuseable/modal-heading";
@@ -14,9 +15,9 @@ import SearchBox from "@/components/reuseable/search-box";
 import Form from "@/components/reuseable/from";
 import { Button } from "@/components/ui";
 import { useModalState } from "@/hooks";
-import { Plus } from "lucide-react";
-import FavIcon from "@/icon/favIcon";
+import { CircleAlert, Plus } from "lucide-react";
 import { helpers } from "@/lib";
+import { coupons_st } from "@/schema";
 
 const initState = {
   isStore: false,
@@ -61,20 +62,9 @@ export default function Coupons() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2  xl:grid-cols-3">
           {couponsItem.map((item, idx) => (
             <CouponCad key={idx} {...item}>
-              <div className="flex space-x-3 [&_div]:cursor-pointer justify-end mt-3">
-                <div
-                  onClick={() => setState("isUpdate", true)}
-                  className="rounded-full size-10 grid place-items-center border"
-                >
-                  <FavIcon color="#303030" name="pencil00" />
-                </div>
-                <div
-                  onClick={() => handleDelete("1234")}
-                  className="rounded-full size-10 grid place-items-center bg-figma-danger"
-                >
-                  {" "}
-                  <FavIcon color="#ffff" className="size-4" name="delete_a" />
-                </div>
+              <div className="flex space-x-3  justify-end mt-3">
+                <AEditbtn onClick={() => setState("isUpdate", true)} />
+                <ADeletebtn onClick={() => handleDelete("1234")} />
               </div>
             </CouponCad>
           ))}
@@ -103,11 +93,12 @@ export default function Coupons() {
 //  ===================== CouponStore ==================
 const CouponStore = ({ setState }: any) => {
   const from = useForm({
-    // resolver: zodResolver(sign_In),
+    resolver: zodResolver(coupons_st),
     defaultValues: {
       coupon_code: "",
       coupon_type: "flat",
       price: "",
+      date: "",
     },
   });
 
@@ -135,23 +126,35 @@ const CouponStore = ({ setState }: any) => {
             },
           ]}
         />
-        <div className="relative">
-          <FromInput2
-            className="h-10 rounded-xl"
-            name="price"
-            placeholder="Enter your hare"
-          />
+        <FromInput2
+          className="h-10 rounded-xl"
+          name="price"
+          placeholder="Enter your hare"
+        >
           <span className="text-figma-a_gray text-sm absolute top-1/2 -translate-y-1/2 right-4">
             {`/${helpers.capitalize(from.watch("coupon_type"))}`}
           </span>
-        </div>
+        </FromInput2>
         <FromInput2
           className="h-10 rounded-xl"
           name="coupon_code"
           label="Coupon Code"
           placeholder="Enter your Coupon code"
         />
-        <SingleCalendar className="h-10 rounded-xl px-3! text-black!" />
+        <div>
+          <SingleCalendar
+            onChange={(v: any) => {
+              from.setValue("date", v?.toString());
+            }}
+            className="h-10 rounded-xl px-3! text-black!"
+          />
+          {from?.formState?.errors?.date && (
+            <p className="text-reds justify-end flex items-center text-red-400 gap-1 text-sm">
+              {from?.formState?.errors?.date?.message as string}
+              <CircleAlert size={14} />
+            </p>
+          )}
+        </div>
         <Button size="lg" className="w-full rounded-xl">
           Create
         </Button>

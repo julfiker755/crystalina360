@@ -65,3 +65,24 @@ export const change_Pass = z
     path: ["c_password"],
     message: "Passwords must be match.",
   });
+
+// === add-ons ===
+export const add_on = z.object({
+  title: z.string().nonempty("title is required"),
+  price: z.string().nonempty("price is required"),
+  bio: z.string().nonempty("bio is required"),
+  benefits: z.array(z.string()).nonempty("benefits is required"),
+  primary_color: z.string().optional(),
+  secondery_color: z.string().optional(),
+});
+// coupon_code: "",
+//       coupon_type: "flat",
+//       price: "",
+// === coupons code ===
+export const coupons_st = z.object({
+  coupon_code: z.string().nonempty("Coupon is required"),
+  price: z.string().nonempty("Price is required"),
+  coupon_type: z.string().nonempty("Coupon Type is required"),
+  benefits: z.array(z.string()).nonempty("benefits is required"),
+  date: z.string().nonempty("Date is required"),
+});

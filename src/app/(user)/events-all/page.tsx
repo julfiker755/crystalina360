@@ -21,7 +21,7 @@ export default function ExploreAll() {
           <SubTitle text="Explore OLISTAMI Events" />
         </li>
         <li className="flex items-center mt-3 md:mt-0 space-x-3">
-          <SearchBox />
+          <SearchBox onChange={() => console.log("fldjf")} />
           <h1
             onClick={() => setIsSort(!isSort)}
             className="bg-figma-input icon"
