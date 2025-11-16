@@ -1,7 +1,7 @@
 import FavIcon from "@/icon/favIcon";
 import { cn } from "@/lib";
 
-export function AEditbtn({ onClick, className }: any) {
+export function AEditbtn({ onClick, className, color = "#303030" }: any) {
   return (
     <div
       onClick={onClick}
@@ -10,7 +10,7 @@ export function AEditbtn({ onClick, className }: any) {
         className
       )}
     >
-      <FavIcon color="#303030" name="pencil00" />
+      <FavIcon color={color} name="pencil00" />
     </div>
   );
 }

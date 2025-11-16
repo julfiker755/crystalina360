@@ -69,6 +69,9 @@ export class helpers {
   static randomString(): string {
     return crypto.randomUUID();
   }
+  static randomNumber(): any {
+    return Math.floor(Math.random() * 666666);
+  }
   static slugify(value: string): string {
     const str = value?.toString()?.trim()?.toLowerCase();
     return str?.includes(" ") ? str?.replace(/\s+/g, "-") : str;

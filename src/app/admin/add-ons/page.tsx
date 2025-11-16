@@ -110,7 +110,7 @@ const AddonStore = ({ setState }: any) => {
   return (
     <div>
       <ModalHeading
-        title="Add New Add-on"
+        title="Upload Podcast"
         onClose={() => setState("isStore", false)}
       />
       <Form className="space-y-5 pt-5" from={from} onSubmit={handleSubmit}>

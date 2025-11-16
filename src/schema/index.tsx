@@ -75,14 +75,20 @@ export const add_on = z.object({
   primary_color: z.string().optional(),
   secondery_color: z.string().optional(),
 });
-// coupon_code: "",
-//       coupon_type: "flat",
-//       price: "",
-// === coupons code ===
+
+// === coupons===
 export const coupons_st = z.object({
   coupon_code: z.string().nonempty("Coupon is required"),
   price: z.string().nonempty("Price is required"),
   coupon_type: z.string().nonempty("Coupon Type is required"),
   benefits: z.array(z.string()).nonempty("benefits is required"),
   date: z.string().nonempty("Date is required"),
+});
+// === coupons code ===
+export const blog_st = z.object({
+  title: z.string().nonempty("Title is required"),
+  description: z.string().nonempty("Description is required"),
+  image: z.any().refine((file) => file instanceof File, {
+    message: "Image is required",
+  }),
 });

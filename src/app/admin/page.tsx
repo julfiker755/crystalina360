@@ -6,8 +6,6 @@ import {
   RecentCard,
   StatsCard,
 } from "@/components/view/admin/simple/stats-card";
-import FavIcon from "@/icon/favIcon";
-import { ArrowUpRight } from "lucide-react";
 
 const totalStash = [
   {
