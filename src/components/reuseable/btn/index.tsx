@@ -41,3 +41,16 @@ export function PreviewBtn({ onClick, className }: DeleteBtnProps) {
     </Button>
   );
 }
+
+export function UploadBtn({ className }: any) {
+  return (
+    <div
+      className={cn(
+        "size-10 grid place-items-center absolute rounded-md bg-white/20 backdrop-blur-[20px] right-4 top-4",
+        className
+      )}
+    >
+      <FavIcon name="upload22" />
+    </div>
+  );
+}

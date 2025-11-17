@@ -92,3 +92,14 @@ export const blog_st = z.object({
     message: "Image is required",
   }),
 });
+
+// === coupons code ===
+export const banner_st = z.object({
+  client_name: z.string().nonempty("Client Name is required"),
+  client_email: z.string().nonempty("Client Email is required"),
+  promotion_link: z.string().nonempty("Promotion Link is required"),
+  date: z.string().nonempty("Date is required"),
+  banner: z.any().refine((file) => file instanceof File, {
+    message: "Banner is required",
+  }),
+});

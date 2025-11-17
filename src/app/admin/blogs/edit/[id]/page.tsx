@@ -55,9 +55,9 @@ export default function BlogStore() {
         </ul>
         <div>
           <div className="space-y-10">
-            <div>
+            <div className="w-1/2">
               <ImgUpload
-                className="lg:w-1/2"
+                className="lg:w-full"
                 onFileSelect={(file: File) => {
                   setIsImg({
                     ...img,
@@ -67,7 +67,7 @@ export default function BlogStore() {
                 }}
               >
                 <div
-                  className="border border-dashed  rounded-md 
+                  className="border border-dashed p-2  rounded-md 
                   h-[260px] flex flex-col items-center justify-center 
                   transition"
                 >
@@ -97,12 +97,13 @@ export default function BlogStore() {
                   )}
                 </div>
               </ImgUpload>
-              {from?.formState?.errors?.image && (
-                <p className="text-reds flex mt-2 text-red-400 justify-end  items-center gap-1 text-sm">
-                  {from?.formState?.errors?.image?.message as string}
-                  <CircleAlert size={14} />
-                </p>
-              )}
+              {from.watch("image") === null &&
+                from?.formState?.errors?.image && (
+                  <p className="text-reds flex mt-2 text-red-400 justify-end  items-center gap-1 text-sm">
+                    {from?.formState?.errors?.image?.message as string}
+                    <CircleAlert size={14} />
+                  </p>
+                )}
             </div>
 
             <FromInput2

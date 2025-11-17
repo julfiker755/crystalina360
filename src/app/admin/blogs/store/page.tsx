@@ -1,5 +1,6 @@
 "use client";
 import { BackBtn } from "@/components/reuseable/back-btn";
+import { UploadBtn } from "@/components/reuseable/btn";
 import { FromInput2 } from "@/components/reuseable/form-input2";
 import Form from "@/components/reuseable/from";
 import { ImgBox } from "@/components/reuseable/Img-box";
@@ -54,9 +55,9 @@ export default function BlogStore() {
         </ul>
         <div>
           <div className="space-y-10">
-            <div>
+            <div className="lg:w-1/2">
               <ImgUpload
-                className="lg:w-1/2"
+                className="lg:w-full"
                 onFileSelect={(file: File) => {
                   setIsImg({
                     ...img,
@@ -66,7 +67,7 @@ export default function BlogStore() {
                 }}
               >
                 <div
-                  className="border border-dashed  rounded-md 
+                  className="border border-dashed p-2 rounded-md 
                   h-[260px] flex flex-col items-center justify-center 
                   transition"
                 >
@@ -76,9 +77,7 @@ export default function BlogStore() {
                       alt="img"
                       className="w-full h-full object-cover rounded-md"
                     >
-                      <div className="size-10 grid place-items-center absolute rounded-md bg-white/20 backdrop-blur-[20px] right-4 top-4">
-                        <FavIcon name="upload22" />
-                      </div>
+                      <UploadBtn />
                     </ImgBox>
                   ) : (
                     <div className="text-center">
@@ -96,12 +95,13 @@ export default function BlogStore() {
                   )}
                 </div>
               </ImgUpload>
-              {from?.formState?.errors?.image && (
-                <p className="text-reds flex mt-2 text-red-400 justify-end  items-center gap-1 text-sm">
-                  {from?.formState?.errors?.image?.message as string}
-                  <CircleAlert size={14} />
-                </p>
-              )}
+              {from.watch("image") === null &&
+                from?.formState?.errors?.image && (
+                  <p className="text-reds flex mt-2 text-red-400 justify-end  items-center gap-1 text-sm">
+                    {from?.formState?.errors?.image?.message as string}
+                    <CircleAlert size={14} />
+                  </p>
+                )}
             </div>
 
             <FromInput2
