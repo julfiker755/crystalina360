@@ -66,7 +66,7 @@ export default function EvnetSingle() {
                 icon="price22"
                 name="Total earned from this event"
                 text="$2,295"
-                className="bg-[#EDEDED] px-2 py-2 rounded-md"
+                className="g-figma-delete px-2 py-2 rounded-md"
               />
             </div>
           </div>

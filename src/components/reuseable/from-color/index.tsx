@@ -5,14 +5,21 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui";
-import ColorPicker from "react-best-gradient-color-picker";
 import { useRef, useState, useEffect } from "react";
-import tinycolor from "tinycolor2";
+import {
+  ColorPicker,
+  ColorPickerAlpha,
+  ColorPickerEyeDropper,
+  ColorPickerFormat,
+  ColorPickerHue,
+  ColorPickerOutput,
+  ColorPickerSelection,
+} from "@/components/ui";
 
-export default function FromColorPicker() {
+export default function FromColorPicker({ label, defaultColor = "" }: any) {
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const [color, setColor] = useState("");
   const [width, setWidth] = useState<number>(0);
+  const [color, setColor] = useState<string>(defaultColor);
 
   // Dynamically get button width
   useEffect(() => {
@@ -31,34 +38,39 @@ export default function FromColorPicker() {
   }, []);
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button ref={buttonRef} variant="outline" className="w-full">
-          {/* Open popover */}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="overflow-hidden" style={{ width }}>
-        <ColorPicker
-          hideInputs
-          hideControls
-          hideColorTypeBtns
-          hidePresets
-          hideAdvancedSliders
-          hideColorGuide
-          hideInputType
-          hideGradientType
-          hideGradientAngle
-          hideGradientStop
-          hideGradientControls
-          width={width}
-          height={200}
-          value={color}
-          onChange={(color) => {
-            const hexValue = tinycolor(color).toHexString();
-            setColor(hexValue);
-          }}
-        />
-      </PopoverContent>
-    </Popover>
+    <div>
+      <h5 className="text-blacks text-base font-medium ml-2">{label}</h5>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            ref={buttonRef}
+            variant="outline"
+            style={{
+              backgroundColor: color,
+            }}
+            className="w-full rounded-md border"
+          ></Button>
+        </PopoverTrigger>
+        <PopoverContent className="overflow-hidden" style={{ width }}>
+          <ColorPicker
+            onChange={(color) => setColor(color as any)}
+            className="h-[300px] w-full"
+            defaultValue="#6366F1"
+          >
+            <ColorPickerSelection />
+            <div className="flex items-center gap-4">
+              <ColorPickerEyeDropper />
+              <div className="grid w-full gap-1">
+                <ColorPickerHue />
+                <ColorPickerAlpha />
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <ColorPickerFormat />
+            </div>
+          </ColorPicker>
+        </PopoverContent>
+      </Popover>
+    </div>
   );
 }

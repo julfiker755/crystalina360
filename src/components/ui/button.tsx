@@ -12,6 +12,8 @@ const buttonVariants = cva(
         default: "bg-primary font-bold text-[#FFFFFF]",
         primary: "bg-figma-primary text-white font-bold",
         destructive: "bg-[#FF4E4E] font-bold text-white!",
+        ongoing: "bg-[#F0FFF1]  font-medium  text-[#009F05]",
+        upcoming: "bg-[#FFF4F0] font-medium text-[#99796F]",
         outline:
           "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
         secondary:

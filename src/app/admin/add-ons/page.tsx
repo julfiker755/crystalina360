@@ -62,7 +62,7 @@ export default function Addons() {
         {addOns.map((item, idx) => (
           <AddOnCd key={idx} {...item}>
             <div className="flex space-x-3  justify-end mt-3">
-              <AEditbtn onClick={() => {}} />
+              <AEditbtn onClick={() => setState("isUpdate", true)} />
               <ADeletebtn onClick={() => handleDelete("123")} />
             </div>
           </AddOnCd>
@@ -74,22 +74,22 @@ export default function Addons() {
         setIsOpen={(v) => setState("isStore", v)}
         className="sm:max-w-xl"
       >
-        <AddonStore setState={setState} />
+        <AddonStoreForm setState={setState} />
       </Modal2>
-      {/* ====================== isEdit ================== */}
-      {/* <Modal2
+      {/* ====================== Addon Edit Form ================== */}
+      <Modal2
         open={state.isUpdate}
         setIsOpen={(v) => setState("isUpdate", v)}
         className="sm:max-w-xl"
       >
-        <CouponUpdate setState={setState} />
-      </Modal2> */}
+        <AddonEditForm setState={setState} />
+      </Modal2>
     </div>
   );
 }
 
-//  ===================== CouponStore ==================
-const AddonStore = ({ setState }: any) => {
+//  ===================== AddonStoreForm ==================
+const AddonStoreForm = ({ setState }: any) => {
   const [isItem, setIsItem] = useState<any>([]);
   const from = useForm({
     resolver: zodResolver(add_on),
@@ -110,7 +110,7 @@ const AddonStore = ({ setState }: any) => {
   return (
     <div>
       <ModalHeading
-        title="Upload Podcast"
+        title="Add new add-on"
         onClose={() => setState("isStore", false)}
       />
       <Form className="space-y-5 pt-5" from={from} onSubmit={handleSubmit}>
@@ -129,7 +129,7 @@ const AddonStore = ({ setState }: any) => {
         <FromTextarea2
           name="bio"
           label="Bio"
-          placeholder="Enter your price"
+          placeholder="Enter your bio"
           className="rounded-xl sm:min-h-30"
         />
         <div>
@@ -143,16 +143,94 @@ const AddonStore = ({ setState }: any) => {
               from.setValue("benefits", isItem);
             }}
           />
-          {from?.formState?.errors?.benefits && (
-            <p className="text-reds justify-end flex items-center text-red-400 gap-1 text-sm">
-              {from?.formState?.errors?.benefits?.message as string}
-              <CircleAlert size={14} />
-            </p>
-          )}
+          {from.watch("benefits")?.length == 0 &&
+            from?.formState?.errors?.benefits && (
+              <p className="text-reds justify-end flex items-center text-red-400 gap-1 text-sm">
+                {from?.formState?.errors?.benefits?.message as string}
+                <CircleAlert size={14} />
+              </p>
+            )}
         </div>
-        <FromColorPicker />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-10">
+          <FromColorPicker defaultColor="#6366F1" label="Primary Color" />
+          <FromColorPicker defaultColor="#C6C3F6" label="Secondery Color" />
+        </div>
         <Button size="lg" className="w-full rounded-xl">
           Create
+        </Button>
+      </Form>
+    </div>
+  );
+};
+//  ===================== Edit add on details ==================
+const AddonEditForm = ({ setState }: any) => {
+  const [isItem, setIsItem] = useState<any>([]);
+  const from = useForm({
+    resolver: zodResolver(add_on),
+    defaultValues: {
+      title: "",
+      price: "",
+      bio: "",
+      benefits: [],
+      primary_color: "",
+      secondery_color: "",
+    },
+  });
+
+  const handleSubmit = async (values: FieldValues) => {
+    console.log(values);
+  };
+
+  return (
+    <div>
+      <ModalHeading
+        title="Edit Add-on Details"
+        onClose={() => setState("isUpdate", false)}
+      />
+      <Form className="space-y-5 pt-5" from={from} onSubmit={handleSubmit}>
+        <FromInput2
+          label="Add-on title"
+          name="title"
+          placeholder="Enter your  title"
+          className="h-10 rounded-xl"
+        />
+        <FromInput2
+          name="price"
+          label="Price"
+          placeholder="Enter your price"
+          className="h-10 rounded-xl"
+        />
+        <FromTextarea2
+          name="bio"
+          label="Bio"
+          placeholder="Enter your bio"
+          className="rounded-xl sm:min-h-30"
+        />
+        <div>
+          <FromDropdown
+            options={isItem}
+            className="border-b  pb-2 px-1"
+            label="Key benefits"
+            onChange={(values) => {
+              setIsItem(values);
+              console.log(values);
+              from.setValue("benefits", isItem);
+            }}
+          />
+          {from.watch("benefits")?.length == 0 &&
+            from?.formState?.errors?.benefits && (
+              <p className="text-reds justify-end flex items-center text-red-400 gap-1 text-sm">
+                {from?.formState?.errors?.benefits?.message as string}
+                <CircleAlert size={14} />
+              </p>
+            )}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-10">
+          <FromColorPicker defaultColor="#6366F1" label="Primary Color" />
+          <FromColorPicker defaultColor="#C6C3F6" label="Secondery Color" />
+        </div>
+        <Button size="lg" className="w-full rounded-xl">
+          Save changes
         </Button>
       </Form>
     </div>

@@ -227,6 +227,13 @@
   -moz-box-shadow: 0px 1px 2px 0px rgba(196, 172, 164, 0.75);
 }
 
+
+/* .aStyle {
+  background-color:#99796f8f;
+  color: #303030;
+} */
+
+
 /* ========= Quill Editor Styles ========= */
 .ql-toolbar {
   border-top: none !important;
