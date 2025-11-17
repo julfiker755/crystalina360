@@ -103,3 +103,10 @@ export const banner_st = z.object({
     message: "Banner is required",
   }),
 });
+
+// === addPlan ===
+export const add_plan = z.object({
+  title: z.string().nonempty("title is required"),
+  price: z.string().nonempty("price is required"),
+  services: z.array(z.string()).nonempty("benefits is required"),
+});

@@ -18,7 +18,7 @@ export const adminLinks = [
     to: "/admin/operators",
   },
   {
-    label: "pricing",
+    label: "Pricing",
     icon: "pricing",
     act_io: "pricing_i",
     to: "/admin/pricing",

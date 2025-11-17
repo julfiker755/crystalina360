@@ -21,16 +21,18 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
     icon: any;
     act_io: any;
   }[];
+  defaultPath: string;
 }
 
 export default function SidebarNav({
   className,
   items,
+  defaultPath,
   ...props
 }: SidebarNavProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const [val, setVal] = useState(pathname ?? "/admin/settings");
+  const [val, setVal] = useState(pathname ?? defaultPath);
 
   const handleSelect = (e: string) => {
     setVal(e);
@@ -38,7 +40,7 @@ export default function SidebarNav({
   };
 
   const isActive = (href: string) => {
-    if (href === "/admin/settings") {
+    if (href === defaultPath) {
       return pathname === href;
     }
     return pathname.startsWith(href);
@@ -47,15 +49,15 @@ export default function SidebarNav({
   return (
     <>
       {/* Mobile Select Menu */}
-      <div className="p-1 lg:hidden">
+      <div className="p-1  lg:hidden">
         <Select value={val} onValueChange={handleSelect}>
-          <SelectTrigger className="h-12 w-full rounded-md">
+          <SelectTrigger className="h-12 py-5!  w-full rounded-md">
             <SelectValue placeholder="Select page" />
           </SelectTrigger>
           <SelectContent>
             {items.map((item) => (
               <SelectItem key={item.to} value={item.to}>
-                <div className="flex items-center gap-x-4 px-2 py-2">
+                <div className="flex items-center gap-x-4 px-2 py-0!">
                   <FavIcon
                     className="size-7"
                     name={isActive(item.to) ? item.act_io : item.icon}
@@ -84,8 +86,8 @@ export default function SidebarNav({
             <Link
               key={item.to}
               href={item.to}
-              className={`flex items-center space-x-1 hover:bg-[#EDEDED] py-1.5 px-2 rounded-full ${
-                isActive(item.to) && "bg-[#EDEDED] font-medium"
+              className={`flex items-center space-x-1 py-2 hover:bg-figma-deletepy-1.5 px-2 rounded-full ${
+                isActive(item.to) && "bg-figma-delete font-medium"
               }`}
             >
               <FavIcon

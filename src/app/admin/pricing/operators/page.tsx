@@ -19,30 +19,18 @@ const plansItems = [
   {
     planId: "basic",
     planName: "Basic Plan",
-    monthlyPrice: 564,
+    monthlyPrice: 5643,
     billingCycle: "/monthly",
     includedFeatures: [
       "Up to 5 PC bookings per day.",
-      "Listing in the Nexus app",
+      "Listing in the Nexus app.",
       "Email support.",
     ],
   },
   {
-    planId: "standard",
-    planName: "Standard Plan",
-    monthlyPrice: 664,
-    billingCycle: "/monthly",
-    includedFeatures: [
-      "Up to 50 PC bookings per day.",
-      "Listing in the Nexus app",
-      "Higher placement in search",
-      "Email support.",
-    ],
-  },
-  {
-    planId: "premium",
-    planName: "Premium Plan",
-    monthlyPrice: 1563,
+    planId: "pro",
+    planName: "Pro Plan",
+    monthlyPrice: 5643,
     billingCycle: "/monthly",
     includedFeatures: [
       "Unlimited bookings.",
@@ -141,7 +129,7 @@ function PlanStoreForm({ setState }: { setState: any }) {
   return (
     <div>
       <ModalHeading
-        title="Add plan for users"
+        title="Add plan for operators"
         onClose={() => setState("isStore", false)}
       />
       <Form className="space-y-5 pt-5" from={from} onSubmit={handleSubmit}>
@@ -202,7 +190,7 @@ function PlanUpdateForm({ setState }: { setState: any }) {
   return (
     <div>
       <ModalHeading
-        title="Edit basic plan"
+        title="Edit plan for operators"
         onClose={() => setState("isUpdate", false)}
       />
       <Form className="space-y-5 pt-5" from={from} onSubmit={handleSubmit}>

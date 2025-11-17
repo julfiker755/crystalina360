@@ -9,13 +9,12 @@ export default function SettingsLayout({ children }: childrenProps) {
         title="Settings"
         subTitle="Manage privacy policy, FAQ, admin profile etc. from this section"
       />
-      <div className="flex flex-1 flex-col space-y-2 md:space-x-5 overflow-hidden md:space-y-2 lg:flex-row">
-        <aside className="top-0 lg:sticky">
-          <SidebarNav items={sidebarNavItems} />
-        </aside>
-        <div className="flex flex-1 flex-col h-full rounded-xl overflow-y-hidden border p-4">
-          {children}
+      <div className="flex flex-1 flex-col lg:flex-row gap-4 space-x-10">
+        <div className="block w-full lg:w-[280px] lg:shrink-0 lg:sticky top-24 h-fit">
+          <SidebarNav items={sidebarNavItems} defaultPath="/admin/settings" />
         </div>
+
+        <div className="flex-1 border rounded-xl p-4">{children}</div>
       </div>
     </div>
   );
