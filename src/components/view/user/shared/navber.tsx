@@ -174,6 +174,7 @@ export default function Navber({ className }: any) {
   );
 }
 
+//  ======= SignInButton ===========
 function SignInButton() {
   const dispatch = useAppDispatch();
   const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
@@ -204,7 +205,7 @@ function SignInButton() {
         <>
           <Button
             onClick={() => dispatch(toggleIsOpen())}
-            className="rounded-full bg-primary/30 hidden md:block"
+            className="rounded-full text-figma-black bg-primary/30 hidden md:block"
           >
             Sign in as User
           </Button>

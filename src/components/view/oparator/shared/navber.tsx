@@ -210,7 +210,7 @@ function SignInButton() {
             size="lg"
             className="hidden md:block bg-primary"
           >
-            Sign up as operator
+            Sign in as operator
           </Button>
           <Button
             onClick={() => dispatch(toggleIsOpen())}
@@ -225,7 +225,7 @@ function SignInButton() {
             mainStyle="!p-0"
             className="sm:max-w-xl"
           >
-            <AuthModalController title="Sign up as a User" />
+            <AuthModalController title="Sign up as a operator" />
           </Modal2>
         </>
       )}

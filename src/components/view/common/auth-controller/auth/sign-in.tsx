@@ -12,7 +12,8 @@ import {
 } from "@/redux/features/authSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { sign_In } from "@/schema";
-import { roleKey } from "@/lib";
+import { roleKey, routeName } from "@/lib";
+import { FromInput2 } from "@/components/reuseable/form-input2";
 
 export default function SignIn() {
   const dispatch = useDispatch();
@@ -48,22 +49,47 @@ export default function SignIn() {
   return (
     <div>
       <Form className="space-y-4" from={from} onSubmit={handleSubmit}>
-        <FromInput
-          className="h-10"
-          name="email"
-          label="Email"
-          placeholder="Enter your email"
-          icon={<FavIcon name="mail" className="size-4" color="#777777" />}
-        />
+        {pathname?.includes(routeName) ? (
+          <div className="mt-1">
+            <FromInput2
+              className="h-10"
+              name="email"
+              label="Email"
+              placeholder="Enter your email"
+            />
+          </div>
+        ) : (
+          <FromInput
+            className="h-10"
+            name="email"
+            label="Email"
+            placeholder="Enter your email"
+            icon={<FavIcon name="mail" className="size-4" color="#777777" />}
+          />
+        )}
 
-        <FromInput
-          className="h-10"
-          name="password"
-          label="Password"
-          placeholder="Password"
-          eye={true}
-          icon={<FavIcon name="password" className="size-5" color="#777777" />}
-        />
+        {pathname?.includes(routeName) ? (
+          <div className="mt-6">
+            <FromInput2
+              className="h-10"
+              name="password"
+              label="Password"
+              placeholder="Enter your password"
+              eye={true}
+            />
+          </div>
+        ) : (
+          <FromInput
+            className="h-10"
+            name="password"
+            label="Password"
+            placeholder="Enter your password"
+            eye={true}
+            icon={
+              <FavIcon name="password" className="size-5" color="#777777" />
+            }
+          />
+        )}
         <div className="flex items-center mt-3 justify-between text-sm">
           <div className="flex items-center space-x-2">
             <Checkbox className="" id="remember-me" />

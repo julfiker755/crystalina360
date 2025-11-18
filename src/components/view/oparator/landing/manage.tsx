@@ -1,9 +1,16 @@
+"use client";
 import Image from "next/image";
-import React from "react";
 import mangeImg from "@/assets/oprator/mange.jpg";
 import { Button } from "@/components/ui";
+import Modal2 from "@/components/reuseable/modal2";
+import { toggleIsOpen } from "@/redux/features/authSlice";
+import AuthModalController from "@/components/view/common/auth-controller";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { AppState } from "@/redux/store";
 
 export default function Manage() {
+  const dispatch = useAppDispatch();
+  const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
   return (
     <div className="container pb-16">
       <div className="relative rounded-xl h-[450px] lg:h-[400px] w-full">
@@ -26,12 +33,25 @@ export default function Manage() {
               insights, operators can ensure smooth event execution and make
               data-driven decisions for better outcomes.
             </p>
-            <Button size="lg" className="text-primary bg-white rounded-full">
-              Sign up as operator
+            <Button
+              onClick={() => dispatch(toggleIsOpen())}
+              size="lg"
+              className="text-primary bg-white rounded-full"
+            >
+              Sign in as operator
             </Button>
           </div>
         </div>
       </div>
+      {/*  ========== modal ====== */}
+      <Modal2
+        open={isOpen}
+        setIsOpen={(v) => dispatch(toggleIsOpen(v))}
+        mainStyle="!p-0"
+        className="sm:max-w-xl"
+      >
+        <AuthModalController title="Sign up as a operator" />
+      </Modal2>
     </div>
   );
 }

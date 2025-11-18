@@ -9,7 +9,7 @@ export default function Auth({ title }: any) {
   const dispatch = useAppDispatch();
   return (
     <>
-      <div className="bg-[#EDEDED] text-xl font-bold w-full h-12 content-center text-center top-0 left-0">
+      <div className="bg-figma-delete text-xl font-bold w-full h-12 content-center text-center top-0 left-0">
         {title}
       </div>
       <div className="mt-2">
@@ -18,16 +18,16 @@ export default function Auth({ title }: any) {
           onClose={() => dispatch(toggleIsOpen())}
         />
         <Tabs defaultValue="sign-in">
-          <TabsList className="w-full  h-10 p-0 rounded-xs">
+          <TabsList className="w-[95%] mx-auto mt-2  h-10 p-0 rounded-full">
             <TabsTrigger
               value="sign-in"
-              className="cursor-pointer  border-transparent data-[state=active]:border-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=inactive]:text-muted-foreground bg-muted py-3"
+              className="cursor-pointer   border-transparent data-[state=active]:border-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=inactive]:text-muted-foreground rounded-full bg-muted py-3"
             >
               Sign In
             </TabsTrigger>
             <TabsTrigger
               value="sign-up"
-              className="rounded-none  cursor-pointer  border-transparent data-[state=active]:border-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=inactive]:text-muted-foreground bg-muted py-3"
+              className="cursor-pointer  border-transparent data-[state=active]:border-primary rounded-full  data-[state=active]:bg-primary data-[state=active]:text-white data-[state=inactive]:text-muted-foreground bg-muted py-3"
             >
               Sign Up
             </TabsTrigger>

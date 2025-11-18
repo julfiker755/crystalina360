@@ -1,7 +1,7 @@
 import { FromInput } from "@/components/reuseable/form-input";
 import Form from "@/components/reuseable/from";
 import { Button } from "@/components/ui";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import FavIcon from "@/icon/favIcon";
 import { ArrowLeft } from "lucide-react";
@@ -9,8 +9,11 @@ import { useDispatch } from "react-redux";
 import { setActiveModal } from "@/redux/features/authSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { new_Pass } from "@/schema";
+import { routeName } from "@/lib";
+import { FromInput2 } from "@/components/reuseable/form-input2";
 
 export default function NewPassword() {
+  const pathname = usePathname();
   const dispatch = useDispatch();
   const router = useRouter();
   const from = useForm({
@@ -31,7 +34,7 @@ export default function NewPassword() {
   };
   return (
     <>
-      <div className="bg-[#EDEDED]  text-xl font-bold w-full h-12 content-center text-center top-0 left-0">
+      <div className="bg-figma-delete text-xl font-bold w-full h-12 content-center text-center top-0 left-0">
         <ul className="flex justify-between items-center">
           <li onClick={() => dispatch(setActiveModal("signIn"))}>
             {" "}
@@ -55,26 +58,48 @@ export default function NewPassword() {
           </p>
         </div>
         <Form className="space-y-4" from={from} onSubmit={handleSubmit}>
-          <FromInput
-            className="h-10"
-            name="password"
-            label="Password"
-            placeholder="Enter Your Password"
-            eye={true}
-            icon={
-              <FavIcon name="password" className="size-5" color="#777777" />
-            }
-          />
-          <FromInput
-            className="h-10"
-            name="c_password"
-            label="Confirm password"
-            placeholder="Enter Yopur Confirm password"
-            eye={true}
-            icon={
-              <FavIcon name="password" className="size-5" color="#777777" />
-            }
-          />
+          {pathname?.includes(routeName) ? (
+            <div className="space-y-7">
+              {/* opratore */}
+              <FromInput2
+                className="h-10"
+                name="password"
+                label="Password"
+                placeholder="Enter Your Password"
+                eye={true}
+              />
+              <FromInput2
+                className="h-10"
+                name="c_password"
+                label="Confirm password"
+                placeholder="Enter Yopur Confirm password"
+                eye={true}
+              />
+            </div>
+          ) : (
+            <>
+              <FromInput
+                className="h-10"
+                name="password"
+                label="Password"
+                placeholder="Enter Your Password"
+                eye={true}
+                icon={
+                  <FavIcon name="password" className="size-5" color="#777777" />
+                }
+              />
+              <FromInput
+                className="h-10"
+                name="c_password"
+                label="Confirm password"
+                placeholder="Enter Yopur Confirm password"
+                eye={true}
+                icon={
+                  <FavIcon name="password" className="size-5" color="#777777" />
+                }
+              />
+            </>
+          )}
 
           <Button className="w-full">Submit</Button>
         </Form>
