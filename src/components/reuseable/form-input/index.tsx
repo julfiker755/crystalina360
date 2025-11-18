@@ -53,15 +53,17 @@ export function FromInput({
         fieldState: ControllerFieldState;
       }) => (
         <div>
-          <Label
-            htmlFor={inputId}
-            className={cn(
-              "text-blacks text-base font-medium  mb-1",
-              stylelabel
-            )}
-          >
-            {label}
-          </Label>
+          {label && (
+            <Label
+              htmlFor={inputId}
+              className={cn(
+                "text-blacks text-base font-medium  mb-1",
+                stylelabel
+              )}
+            >
+              {label}
+            </Label>
+          )}
           <div className="relative">
             <Input
               id={inputId}
@@ -96,7 +98,7 @@ export function FromInput({
             )}
           </div>
           {error?.message && (
-            <h3 className="text-sm pt-[1px] text-end text-red-400 flex gap-1 items-center justify-end">
+            <h3 className="text-sm pt-px text-end text-red-400 flex gap-1 items-center justify-end">
               {error.message}
               <CircleAlert size={14} />
             </h3>

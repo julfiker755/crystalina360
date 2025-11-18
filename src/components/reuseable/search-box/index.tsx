@@ -36,7 +36,7 @@ export default function SearchBox({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder}
-        className="pl-10 pr-4 h-11 w-full bg-[#EDEDED] border-none rounded-full placeholder:text-primary"
+        className="pl-10 pr-4 h-11 w-full bg-figma-delete border-none rounded-full placeholder:text-primary"
       />
     </div>
   );

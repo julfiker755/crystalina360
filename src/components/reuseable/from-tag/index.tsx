@@ -79,28 +79,30 @@ export function FromTagInput({
                   className
                 )}
               >
-                <div className="flex flex-wrap gap-2 pb-2">
-                  {tags.map((tag: string, idx: number) => (
-                    <Badge
-                      key={idx}
-                      className="flex items-center border border-input rounded-full bg-transparent mt-2 text-blacks gap-1 px-2 py-1"
-                    >
-                      {tag}
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="size-2 rounded-full p-2 ml-2 bg-blacks/78 text-white hover:bg-blacks/78 hover:text-white"
-                        onClick={() =>
-                          handleRemoveTag(tag, tags, field.onChange)
-                        }
+                {tags?.length > 0 && (
+                  <div className="flex flex-wrap gap-2 pb-2">
+                    {tags.map((tag: string, idx: number) => (
+                      <Badge
+                        key={idx}
+                        className="flex items-center border border-input rounded-full bg-transparent mt-2 text-blacks gap-1 px-2 py-1"
                       >
-                        <X className="size-3 text-black" />
-                        <span className="sr-only">Remove {tag} tag</span>
-                      </Button>
-                    </Badge>
-                  ))}
-                </div>
+                        {tag}
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="size-2 rounded-full p-2 ml-2 bg-blacks/78 text-white hover:bg-blacks/78 hover:text-white"
+                          onClick={() =>
+                            handleRemoveTag(tag, tags, field.onChange)
+                          }
+                        >
+                          <X className="size-3 text-black" />
+                          <span className="sr-only">Remove {tag} tag</span>
+                        </Button>
+                      </Badge>
+                    ))}
+                  </div>
+                )}
                 <Input
                   id="tags-input"
                   type="text"
