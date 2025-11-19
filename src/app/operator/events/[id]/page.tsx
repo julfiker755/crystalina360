@@ -1,5 +1,9 @@
 "use client";
-import { Badge } from "@/components/ui";
+import Avatars from "@/components/reuseable/avater";
+import { CustomTable } from "@/components/reuseable/custom-table";
+import { TableNoItem } from "@/components/reuseable/table-no-item";
+import { TableSkeleton } from "@/components/reuseable/table-skeleton";
+import { Badge, TableCell, TableRow } from "@/components/ui";
 import TicketChart from "@/components/view/oparator/simple/ticket-chart";
 import FavIcon from "@/icon/favIcon";
 import { cn, RandomImg } from "@/lib";
@@ -7,6 +11,36 @@ import { useParams } from "next/navigation";
 
 export default function EvnetSingle() {
   const { id } = useParams();
+  const headers = ["Attendee name", "Ticket booked", "Booking date", "Price"];
+  const isLoading = false;
+
+  const data = [
+    {
+      name: "Elizabeth Olson",
+      email: "example@gmail.com",
+      ticketBooked: "02",
+      bookingDate: "05 Sep, 2025",
+      price: "$30.00",
+      image: "/images/user1.png",
+    },
+    {
+      name: "Elizabeth Olson",
+      email: "example@gmail.com",
+      ticketBooked: "02",
+      bookingDate: "05 Sep, 2025",
+      price: "$30.00",
+      image: "/images/user1.png",
+    },
+    {
+      name: "Elizabeth Olson",
+      email: "example@gmail.com",
+      ticketBooked: "01",
+      bookingDate: "05 Sep, 2025",
+      price: "$30.00",
+      image: "/images/user1.png",
+    },
+  ];
+
   return (
     <div className="container py-10">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-6">
@@ -77,6 +111,73 @@ export default function EvnetSingle() {
               Ticket Sold Statistics
             </h1>
             <TicketChart className="h-[300px]" />
+          </div>
+          <h4 className="text-figma-black text-xl font-semibold relative mt-10">
+            Attendee List
+          </h4>
+          <div className="relative -top-6">
+            <CustomTable
+              headers={headers}
+              // pagination={
+              //   <ul className="flex items-center flex-wrap justify-between py-3">
+              //     <li className="flex">
+              //       Total:
+              //       <sup className="font-medium text-2xl relative -top-3 px-2 ">
+              //         500
+              //       </sup>
+              //       users
+              //     </li>
+              //     <li>
+              //       <Pagination
+              //         onPageChange={(v: any) => updateGlobal("page", v)}
+              //         {...dummyJson.meta}
+              //       />
+              //     </li>
+              //   </ul>
+              // }
+            >
+              {isLoading ? (
+                <TableSkeleton colSpan={headers?.length} tdStyle="!pl-2" />
+              ) : data?.length > 0 ? (
+                data?.map((item, index) => (
+                  <TableRow key={index} className="border">
+                    <TableCell className="relative">
+                      <div className="flex items-center gap-3">
+                        <Avatars
+                          src={""}
+                          fallback={item.name}
+                          alt="profile"
+                          fallbackStyle="aStyle"
+                        />
+                        <div className="flex flex-col leading-3 mb-2">
+                          <span className="font-semibold text-base">
+                            {item.name}
+                          </span>
+                          <span>{item.email}</span>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <h5 className="ml-4">{item.ticketBooked}</h5>
+                    </TableCell>
+                    <TableCell>
+                      {" "}
+                      <h5 className="">{item.bookingDate}</h5>
+                    </TableCell>
+                    <TableCell>
+                      {" "}
+                      <h5 className="">{item.price}</h5>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableNoItem
+                  colSpan={headers?.length}
+                  title="No users are available at the moment"
+                  tdStyle="!bg-background"
+                />
+              )}
+            </CustomTable>
           </div>
         </div>
       </div>

@@ -111,7 +111,7 @@ export default function EventAll() {
   ];
 
   const handleSubmit = () => {
-    router.push(`/operator/events/store?`);
+    router.push(`/operator/events/store/${selectValue}`);
   };
 
   return (
