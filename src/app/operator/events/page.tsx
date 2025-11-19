@@ -1,4 +1,5 @@
 "use client";
+import EventButton from "@/components/reuseable/event-button/page";
 import Modal from "@/components/reuseable/modal";
 import { Button, ButtonGroup, Label } from "@/components/ui";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -89,8 +90,7 @@ const upcomingItem = [
 export default function EventAll() {
   const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>("1:1");
-  const [isStore, setIsStore] = useState(false);
-  const [selectValue, setIsSelect] = useState("");
+  const [selectEvent, setSelectEvent] = useState("");
 
   const overviewItem = [
     {
@@ -110,8 +110,8 @@ export default function EventAll() {
     },
   ];
 
-  const handleSubmit = () => {
-    router.push(`/operator/events/store/${selectValue}`);
+  const handleSubmitEvent = () => {
+    router.push(`/operator/events/store/${selectEvent}`);
   };
 
   return (
@@ -131,13 +131,11 @@ export default function EventAll() {
               </div>
             ))}
           </div>
-          <Button
-            onClick={() => setIsStore(!isStore)}
-            className="z-10 text-white mt-3 lg:mt-0"
-            size="lg"
-          >
-            Create New Event
-          </Button>
+          <EventButton
+            selectEvent={selectEvent}
+            setSelectEvent={setSelectEvent}
+            handleSubmitEvent={handleSubmitEvent}
+          />
         </div>
       </SvgBox>
       {/* filter group item */}
@@ -182,45 +180,6 @@ export default function EventAll() {
           </div>
         </div>
       </div>
-      {/*  =============== event store ============== */}
-      <Modal
-        title="Select Event Type"
-        titleStyle="text-center"
-        open={isStore}
-        setIsOpen={setIsStore}
-      >
-        <RadioGroup value={selectValue} onValueChange={(v) => setIsSelect(v)}>
-          {eventOptions.map((option) => (
-            <div key={option.id} className="border rounded-lg">
-              <div className="flex items-center px-2 py-4 gap-4">
-                <RadioGroupItem
-                  value={option.id}
-                  id={option.id}
-                  className="border-primary cursor-pointer data-[state=checked]:bg-primary data-[state=checked]:text-primary border"
-                />
-                <Label
-                  htmlFor={option.id}
-                  className="cursor-pointer  flex flex-col items-start"
-                >
-                  <h3 className="text-lg leading-3 font-semibold text-foreground">
-                    {option.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    {option.description}
-                  </p>
-                </Label>
-              </div>
-            </div>
-          ))}
-        </RadioGroup>
-        <Button
-          className="w-full mt-4"
-          onClick={() => handleSubmit()}
-          disabled={selectValue === ""}
-        >
-          Next
-        </Button>
-      </Modal>
     </div>
   );
 }

@@ -12,8 +12,10 @@ import {
 import { childrenProps } from "@/types";
 import { X } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function AlertDiscard({ children }: childrenProps) {
+  const router = useRouter();
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
@@ -30,14 +32,15 @@ export default function AlertDiscard({ children }: childrenProps) {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="justify-center">
-          <AlertDialogCancel className="bg-[#EDEDED] hover:bg-[#EDEDED] h-10">
+          <AlertDialogCancel className="bg-figma-delete hover:bg-figma-delete h-10">
             Cancel
           </AlertDialogCancel>
-          <Link href="/operator/events/">
-            <AlertDialogAction className="bg-figma-danger text-white h-10">
-              Discard
-            </AlertDialogAction>
-          </Link>
+          <AlertDialogAction
+            onClick={() => router.back()}
+            className="bg-figma-danger text-white h-10"
+          >
+            Discard
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

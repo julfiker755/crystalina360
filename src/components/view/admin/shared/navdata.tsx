@@ -27,7 +27,7 @@ export const adminLinks = [
     label: "Events",
     icon: "events_a",
     act_io: "events_i",
-    to: "/admin/events",
+    to: "/admin/events/manage",
   },
   {
     label: "Blogs",
