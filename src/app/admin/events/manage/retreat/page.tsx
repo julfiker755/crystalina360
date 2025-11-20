@@ -5,11 +5,12 @@ import FavIcon from "@/icon/favIcon";
 import useConfirmation from "@/provider/confirmation";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function Retreat() {
+function RetreatBox() {
   const { confirm } = useConfirmation();
-  const params = useSearchParams().get("type");
-  console.log(params);
+  const qry = useSearchParams();
+  const params = qry.get("type");
   // one to one
   const handleDeleteEvent = async (id: any) => {
     const confirmed = await confirm({
@@ -53,5 +54,13 @@ export default function Retreat() {
         ))}
       </div>
     </div>
+  );
+}
+
+export default function Retreat() {
+  return (
+    <Suspense fallback={<div className="opacity-0">Loading...</div>}>
+      <RetreatBox />
+    </Suspense>
   );
 }

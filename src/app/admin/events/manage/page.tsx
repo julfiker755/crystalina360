@@ -5,11 +5,13 @@ import FavIcon from "@/icon/favIcon";
 import useConfirmation from "@/provider/confirmation";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function Events() {
+function EventsBox() {
   const { confirm } = useConfirmation();
-  const params = useSearchParams().get("type");
-  console.log(params);
+  const qry = useSearchParams();
+  const params = qry.get("type");
+  // console.log(params);
   // one to one
   const handleDeleteEvent = async (id: any) => {
     const confirmed = await confirm({
@@ -53,5 +55,13 @@ export default function Events() {
         ))}
       </div>
     </div>
+  );
+}
+
+export default function Events() {
+  return (
+    <Suspense fallback={<div className="opacity-0">Loading...</div>}>
+      <EventsBox />
+    </Suspense>
   );
 }

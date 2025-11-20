@@ -5,7 +5,7 @@ import SidebarNav2 from "@/components/view/admin/simple/sideber-nav2";
 import NavTitle from "@/components/reuseable/nav-title";
 import { childrenProps } from "@/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   Button,
   Tabs,
@@ -16,7 +16,7 @@ import {
 import FavIcon from "@/icon/favIcon";
 import Link from "next/link";
 
-export default function PricingLayout({ children }: childrenProps) {
+function PricingCloneLayout({ children }: childrenProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -147,5 +147,13 @@ export default function PricingLayout({ children }: childrenProps) {
         <div className="flex-1 border rounded-xl p-4">{children}</div>
       </div>
     </div>
+  );
+}
+
+export default function PricingLayout({ children }: childrenProps) {
+  return (
+    <Suspense>
+      <PricingCloneLayout children={children} />
+    </Suspense>
   );
 }
