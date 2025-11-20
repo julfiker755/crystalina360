@@ -4,6 +4,7 @@ import { ImgBox } from "@/components/reuseable/Img-box";
 import Modal from "@/components/reuseable/modal";
 import NavTitle from "@/components/reuseable/nav-title";
 import { Badge, Button } from "@/components/ui";
+import { events } from "@/components/view/admin/dummy-json";
 import OpEvtCd from "@/components/view/admin/reuse/op-event-cd";
 import FavIcon from "@/icon/favIcon";
 import { cn, RandomImg } from "@/lib";
@@ -32,93 +33,6 @@ const item2 = [
     title: "Joined since",
     value: "16 Sep, 2024",
     icon: "ongoing_events",
-  },
-];
-
-const events = [
-  {
-    title: "Event title goes here",
-    mode: "Offline",
-    status: "Ongoing",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Lectus urna etiam imperdiet in amet sit tortor. Molestie quis mauris pellentesque.",
-    location: "Event location goes here",
-    link: null,
-    dateTime: "10 Sep, 2025 at 05:00 PM - 09:00 PM",
-    attendees: "153 / 300",
-    price: "$15.00",
-    thumbnail: "/img/event1.png",
-    type: "live",
-  },
-  {
-    title: "Event title goes here",
-    mode: "Online",
-    status: "Upcoming",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Lectus urna etiam imperdiet in amet sit tortor. Molestie quis mauris pellentesque.",
-    location: null,
-    link: "http://zoom21.43234df...",
-    dateTime: "10 Sep, 2025 at 05:00 PM - 09:00 PM",
-    attendees: "153 / 300",
-    price: "$15.00",
-    thumbnail: "/img/event2.png",
-    type: "live",
-  },
-  {
-    title: "Event title goes here",
-    mode: "Offline",
-    status: "Ongoing",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Lectus urna etiam imperdiet in amet sit tortor. Molestie quis mauris pellentesque.",
-    location: "Event location goes here",
-    link: null,
-    dateTime: "10 Sep, 2025 at 05:00 PM - 09:00 PM",
-    attendees: "153 / 300",
-    price: "$15.00",
-    thumbnail: "/img/event3.png",
-    type: "live",
-  },
-  {
-    title: "Event title goes here",
-    mode: "On demand",
-    status: "Upcoming",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Lectus urna etiam imperdiet in amet sit tortor. Molestie quis mauris pellentesque.",
-    location: "Event location goes here",
-    link: null,
-    dateTime: "10 Sep, 2025 at 05:00 PM - 09:00 PM",
-    attendees: "153 / 300",
-    price: "$15.00",
-    thumbnail: "/img/event4.png",
-    type: "recorded",
-  },
-  {
-    title: "Event title goes here",
-    mode: "Offline",
-    status: "Ongoing",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Lectus urna etiam imperdiet in amet sit tortor. Molestie quis mauris pellentesque.",
-    location: "Event location goes here",
-    link: null,
-    dateTime: "10 Sep, 2025 at 05:00 PM - 09:00 PM",
-    attendees: "153 / 300",
-    price: "$15.00",
-    thumbnail: "/img/event5.png",
-    type: "live",
-  },
-  {
-    title: "Event title goes here",
-    mode: "On demand",
-    status: "Upcoming",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Lectus urna etiam imperdiet in amet sit tortor. Molestie quis mauris pellentesque.",
-    location: "Event location goes here",
-    link: null,
-    dateTime: "10 Sep, 2025 at 05:00 PM - 09:00 PM",
-    attendees: "153 / 300",
-    price: "$15.00",
-    thumbnail: "/img/event6.png",
-    type: "recorded",
   },
 ];
 
@@ -233,7 +147,7 @@ export default function OperatorDetils() {
               <OpEvtCd key={idx} item={item}>
                 <div
                   className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-white 
-                     opacity-0 group-hover:opacity-100 transition"
+                               opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 >
                   <div className="flex items-center space-x-2 [&_button]:bg-[#FFFFFF]/20 [&_button]:cursor-pointer [&_button]:grid [&_button]:place-items-center [&_button]:size-11 [&_button]:backdrop-blur-[15px] [&_button]:rounded-md">
                     <button

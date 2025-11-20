@@ -60,8 +60,9 @@
   --color-figma-danger: #ff4e4e;
   --color-figma-sidebar: #ededed;
   --color-figma-a_gray: #535353;
-  --color-figma-delete:#EDEDED;
-  --color-figma-border:rgba(196, 172, 164, 0.2)
+  --color-figma-delete: #ededed;
+  --color-figma-green: #02a40d;
+  --color-figma-border: rgba(196, 172, 164, 0.2);
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
   @keyframes marquee {
@@ -152,10 +153,6 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-
-
-
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -182,8 +179,6 @@
     color: #828282;
   }
 }
-
-
 
 @layer components {
   .flex-between {
@@ -227,12 +222,10 @@
   -moz-box-shadow: 0px 1px 2px 0px rgba(196, 172, 164, 0.75);
 }
 
-
 /* .aStyle {
   background-color:#99796f8f;
   color: #303030;
 } */
-
 
 /* ========= Quill Editor Styles ========= */
 .ql-toolbar {
@@ -296,7 +289,6 @@
 
 /* Fix autofill styles for WebKit browsers */
 @layer utilities {
-
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,

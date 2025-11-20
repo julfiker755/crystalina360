@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function HeroSec({ role }: any) {
   return (
-    <div className="flex relative h-[calc(100vh-2rem)] m-4 rounded-xl flex-col  bg-[url('/img/bg1.png')] bg-cover bg-no-repeat bg-center items-center justify-center px-8">
+    <div className="flex relative h-[600px] lg:h-[calc(100vh-2rem)] m-4 rounded-xl flex-col  bg-[url('/img/bg1.png')] bg-cover bg-no-repeat bg-center items-center justify-center px-8">
       {/* =========== navber ========= */}
       <Navber />
       <h5 className="text-center text-3xl lg:text-5xl font-bold text-figma-black mb-5">

@@ -53,9 +53,9 @@ export default function Navber({ className }: any) {
         >
           <div className="flex justify-between items-center">
             {/* Logo */}
-            <Link href="/">
+            <Link href="/operator">
               <picture>
-                <img src={assets.logo.src} alt="logo" className="w-32" />
+                <img src={assets.logo.src} alt="logo" className="w-33" />
               </picture>
             </Link>
 
@@ -81,7 +81,7 @@ export default function Navber({ className }: any) {
                 className="rounded-full md:hidden bg-primary/30"
                 onClick={() => setIsOpen(true)}
               >
-                <Menu />
+                <Menu className="text-figma-black" />
               </Button>
             </div>
           </div>
@@ -128,7 +128,7 @@ export default function Navber({ className }: any) {
                   size="icon-sm"
                   onClick={() => setIsOpen(false)}
                 >
-                  <X />
+                  <X className="text-figma-black" />
                 </Button>
               </div>
 
@@ -217,7 +217,7 @@ function SignInButton() {
             size="icon-sm"
             className="rounded-full md:hidden grid place-items-center bg-primary/30"
           >
-            <UserRound />
+            <UserRound className="text-figma-black" />
           </Button>
           <Modal2
             open={isOpen}

@@ -2,9 +2,9 @@ import { Badge, Button } from "@/components/ui";
 import FavIcon from "@/icon/favIcon";
 import { helpers } from "@/lib";
 import { getDeliveryType } from "@/lib/function-utils";
-import { childrenProps } from "@/types";
 
-interface opevtcdProps extends childrenProps {
+interface opevtcdProps {
+  children?: React.ReactNode;
   item: any;
 }
 
@@ -21,9 +21,9 @@ export default function OpEvtCd({ item, children }: opevtcdProps) {
   } = item || {};
 
   return (
-    <div className="overflow-hidden  group  transition-shadow bg-figma-gray rounded-lg p-3">
+    <div className="overflow-hidden   transition-shadow bg-figma-gray rounded-lg p-3">
       {/* Event Image */}
-      <div className="relative h-60 rounded-md bg-muted overflow-hidden">
+      <div className="relative h-60  group rounded-md bg-muted overflow-hidden">
         <img
           src={
             "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop"
@@ -31,12 +31,16 @@ export default function OpEvtCd({ item, children }: opevtcdProps) {
           alt={title}
           className="w-full h-full object-cover"
         />
-        <div className="absolute  right-2 top-2 space-x-3">
-          <Button className="bg-[#434549] text-white">
-            {getDeliveryType(helpers.slugify(mode) as any, "#fff")}
-            {mode}
-          </Button>
-          <Button variant={helpers.lowerCase(status) as any}>{status}</Button>
+        <div className="absolute  right-2 top-2">
+          <div className="flex items-center space-x-2">
+            <Button size="default" className="bg-[#434549] text-white">
+              {getDeliveryType(helpers.slugify(mode) as any, "#fff")}
+              {mode}
+            </Button>
+            <Button size="default" variant={helpers.lowerCase(status) as any}>
+              {status}
+            </Button>
+          </div>
         </div>
         {children}
       </div>

@@ -94,7 +94,7 @@ export default function Navber({ className }: any) {
             <SignInButton />
             <Button
               size="icon-sm"
-              className="rounded-full md:hidden bg-primary/30"
+              className="rounded-full md:hidden bg-primary/30 text-figma-black"
               onClick={() => setIsOpen(true)}
             >
               <Menu />
@@ -143,7 +143,7 @@ export default function Navber({ className }: any) {
                   size="icon-sm"
                   onClick={() => setIsOpen(false)}
                 >
-                  <X />
+                  <X className="text-figma-black" />
                 </Button>
               </div>
 
@@ -214,7 +214,7 @@ function SignInButton() {
             size="icon-sm"
             className="rounded-full md:hidden grid place-items-center bg-primary/30"
           >
-            <UserRound />
+            <UserRound className="text-figma-black" />
           </Button>
           <Modal2
             open={isOpen}
