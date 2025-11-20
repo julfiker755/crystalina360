@@ -84,7 +84,7 @@ export const FormSelDropdown: React.FC<FormSelect2Props> = ({
                   role="combobox"
                   aria-expanded={selectOpen}
                   className={cn(
-                    `w-full h-10 hover:bg-transparent font-normal justify-between`,
+                    `w-full h-10 hover:bg-transparent font-normal shadow-none justify-between`,
                     className
                   )}
                   onClick={() => setSelectOpen(!selectOpen)}

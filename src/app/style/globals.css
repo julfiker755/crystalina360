@@ -222,6 +222,13 @@
   -moz-box-shadow: 0px 1px 2px 0px rgba(196, 172, 164, 0.75);
 }
 
+.shadow-filter {
+  box-shadow: 0 4px 4px 0 rgba(196, 172, 164, 0.25),
+    0 -4px 4px 0 rgba(196, 172, 164, 0.25),
+    4px 0 4px 0 rgba(196, 172, 164, 0.25),
+    -4px 0 4px 0 rgba(196, 172, 164, 0.25);
+}
+
 /* .aStyle {
   background-color:#99796f8f;
   color: #303030;
