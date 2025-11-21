@@ -137,7 +137,7 @@ export function MusicPlayer({
         onClick={handleProgressBarClick}
       >
         <div
-          className="absolute top-0 left-0 h-full bg-[#343D00] transition-all duration-300"
+          className="absolute top-0 left-0  h-full bg-[#21201f9b] transition-all duration-300"
           style={{ width: `${progress}%` }}
         />
 
