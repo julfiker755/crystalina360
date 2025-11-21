@@ -6,7 +6,7 @@ import { roleKey } from "@/lib";
 
 export default function KeyFeature({ role }: any) {
   return (
-    <div className="py-10 container">
+    <div className="pt-16  container">
       <h1 className="mb-10">Key Features</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {featuresData.map((feature) => (

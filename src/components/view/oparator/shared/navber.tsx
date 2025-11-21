@@ -16,6 +16,7 @@ import { usePathname } from "next/navigation";
 import Avatars from "@/components/reuseable/avater";
 
 export default function Navber({ className }: any) {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useAppSelector((state: AppState) => state.auth);
 
@@ -64,7 +65,9 @@ export default function Navber({ className }: any) {
               {navItems.map((item) => (
                 <li
                   key={item.name}
-                  className={`py-2 first:bg-primary text-figma-black first:text-white! first:rounded-md  px-10`}
+                  className={`py-2 text-base!  font-medium ${
+                    pathname == item?.href ? "text-white! bg-primary" : ""
+                  }   text-figma-black rounded-md  px-10`}
                 >
                   <Link href={item.href} className="transition-colors">
                     {item.name}
@@ -186,7 +189,7 @@ function SignInButton() {
                   className="size-10! rounded-md!"
                   alt="img"
                 />
-                <ul className="*:text-black leading-5">
+                <ul className="*:text-black hidden lg:block leading-5">
                   <li className="font-medium">Elizabeth Olson</li>
                   <li>example@gmail.com</li>
                 </ul>

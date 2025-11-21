@@ -12,7 +12,7 @@ export default function Manage() {
   const dispatch = useAppDispatch();
   const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
   return (
-    <div className="container pb-16">
+    <div className="container py-20">
       <div className="relative rounded-xl h-[450px] lg:h-[400px] w-full">
         <Image
           src={mangeImg}

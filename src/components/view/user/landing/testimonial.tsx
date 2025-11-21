@@ -70,7 +70,7 @@ const testimonials = [
 
 export default function Testimonial() {
   return (
-    <div className="py-10 container">
+    <div className="pt-16 container">
       <h1 className="mb-10">Testimonial</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {testimonials.map((testimonial) => (

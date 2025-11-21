@@ -30,7 +30,7 @@ const howItem = [
 
 export default function HowWorks() {
   return (
-    <div className="py-10 container">
+    <div className="pt-16 container">
       <h1 className="mb-10">How it Works</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10">

@@ -24,6 +24,9 @@ import ProfileEdit from "@/components/view/user/simple/profile-edit";
 import { useModalState } from "@/hooks";
 import FavIcon from "@/icon/favIcon";
 import { PlaceholderImg } from "@/lib";
+import { clearAuth } from "@/redux/features/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const itemBox = [
@@ -52,6 +55,8 @@ const initState = {
   isPassword: false,
 };
 export default function Profile() {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const [state, setState] = useModalState(initState);
   const [copied, setCopied] = useState("");
 
@@ -100,12 +105,23 @@ export default function Profile() {
               </div>
             ))}
           </div>
-          <Button
-            onClick={() => setState("isProfile", true)}
-            className="w-full"
-          >
-            Edit Profile
-          </Button>
+          <div className="space-y-3">
+            <Button
+              onClick={() => setState("isProfile", true)}
+              className="w-full text-white!"
+            >
+              Edit Profile
+            </Button>
+            <Button
+              onClick={() => {
+                dispatch(clearAuth());
+                router.push("/");
+              }}
+              className="w-full text-primary! bg-transparent border"
+            >
+              Log Out
+            </Button>
+          </div>
         </div>
 
         <div className="col-span-1 lg:col-span-2">

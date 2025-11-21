@@ -33,7 +33,7 @@ export default function ContactUs({
     // router.push("/dashboard");
   };
   return (
-    <div id="contact-us" className={cn("py-10 container", className)}>
+    <div id="contact-us" className={cn("pt-16 container", className)}>
       <h1 className="mb-10">{title}</h1>
       <div className="bg-figma-gray rounded-md p-3 md:p-15">
         <Form className="space-y-4" from={from} onSubmit={handleSubmit}>

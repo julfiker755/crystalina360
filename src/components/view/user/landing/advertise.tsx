@@ -38,7 +38,7 @@ export default function CarouselHero() {
   ];
 
   return (
-    <div className="py-10 container">
+    <div className="pt-16 container">
       <h1 className="mb-10">OLISTAMI Advertise</h1>
 
       <div>

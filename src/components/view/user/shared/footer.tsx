@@ -10,7 +10,7 @@ export default function Footer() {
     { name: "instagram", icon: "instagram" },
   ];
   return (
-    <div className="bg-figma-black py-16 *:text-white">
+    <div className="bg-figma-black py-10 lg:py-16 *:text-white">
       <div className="container">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr_250px_1fr] gap-16">
           <div className="space-y-4">

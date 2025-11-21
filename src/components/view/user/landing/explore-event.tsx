@@ -14,7 +14,7 @@ export default function ExploreEvents() {
   const dispatch = useAppDispatch();
   const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
   return (
-    <div id="explore" className="py-10 container">
+    <div id="explore" className="pt-17  container">
       <h1 className="mb-10">Explore Events</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {eventsData.map((event) => (

@@ -11,9 +11,9 @@ export default function Pricing() {
   const dispatch = useAppDispatch();
   const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
   return (
-    <div id="pricing">
+    <div id="pricing" className="pt-20">
       <PricingBox />
-      <div className="text-center space-y-3 pt-6">
+      <div className="text-center space-y-3 pt-5">
         <p>
           Purchase a plan and enjoy the freedom of managing events of whatever
           it's offline or online

@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function AddOn() {
   return (
-    <div className="py-10 container">
+    <div className="py-16 container">
       <h1 className="mb-10">Add on services</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 2xl:gap-20">
         {addOns.slice(0, 3).map((item, index) => (

@@ -12,7 +12,7 @@ export default function Booking() {
       <TabBox
         defaultValue="ongoing"
         tabItem={["Ongoing", "Upcoming", "Completed"]}
-        className="flex justify-start w-fit mt-5"
+        className="flex justify-start w-fit mt-8"
         tabStyle="border-b border-transparent text-lg data-[state=active]:border-primary! data-[state=active]:border-b! data-[state=active]:text-primary"
       >
         <TabsContent value="ongoing">

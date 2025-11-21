@@ -63,7 +63,7 @@ export default function Navber({ className }: any) {
         }}
         transition={{ type: "spring", stiffness: 100, damping: 20 }}
         className={cn(
-          `w-[95%] absolute top-5 md:w-full h-13 container rounded-full px-3 content-center bg-[#000000]/10 backdrop-blur-xl z-50 ${
+          `w-[95%] absolute top-5 md:w-full h-14 container rounded-full px-3 content-center bg-[#000000]/10 backdrop-blur-xl z-50 ${
             scrolled && "fixed! top-4 left-1/2 -translate-x-1/2"
           }`,
           className
@@ -81,7 +81,9 @@ export default function Navber({ className }: any) {
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className="text-lg text-article hover:text-primary transition-colors"
+                  className={`text-base! text-article font-medium ${
+                    pathname == item?.href ? "text-primary" : ""
+                  } hover:text-primary transition-colors`}
                 >
                   {item.name}
                 </Link>

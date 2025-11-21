@@ -47,7 +47,7 @@ const privacyItem = [
 
 export default function PrivacyPolicy() {
   return (
-    <div id="privacy-Policy" className="py-10 container">
+    <div id="privacy-Policy" className="pt-16 container">
       <h1 className="mb-10">Privacy Policy</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 ">
         <div className="space-y-10 mb-10 md:mb-0">

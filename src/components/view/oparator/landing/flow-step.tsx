@@ -10,6 +10,7 @@ const steps = [
     description:
       "Register your operator account into this system. After that you can able to manage your events.",
     image: register,
+    w: 230,
   },
   {
     id: 2,
@@ -17,7 +18,7 @@ const steps = [
     description:
       "Create event by proving all necessary files, documents, information's and schedule them.",
     image: event,
-    w: 180,
+    w: 170,
   },
   {
     id: 3,
@@ -30,14 +31,14 @@ const steps = [
 
 export default function FlowStep() {
   return (
-    <div className="container grid  grid-cols-1 gap-10 lg:grid-cols-3 py-16">
+    <div className="container grid  grid-cols-1 gap-10 lg:grid-cols-3 pt-17">
       {steps.map((step) => (
         <div key={step.id} className="space-x-4">
           <Image
             src={step.image}
             alt="img"
             style={{
-              height: "190px",
+              height: "195px",
             }}
             width={step.w || 250}
             height={100}

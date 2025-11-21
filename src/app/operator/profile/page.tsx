@@ -15,6 +15,9 @@ import ProfileEdit2 from "@/components/view/oparator/simple/edit-profile";
 import { useModalState } from "@/hooks";
 import FavIcon from "@/icon/favIcon";
 import { RandomImg } from "@/lib";
+import { clearAuth } from "@/redux/features/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { useRouter } from "next/navigation";
 
 const itemBox = [
   {
@@ -42,6 +45,8 @@ const initState = {
   isPassword: false,
 };
 export default function Profile() {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const [state, setState] = useModalState(initState);
 
   return (
@@ -77,7 +82,13 @@ export default function Profile() {
               </div>
             ))}
           </div>
-          <div className="flex justify-center mt-5">
+          <div
+            onClick={() => {
+              dispatch(clearAuth());
+              router.push("/operator");
+            }}
+            className="flex justify-center mt-5"
+          >
             <Button variant="destructive" size="lg" className="w-fit">
               <FavIcon className="size-5" name="logout" />
               Logout
@@ -110,11 +121,10 @@ export default function Profile() {
                   />
                   <Button
                     onClick={() => setState("isProfile", true)}
-                    size="sm"
                     className="absolute  -top-10 right-0"
                   >
                     {" "}
-                    <FavIcon color="#000" name="edit2" />
+                    <FavIcon color="#fff" name="edit2" />
                     Edit profile
                   </Button>
                 </div>

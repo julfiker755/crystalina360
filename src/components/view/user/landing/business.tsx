@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Business() {
   return (
-    <div className="py-10 container">
+    <div className="py-18 container">
       <h1 className="mb-10">Grow Your Business</h1>
       <div className="container mx-auto relative rounded-xl">
         <Image
