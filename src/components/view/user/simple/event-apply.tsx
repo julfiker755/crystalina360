@@ -141,7 +141,7 @@ export default function EventApply() {
       {/* Buttons */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <Link href="/conversation">
-          <Button className="bg-transparent border border-primary text-primary">
+          <Button className="bg-transparent w-full border border-primary text-primary">
             Send Message
           </Button>
         </Link>
