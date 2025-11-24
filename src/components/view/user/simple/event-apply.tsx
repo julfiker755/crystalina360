@@ -140,12 +140,12 @@ export default function EventApply() {
 
       {/* Buttons */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        <Button
-          className="bg-transparent border border-primary text-primary"
-          onClick={() => console.log("Booking Data:", isBooking)}
-        >
-          Send Message
-        </Button>
+        <Link href="/conversation">
+          <Button className="bg-transparent border border-primary text-primary">
+            Send Message
+          </Button>
+        </Link>
+
         <Link href="/payment">
           <Button className="w-full">Purchase</Button>
         </Link>
