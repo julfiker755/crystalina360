@@ -30,7 +30,7 @@ export default function TabBox({
             key={index}
             value={helpers.slugify(tab)}
             className={cn(
-              "text-article cursor-pointer data-[state=active]:bg-transparent data-[state=active]:shadow-none",
+              "text-article text-base cursor-pointer data-[state=active]:bg-transparent data-[state=active]:shadow-none",
               tabStyle
             )}
           >
