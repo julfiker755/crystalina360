@@ -40,6 +40,7 @@ const axiosBaseQuery =
         headers: {
           "Content-Type": ContentType || "application/json",
           Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true",
           ...headers,
         },
       });

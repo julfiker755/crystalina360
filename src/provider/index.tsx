@@ -5,12 +5,15 @@ import { Provider as ReduxProvider } from "react-redux";
 import { ConfirmDialogProvider } from "./confirmation";
 import { SuccessDialogProvider } from "./success";
 import { store } from "@/redux/store";
+import { initAuth } from "@/redux/features/authSlice";
+import { useEffect } from "react";
 
 export default function Provider({ children }: childrenProps) {
   return (
-    <SuccessDialogProvider>
-      <ConfirmDialogProvider>
-        <ReduxProvider store={store}>
+    <ReduxProvider store={store}>
+      <AuthInit />
+      <SuccessDialogProvider>
+        <ConfirmDialogProvider>
           {children}
           <Toaster
             toastOptions={{
@@ -27,8 +30,19 @@ export default function Provider({ children }: childrenProps) {
             }}
             position="top-right"
           />
-        </ReduxProvider>
-      </ConfirmDialogProvider>
-    </SuccessDialogProvider>
+        </ConfirmDialogProvider>
+      </SuccessDialogProvider>
+    </ReduxProvider>
   );
+}
+
+//  =========== profiel referch kora =========
+function AuthInit() {
+  const dispatch = store.dispatch;
+
+  useEffect(() => {
+    initAuth(dispatch, store.getState);
+  }, [dispatch]);
+
+  return null;
 }

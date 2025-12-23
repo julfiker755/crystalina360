@@ -18,8 +18,16 @@ export interface Args {
 }
 
 export interface AuthState {
-  user: { name: string; email: string; role: string };
+  user: {
+    name: string;
+    email: string;
+    avatar: string;
+    role: string;
+    token: string;
+  };
   otpInfo: { email: string; otp: string };
   activeModal: SignKey;
   isOpen: boolean;
+  isLogged: boolean;
+  isProfileLoading: boolean;
 }

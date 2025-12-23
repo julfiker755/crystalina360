@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 import { CircleAlert, Eye, EyeOff } from "lucide-react";
 import {
   Controller,
@@ -40,8 +40,8 @@ export function FromInput2({
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const { control } = useFormContext();
   const inputType = eye ? (isPasswordVisible ? "text" : "password") : type;
-
-  const inputId = `input-${name}`;
+  const reactId = useId();
+  const inputId = `${reactId}-${name}`;
 
   return (
     <Controller

@@ -1,4 +1,4 @@
-# 🎨 crystalina360 || Holistic website & APP — Figma Template
+# 🎨 crystalina360 | Holistic website & APP — Figma Template
 
 [View the design on Figma →](https://www.figma.com/design/jQBhANuO1YuKJuOlK8XsmP/Olistami?node-id=3-7&p=f&t=z9mF9JftPBGVwVtp-0)
 

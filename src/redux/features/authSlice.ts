@@ -1,5 +1,8 @@
+import { authKey, helpers } from "@/lib";
 import { AuthState } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { authApi } from "../api/authApi";
+import { AppDispatch } from "../store";
 
 export const controlkey = {
   signIn: "signIn",
@@ -10,11 +13,15 @@ export const controlkey = {
 
 export type SignKey = keyof typeof controlkey;
 
+const token = helpers.getAuthCookie(authKey);
+
 const initialState: AuthState = {
-  user: { name: "", email: "", role: "admin" },
+  user: { name: "", email: "", avatar: "", role: "", token: token || "" },
   otpInfo: { email: "", otp: "" },
   activeModal: "signIn",
   isOpen: false,
+  isLogged: !!token,
+  isProfileLoading: false,
 };
 
 const authSlice = createSlice({
@@ -44,8 +51,35 @@ const authSlice = createSlice({
       state.otpInfo = { email: "", otp: "" };
     },
     clearAuth: (state) => {
-      state.user = { name: "", email: "", role: "" };
+      state.user = initialState.user;
+      state.isOpen = false;
+      state.isLogged = false;
+      state.isProfileLoading = false;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(authApi.endpoints.getProfile.matchPending, (state) => {
+        state.isProfileLoading = true;
+      })
+      .addMatcher(
+        authApi.endpoints.getProfile.matchFulfilled,
+        (state, { payload }) => {
+          state.user = {
+            ...state.user,
+            name: payload?.data?.user?.name || "",
+            email: payload?.data?.user?.email || "",
+            role: payload?.data?.user?.role || "",
+            avatar: payload?.data?.user?.img || "",
+          };
+          state.isLogged = !!state.user.token;
+          state.isProfileLoading = false;
+        }
+      )
+      .addMatcher(authApi.endpoints.getProfile.matchRejected, (state) => {
+        state.isLogged = false;
+        state.isProfileLoading = false;
+      });
   },
 });
 
@@ -58,3 +92,14 @@ export const {
   clearAuth,
 } = authSlice.actions;
 export default authSlice.reducer;
+
+// smart client-side init for App Router
+export const initAuth = (
+  dispatch: AppDispatch,
+  getState: () => { auth: AuthState }
+) => {
+  const { auth } = getState();
+  if (auth.user.token && !auth.user.name && !auth.user.email) {
+    dispatch(authApi.endpoints.getProfile.initiate({}));
+  }
+};

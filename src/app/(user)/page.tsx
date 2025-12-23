@@ -15,6 +15,7 @@ import { useAppSelector } from "@/redux/hooks";
 
 export default function UserHome() {
   const { user } = useAppSelector((state: any) => state.auth);
+  console.log(user);
   return (
     <>
       <HeroSec role={user?.role} />

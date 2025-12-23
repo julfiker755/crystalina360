@@ -50,7 +50,7 @@ export default function Modal2({
             {title}
           </DialogTitle>
         </DialogHeader>
-        <DialogDescription className="hidden"></DialogDescription>
+        <DialogDescription className="sr-only"></DialogDescription>
         <div className={clsx("p-4", mainStyle)}>{children}</div>
       </DialogContent>
     </Dialog>

@@ -6,59 +6,59 @@ export const authApi = baseApi.injectEndpoints({
     LoginIn: build.mutation({
       query: (data) => {
         return {
-          url: "/auth/login",
+          url: "/login",
           method: "POST",
           data,
         };
       },
       invalidatesTags: [tagTypes.profile],
     }),
-    forgotPassword: build.mutation({
-      query: (data) => ({
-        url: "/auth/forgot",
-        method: "POST",
-        data,
-      }),
-    }),
-    otpVarify: build.mutation({
-      query: (data) => ({
-        url: "/auth/verify-email",
-        method: "POST",
-        data,
-      }),
-      invalidatesTags: [tagTypes.profile],
-    }),
-    resetPassword: build.mutation({
-      query: (data) => ({
-        url: "/auth/reset-password",
-        method: "POST",
-        data,
-      }),
-    }),
+    // forgotPassword: build.mutation({
+    //   query: (data) => ({
+    //     url: "/auth/forgot",
+    //     method: "POST",
+    //     data,
+    //   }),
+    // }),
+    // otpVarify: build.mutation({
+    //   query: (data) => ({
+    //     url: "/auth/verify-email",
+    //     method: "POST",
+    //     data,
+    //   }),
+    //   invalidatesTags: [tagTypes.profile],
+    // }),
+    // resetPassword: build.mutation({
+    //   query: (data) => ({
+    //     url: "/auth/reset-password",
+    //     method: "POST",
+    //     data,
+    //   }),
+    // }),
     getProfile: build.query({
       query: () => ({
-        url: "/auth/get-profile",
+        url: "/my/profile",
         method: "GET",
       }),
       providesTags: [tagTypes.profile],
     }),
-    updateProfile: build.mutation({
-      query: (data) => ({
-        url: "/auth",
-        method: "PATCH",
-        ContentType: "multipart/form-data",
-        data,
-      }),
-      invalidatesTags: [tagTypes.profile],
-    }),
-    updatePassword: build.mutation({
-      query: (data) => ({
-        url: "/auth/change-password",
-        method: "POST",
-        data,
-      }),
-    }),
+    // updateProfile: build.mutation({
+    //   query: (data) => ({
+    //     url: "/auth",
+    //     method: "PATCH",
+    //     ContentType: "multipart/form-data",
+    //     data,
+    //   }),
+    //   invalidatesTags: [tagTypes.profile],
+    // }),
+    // updatePassword: build.mutation({
+    //   query: (data) => ({
+    //     url: "/auth/change-password",
+    //     method: "POST",
+    //     data,
+    //   }),
+    // }),
   }),
 });
 
-export const { useLoginInMutation } = authApi;
+export const { useLoginInMutation, useGetProfileQuery } = authApi;
