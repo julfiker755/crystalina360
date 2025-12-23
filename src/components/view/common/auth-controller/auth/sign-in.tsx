@@ -14,11 +14,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { sign_In } from "@/schema";
 import { roleKey, routeName } from "@/lib";
 import { FromInput2 } from "@/components/reuseable/form-input2";
+import { useLoginInMutation } from "@/redux/api/authApi";
 
 export default function SignIn() {
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
+  const [LoginIn] = useLoginInMutation();
   const from = useForm({
     resolver: zodResolver(sign_In),
     defaultValues: {
@@ -33,14 +35,15 @@ export default function SignIn() {
 
   const handleSubmit = async (values: FieldValues) => {
     console.log(values);
-    dispatch(
-      setUser({
-        name: "John Doe",
-        email: values.email,
-        role: roleName,
-      })
-    );
-    dispatch(toggleIsOpen());
+    // console.log(values);
+    // dispatch(
+    //   setUser({
+    //     name: "John Doe",
+    //     email: values.email,
+    //     role: roleName,
+    //   })
+    // );
+    // dispatch(toggleIsOpen());
     // toast.success("Login Successfully", {
     //   description: "You have successfully logged in",
     // });

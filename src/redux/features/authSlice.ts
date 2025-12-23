@@ -58,36 +58,3 @@ export const {
   clearAuth,
 } = authSlice.actions;
 export default authSlice.reducer;
-
-// // services/authApi.ts
-// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-// import { setInfo } from "../slices/authSlice";
-
-// export const authApi = createApi({
-//   reducerPath: "authApi",
-//   baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
-//   tagTypes: ["Auth"],
-
-//   endpoints: (builder) => ({
-//     getUser: builder.query<{ name: string; email: string; role: string }, void>({
-//       query: () => "/me",
-//       async onQueryStarted(_, { dispatch, queryFulfilled }) {
-//         try {
-//           const { data } = await queryFulfilled;
-//           // ✅ When query succeeds, update the auth info in your slice
-//           dispatch(
-//             setInfo({
-//               email: data.email,
-//               otp: "",
-//             })
-//           );
-//           // You could also dispatch another reducer to store name/role if needed
-//         } catch {
-//           // handle error
-//         }
-//       },
-//     }),
-//   }),
-// });
-
-// export const { useGetUserQuery } = authApi;

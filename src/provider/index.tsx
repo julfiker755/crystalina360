@@ -2,12 +2,11 @@
 import { childrenProps } from "@/types";
 import { Toaster } from "sonner";
 import { Provider as ReduxProvider } from "react-redux";
-import { makeStore } from "@/redux/store";
 import { ConfirmDialogProvider } from "./confirmation";
 import { SuccessDialogProvider } from "./success";
+import { store } from "@/redux/store";
 
 export default function Provider({ children }: childrenProps) {
-  const store = makeStore();
   return (
     <SuccessDialogProvider>
       <ConfirmDialogProvider>
