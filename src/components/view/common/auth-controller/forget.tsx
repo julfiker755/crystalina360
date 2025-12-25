@@ -9,32 +9,46 @@ import { useDispatch } from "react-redux";
 import { setActiveModal, setOtpInfo } from "@/redux/features/authSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { sign_In } from "@/schema";
-import { routeName } from "@/lib";
+import { helpers, routeName } from "@/lib";
 import { FromInput2 } from "@/components/reuseable/form-input2";
+import { useForgotPasswordMutation } from "@/redux/api/authApi";
+import { useState } from "react";
+import sonner from "@/components/reuseable/sonner";
 
 export default function ForgetPassword() {
   const dispatch = useDispatch();
   const pathname = usePathname();
   const router = useRouter();
+  const [error, setIsError] = useState("");
   const from = useForm({
     resolver: zodResolver(sign_In.partial()),
     defaultValues: {
       email: "",
     },
   });
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
 
   const handleSubmit = async (values: FieldValues) => {
-    console.log(values);
-    dispatch(setActiveModal("verify"));
-    dispatch(
-      setOtpInfo({
-        email: values.email,
-      })
-    );
-    // toast.success("Login Successfully", {
-    //   description: "You have successfully logged in",
-    // });
-    // router.push("/dashboard");
+    setIsError("");
+    try {
+      const data = helpers.fromData(values);
+      const res = await forgotPassword(data).unwrap();
+      if (res.status) {
+        dispatch(setActiveModal("verify"));
+        dispatch(
+          setOtpInfo({
+            email: res?.data?.email,
+            otp: "",
+          })
+        );
+        sonner.success(
+          "OTP sent successfully",
+          "Please check your email for the otp"
+        );
+      }
+    } catch (err: any) {
+      setIsError(err?.data?.error);
+    }
   };
   return (
     <>
@@ -78,8 +92,16 @@ export default function ForgetPassword() {
               icon={<FavIcon name="mail" className="size-4" color="#777777" />}
             />
           )}
-
-          <Button className="w-full">Send Code</Button>
+          <div>
+            {error && (
+              <h5 className="text-red-500 flex justify-center mb-3 text-sm">
+                {error}
+              </h5>
+            )}
+            <Button disabled={isLoading} className="w-full">
+              Send Code
+            </Button>
+          </div>
         </Form>
       </div>
     </>

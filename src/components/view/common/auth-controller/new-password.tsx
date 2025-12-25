@@ -1,21 +1,21 @@
 import { FromInput } from "@/components/reuseable/form-input";
+import { clearOtpInfo, setActiveModal } from "@/redux/features/authSlice";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FromInput2 } from "@/components/reuseable/form-input2";
+import { useResetPassMutation } from "@/redux/api/authApi";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import Form from "@/components/reuseable/from";
 import { Button } from "@/components/ui";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
+import { new_Pass } from "@/schema";
+import { helpers, routeName } from "@/lib";
+import { useState } from "react";
 import FavIcon from "@/icon/favIcon";
 import { ArrowLeft } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { setActiveModal } from "@/redux/features/authSlice";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { new_Pass } from "@/schema";
-import { routeName } from "@/lib";
-import { FromInput2 } from "@/components/reuseable/form-input2";
 
 export default function NewPassword() {
   const pathname = usePathname();
-  const dispatch = useDispatch();
-  const router = useRouter();
   const from = useForm({
     resolver: zodResolver(new_Pass),
     defaultValues: {
@@ -23,14 +23,28 @@ export default function NewPassword() {
       c_password: "",
     },
   });
+  const [error, setIsError] = useState("");
+  const [resetPass, { isLoading }] = useResetPassMutation();
+  const otpInfo = useAppSelector((state) => state.auth.otpInfo);
+  const dispatch = useAppDispatch();
 
   const handleSubmit = async (values: FieldValues) => {
-    console.log(values);
-    dispatch(setActiveModal("signIn"));
-    // toast.success("Login Successfully", {
-    //   description: "You have successfully logged in",
-    // });
-    // router.push("/dashboard");
+    const value = {
+      email: otpInfo.email,
+      otp: otpInfo.otp,
+      password: values.password,
+      password_confirmation: values.c_password,
+    };
+    try {
+      const data = helpers.fromData(value);
+      const res = await resetPass(data).unwrap();
+      if (res.status) {
+        dispatch(setActiveModal("signIn"));
+        dispatch(clearOtpInfo());
+      }
+    } catch (err: any) {
+      setIsError(err?.data?.message);
+    }
   };
   return (
     <>
@@ -100,8 +114,17 @@ export default function NewPassword() {
               />
             </>
           )}
+          <div>
+            {error && (
+              <h5 className="text-red-500 flex justify-center mb-3 text-sm">
+                {error}
+              </h5>
+            )}
 
-          <Button className="w-full">Submit</Button>
+            <Button disabled={isLoading} className="w-full">
+              Submit
+            </Button>
+          </div>
         </Form>
       </div>
     </>

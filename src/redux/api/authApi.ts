@@ -22,28 +22,27 @@ export const authApi = baseApi.injectEndpoints({
         };
       },
     }),
-    // forgotPassword: build.mutation({
-    //   query: (data) => ({
-    //     url: "/auth/forgot",
-    //     method: "POST",
-    //     data,
-    //   }),
-    // }),
-    // otpVarify: build.mutation({
-    //   query: (data) => ({
-    //     url: "/auth/verify-email",
-    //     method: "POST",
-    //     data,
-    //   }),
-    //   invalidatesTags: [tagTypes.profile],
-    // }),
-    // resetPassword: build.mutation({
-    //   query: (data) => ({
-    //     url: "/auth/reset-password",
-    //     method: "POST",
-    //     data,
-    //   }),
-    // }),
+    forgotPassword: build.mutation({
+      query: (data) => ({
+        url: "/otp-send",
+        method: "POST",
+        data,
+      }),
+    }),
+    otpVarify: build.mutation({
+      query: (data) => ({
+        url: "/verify-otp",
+        method: "POST",
+        data,
+      }),
+    }),
+    resetPass: build.mutation({
+      query: (data) => ({
+        url: "/forget/password",
+        method: "POST",
+        data,
+      }),
+    }),
     getProfile: build.query({
       query: () => ({
         url: "/my/profile",
@@ -70,5 +69,11 @@ export const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useLoginInMutation, useGetProfileQuery, useRegisterMutation } =
-  authApi;
+export const {
+  useLoginInMutation,
+  useGetProfileQuery,
+  useRegisterMutation,
+  useForgotPasswordMutation,
+  useOtpVarifyMutation,
+  useResetPassMutation,
+} = authApi;

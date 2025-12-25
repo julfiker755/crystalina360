@@ -33,6 +33,7 @@ export default function SignIn() {
   });
 
   const handleSubmit = async (values: FieldValues) => {
+    setIsError("");
     try {
       const data = helpers.fromData(values);
       const res = await LoginIn(data).unwrap();

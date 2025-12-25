@@ -31,6 +31,7 @@ export default function SignUp({ setActiveTab }: any) {
   });
 
   const handleSubmit = async (values: FieldValues) => {
+    setIsError("");
     const { c_password, ...rest } = values;
     const data = {
       ...rest,

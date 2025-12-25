@@ -4,6 +4,8 @@ import { ArrowLeft } from "lucide-react";
 import { setActiveModal, setOtpInfo } from "@/redux/features/authSlice";
 import { ChangeEvent, KeyboardEvent, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useOtpVarifyMutation } from "@/redux/api/authApi";
+import { helpers } from "@/lib";
 
 export default function VarifyOtp() {
   const dispatch = useAppDispatch();
@@ -11,7 +13,7 @@ export default function VarifyOtp() {
   const [error, setError] = useState<string>("");
   const [isError, setIsError] = useState<string>("");
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const item = useAppSelector((state) => state.auth.otpInfo);
+  const otpInfo = useAppSelector((state) => state.auth.otpInfo);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>, i: number) => {
     const { value } = e.target;
@@ -37,14 +39,16 @@ export default function VarifyOtp() {
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
-    const pastedData = e.clipboardData.getData("text/plain").slice(0, 4);
-    if (!/^\d{4}$/.test(pastedData)) {
+    const pastedData = e.clipboardData.getData("text/plain").slice(0, 6);
+    if (!/^\d{6}$/.test(pastedData)) {
       setError("Please paste a 6-digit number.");
       return;
     }
     setError("");
     setCode(pastedData.split(""));
   };
+
+  const [otpVarify, { isLoading }] = useOtpVarifyMutation();
 
   const handleVerify = async () => {
     setIsError("");
@@ -53,20 +57,20 @@ export default function VarifyOtp() {
       if (joinedCode.length < 6) {
         setError("Please enter all 6 digits.");
       } else {
-        // const value = { email, code: code.join("") };
-        dispatch(
-          setOtpInfo({
-            email: "email",
-          })
-        );
+        const value = { email: otpInfo.email, otp: joinedCode };
+        const data = helpers.fromData(value);
+        const res = await otpVarify(data).unwrap();
+        console.log(res);
+        if (res.status) {
+          dispatch(
+            setOtpInfo({
+              email: res?.data?.email,
+              otp: joinedCode,
+            })
+          );
+          setCode([]);
+        }
 
-        // if (res.success) {
-        //   toast.success("OTP Verified Successfully", {
-        //     description: "You can now set a new password",
-        //   });
-        //   setCode([]);
-
-        // }
         dispatch(setActiveModal("newPass"));
         setError("");
       }
@@ -97,7 +101,7 @@ export default function VarifyOtp() {
             <FavIcon name="varify" className="size-6" />
           </h5>
           <p className="text-center px-10 pt-2">
-            {`  We've sent you a 6 digit code to ${item?.email || ""}. Please
+            {`  We've sent you a 6 digit code to ${otpInfo?.email || ""}. Please
             verify that code to change your password.`}
           </p>
         </div>
@@ -127,7 +131,12 @@ export default function VarifyOtp() {
             <p className="text-red-500 text-sm text-center mb-4">{isError}</p>
           )}
           <div className="flex justify-center mt-5">
-            <Button type="button" className="w-full" onClick={handleVerify}>
+            <Button
+              disabled={isLoading}
+              type="button"
+              className="w-full"
+              onClick={handleVerify}
+            >
               Verify
             </Button>
           </div>
