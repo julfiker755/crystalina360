@@ -11,7 +11,7 @@ import {
 } from "@/redux/features/authSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { sign_In } from "@/schema";
-import { authKey, helpers, routeName } from "@/lib";
+import { authKey, helpers, roleKey, routeName } from "@/lib";
 import { FromInput2 } from "@/components/reuseable/form-input2";
 import { authApi, useLoginInMutation } from "@/redux/api/authApi";
 import { useId, useState } from "react";
@@ -47,8 +47,10 @@ export default function SignIn() {
             })
           );
         }
+        if (res?.user?.role == roleKey.admin) {
+          router.push("/admin");
+        }
       }
-      // // router.push("/dashboard");
     } catch (err: any) {
       setIsError(err?.data?.message);
     }

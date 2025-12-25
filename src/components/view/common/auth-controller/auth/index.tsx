@@ -4,9 +4,12 @@ import { useAppDispatch } from "@/redux/hooks";
 import { toggleIsOpen } from "@/redux/features/authSlice";
 import SignIn from "./sign-in";
 import SignUp from "./sign-up";
+import { useState } from "react";
 
 export default function Auth({ title }: any) {
   const dispatch = useAppDispatch();
+  const [activeTab, setActiveTab] = useState("sign-in");
+
   return (
     <>
       <div className="bg-figma-delete text-xl font-bold w-full h-12 content-center text-center top-0 left-0">
@@ -17,7 +20,7 @@ export default function Auth({ title }: any) {
           className="top-3 right-4"
           onClose={() => dispatch(toggleIsOpen())}
         />
-        <Tabs defaultValue="sign-in">
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="w-[95%] mx-auto mt-2  h-10 p-0 rounded-full">
             <TabsTrigger
               value="sign-in"
@@ -36,7 +39,7 @@ export default function Auth({ title }: any) {
             <SignIn />
           </TabsContent>
           <TabsContent className="p-4" value="sign-up">
-            <SignUp />
+            <SignUp setActiveTab={setActiveTab} />
           </TabsContent>
         </Tabs>
       </div>

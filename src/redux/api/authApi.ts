@@ -13,6 +13,15 @@ export const authApi = baseApi.injectEndpoints({
       },
       invalidatesTags: [tagTypes.profile],
     }),
+    register: build.mutation({
+      query: (data) => {
+        return {
+          url: "/register",
+          method: "POST",
+          data,
+        };
+      },
+    }),
     // forgotPassword: build.mutation({
     //   query: (data) => ({
     //     url: "/auth/forgot",
@@ -61,4 +70,5 @@ export const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useLoginInMutation, useGetProfileQuery } = authApi;
+export const { useLoginInMutation, useGetProfileQuery, useRegisterMutation } =
+  authApi;

@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Modal2 from "@/components/reuseable/modal2";
 import AuthModalController from "../../common/auth-controller";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { toggleIsOpen } from "@/redux/features/authSlice";
+import { setSignupRole, toggleIsOpen } from "@/redux/features/authSlice";
 import { cn, roleKey } from "@/lib";
 import { AppState } from "@/redux/store";
 import FavIcon from "@/icon/favIcon";
@@ -180,6 +180,12 @@ export default function Navber({ className }: any) {
 function SignInButton() {
   const dispatch = useAppDispatch();
   const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
+
+  const handleOpenModal = () => {
+    dispatch(toggleIsOpen());
+    dispatch(setSignupRole("user"));
+  };
+
   return (
     <>
       {/* sign In User */}
@@ -188,7 +194,7 @@ function SignInButton() {
           <li>
             <Link href="/favorite-events">
               {" "}
-              <FavIcon className="size-[26px] lg:size-7" name="nv_love" />
+              <FavIcon className="size-6.5 lg:size-7" name="nv_love" />
             </Link>
           </li>
           <li>
@@ -206,13 +212,13 @@ function SignInButton() {
         // not Sign In User
         <>
           <Button
-            onClick={() => dispatch(toggleIsOpen())}
+            onClick={() => handleOpenModal()}
             className="rounded-full text-figma-black bg-primary/30 hidden md:block"
           >
             Sign in as User
           </Button>
           <Button
-            onClick={() => dispatch(toggleIsOpen())}
+            onClick={() => handleOpenModal()}
             size="icon-sm"
             className="rounded-full md:hidden grid place-items-center bg-primary/30"
           >

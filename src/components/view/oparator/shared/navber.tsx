@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Modal2 from "@/components/reuseable/modal2";
 import AuthModalController from "../../common/auth-controller";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { toggleIsOpen } from "@/redux/features/authSlice";
+import { setSignupRole, toggleIsOpen } from "@/redux/features/authSlice";
 import { cn, RandomImg, roleKey } from "@/lib";
 import { AppState } from "@/redux/store";
 import FavIcon from "@/icon/favIcon";
@@ -165,6 +165,12 @@ export default function Navber({ className }: any) {
 function SignInButton() {
   const dispatch = useAppDispatch();
   const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
+
+  const handleOpenModal = () => {
+    dispatch(toggleIsOpen());
+    dispatch(setSignupRole("operator"));
+  };
+
   return (
     <>
       {/* sign In User */}
@@ -209,14 +215,14 @@ function SignInButton() {
             </Button>
           </Link>
           <Button
-            onClick={() => dispatch(toggleIsOpen())}
+            onClick={() => handleOpenModal()}
             size="lg"
             className="hidden md:block bg-primary"
           >
             Sign in as operator
           </Button>
           <Button
-            onClick={() => dispatch(toggleIsOpen())}
+            onClick={() => handleOpenModal()}
             size="icon-sm"
             className="rounded-full md:hidden grid place-items-center bg-primary/30"
           >

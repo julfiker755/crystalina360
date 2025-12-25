@@ -9,6 +9,7 @@ import {
 } from "@/components/ui";
 import clsx from "clsx";
 import { cn } from "@/lib";
+import { useId } from "react";
 
 interface ModalProps {
   open: boolean;
@@ -31,10 +32,12 @@ export default function Modal2({
   mainStyle,
   style,
 }: ModalProps) {
+  const titleId = useId();
   return (
     <Dialog open={open} onOpenChange={setIsOpen}>
       <DialogTrigger asChild />
       <DialogContent
+        aria-labelledby={titleId}
         showCloseButton={false}
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}

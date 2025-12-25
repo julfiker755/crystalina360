@@ -26,6 +26,7 @@ export interface AuthState {
     token: string;
   };
   otpInfo: { email: string; otp: string };
+  signupRole: string;
   activeModal: SignKey;
   isOpen: boolean;
   isLogged: boolean;

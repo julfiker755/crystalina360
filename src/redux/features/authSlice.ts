@@ -18,6 +18,7 @@ const token = helpers.getAuthCookie(authKey);
 const initialState: AuthState = {
   user: { name: "", email: "", avatar: "", role: "", token: token || "" },
   otpInfo: { email: "", otp: "" },
+  signupRole: "",
   activeModal: "signIn",
   isOpen: false,
   isLogged: !!token,
@@ -56,6 +57,9 @@ const authSlice = createSlice({
       state.isLogged = false;
       state.isProfileLoading = false;
     },
+    setSignupRole: (state, action: PayloadAction<string>) => {
+      state.signupRole = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -85,6 +89,7 @@ const authSlice = createSlice({
 
 export const {
   setOtpInfo,
+  setSignupRole,
   setActiveModal,
   setUser,
   clearOtpInfo,
