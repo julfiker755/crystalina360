@@ -48,7 +48,7 @@ export default function SignIn() {
             })
           );
         }
-        if (res?.user?.role == roleKey.admin) {
+        if (res?.data?.user?.role == roleKey.admin) {
           router.push("/admin");
         }
       }

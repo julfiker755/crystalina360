@@ -1,9 +1,6 @@
 "use client";
-import { ImgBox } from "@/components/reuseable/Img-box";
-import Modal2 from "@/components/reuseable/modal2";
 import { SubTitle } from "@/components/reuseable/sub-title";
 import TabBox from "@/components/reuseable/tab-box";
-import UpdatePassword from "@/components/reuseable/update-password";
 import {
   Accordion,
   AccordionContent,
@@ -12,7 +9,6 @@ import {
   Button,
   TabsContent,
 } from "@/components/ui";
-import { CloseIcon } from "@/components/view/common/btn-modal";
 import {
   termsAndConditions,
   privacyPolicy,
@@ -20,44 +16,10 @@ import {
   couponsItem,
 } from "@/components/view/user/dummy-json";
 import { AppAlert } from "@/components/view/user/reuse";
-import ProfileEdit from "@/components/view/user/simple/profile-edit";
-import { useModalState } from "@/hooks";
-import FavIcon from "@/icon/favIcon";
-import { PlaceholderImg } from "@/lib";
-import { clearAuth } from "@/redux/features/authSlice";
-import { useAppDispatch } from "@/redux/hooks";
-import { useRouter } from "next/navigation";
+import ProfileBox from "@/components/view/user/simple/profile-box";
 import { useState } from "react";
 
-const itemBox = [
-  {
-    id: 1,
-    icon: "completed",
-    title: "Completed events",
-    count: "653",
-    bgColor: "#FFF5F6",
-    shadow:
-      "0 2px 4px 0 rgba(196, 172, 164, 0.25), 0 -2px 4px 0 rgba(196, 172, 164, 0.25), 2px 0 4px 0 rgba(196, 172, 164, 0.25), -2px 0 4px 0 rgba(196, 172, 164, 0.25)",
-  },
-  {
-    id: 2,
-    icon: "cost",
-    title: "Total cost",
-    count: "$5684.00",
-    bgColor: "#FDF6FF",
-    shadow:
-      "0 2px 4px 0 rgba(196, 172, 164, 0.25), 0 -2px 4px 0 rgba(196, 172, 164, 0.25), 2px 0 4px 0 rgba(196, 172, 164, 0.25), -2px 0 4px 0 rgba(196, 172, 164, 0.25)",
-  },
-];
-
-const initState = {
-  isProfile: false,
-  isPassword: false,
-};
 export default function Profile() {
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-  const [state, setState] = useModalState(initState);
   const [copied, setCopied] = useState("");
 
   const handleCopy = async (value: any) => {
@@ -68,62 +30,7 @@ export default function Profile() {
   return (
     <div className="container py-10">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        <div className="bg-figma-gray p-4 rounded-md space-y-6 *:text-figma-black">
-          <SubTitle className="text-figma-black" text="Basic info" />
-          <div>
-            <ImgBox
-              src={PlaceholderImg()}
-              className="w-32 h-32 mx-auto"
-              alt="Profile"
-            />
-            <div className="flex items-center justify-center space-x-2 mt-3">
-              <span className="font-medium text-base">Das Mithun</span>
-            </div>
-            <div className="flex items-center justify-center space-x-2">
-              <span className="font-medium text-base">sourov12@gmail.com</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {itemBox?.map((item) => (
-              <div
-                key={item.id}
-                style={{
-                  backgroundColor: item.bgColor,
-                }}
-                className="p-3 rounded-md space-y-0.5"
-              >
-                <div
-                  style={{
-                    boxShadow: item.shadow,
-                  }}
-                  className="grid size-10 rounded-md bg-white place-items-center"
-                >
-                  <FavIcon className="size-6" name={item.icon as any} />
-                </div>
-                <p className="text-lg text-figma-black">{item.title}</p>
-                <h2 className="text-2xl">{item.count}</h2>
-              </div>
-            ))}
-          </div>
-          <div className="space-y-3">
-            <Button
-              onClick={() => setState("isProfile", true)}
-              className="w-full text-white!"
-            >
-              Edit Profile
-            </Button>
-            <Button
-              onClick={() => {
-                dispatch(clearAuth());
-                router.push("/");
-              }}
-              className="w-full text-primary! bg-transparent border"
-            >
-              Log Out
-            </Button>
-          </div>
-        </div>
-
+        <ProfileBox />
         <div className="col-span-1 lg:col-span-2">
           <div className="bg-figma-gray p-4 rounded-md space-y-6 h-full *:text-figma-black">
             <SubTitle className="text-figma-black" text="Account Settings" />
@@ -231,48 +138,6 @@ export default function Profile() {
         </div>
       </div>
       <AppAlert className="pb-10" />
-      {/* ========== edit profile modal ==========  */}
-      <Modal2
-        open={state.isProfile}
-        setIsOpen={(v) => setState("isProfile", v)}
-        className="sm:max-w-lg"
-      >
-        <CloseIcon
-          className="mt-2 mr-2"
-          onClose={() => setState("isProfile", false)}
-        />
-        <ProfileEdit>
-          <div
-            onClick={() => {
-              setState("isPassword", true);
-              setState("isProfile", false);
-            }}
-            className="text-primary cursor-pointer text-end underline mt-2"
-          >
-            Change Password
-          </div>
-        </ProfileEdit>
-      </Modal2>
-      {/* ========== update password Modal ==========  */}
-      <Modal2
-        open={state.isPassword}
-        setIsOpen={(v) => setState("isPassword", v)}
-        className="sm:max-w-lg"
-      >
-        <CloseIcon
-          className="mt-2 mr-2"
-          onClose={() => setState("isPassword", false)}
-        />
-        <div className="pb-2">
-          <div className="my-5">
-            <h2 className="font-bold text-center">Change Password</h2>
-            <p className="text-center text-primary text-sm">
-              Please fill in the correct information to update your account
-            </p>
-          </div>
-          <UpdatePassword btnStyle="" />
-        </div>
-      </Modal2>
     </div>
   );
 }

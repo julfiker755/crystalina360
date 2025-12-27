@@ -50,6 +50,12 @@ export const authApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.profile],
     }),
+    logout: build.mutation({
+      query: () => ({
+        url: "/logout",
+        method: "POST",
+      }),
+    }),
     // updateProfile: build.mutation({
     //   query: (data) => ({
     //     url: "/auth",
@@ -76,4 +82,5 @@ export const {
   useForgotPasswordMutation,
   useOtpVarifyMutation,
   useResetPassMutation,
+  useLogoutMutation,
 } = authApi;
