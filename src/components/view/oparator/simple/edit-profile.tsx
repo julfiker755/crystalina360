@@ -1,17 +1,16 @@
 "use client";
 import React from "react";
 import { useForm, FieldValues } from "react-hook-form";
-import { FromInput } from "@/components/reuseable/form-input";
 import { Button } from "@/components/ui/button";
 import Form from "@/components/reuseable/from";
 import { PlaceholderImg } from "@/lib";
 import ImgUpload from "@/components/reuseable/img-upload";
 import { Upload } from "lucide-react";
-import FavIcon from "@/icon/favIcon";
 import Image from "next/image";
 import { FromInput2 } from "@/components/reuseable/form-input2";
 import { FromTextarea2 } from "@/components/reuseable/from-textarea2";
 import { FromTagInput } from "@/components/reuseable/from-tag";
+import { useGetProfileQuery } from "@/redux/api/authApi";
 
 const intAva = {
   file: null,
@@ -20,6 +19,8 @@ const intAva = {
 
 export default function ProfileEdit2() {
   const [avatar, setAvatar] = React.useState<any>(intAva);
+  const { data: profile } = useGetProfileQuery({});
+  const { img, name, email, bio, skills } = profile?.data?.user || {};
 
   const form = useForm({
     defaultValues: {

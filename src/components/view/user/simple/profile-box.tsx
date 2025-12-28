@@ -1,18 +1,14 @@
 "use client";
 import { useGetProfileQuery } from "@/redux/api/authApi";
-import { clearAuth } from "@/redux/features/authSlice";
 import { Button } from "@/components/ui";
-import { useAppDispatch } from "@/redux/hooks";
-import { useRouter } from "next/navigation";
 import { SubTitle } from "@/components/reuseable/sub-title";
 import { ImgBox } from "@/components/reuseable/Img-box";
-import { PlaceholderImg } from "@/lib";
-import FavIcon from "@/icon/favIcon";
-import { useModalState } from "@/hooks";
+import { useLogout, useModalState } from "@/hooks";
 import Modal2 from "@/components/reuseable/modal2";
 import { CloseIcon } from "../../common/btn-modal";
 import ProfileEdit from "./profile-edit";
 import UpdatePassword from "@/components/reuseable/update-password";
+import FavIcon from "@/icon/favIcon";
 
 const initState = {
   isProfile: false,
@@ -20,12 +16,10 @@ const initState = {
 };
 
 export default function ProfileBox() {
+  const { logout, isLoading: logoutLoading } = useLogout();
   const [state, setState] = useModalState(initState);
-  const dispatch = useAppDispatch();
-  const router = useRouter();
   const { data: profile } = useGetProfileQuery({});
-
-  console.log(profile);
+  const { img, name, email } = profile?.data?.user || {};
 
   const itemBox = [
     {
@@ -52,20 +46,15 @@ export default function ProfileBox() {
       <SubTitle className="text-figma-black" text="Basic info" />
       <div>
         <ImgBox
-          src={profile?.data?.user?.img || "/avater.png"}
+          src={img || "/avater.png"}
           className="w-32 h-32 mx-auto"
           alt="Profile"
         />
         <div className="flex items-center justify-center space-x-2 mt-3">
-          <span className="font-medium text-base">
-            {profile?.data?.user?.name}
-          </span>
+          <span className="font-medium text-base">{name}</span>
         </div>
         <div className="flex items-center justify-center space-x-2">
-          <span className="font-medium text-base">
-            {" "}
-            {profile?.data?.user?.email}
-          </span>
+          <span className="font-medium text-base"> {email}</span>
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -98,11 +87,9 @@ export default function ProfileBox() {
           Edit Profile
         </Button>
         <Button
-          onClick={() => {
-            dispatch(clearAuth());
-            router.push("/");
-          }}
-          className="w-full text-primary! bg-transparent border"
+          onClick={() => logout()}
+          className="w-full text-primary! bg-transparent border disabled:opacity-100"
+          disabled={logoutLoading}
         >
           Log Out
         </Button>
@@ -146,7 +133,7 @@ export default function ProfileBox() {
               Please fill in the correct information to update your account
             </p>
           </div>
-          <UpdatePassword btnStyle="" />
+          <UpdatePassword setState={setState} btnStyle="" />
         </div>
       </Modal2>
     </div>

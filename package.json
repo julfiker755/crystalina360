@@ -27,6 +27,7 @@
     "@reduxjs/toolkit": "^2.9.2",
     "@smastrom/react-rating": "^1.5.0",
     "axios": "^1.13.0",
+    "baseline-browser-mapping": "^2.9.11",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",

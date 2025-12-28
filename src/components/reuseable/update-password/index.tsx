@@ -5,18 +5,25 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 import { FromInput } from "../form-input";
 import { change_Pass } from "@/schema";
-import { cn, roleKey } from "@/lib";
+import { cn, helpers, roleKey } from "@/lib";
 import { useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
 import { FromInput2 } from "../form-input2";
+import { useUpdatePassMutation } from "@/redux/api/authApi";
+import React from "react";
+import { ErrorText } from "../error";
+import sonner from "../sonner";
 
 export default function UpdatePassword({
   btnStyle,
   btnStyle2,
   className,
   inputStyle,
+  setState,
 }: any) {
   const { user } = useAppSelector((state: AppState) => state.auth);
+  const [updatePass, { isLoading }] = useUpdatePassMutation();
+  const [error, setError] = React.useState("");
   const from2 = useForm({
     resolver: zodResolver(change_Pass),
     defaultValues: {
@@ -27,10 +34,25 @@ export default function UpdatePassword({
   });
 
   const handlePasswordSubmit = async (values: FieldValues) => {
-    console.log(values);
-    // toast.success("Update Successful", {
-    //   description: "Your profile has been updated successfully",
-    // });
+    setError("");
+    try {
+      const data = helpers.fromData({
+        current_password: values.current_password,
+        password: values.new_password,
+        password_confirmation: values.c_password,
+      });
+      const res = await updatePass(data).unwrap();
+      if (res.status) {
+        sonner.success(
+          "Password Updated",
+          "Your password has been updated successfully"
+        );
+        from2.reset();
+        setState("isPassword", false);
+      }
+    } catch (err: any) {
+      setError(err?.data?.message || "Something went wrong");
+    }
   };
   return (
     <Form from={from2} onSubmit={handlePasswordSubmit}>
@@ -95,7 +117,10 @@ export default function UpdatePassword({
         )}
 
         <div className={btnStyle2}>
-          <Button className={cn("w-full", btnStyle)}>Save Changes</Button>
+          <ErrorText error={error} className="mb-3" />
+          <Button disabled={isLoading} className={cn("w-full", btnStyle)}>
+            Save Changes
+          </Button>
         </div>
       </div>
     </Form>

@@ -12,42 +12,40 @@ import UpdatePassword from "@/components/reuseable/update-password";
 import { Button, TabsContent } from "@/components/ui";
 import { CloseIcon } from "@/components/view/common/btn-modal";
 import ProfileEdit2 from "@/components/view/oparator/simple/edit-profile";
-import { useModalState } from "@/hooks";
+import { useLogout, useModalState } from "@/hooks";
+import { useGetProfileQuery } from "@/redux/api/authApi";
 import FavIcon from "@/icon/favIcon";
-import { RandomImg } from "@/lib";
-import { clearAuth } from "@/redux/features/authSlice";
-import { useAppDispatch } from "@/redux/hooks";
-import { useRouter } from "next/navigation";
-
-const itemBox = [
-  {
-    id: 1,
-    icon: "completed",
-    title: "Total Events",
-    count: "653",
-  },
-  {
-    id: 2,
-    icon: "cost",
-    title: "Total revenue",
-    count: "$5684.00",
-  },
-  {
-    id: 3,
-    icon: "ongoing_events",
-    title: "Joined since",
-    count: "16 Sep, 2024",
-  },
-];
 
 const initState = {
   isProfile: false,
   isPassword: false,
 };
 export default function Profile() {
-  const dispatch = useAppDispatch();
-  const router = useRouter();
   const [state, setState] = useModalState(initState);
+  const { data: profile } = useGetProfileQuery({});
+  const { img, name, email, bio, skills } = profile?.data?.user || {};
+  const { logout, isLoading: logoutLoading } = useLogout();
+
+  const stashItem = [
+    {
+      id: 1,
+      icon: "completed",
+      title: "Total Events",
+      count: profile?.total_events,
+    },
+    {
+      id: 2,
+      icon: "cost",
+      title: "Total revenue",
+      count: profile?.total_revenue,
+    },
+    {
+      id: 3,
+      icon: "ongoing_events",
+      title: "Joined since",
+      count: profile?.data?.user?.joined_date,
+    },
+  ];
 
   return (
     <div className="container py-10">
@@ -55,19 +53,19 @@ export default function Profile() {
         <div className="bg-figma-delete p-6 rounded-md space-y-6 *:text-figma-black">
           <div>
             <ImgBox
-              src={RandomImg()}
+              src={img || "/avater.png"}
               className="w-32 h-32 rounded-full mx-auto"
               alt="Profile"
             />
             <div className="flex items-center justify-center space-x-2 mt-3">
-              <span className="font-medium text-base">Elizabeth Olson</span>
+              <span className="font-medium text-base">{name}</span>
             </div>
             <div className="flex items-center justify-center space-x-2">
-              <span>example@gmail.com</span>
+              <span>{email}</span>
             </div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {itemBox?.map((item) => (
+            {stashItem?.map((item) => (
               <div
                 key={item.id}
                 className="p-3 flex last:col-span-2 items-center bg-white rounded-md space-y-0.5"
@@ -77,19 +75,19 @@ export default function Profile() {
                 </div>
                 <div>
                   <p className="text-figma-black">{item.title}</p>
-                  <h2>{item.count}</h2>
+                  <h2>{item.count || 0}</h2>
                 </div>
               </div>
             ))}
           </div>
-          <div
-            onClick={() => {
-              dispatch(clearAuth());
-              router.push("/operator");
-            }}
-            className="flex justify-center mt-5"
-          >
-            <Button variant="destructive" size="lg" className="w-fit">
+          <div className="flex justify-center mt-5">
+            <Button
+              disabled={logoutLoading}
+              onClick={() => logout()}
+              variant="destructive"
+              size="lg"
+              className="w-fit"
+            >
               <FavIcon className="size-5" name="logout" />
               Logout
             </Button>
@@ -108,17 +106,12 @@ export default function Profile() {
               <TabsContent value="overview" className="p-0">
                 <div className="space-y-7 pt-4 relative">
                   <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-                    <InputShow label="Your full name" value="Elizabeth Olson" />
-                    <InputShow label="Email" value="example@gmail.com" />
+                    <InputShow label="Your full name" value={name || "N/A"} />
+                    <InputShow label="Email" value={email || "N/A"} />
                   </div>
-                  <TextAreaShow
-                    label="Your bio"
-                    value="Lorem ipsum dolor sit amet consectetur. Viverra pretium maecenas tortor odio interdum arcu sed gravida aliquam. Eros amet pulvinar amet sit. Viverra tortor auctor faucibus nulla sapien consequat ligula lectus in. Ut at quis dolor senectus turpis. Nunc at vitae duis quis ornare tempus. Et ornare erat molestie lacus. Iaculis sed metus vitae egestas adipiscing pulvinar amet. Morbi mattis facilisis convallis adipiscing ut arcu turpis mattis. Eu viverra posuere nunc amet nulla ac. Aliquam scelerisque quam nibh aliquam velit. Consectetur a tincidunt vel arcu viverra pellentesque. Hac vivamus amet netus non lacus vivamus eget at. Quam enim duis sagittis elit egestas. Nec enim sem elementum nulla."
-                  />
-                  <BadgeShow
-                    label="Your skills"
-                    items={["Skill-1", "Skill-2", "Skill-3"]}
-                  />
+                  <TextAreaShow label="Your bio" value={bio || "N/A"} />
+
+                  <BadgeShow label="Your skills" items={skills || []} />
                   <Button
                     onClick={() => setState("isProfile", true)}
                     className="absolute  -top-10 right-0"

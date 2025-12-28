@@ -56,22 +56,22 @@ export const authApi = baseApi.injectEndpoints({
         method: "POST",
       }),
     }),
-    // updateProfile: build.mutation({
-    //   query: (data) => ({
-    //     url: "/auth",
-    //     method: "PATCH",
-    //     ContentType: "multipart/form-data",
-    //     data,
-    //   }),
-    //   invalidatesTags: [tagTypes.profile],
-    // }),
-    // updatePassword: build.mutation({
-    //   query: (data) => ({
-    //     url: "/auth/change-password",
-    //     method: "POST",
-    //     data,
-    //   }),
-    // }),
+    updateProfile: build.mutation({
+      query: (data) => ({
+        url: "/update/profile",
+        method: "POST",
+        ContentType: "multipart/form-data",
+        data,
+      }),
+      invalidatesTags: [tagTypes.profile],
+    }),
+    updatePass: build.mutation({
+      query: (data) => ({
+        url: "/change/password",
+        method: "POST",
+        data,
+      }),
+    }),
   }),
 });
 
@@ -83,4 +83,6 @@ export const {
   useOtpVarifyMutation,
   useResetPassMutation,
   useLogoutMutation,
+  useUpdateProfileMutation,
+  useUpdatePassMutation,
 } = authApi;

@@ -16,6 +16,7 @@ import { FromInput2 } from "@/components/reuseable/form-input2";
 import { authApi, useLoginInMutation } from "@/redux/api/authApi";
 import { useId, useState } from "react";
 import { useAppDispatch } from "@/redux/hooks";
+import { ErrorText } from "@/components/reuseable/error";
 
 export default function SignIn() {
   const dispatch = useAppDispatch();
@@ -61,7 +62,7 @@ export default function SignIn() {
       <Form className="space-y-4" from={from} onSubmit={handleSubmit}>
         {pathname?.includes(routeName) ? (
           <>
-            <div className="mt-1">
+            <div className="mt-1 mb-5">
               <FromInput2
                 className="h-10"
                 name="email"
@@ -116,11 +117,7 @@ export default function SignIn() {
           </div>
         </div>
         <div>
-          {error && (
-            <h5 className="text-red-500 flex justify-center mb-3 text-sm">
-              {error}
-            </h5>
-          )}
+          <ErrorText error={error} className="mb-3" />
           <Button disabled={isLoading} className="w-full">
             Sign in
           </Button>

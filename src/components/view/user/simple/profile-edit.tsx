@@ -1,15 +1,20 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, FieldValues } from "react-hook-form";
 import { FromInput } from "@/components/reuseable/form-input";
 import { Button } from "@/components/ui/button";
 import Form from "@/components/reuseable/from";
-import { PlaceholderImg } from "@/lib";
 import ImgUpload from "@/components/reuseable/img-upload";
 import { Upload } from "lucide-react";
 import FavIcon from "@/icon/favIcon";
 import Image from "next/image";
 import { childrenProps } from "@/types";
+import {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} from "@/redux/api/authApi";
+import sonner from "@/components/reuseable/sonner";
+import { helpers } from "@/lib";
 
 const intAva = {
   file: null,
@@ -18,6 +23,9 @@ const intAva = {
 
 export default function ProfileEdit({ children }: childrenProps) {
   const [avatar, setAvatar] = React.useState<any>(intAva);
+  const { data: profile } = useGetProfileQuery({});
+  const { img, name } = profile?.data?.user || {};
+  const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
 
   const form = useForm({
     defaultValues: {
@@ -25,15 +33,28 @@ export default function ProfileEdit({ children }: childrenProps) {
     },
   });
 
+  useEffect(() => {
+    form.reset({ name: name ?? "" });
+  }, [name]);
+
   const handleSubmit = async (values: FieldValues) => {
     const value = {
       name: values.name,
-      ...(avatar?.file && { image: avatar?.file }),
+      ...(avatar?.file && { img: avatar?.file }),
     };
-    console.log(value);
-    // toast.success("Update Successful", {
-    //   description: "Your profile has been updated successfully",
-    // });
+    try {
+      const data = helpers.fromData(value);
+      const res = await updateProfile(data).unwrap();
+      if (res.status) {
+        form.reset();
+        sonner.success(
+          "Update Successful",
+          "Your profile has been updated successfully"
+        );
+      }
+    } catch (err: any) {
+      console.log("Update profile error:", err);
+    }
   };
 
   return (
@@ -48,7 +69,7 @@ export default function ProfileEdit({ children }: childrenProps) {
       <Form className="space-y-4" from={form} onSubmit={handleSubmit}>
         <div className="relative mx-auto size-28 rounded-md">
           <Image
-            src={avatar.preview || PlaceholderImg() || "/blur.png"}
+            src={avatar.preview || img || "/blur.png"}
             alt={"title"}
             fill
             className={"object-cover rounded-md"}
@@ -79,7 +100,9 @@ export default function ProfileEdit({ children }: childrenProps) {
           {children}
         </div>
 
-        <Button className="w-full">Save Changes</Button>
+        <Button disabled={isUpdating} className="w-full">
+          Save Changes
+        </Button>
       </Form>
     </div>
   );

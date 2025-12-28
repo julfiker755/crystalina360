@@ -190,14 +190,15 @@ function SignInButton() {
             <Link href="/operator/profile">
               <div className="flex space-x-1 items-center">
                 <Avatars
-                  fallback="T"
-                  src={RandomImg()}
+                  fallback={user?.name || "Name"}
+                  src={user?.avatar || "/avater.png"}
                   className="size-10! rounded-md!"
+                  fallbackStyle="rounded-md"
                   alt="img"
                 />
                 <ul className="*:text-black hidden lg:block leading-5">
-                  <li className="font-medium">Elizabeth Olson</li>
-                  <li>example@gmail.com</li>
+                  <li className="font-medium">{user?.name}</li>
+                  <li>{user?.email}</li>
                 </ul>
               </div>
             </Link>
