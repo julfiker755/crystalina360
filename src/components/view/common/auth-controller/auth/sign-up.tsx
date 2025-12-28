@@ -2,24 +2,29 @@
 import { FromInput } from "@/components/reuseable/form-input";
 import Form from "@/components/reuseable/from";
 import { Button } from "@/components/ui";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FromInput2 } from "@/components/reuseable/form-input2";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useRegisterMutation } from "@/redux/api/authApi";
-import sonner from "@/components/reuseable/sonner";
+import {
+  controlkey,
+  setActiveModal,
+  setOtpInfo,
+} from "@/redux/features/authSlice";
 import { helpers, routeName } from "@/lib";
 import { sign_Up } from "@/schema";
 import FavIcon from "@/icon/favIcon";
 import { useState } from "react";
+import sonner from "@/components/reuseable/sonner";
 
-export default function SignUp({ setActiveTab }: any) {
+export default function SignUp() {
   const pathname = usePathname();
-  const router = useRouter();
   const dynamicRole = useAppSelector((state) => state.auth.signupRole);
   const [register, { isLoading }] = useRegisterMutation();
   const [error, setIsError] = useState("");
+  const dispatch = useAppDispatch();
   const from = useForm({
     resolver: zodResolver(sign_Up),
     defaultValues: {
@@ -43,9 +48,18 @@ export default function SignUp({ setActiveTab }: any) {
       const value = helpers.fromData(data);
       const res = await register(value).unwrap();
       if (res.status) {
+        sonner.success(
+          "Sign up Successful",
+          "Please check your email for the otp verify"
+        );
+        dispatch(setActiveModal(controlkey.emailVafi));
+        dispatch(
+          setOtpInfo({
+            email: res?.data?.email,
+            otp: "",
+          })
+        );
         from.reset();
-        setActiveTab("sign-in");
-        sonner.success("Sign Up Successful", "Please log in to continue");
       }
     } catch (err: any) {
       setIsError(err?.data?.error);

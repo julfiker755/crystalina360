@@ -6,7 +6,11 @@ import { FieldValues, useForm } from "react-hook-form";
 import FavIcon from "@/icon/favIcon";
 import { ArrowLeft } from "lucide-react";
 import { useDispatch } from "react-redux";
-import { setActiveModal, setOtpInfo } from "@/redux/features/authSlice";
+import {
+  controlkey,
+  setActiveModal,
+  setOtpInfo,
+} from "@/redux/features/authSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { sign_In } from "@/schema";
 import { helpers, routeName } from "@/lib";
@@ -18,7 +22,6 @@ import sonner from "@/components/reuseable/sonner";
 export default function ForgetPassword() {
   const dispatch = useDispatch();
   const pathname = usePathname();
-  const router = useRouter();
   const [error, setIsError] = useState("");
   const from = useForm({
     resolver: zodResolver(sign_In.partial()),
@@ -34,7 +37,7 @@ export default function ForgetPassword() {
       const data = helpers.fromData(values);
       const res = await forgotPassword(data).unwrap();
       if (res.status) {
-        dispatch(setActiveModal("verify"));
+        dispatch(setActiveModal(controlkey.verify));
         dispatch(
           setOtpInfo({
             email: res?.data?.email,

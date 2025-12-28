@@ -1,5 +1,9 @@
 import { FromInput } from "@/components/reuseable/form-input";
-import { clearOtpInfo, setActiveModal } from "@/redux/features/authSlice";
+import {
+  clearOtpInfo,
+  controlkey,
+  setActiveModal,
+} from "@/redux/features/authSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FromInput2 } from "@/components/reuseable/form-input2";
 import { useResetPassMutation } from "@/redux/api/authApi";
@@ -39,7 +43,7 @@ export default function NewPassword() {
       const data = helpers.fromData(value);
       const res = await resetPass(data).unwrap();
       if (res.status) {
-        dispatch(setActiveModal("signIn"));
+        dispatch(setActiveModal(controlkey.signIn));
         dispatch(clearOtpInfo());
       }
     } catch (err: any) {

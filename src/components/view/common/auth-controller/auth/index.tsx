@@ -39,7 +39,7 @@ export default function Auth({ title }: any) {
             <SignIn />
           </TabsContent>
           <TabsContent className="p-4" value="sign-up">
-            <SignUp setActiveTab={setActiveTab} />
+            <SignUp />
           </TabsContent>
         </Tabs>
       </div>

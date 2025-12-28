@@ -2,16 +2,17 @@ import { Button, Input } from "@/components/ui";
 import FavIcon from "@/icon/favIcon";
 import { ArrowLeft } from "lucide-react";
 import {
+  clearOtpInfo,
   controlkey,
   setActiveModal,
-  setOtpInfo,
 } from "@/redux/features/authSlice";
 import { ChangeEvent, KeyboardEvent, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useOtpVarifyMutation } from "@/redux/api/authApi";
+import sonner from "@/components/reuseable/sonner";
 import { helpers } from "@/lib";
 
-export default function VarifyOtp() {
+export default function EmailVarifyOtp() {
   const dispatch = useAppDispatch();
   const [code, setCode] = useState<string[]>(Array(6).fill(""));
   const [error, setError] = useState<string>("");
@@ -64,18 +65,14 @@ export default function VarifyOtp() {
         const value = { email: otpInfo.email, otp: joinedCode };
         const data = helpers.fromData(value);
         const res = await otpVarify(data).unwrap();
-        console.log(res);
+
         if (res.status) {
-          dispatch(
-            setOtpInfo({
-              email: res?.data?.email,
-              otp: joinedCode,
-            })
-          );
+          dispatch(setActiveModal(controlkey.signIn));
+          sonner.success("Sign Up Successfull", "Please log in to continue");
+          dispatch(clearOtpInfo());
           setCode([]);
         }
 
-        dispatch(setActiveModal(controlkey.newPass));
         setError("");
       }
     } catch (err: any) {
@@ -84,18 +81,19 @@ export default function VarifyOtp() {
       }
     }
   };
+
   return (
     <>
       <div className="bg-[#EDEDED]  text-xl font-bold w-full h-12 content-center text-center top-0 left-0">
         <ul className="flex justify-between items-center">
-          <li onClick={() => dispatch(setActiveModal("forgot"))}>
+          <li onClick={() => dispatch(setActiveModal(controlkey.signIn))}>
             {" "}
             <ArrowLeft
               size={20}
               className="text-figma-black ml-2 cursor-pointer"
             />{" "}
           </li>
-          <li className="text-xl font-bold">Verify Code</li>
+          <li className="text-xl font-bold">Verification</li>
           <li className="opacity-0">0</li>
         </ul>
       </div>
@@ -105,8 +103,7 @@ export default function VarifyOtp() {
             <FavIcon name="varify" className="size-6" />
           </h5>
           <p className="text-center px-10 pt-2">
-            {`  We've sent you a 6 digit code to ${otpInfo?.email || ""}. Please
-            verify that code to change your password.`}
+            {`  We've sent a 6-digit code to ${otpInfo.email}. Please verify your email using this code`}
           </p>
         </div>
         <div>

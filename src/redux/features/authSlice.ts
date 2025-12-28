@@ -9,6 +9,7 @@ export const controlkey = {
   forgot: "forgot",
   verify: "verify",
   newPass: "newPass",
+  emailVafi: "emailVafi",
 } as const;
 
 export type SignKey = keyof typeof controlkey;

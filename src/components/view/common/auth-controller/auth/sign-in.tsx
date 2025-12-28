@@ -15,14 +15,16 @@ import { authKey, helpers, roleKey, routeName } from "@/lib";
 import { FromInput2 } from "@/components/reuseable/form-input2";
 import { authApi, useLoginInMutation } from "@/redux/api/authApi";
 import { useId, useState } from "react";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { ErrorText } from "@/components/reuseable/error";
+import { AppState } from "@/redux/store";
 
 export default function SignIn() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
   const [LoginIn, { isLoading }] = useLoginInMutation();
+  const permition = useAppSelector((state: AppState) => state.auth.signupRole);
   const [error, setIsError] = useState("");
   const rememberId = useId();
   const from = useForm({
@@ -33,14 +35,28 @@ export default function SignIn() {
     },
   });
 
+  //  == handleSubmit  ==
   const handleSubmit = async (values: FieldValues) => {
     setIsError("");
     try {
       const data = helpers.fromData(values);
       const res = await LoginIn(data).unwrap();
+      const resRole = res?.data?.user?.role;
+      const token = res?.data?.token;
+
+      // role base access
+      if (resRole !== permition) {
+        const roleErrorMap: Record<string, string> = {
+          [roleKey.user]: "You are a user. Go to User Website",
+          [roleKey.operator]: "You are an operator. Go to Operator Website",
+        };
+        setIsError(roleErrorMap[resRole]);
+        return;
+      }
+
       if (res.status) {
-        helpers.setAuthCookie(authKey, res?.data?.token);
-        dispatch(setUser({ token: res?.data?.token }));
+        helpers.setAuthCookie(authKey, token);
+        dispatch(setUser({ token }));
         dispatch(toggleIsOpen());
         if (helpers.getAuthCookie(authKey)) {
           dispatch(
@@ -49,7 +65,7 @@ export default function SignIn() {
             })
           );
         }
-        if (res?.data?.user?.role == roleKey.admin) {
+        if (resRole == roleKey.admin) {
           router.push("/admin");
         }
       }
@@ -57,6 +73,7 @@ export default function SignIn() {
       setIsError(err?.data?.message);
     }
   };
+
   return (
     <div>
       <Form className="space-y-4" from={from} onSubmit={handleSubmit}>

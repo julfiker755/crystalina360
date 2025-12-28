@@ -51,7 +51,7 @@ export default function UpdatePassword({
         setState("isPassword", false);
       }
     } catch (err: any) {
-      setError(err?.data?.message || "Something went wrong");
+      setError(err?.data?.message);
     }
   };
   return (

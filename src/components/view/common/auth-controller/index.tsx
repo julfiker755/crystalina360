@@ -5,6 +5,7 @@ import ForgetPassword from "./forget";
 import { useAppSelector } from "@/redux/hooks";
 import VarifyOtp from "./varify-otp";
 import NewPassword from "./new-password";
+import EmailVarifyOtp from "./emailVafi";
 
 export default function AuthModalController({ title }: any) {
   const { activeModal } = useAppSelector((state: any) => state.auth);
@@ -18,6 +19,8 @@ export default function AuthModalController({ title }: any) {
       return <VarifyOtp />;
     case controlkey.newPass:
       return <NewPassword />;
+    case controlkey.emailVafi:
+      return <EmailVarifyOtp />;
     default:
       return null;
   }

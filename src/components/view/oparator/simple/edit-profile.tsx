@@ -1,16 +1,20 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, FieldValues } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import Form from "@/components/reuseable/from";
-import { PlaceholderImg } from "@/lib";
+import { helpers, PlaceholderImg } from "@/lib";
 import ImgUpload from "@/components/reuseable/img-upload";
 import { Upload } from "lucide-react";
 import Image from "next/image";
 import { FromInput2 } from "@/components/reuseable/form-input2";
 import { FromTextarea2 } from "@/components/reuseable/from-textarea2";
 import { FromTagInput } from "@/components/reuseable/from-tag";
-import { useGetProfileQuery } from "@/redux/api/authApi";
+import {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} from "@/redux/api/authApi";
+import sonner from "@/components/reuseable/sonner";
 
 const intAva = {
   file: null,
@@ -21,6 +25,7 @@ export default function ProfileEdit2() {
   const [avatar, setAvatar] = React.useState<any>(intAva);
   const { data: profile } = useGetProfileQuery({});
   const { img, name, email, bio, skills } = profile?.data?.user || {};
+  const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
 
   const form = useForm({
     defaultValues: {
@@ -31,15 +36,36 @@ export default function ProfileEdit2() {
     },
   });
 
+  useEffect(() => {
+    if (profile) {
+      form.reset({
+        name: name,
+        email: email,
+        description: bio,
+        tag: skills,
+      });
+    }
+  }, [profile]);
+
   const handleSubmit = async (values: FieldValues) => {
-    const value = {
-      ...values,
-      ...(avatar?.file && { image: avatar?.file }),
-    };
-    console.log(value);
-    // toast.success("Update Successful", {
-    //   description: "Your profile has been updated successfully",
-    // });
+    const data = helpers.fromData({
+      name: values.name,
+      bio: values.description,
+      skills: values.tag,
+      ...(avatar?.file && { img: avatar?.file }),
+    });
+    const res = await updateProfile(data).unwrap();
+    if (res.status) {
+      form.reset();
+      sonner.success(
+        "Update Successful",
+        "Your profile has been updated successfully"
+      );
+    }
+    try {
+    } catch (err: any) {
+      console.log("Update profile error:", err);
+    }
   };
 
   return (
@@ -54,7 +80,7 @@ export default function ProfileEdit2() {
       <Form className="space-y-4" from={form} onSubmit={handleSubmit}>
         <div className="relative mx-auto size-28 rounded-md">
           <Image
-            src={avatar.preview || PlaceholderImg() || "/blur.png"}
+            src={avatar.preview || img || "/blur.png"}
             alt={"title"}
             fill
             className={"object-cover rounded-full"}
@@ -86,6 +112,7 @@ export default function ProfileEdit2() {
             name="email"
             label="Email"
             placeholder="Enter your email"
+            readOnly={true}
           />
           <FromTextarea2
             name="description"
@@ -96,7 +123,9 @@ export default function ProfileEdit2() {
           <FromTagInput label="Your Skills" name="tag" />
         </div>
 
-        <Button className="w-full">Save Changes</Button>
+        <Button disabled={isUpdating} className="w-full">
+          Save Changes
+        </Button>
       </Form>
     </div>
   );
