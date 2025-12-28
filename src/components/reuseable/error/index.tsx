@@ -10,7 +10,7 @@ export function ErrorText({ error, className }: ErrorTextProps) {
     error && (
       <h5
         className={cn(
-          "text-red-500 font-medium text-base  flex justify-center",
+          "text-red-500 font-medium text-sm  flex justify-center",
           className
         )}
       >

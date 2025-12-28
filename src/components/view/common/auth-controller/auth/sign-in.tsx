@@ -26,6 +26,7 @@ export default function SignIn() {
   const [LoginIn, { isLoading }] = useLoginInMutation();
   const permition = useAppSelector((state: AppState) => state.auth.signupRole);
   const [error, setIsError] = useState("");
+  const [errEmailVarify, setErrEmailVarify] = useState<any>();
   const rememberId = useId();
   const from = useForm({
     resolver: zodResolver(sign_In),
@@ -38,6 +39,7 @@ export default function SignIn() {
   //  == handleSubmit  ==
   const handleSubmit = async (values: FieldValues) => {
     setIsError("");
+    setErrEmailVarify({});
     try {
       const data = helpers.fromData(values);
       const res = await LoginIn(data).unwrap();
@@ -70,8 +72,17 @@ export default function SignIn() {
         }
       }
     } catch (err: any) {
-      setIsError(err?.data?.message);
+      if (err?.data?.data?.is_verfied == false) {
+        setErrEmailVarify(err?.data);
+        return;
+      } else {
+        setIsError(err?.data?.message);
+      }
     }
+  };
+
+  const handleResetOtp = (email: string) => {
+    console.log("reset otp for:", email);
   };
 
   return (
@@ -134,6 +145,19 @@ export default function SignIn() {
           </div>
         </div>
         <div>
+          {errEmailVarify?.message && (
+            <h5 className="text-red-500 font-medium text-sm mb-3   flex justify-center">
+              {errEmailVarify?.message}{" "}
+              <span
+                onClick={() => handleResetOtp(errEmailVarify?.data?.email)}
+                className="text-figma-green cursor-pointer text-sm underline ml-1"
+              >
+                {" "}
+                Varify
+              </span>
+            </h5>
+          )}
+
           <ErrorText error={error} className="mb-3" />
           <Button disabled={isLoading} className="w-full">
             Sign in
