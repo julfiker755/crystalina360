@@ -70,6 +70,7 @@ const authSlice = createSlice({
       .addMatcher(
         authApi.endpoints.getProfile.matchFulfilled,
         (state, { payload }) => {
+          console.log(payload);
           state.user = {
             ...state.user,
             name: payload?.data?.user?.name || "",

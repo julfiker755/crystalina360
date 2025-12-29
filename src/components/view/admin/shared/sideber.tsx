@@ -3,6 +3,7 @@ import NavItem from "./navitem";
 import { adminLinks } from "./navdata";
 import Logo from "@/components/reuseable/logo";
 import FavIcon from "@/icon/favIcon";
+import { useLogout } from "@/hooks";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -10,6 +11,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
+  const { logout, isLoading: logoutLoading } = useLogout();
   const links = adminLinks;
 
   return (
@@ -36,7 +38,14 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
               <NavItem item={links} />
             </nav>
             <div className="w-full my-3 px-4 flex justify-start">
-              <h2 className="text-base flex items-center  font-medium text-figma-danger">
+              <h2
+                onClick={() => {
+                  if (!logoutLoading) {
+                    logout();
+                  }
+                }}
+                className="text-base cursor-pointer flex items-center  font-medium text-figma-danger"
+              >
                 <FavIcon className="mr-2" name="lagout" />
                 Sign Out
               </h2>

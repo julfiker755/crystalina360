@@ -15,15 +15,17 @@ export const useLogout = () => {
 
   //   hanlde logout
   const handleLogout = async () => {
-    await logout({}).unwrap();
-    dispatch(baseApi.util.resetApiState());
-    if (role === roleKey.admin || role === roleKey.user) {
+    try {
+      await logout({}).unwrap();
+      if (role === roleKey.operator) {
+        router.push("/operator");
+      }
       router.push("/");
-    } else if (role === roleKey.operator) {
-      router.push("/operator");
+      helpers.removeAuthCookie(authKey);
+    } finally {
+      dispatch(clearAuth());
+      dispatch(baseApi.util.resetApiState());
     }
-    helpers.removeAuthCookie(authKey);
-    dispatch(clearAuth());
   };
 
   return {

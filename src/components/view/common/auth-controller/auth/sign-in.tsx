@@ -5,7 +5,9 @@ import { usePathname, useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import FavIcon from "@/icon/favIcon";
 import {
+  controlkey,
   setActiveModal,
+  setOtpInfo,
   setUser,
   toggleIsOpen,
 } from "@/redux/features/authSlice";
@@ -13,11 +15,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { sign_In } from "@/schema";
 import { authKey, helpers, roleKey, routeName } from "@/lib";
 import { FromInput2 } from "@/components/reuseable/form-input2";
-import { authApi, useLoginInMutation } from "@/redux/api/authApi";
+import {
+  authApi,
+  useForgotPasswordMutation,
+  useLoginInMutation,
+} from "@/redux/api/authApi";
 import { useId, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { ErrorText } from "@/components/reuseable/error";
 import { AppState } from "@/redux/store";
+import sonner from "@/components/reuseable/sonner";
 
 export default function SignIn() {
   const dispatch = useAppDispatch();
@@ -27,6 +34,8 @@ export default function SignIn() {
   const permition = useAppSelector((state: AppState) => state.auth.signupRole);
   const [error, setIsError] = useState("");
   const [errEmailVarify, setErrEmailVarify] = useState<any>();
+  const [forgotPassword, { isLoading: resetLoading }] =
+    useForgotPasswordMutation();
   const rememberId = useId();
   const from = useForm({
     resolver: zodResolver(sign_In),
@@ -47,7 +56,7 @@ export default function SignIn() {
       const token = res?.data?.token;
 
       // role base access
-      if (resRole !== permition) {
+      if (resRole !== "admin" && resRole !== permition) {
         const roleErrorMap: Record<string, string> = {
           [roleKey.user]: "You are a user. Go to User Website",
           [roleKey.operator]: "You are an operator. Go to Operator Website",
@@ -81,8 +90,25 @@ export default function SignIn() {
     }
   };
 
-  const handleResetOtp = (email: string) => {
-    console.log("reset otp for:", email);
+  const handleResetOtp = async (email: string) => {
+    try {
+      const data = helpers.fromData({ email: email });
+      const res = await forgotPassword(data).unwrap();
+      if (res.status) {
+        dispatch(
+          setOtpInfo({
+            email: res?.data?.email,
+            otp: "",
+          })
+        );
+        sonner.success(
+          "OTP sent successfully",
+          "Please check your email for the otp Apply"
+        );
+      }
+    } finally {
+      dispatch(setActiveModal(controlkey.emailVafi));
+    }
   };
 
   return (
@@ -144,13 +170,18 @@ export default function SignIn() {
             Forgot Password?
           </div>
         </div>
+
         <div>
           {errEmailVarify?.message && (
             <h5 className="text-red-500 font-medium text-sm mb-3   flex justify-center">
               {errEmailVarify?.message}{" "}
               <span
-                onClick={() => handleResetOtp(errEmailVarify?.data?.email)}
-                className="text-figma-green cursor-pointer text-sm underline ml-1"
+                onClick={() => {
+                  if (!resetLoading) {
+                    handleResetOtp(errEmailVarify?.data?.email);
+                  }
+                }}
+                className="text-figma-green cursor-pointer text-sm underline ml-1.5"
               >
                 {" "}
                 Varify

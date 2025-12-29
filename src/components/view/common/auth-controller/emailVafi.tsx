@@ -68,7 +68,10 @@ export default function EmailVarifyOtp() {
 
         if (res.status) {
           dispatch(setActiveModal(controlkey.signIn));
-          sonner.success("Sign Up Successfull", "Please log in to continue");
+          sonner.success(
+            "Email Varify Successfull",
+            "Please log in to continue"
+          );
           dispatch(clearOtpInfo());
           setCode([]);
         }

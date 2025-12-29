@@ -1,7 +1,8 @@
 import { ImgBox } from "@/components/reuseable/Img-box";
 import FavIcon from "@/icon/favIcon";
-import { RandomImg } from "@/lib";
 import { useTitle } from "@/provider/title";
+import { useAppSelector } from "@/redux/hooks";
+import { AppState } from "@/redux/store";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 
@@ -12,6 +13,7 @@ interface SidebarProps {
 
 export default function Navber({ sidebarOpen, setSidebarOpen }: SidebarProps) {
   const { title, subtitle } = useTitle();
+  const user = useAppSelector((state: AppState) => state.auth.user);
 
   return (
     <div className="sticky top-0  flex w-full bg-[white] py-3 z-10 shadow-xs">
@@ -48,13 +50,15 @@ export default function Navber({ sidebarOpen, setSidebarOpen }: SidebarProps) {
               <Link href={"/admin/settings"}>
                 <div className="relative flex items-center gap-2 rounded-full cursor-pointer">
                   <ImgBox
-                    src={RandomImg()}
+                    src={user?.avatar || "/avater.png"}
                     className="rounded-full size-11"
                     alt="User Icon"
                   />
                   <ul className="leading-5 mb-1">
-                    <li className="font-semibold">Md. Abid Hasan</li>
-                    <li className="text-figma-a_gray">example@gmail.com</li>
+                    <li className="font-semibold">{user?.name || "N/A"}</li>
+                    <li className="text-figma-a_gray">
+                      {user?.email || "N/A"}
+                    </li>
                   </ul>
                 </div>
               </Link>
