@@ -14,7 +14,7 @@ const roleConfig = {
   },
 };
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const cookiesStore = await cookies();
   const token = cookiesStore.get(authKey)?.value;
@@ -23,7 +23,13 @@ export async function proxy(request: NextRequest) {
 
   console.log(decoded);
 
-  if (!token) return NextResponse.next();
+  if (!token) {
+    if (pathname.startsWith("/admin")) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    return NextResponse.next();
+  }
   const config = roleConfig[roleKey as keyof typeof roleConfig];
 
   if (config) {
