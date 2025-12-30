@@ -54,7 +54,7 @@ const plans = [
 
 export default function Subscription() {
   return (
-    <div className="pt-16 container">
+    <div className="py-16 container">
       <h1 className="mb-10">Subscription</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 2xl:gap-20">
         {plans.map((item, index) => (

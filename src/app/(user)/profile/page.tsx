@@ -1,26 +1,30 @@
 "use client";
+import { Repeat } from "@/components/reuseable/repeat";
 import { SubTitle } from "@/components/reuseable/sub-title";
 import TabBox from "@/components/reuseable/tab-box";
+import { QuillText } from "@/components/reuseable/text-editor";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
   Button,
+  Skeleton,
   TabsContent,
 } from "@/components/ui";
 import {
-  termsAndConditions,
   privacyPolicy,
   faqQuestions,
   couponsItem,
 } from "@/components/view/user/dummy-json";
 import { AppAlert } from "@/components/view/user/reuse";
 import ProfileBox from "@/components/view/user/simple/profile-box";
+import { useGetTermsQuery } from "@/redux/api/admin/termsApi";
 import { useState } from "react";
 
 export default function Profile() {
   const [copied, setCopied] = useState("");
+  const { data: terms, isLoading: termsLoading } = useGetTermsQuery({});
 
   const handleCopy = async (value: any) => {
     await navigator.clipboard.writeText(value);
@@ -48,16 +52,15 @@ export default function Profile() {
                 value="terms-&-conditions"
                 className="mt-8 space-y-6"
               >
-                <div className="space-y-4">
-                  {termsAndConditions?.map((item, index) => (
-                    <div key={index}>
-                      <h2 className="text-start">
-                        {index + 1}.&nbsp;{item.title}
-                      </h2>
-                      <p className="mt-1">{item.description}</p>
-                    </div>
-                  ))}
-                </div>
+                {termsLoading ? (
+                  <SkeletonLoader />
+                ) : (
+                  <QuillText
+                    conStyle="bg-transparent!"
+                    editorStyle="bg-transparent!"
+                    text={terms?.data?.terms_condition}
+                  />
+                )}
               </TabsContent>
 
               <TabsContent value="privacy-policy" className="mt-8 space-y-6">
@@ -141,3 +144,17 @@ export default function Profile() {
     </div>
   );
 }
+
+const SkeletonLoader = () => {
+  return (
+    <div className="space-y-8">
+      <Repeat count={3}>
+        <div className="space-y-3">
+          <Skeleton className="h-6 w-1/2 bg-[#e9e5e5c1] rounded-sm" />
+          <Skeleton className="h-6 w-full bg-[#e9e5e5c1] rounded-sm" />
+          <Skeleton className="h-6 w-full bg-[#e9e5e5c1] rounded-sm" />
+        </div>
+      </Repeat>
+    </div>
+  );
+};

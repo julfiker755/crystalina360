@@ -8,10 +8,10 @@ const roleConfig = {
     basePath: "/admin",
     allowedPaths: /^\/admin\/*/,
   },
-  reviewer: {
-    basePath: "/operator",
-    allowedPaths: /^\/operator\/*/,
-  },
+  // reviewer: {
+  //   basePath: "/operator",
+  //   allowedPaths: /^\/operator\/*/,
+  // },
 };
 
 export async function middleware(request: NextRequest) {
@@ -21,7 +21,7 @@ export async function middleware(request: NextRequest) {
   const decoded: any = token && jwtDecode(token as string);
   const roleKey = decoded?.role as string;
 
-  console.log(decoded);
+  // console.log(decoded);
 
   if (!token) {
     if (pathname.startsWith("/admin")) {
@@ -45,5 +45,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/admin/:path*", "/operator/:path*"],
+  matcher: ["/", "/admin/:path*"],
 };

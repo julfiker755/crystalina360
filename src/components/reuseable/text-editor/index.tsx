@@ -77,3 +77,29 @@ const TextEditor: React.FC<TextEditorProps> = ({
 };
 
 export default TextEditor;
+
+interface QuillTextProps {
+  text: string;
+  className?: string;
+  conStyle?: string;
+  editorStyle?: string;
+}
+
+//  ========== show text =========
+export const QuillText = ({
+  text,
+  className,
+  conStyle,
+  editorStyle,
+}: QuillTextProps) => {
+  return (
+    <article className={cn("mb-2", className)}>
+      <div className={cn("ql-container ql-snow", conStyle)}>
+        <div
+          className={cn("ql-editor p-0!", editorStyle)}
+          dangerouslySetInnerHTML={{ __html: text }}
+        />
+      </div>
+    </article>
+  );
+};

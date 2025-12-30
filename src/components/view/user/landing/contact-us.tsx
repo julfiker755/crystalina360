@@ -3,10 +3,14 @@ import { FromInput } from "@/components/reuseable/form-input";
 import Form from "@/components/reuseable/from";
 import { FromTextArea } from "@/components/reuseable/from-textarea";
 import { Button } from "@/components/ui";
-import FavIcon from "@/icon/favIcon";
-import { cn } from "@/lib";
+import { useSendContactMutation } from "@/redux/api/user/contactApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
+import sonner from "@/components/reuseable/sonner";
+import FavIcon from "@/icon/favIcon";
+import { cn, helpers } from "@/lib";
+import { contact_us } from "@/schema";
+import { Loader2 } from "lucide-react";
 
 interface ContactUsProps {
   title?: string;
@@ -18,19 +22,31 @@ export default function ContactUs({
   className,
 }: ContactUsProps) {
   const from = useForm({
-    // resolver: zodResolver(sign_In),
+    resolver: zodResolver(contact_us),
     defaultValues: {
       name: "",
       email: "",
+      description: "",
     },
   });
 
+  const [sendContact, { isLoading }] = useSendContactMutation();
+
   const handleSubmit = async (values: FieldValues) => {
-    console.log(values);
-    // toast.success("Login Successfully", {
-    //   description: "You have successfully logged in",
-    // });
-    // router.push("/dashboard");
+    try {
+      const data = helpers.fromData({
+        name: values.name,
+        email: values.email,
+        msg: values.description,
+      });
+      const res = await sendContact(data).unwrap();
+      if (res.status) {
+        from.reset();
+        sonner.success("Success!", "Message sent successfully", "bottom-right");
+      }
+    } catch (err: any) {
+      console.log(err);
+    }
   };
   return (
     <div id="contact-us" className={cn("pt-16 container", className)}>
@@ -58,7 +74,9 @@ export default function ContactUs({
             className="min-h-44 rounded-3xl"
           />
 
-          <Button className="w-full">Send</Button>
+          <Button disabled={isLoading} className="w-full">
+            {isLoading ? "Sending..." : "Send"}
+          </Button>
         </Form>
       </div>
     </div>
