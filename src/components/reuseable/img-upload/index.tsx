@@ -39,7 +39,7 @@ const ImgUpload: React.FC<ImageUploaderProps> = ({
         ref={fileInputRef}
         onChange={handleFileChange}
         style={{ display: "none" }}
-        accept="image/*" // Restrict to image files
+        accept="image/jpeg,image/jpg,image/png,image/webp"
       />
       {/* The visible trigger element (e.g., an icon or button) */}
       {children}

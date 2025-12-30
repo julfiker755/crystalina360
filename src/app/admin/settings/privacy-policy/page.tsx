@@ -4,23 +4,41 @@ import FavIcon from "@/icon/favIcon";
 import { Textarea } from "@/components/ui";
 import { useFormFields } from "@/hooks";
 import { useEffect } from "react";
+import {
+  useGetPrivacyQuery,
+  useStorePrivacyMutation,
+} from "@/redux/api/admin/privacy";
+import { helpers } from "@/lib";
+import sonner from "@/components/reuseable/sonner";
 
 export default function DataPolicyPage() {
-  const { formData, handleChange, errors, validateFields } = useFormFields({
+  const {
+    formData: fromValue,
+    handleChange,
+    errors,
+    validateFields,
+    setFormData,
+  } = useFormFields({
     collection: "",
     usage: "",
     protection: "",
     responsibilities: "",
   });
+  const { data: privacy } = useGetPrivacyQuery({});
+  const [storePrivacy, { isLoading }] = useStorePrivacyMutation();
 
-  // useEffect(() => {
-  //   formData.collection = "Julfiekr";
-  //   formData.usage = "Julfiekr";
-  //   formData.protection = "Julfiekr";
-  //   formData.responsibilities = "Julfiekr";
-  // }, []);
+  useEffect(() => {
+    if (privacy?.data?.id) {
+      setFormData({
+        collection: privacy.data.data_collection,
+        usage: privacy.data.data_usage,
+        protection: privacy.data.data_protection,
+        responsibilities: privacy.data.your_responsibility,
+      });
+    }
+  }, [privacy]);
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const isValid = validateFields({
       collection: "Collection is required",
@@ -29,18 +47,30 @@ export default function DataPolicyPage() {
       responsibilities: "Responsibility is required",
     });
     if (!isValid) return;
-
-    console.log("Saved:", formData);
+    const data = helpers.fromData({
+      data_collection: fromValue.collection,
+      data_usage: fromValue.usage,
+      data_protection: fromValue.protection,
+      your_responsibility: fromValue.responsibilities,
+    });
+    const res = await storePrivacy(data).unwrap();
+    if (res?.status) {
+      sonner.success(
+        "Privacy Policy",
+        "Privacy Policy updated successfully",
+        "bottom-right"
+      );
+    }
   };
 
   return (
-    <form onSubmit={handleSave}>
+    <form onSubmit={handleSubmit}>
       <div className="space-y-10">
         <div className="border rounded-xl p-6">
           <TitleNav icon="events" title="Data Collection" color="white" />
           <div className="flex-1 mt-4">
             <Textarea
-              value={formData.collection}
+              value={fromValue.collection}
               onChange={(e) => handleChange("collection", e.target.value)}
               className="sm:min-h-30 resize-none rounded-xl"
               placeholder="Type here..."
@@ -55,7 +85,7 @@ export default function DataPolicyPage() {
           <TitleNav icon="event" title="Data Usage" color="white" />
           <div className="flex-1 mt-4">
             <Textarea
-              value={formData.usage}
+              value={fromValue.usage}
               onChange={(e) => handleChange("usage", e.target.value)}
               className="sm:min-h-30 resize-none rounded-xl"
               placeholder="Type here..."
@@ -69,7 +99,7 @@ export default function DataPolicyPage() {
           <TitleNav icon="producation" title="Data Protection" color="white" />
           <div className="flex-1 mt-4">
             <Textarea
-              value={formData.protection}
+              value={fromValue.protection}
               onChange={(e) => handleChange("protection", e.target.value)}
               className="sm:min-h-30 resize-none rounded-xl"
               placeholder="Type here..."
@@ -83,7 +113,7 @@ export default function DataPolicyPage() {
           <TitleNav icon="respon" title="Your Responsibilities" color="white" />
           <div className="flex-1 mt-4">
             <Textarea
-              value={formData.responsibilities}
+              value={fromValue.responsibilities}
               onChange={(e) => handleChange("responsibilities", e.target.value)}
               className="sm:min-h-30 resize-none rounded-xl"
               placeholder="Type here..."
@@ -98,7 +128,7 @@ export default function DataPolicyPage() {
 
         {/* Save Button */}
         <div className="flex justify-end pt-8">
-          <Button size="lg" className="rounded-2xl">
+          <Button disabled={isLoading} size="lg" className="rounded-2xl">
             Save changes
           </Button>
         </div>
@@ -113,7 +143,7 @@ const TitleNav = ({ icon, title, color }: any) => {
       <div className="size-12 grid place-items-center bg-primary rounded-full">
         <FavIcon className="size-6" color={color} name={icon} />
       </div>
-      <h4 className="text-xl font-medium text-black">{title}</h4>
+      <h5 className="text-xl font-medium text-black">{title}</h5>
     </div>
   );
 };

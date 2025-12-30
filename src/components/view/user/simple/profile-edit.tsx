@@ -48,7 +48,7 @@ export default function ProfileEdit({ children }: childrenProps) {
       if (res.status) {
         form.reset();
         sonner.success(
-          "Update Successful",
+          "Update Successfull",
           "Your profile has been updated successfully"
         );
       }

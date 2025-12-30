@@ -2,13 +2,17 @@
 import { FromInput2 } from "@/components/reuseable/form-input2";
 import Form from "@/components/reuseable/from";
 import ImgUpload from "@/components/reuseable/img-upload";
-import { Button } from "@/components/ui";
-import FavIcon from "@/icon/favIcon";
-import { PlaceholderImg } from "@/lib";
-import Image from "next/image";
-import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import profile from "@/assets/admin/profile.png";
+import {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} from "@/redux/api/authApi";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui";
+import profileImg from "@/assets/admin/profile.png";
+import { helpers } from "@/lib";
+import sonner from "@/components/reuseable/sonner";
 
 const intAva = {
   file: null,
@@ -17,25 +21,47 @@ const intAva = {
 
 export default function Settings() {
   const [avatar, setAvatar] = useState<any>(intAva);
+  const { data: profile } = useGetProfileQuery({});
+  const { img, name, email } = profile?.data?.user || {};
+  const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
 
   const profilefrom = useForm({
-    // resolver: zodResolver(podcastSchema),
     defaultValues: {
-      name: "julfiker",
-      email: "julfiker@gmail.com",
+      name: "",
+      email: "",
     },
   });
+
+  useEffect(() => {
+    if (profile) {
+      profilefrom.reset({
+        name: name,
+        email: email,
+      });
+    }
+  }, [profile]);
+
   const handleProfileSubmit = async (values: FieldValues) => {
     const value = {
       name: values.name,
-      ...(avatar?.file && { image: avatar?.file }),
+      ...(avatar?.file && { img: avatar?.file }),
     };
-    // toast.success("Profile Updated", {
-    //   description: "Your profile has been successfully updated",
-    //   position: "bottom-right",
-    // });
-    console.log(value);
+    try {
+      const data = helpers.fromData(value);
+      const res = await updateProfile(data).unwrap();
+      if (res.status) {
+        profilefrom.reset();
+        sonner.success(
+          "Update Successfull",
+          "Your profile has been updated successfully",
+          "bottom-right"
+        );
+      }
+    } catch (err: any) {
+      console.log("Update profile error:", err);
+    }
   };
+
   return (
     <Form
       from={profilefrom}
@@ -44,7 +70,7 @@ export default function Settings() {
     >
       <div className="relative mx-auto size-28 rounded-full">
         <Image
-          src={avatar?.preview || PlaceholderImg() || "/blur.png"}
+          src={avatar?.preview || img || "/blur.png"}
           alt={"title"}
           fill
           className={"object-cover rounded-full"}
@@ -59,7 +85,7 @@ export default function Settings() {
             });
           }}
         >
-          <img className="size-10" src={profile.src} />
+          <img className="size-10" src={profileImg?.src} />
         </ImgUpload>
       </div>
 
@@ -71,7 +97,7 @@ export default function Settings() {
         readOnly
       />
       <div className="flex justify-end">
-        <Button size="lg" className="rounded-2xl">
+        <Button disabled={isUpdating} size="lg" className="rounded-2xl">
           Save Changes
         </Button>
       </div>

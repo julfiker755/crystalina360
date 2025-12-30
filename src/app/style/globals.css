@@ -175,9 +175,9 @@
   h4 {
     @apply text-base font-normal text-figma-gray;
   }
-  p {
+  /* p {
     color: #828282;
-  }
+  } */
 }
 
 @layer components {
@@ -273,7 +273,7 @@
 }
 
 .ql-editor.ql-blank::before {
-  color: #808080 !important;
+  color: #000000 !important;
   font-style: normal !important;
   left: 16px !important;
 }

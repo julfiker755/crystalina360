@@ -12,19 +12,17 @@ import {
   Skeleton,
   TabsContent,
 } from "@/components/ui";
-import {
-  privacyPolicy,
-  faqQuestions,
-  couponsItem,
-} from "@/components/view/user/dummy-json";
+import { faqQuestions, couponsItem } from "@/components/view/user/dummy-json";
 import { AppAlert } from "@/components/view/user/reuse";
 import ProfileBox from "@/components/view/user/simple/profile-box";
+import { useGetPrivacyQuery } from "@/redux/api/admin/privacy";
 import { useGetTermsQuery } from "@/redux/api/admin/termsApi";
 import { useState } from "react";
 
 export default function Profile() {
   const [copied, setCopied] = useState("");
   const { data: terms, isLoading: termsLoading } = useGetTermsQuery({});
+  const { data: privacy, isLoading: privacyLoading } = useGetPrivacyQuery({});
 
   const handleCopy = async (value: any) => {
     await navigator.clipboard.writeText(value);
@@ -64,16 +62,28 @@ export default function Profile() {
               </TabsContent>
 
               <TabsContent value="privacy-policy" className="mt-8 space-y-6">
-                <div className="space-y-4">
-                  {privacyPolicy?.map((item, index) => (
-                    <div key={index}>
-                      <h2 className="text-start">
-                        {index + 1}.&nbsp;{item.title}
-                      </h2>
-                      <p className="mt-1">{item.description}</p>
-                    </div>
-                  ))}
-                </div>
+                {privacyLoading ? (
+                  <SkeletonLoader />
+                ) : (
+                  <div className="space-y-4">
+                    <PrivacyText
+                      title="Data Collection"
+                      text={privacy?.data?.data_collection}
+                    />
+                    <PrivacyText
+                      title="Data Usage"
+                      text={privacy?.data?.data_usage}
+                    />
+                    <PrivacyText
+                      title="Data Protection"
+                      text={privacy?.data?.data_protection}
+                    />
+                    <PrivacyText
+                      title="Your Responsibilities"
+                      text={privacy?.data?.your_responsibility}
+                    />
+                  </div>
+                )}
               </TabsContent>
 
               <TabsContent value="faq" className="mt-8 space-y-6">
@@ -90,7 +100,7 @@ export default function Profile() {
                         {item.title}
                       </AccordionTrigger>
                       <AccordionContent className="flex flex-col gap-4 text-balance">
-                        <p>{item.description}</p>
+                        <p className="text-article">{item.description}</p>
                       </AccordionContent>
                     </AccordionItem>
                   ))}
@@ -155,6 +165,15 @@ const SkeletonLoader = () => {
           <Skeleton className="h-6 w-full bg-[#e9e5e5c1] rounded-sm" />
         </div>
       </Repeat>
+    </div>
+  );
+};
+
+const PrivacyText = ({ title, text }: { title: string; text: string }) => {
+  return (
+    <div>
+      <h5 className="font-bold text-lg">{title}</h5>
+      <p className="text-article text-base">{text} </p>
     </div>
   );
 };
