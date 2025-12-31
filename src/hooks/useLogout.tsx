@@ -19,8 +19,9 @@ export const useLogout = () => {
       await logout({}).unwrap();
       if (role === roleKey.operator) {
         router.push("/operator");
+      } else {
+        router.push("/");
       }
-      router.push("/");
       helpers.removeAuthCookie(authKey);
     } finally {
       dispatch(clearAuth());

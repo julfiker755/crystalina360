@@ -62,6 +62,12 @@ export const change_Pass = z
     path: ["c_password"],
     message: "Passwords must be match.",
   });
+// === fqa_sc ===
+
+export const fqa_sc = z.object({
+  question: z.string().nonempty("Question is required"),
+  answer: z.string().nonempty("Answer is required"),
+});
 
 // === add-ons ===
 export const add_on = z.object({

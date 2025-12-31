@@ -12,10 +12,11 @@ import {
   Skeleton,
   TabsContent,
 } from "@/components/ui";
-import { faqQuestions, couponsItem } from "@/components/view/user/dummy-json";
+import { couponsItem } from "@/components/view/user/dummy-json";
 import { AppAlert } from "@/components/view/user/reuse";
 import ProfileBox from "@/components/view/user/simple/profile-box";
-import { useGetPrivacyQuery } from "@/redux/api/admin/privacy";
+import { useGetFqaQuery } from "@/redux/api/admin/fqaApi";
+import { useGetPrivacyQuery } from "@/redux/api/admin/privacyApi";
 import { useGetTermsQuery } from "@/redux/api/admin/termsApi";
 import { useState } from "react";
 
@@ -23,6 +24,7 @@ export default function Profile() {
   const [copied, setCopied] = useState("");
   const { data: terms, isLoading: termsLoading } = useGetTermsQuery({});
   const { data: privacy, isLoading: privacyLoading } = useGetPrivacyQuery({});
+  const { data: fqa, isLoading: fqaLoading } = useGetFqaQuery({});
 
   const handleCopy = async (value: any) => {
     await navigator.clipboard.writeText(value);
@@ -87,24 +89,27 @@ export default function Profile() {
               </TabsContent>
 
               <TabsContent value="faq" className="mt-8 space-y-6">
-                {/* faqQuestions */}
-                <Accordion
-                  type="single"
-                  collapsible
-                  className="w-full"
-                  defaultValue="item-1"
-                >
-                  {faqQuestions.map((item, index) => (
-                    <AccordionItem key={index} value={`item-${index + 1}`}>
-                      <AccordionTrigger className="text-lg cursor-pointer">
-                        {item.title}
-                      </AccordionTrigger>
-                      <AccordionContent className="flex flex-col gap-4 text-balance">
-                        <p className="text-article">{item.description}</p>
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
+                {fqaLoading ? (
+                  <SkeletonLoader />
+                ) : (
+                  <Accordion
+                    type="single"
+                    collapsible
+                    className="w-full"
+                    defaultValue="item-1"
+                  >
+                    {fqa?.data?.map((item: any, index: any) => (
+                      <AccordionItem key={index} value={`item-${index + 1}`}>
+                        <AccordionTrigger className="text-lg cursor-pointer">
+                          {item.question}
+                        </AccordionTrigger>
+                        <AccordionContent className="flex flex-col gap-4 text-balance">
+                          <p className="text-article">{item.answer}</p>
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                )}
               </TabsContent>
 
               <TabsContent value="coupons" className="mt-8 space-y-6">

@@ -1,44 +1,46 @@
+"use client";
 import privacyImg from "@/assets/user/privacy-center.png";
+import { Repeat } from "@/components/reuseable/repeat";
+import { Skeleton } from "@/components/ui";
 import FavIcon from "@/icon/favIcon";
+import { useGetPrivacyQuery } from "@/redux/api/admin/privacyApi";
 import Image from "next/image";
 
-const privacyItem = [
-  {
-    id: 1,
-    title: "Data Collection",
-    description:
-      "We collect information you provide when creating and managing events, such as event details, attendee information, and account credentials. This data is used only to deliver and improve our services.",
-    icon: "collection",
-  },
-  {
-    id: 2,
-    title: "Data usage",
-    description:
-      "The data you manage is used solely for event organization, communication with attendees, and ensuring the smooth operation of your events. We do not sell or share your information with unauthorized third parties.",
-    icon: "event",
-  },
-  {
-    id: 3,
-    title: "Data Protection",
-    description:
-      "We use industry-standard security measures to protect your information from unauthorized access, loss, or misuse. Only authorized personnel have access to your account and event data.",
-    icon: "producation",
-  },
-  {
-    id: 4,
-    title: "Your Responsibilities",
-    description:
-      "As an operator, you are responsible for maintaining the confidentiality of your login details and ensuring that attendee data is handled responsibly and in compliance with applicable laws.",
-    icon: "respon",
-  },
-];
 export default function PrivacyPolicyBox() {
+  const { data: privacy, isLoading } = useGetPrivacyQuery({});
+
+  const privacyItem = [
+    {
+      id: 1,
+      title: "Data Collection",
+      description: privacy?.data?.data_collection,
+      icon: "collection",
+    },
+    {
+      id: 2,
+      title: "Data usage",
+      description: privacy?.data?.data_usage,
+      icon: "event",
+    },
+    {
+      id: 3,
+      title: "Data Protection",
+      description: privacy?.data?.data_protection,
+      icon: "producation",
+    },
+    {
+      id: 4,
+      title: "Your Responsibilities",
+      description: privacy?.data?.your_responsibility,
+      icon: "respon",
+    },
+  ];
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 ">
       <div className="space-y-10 mb-10 md:mb-0">
         {privacyItem.slice(0, 2).map((card) => (
           <div key={card.id} className="flex-1">
-            <PrivacyPolicyCard card={card} />
+            <PrivacyPolicyCard isLoading={isLoading} card={card} />
           </div>
         ))}
       </div>
@@ -55,7 +57,7 @@ export default function PrivacyPolicyBox() {
       <div className="space-y-10">
         {privacyItem.slice(-2).map((card) => (
           <div key={card.id} className="flex-1">
-            <PrivacyPolicyCard card={card} />
+            <PrivacyPolicyCard isLoading={isLoading} card={card} />
           </div>
         ))}
       </div>
@@ -63,7 +65,12 @@ export default function PrivacyPolicyBox() {
   );
 }
 
-function PrivacyPolicyCard({ card }: any) {
+interface privacyProps {
+  isLoading: boolean;
+  card: any;
+}
+
+function PrivacyPolicyCard({ isLoading, card }: privacyProps) {
   return (
     <div
       className={`rounded-lg p-6 bg-[#EDEDED] transition-transform  h-full flex flex-col`}
@@ -77,9 +84,17 @@ function PrivacyPolicyCard({ card }: any) {
 
         <h3 className="text-lg font-semibold text-gray-900">{card.title}</h3>
       </div>
-      <p className="text-gray-600 leading-relaxed text-sm">
-        {card.description}
-      </p>
+      {isLoading ? (
+        <div className="space-y-2">
+          <Repeat count={4}>
+            <Skeleton className="w-full h-3 bg-gray-600/10 rounded-[3px]!" />
+          </Repeat>
+        </div>
+      ) : (
+        <p className="text-gray-600 leading-relaxed text-sm">
+          {card.description}
+        </p>
+      )}
     </div>
   );
 }

@@ -28,7 +28,7 @@ export function Pagination({
         )}
         pageLinkClassName="h-10 w-10 flex items-center justify-center rounded-full"
         activeItemClassName={cn(
-          `bg-transparent border-none text-white bg-primary hover:!text-figma-black  hover:!bg-primary rounded-full`,
+          `bg-transparent border-none text-white bg-primary hover:!text-white  hover:!bg-primary rounded-full`,
           activeStyle
         )}
         disabledItemClassName="hover:!bg-transparent"

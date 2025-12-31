@@ -5,14 +5,20 @@ import { cn } from "@/lib";
 interface DeleteBtnProps {
   onClick?: () => void;
   className?: string;
+  disabled?: boolean;
 }
 
 //  =========  DeleteBtn ========
-export function DeleteBtn({ onClick, className }: DeleteBtnProps) {
+export function DeleteBtn({
+  onClick,
+  className,
+  disabled = false,
+}: DeleteBtnProps) {
   return (
     <Button
       className={cn("bg-figma-delete size-10", className)}
       onClick={onClick}
+      disabled={disabled}
     >
       <FavIcon className="size-4" name="delete_a" />
     </Button>

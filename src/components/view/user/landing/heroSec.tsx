@@ -12,11 +12,11 @@ export default function HeroSec({ role }: any) {
         Plan Your Next Experience
       </h5>
 
-      <p className="text-center max-w-2xl mb-12 text-pretty">
+      <p className="text-center text-base text-article max-w-2xl mb-12  text-pretty">
         Stay connected to the events that matter most to you. Easily search and
         filter by type, location, or price range. Book tickets in seconds with a
         smooth, reliable system. Track your bookings, invoices, and event
-        updates effortlessly.
+        updates effortlessly
       </p>
       {role == roleKey.user ? (
         <Link

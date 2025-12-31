@@ -1,51 +1,52 @@
 import FavIcon from "@/icon/favIcon";
 import privacyImg from "@/assets/user/privacy-center.png";
 import Image from "next/image";
-
-const privacyItem = [
-  {
-    id: 1,
-    title: "Data Collection",
-    description:
-      "We collect information you provide when creating and managing events, such as event details, attendee information, and account credentials. This data is used only to deliver and improve our services.",
-    icon: "collection",
-    bgColor: "#F7FAFF",
-    shadow:
-      "0 2px 4px 0 rgba(34, 117, 255, 0.25), 0 -2px 4px 0 rgba(34, 117, 255, 0.25), 2px 0 4px 0 rgba(34, 117, 255, 0.25), -2px 0 4px 0 rgba(34, 117, 255, 0.25)",
-  },
-  {
-    id: 2,
-    title: "Data usage",
-    description:
-      "The data you manage is used solely for event organization, communication with attendees, and ensuring the smooth operation of your events. We do not sell or share your information with unauthorized third parties.",
-    icon: "event",
-    bgColor: "#FFF5F6",
-    shadow:
-      "0 2px 4px 0 rgba(255, 18, 56, 0.25), 0 -2px 4px 0 rgba(255, 18, 56, 0.25), 2px 0 4px 0 rgba(255, 18, 56, 0.25), -2px 0 4px 0 rgba(255, 18, 56, 0.25)",
-  },
-  {
-    id: 3,
-    title: "Data Protection",
-    description:
-      "We use industry-standard security measures to protect your information from unauthorized access, loss, or misuse. Only authorized personnel have access to your account and event data.",
-    icon: "producation",
-    bgColor: "#FDF6FF",
-    shadow:
-      "0 2px 4px 0 rgba(204, 25, 255, 0.25), 0 -2px 4px 0 rgba(204, 25, 255, 0.25), 2px 0 4px 0 rgba(204, 25, 255, 0.25), -2px 0 4px 0 rgba(204, 25, 255, 0.25)",
-  },
-  {
-    id: 4,
-    title: "Your Responsibilities",
-    description:
-      "As an operator, you are responsible for maintaining the confidentiality of your login details and ensuring that attendee data is handled responsibly and in compliance with applicable laws.",
-    icon: "respon",
-    bgColor: "#FFFDF1",
-    shadow:
-      "0 2px 4px 0 rgba(255, 221, 14, 0.25), 0 -2px 4px 0 rgba(255, 221, 14, 0.25), 2px 0 4px 0 rgba(255, 221, 14, 0.25), -2px 0 4px 0 rgba(255, 221, 14, 0.25)",
-  },
-];
+import { useGetPrivacyQuery } from "@/redux/api/admin/privacyApi";
+import { Skeleton } from "@/components/ui";
+import { Repeat } from "@/components/reuseable/repeat";
 
 export default function PrivacyPolicy() {
+  const { data: privacy, isLoading } = useGetPrivacyQuery({});
+
+  const privacyItem = [
+    {
+      id: 1,
+      title: "Data Collection",
+      description: privacy?.data?.data_collection,
+      icon: "collection",
+      bgColor: "#F7FAFF",
+      shadow:
+        "0 2px 4px 0 rgba(34, 117, 255, 0.25), 0 -2px 4px 0 rgba(34, 117, 255, 0.25), 2px 0 4px 0 rgba(34, 117, 255, 0.25), -2px 0 4px 0 rgba(34, 117, 255, 0.25)",
+    },
+    {
+      id: 2,
+      title: "Data usage",
+      description: privacy?.data?.data_usage,
+      icon: "event",
+      bgColor: "#FFF5F6",
+      shadow:
+        "0 2px 4px 0 rgba(255, 18, 56, 0.25), 0 -2px 4px 0 rgba(255, 18, 56, 0.25), 2px 0 4px 0 rgba(255, 18, 56, 0.25), -2px 0 4px 0 rgba(255, 18, 56, 0.25)",
+    },
+    {
+      id: 3,
+      title: "Data Protection",
+      description: privacy?.data?.data_protection,
+      icon: "producation",
+      bgColor: "#FDF6FF",
+      shadow:
+        "0 2px 4px 0 rgba(204, 25, 255, 0.25), 0 -2px 4px 0 rgba(204, 25, 255, 0.25), 2px 0 4px 0 rgba(204, 25, 255, 0.25), -2px 0 4px 0 rgba(204, 25, 255, 0.25)",
+    },
+    {
+      id: 4,
+      title: "Your Responsibilities",
+      description: privacy?.data?.your_responsibility,
+      icon: "respon",
+      bgColor: "#FFFDF1",
+      shadow:
+        "0 2px 4px 0 rgba(255, 221, 14, 0.25), 0 -2px 4px 0 rgba(255, 221, 14, 0.25), 2px 0 4px 0 rgba(255, 221, 14, 0.25), -2px 0 4px 0 rgba(255, 221, 14, 0.25)",
+    },
+  ];
+
   return (
     <div id="privacy-Policy" className="pt-16 container">
       <h1 className="mb-10">Privacy Policy</h1>
@@ -53,7 +54,7 @@ export default function PrivacyPolicy() {
         <div className="space-y-10 mb-10 md:mb-0">
           {privacyItem.slice(0, 2).map((card) => (
             <div key={card.id} className="flex-1">
-              <PrivacyPolicyCard card={card} />
+              <PrivacyPolicyCard isLoading={isLoading} card={card} />
             </div>
           ))}
         </div>
@@ -70,7 +71,7 @@ export default function PrivacyPolicy() {
         <div className="space-y-10">
           {privacyItem.slice(-2).map((card) => (
             <div key={card.id} className="flex-1">
-              <PrivacyPolicyCard card={card} />
+              <PrivacyPolicyCard isLoading={isLoading} card={card} />
             </div>
           ))}
         </div>
@@ -79,7 +80,12 @@ export default function PrivacyPolicy() {
   );
 }
 
-function PrivacyPolicyCard({ card }: any) {
+interface privacyProps {
+  isLoading: boolean;
+  card: any;
+}
+
+function PrivacyPolicyCard({ isLoading, card }: privacyProps) {
   return (
     <div
       className={`rounded-lg p-6 transition-transform  h-full flex flex-col`}
@@ -99,9 +105,18 @@ function PrivacyPolicyCard({ card }: any) {
 
         <h3 className="text-lg font-semibold text-gray-900">{card.title}</h3>
       </div>
-      <p className="text-gray-600 leading-relaxed text-sm">
-        {card.description}
-      </p>
+
+      {isLoading ? (
+        <div className="space-y-2">
+          <Repeat count={4}>
+            <Skeleton className="w-full h-3 bg-gray-600/10 rounded-[3px]!" />
+          </Repeat>
+        </div>
+      ) : (
+        <p className="text-gray-600 leading-relaxed text-sm">
+          {card.description}
+        </p>
+      )}
     </div>
   );
 }

@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import {
   useGetPrivacyQuery,
   useStorePrivacyMutation,
-} from "@/redux/api/admin/privacy";
+} from "@/redux/api/admin/privacyApi";
 import { helpers } from "@/lib";
 import sonner from "@/components/reuseable/sonner";
 

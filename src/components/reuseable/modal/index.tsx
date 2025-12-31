@@ -48,7 +48,7 @@ export default function Modal({
             {title}
           </DialogTitle>
         </DialogHeader>
-        <DialogDescription className="hidden"></DialogDescription>
+        <DialogDescription className="sr-only"></DialogDescription>
         <div className={cn("p-4", mainStyle)}>{children}</div>
       </DialogContent>
     </Dialog>
