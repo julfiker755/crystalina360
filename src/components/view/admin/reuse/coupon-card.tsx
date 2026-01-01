@@ -1,16 +1,19 @@
+import { copunType } from "@/lib";
 import { childrenProps } from "@/types";
 import React from "react";
 
 interface couponProps extends childrenProps {
-  offer: string;
-  code: string;
-  expiry: string;
+  coupon_type: string;
+  coupon_code: string;
+  expiry_date: string;
+  price: string;
 }
 
 export default function CouponCad({
-  offer,
-  code,
-  expiry,
+  coupon_type,
+  coupon_code,
+  expiry_date,
+  price,
   children,
 }: couponProps) {
   return (
@@ -26,12 +29,14 @@ export default function CouponCad({
       <div className="flex-1 p-4 flex flex-col justify-between">
         <div>
           <h4 className="text-gray-500 text-base lg:text-lg font-semibold">
-            {offer}
+            {coupon_type == copunType.flat
+              ? `Flat ${price} off`
+              : `${price}% off`}
           </h4>
           <h2 className="text-xl lg:text-[28px] font-bold text-figma-black">
-            {code}
+            {coupon_code}
           </h2>
-          <h4 className="text-article mt-1">Expiry: {expiry}</h4>
+          <h4 className="text-article mt-1">Expiry: {expiry_date}</h4>
         </div>
         {children}
       </div>

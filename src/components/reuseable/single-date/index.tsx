@@ -10,7 +10,7 @@ import {
 import { cn, helpers } from "@/lib";
 import { CalendarDays } from "lucide-react";
 
-export function SingleCalendar({ onChange, className }: any) {
+export function SingleCalendar({ onChange, className, defaultDate }: any) {
   const [open, setOpen] = React.useState(false);
   const [startDate, setStartDate] = React.useState<Date | undefined>(undefined);
 
@@ -36,7 +36,9 @@ export function SingleCalendar({ onChange, className }: any) {
             )}
           >
             <span>
-              {startDate ? helpers.formatDate(startDate) : "-Select Date-"}
+              {startDate
+                ? helpers.formatDate(startDate)
+                : defaultDate || "-Select Date-"}
             </span>
             <span className="bg-white p-1.5  rounded-full ml-2 lg:ml-10">
               <CalendarDays className="text-primary size-5" />

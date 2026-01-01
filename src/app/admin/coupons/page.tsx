@@ -5,7 +5,6 @@ import { FromSelect2 } from "@/components/reuseable/from-select2";
 import ModalHeading from "@/components/reuseable/modal-heading";
 import { SingleCalendar } from "@/components/reuseable/single-date";
 import CouponCad from "@/components/view/admin/reuse/coupon-card";
-import { couponsItem } from "@/components/view/user/dummy-json";
 import useConfirmation from "@/provider/confirmation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
@@ -13,20 +12,44 @@ import Modal2 from "@/components/reuseable/modal2";
 import NavTitle from "@/components/reuseable/nav-title";
 import SearchBox from "@/components/reuseable/search-box";
 import Form from "@/components/reuseable/from";
-import { Button } from "@/components/ui";
-import { useModalState } from "@/hooks";
+import { Button, Skeleton } from "@/components/ui";
+import { useGlobalState, useModalState } from "@/hooks";
 import { CircleAlert, Plus } from "lucide-react";
-import { helpers } from "@/lib";
+import {
+  useDeleteCouponMutation,
+  useGetCouponQuery,
+  useStoreCouponMutation,
+  useUpdateCouponMutation,
+} from "@/redux/api/admin/couponApi";
+import { Pagination } from "@/components/reuseable/pagination";
+import { useDebounce } from "use-debounce";
+import { copunType, helpers } from "@/lib";
 import { coupons_st } from "@/schema";
+import { Repeat } from "@/components/reuseable/repeat";
+import sonner from "@/components/reuseable/sonner";
+import { useEffect, useState } from "react";
 
 const initState = {
   isStore: false,
   isUpdate: false,
 };
 
+const initGlobal = {
+  page: 1,
+  search: "",
+};
+
 export default function Coupons() {
   const { confirm } = useConfirmation();
   const [state, setState] = useModalState(initState);
+  const [global, updateGlobal] = useGlobalState(initGlobal);
+  const [isDetails, setIsDetails] = useState<any>({});
+  const [value] = useDebounce(global.search, 1000);
+  const { data: coupon, isLoading } = useGetCouponQuery({
+    page: global.page,
+    ...(value && { search: value }),
+  });
+  const [deleteCoupon] = useDeleteCouponMutation();
 
   const handleDelete = async (id: any) => {
     const confirmed = await confirm({
@@ -36,9 +59,10 @@ export default function Coupons() {
         "After deleting, user's won't be able to find this coupon in your system.",
     });
     if (confirmed) {
-      console.log(id);
+      await deleteCoupon(id).unwrap();
     }
   };
+
   return (
     <div>
       <NavTitle
@@ -46,7 +70,7 @@ export default function Coupons() {
         subTitle="Manage all the offers and  coupons of your system from this section"
       />
       <div className="flex-between gap-10">
-        <SearchBox onChange={(e) => console.log(e)} />
+        <SearchBox onChange={(v: any) => updateGlobal("search", v)} />
         <Button
           onClick={() => setState("isStore", true)}
           type="button"
@@ -60,15 +84,43 @@ export default function Coupons() {
 
       <div className="pt-10">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2  xl:grid-cols-3">
-          {couponsItem.map((item, idx) => (
-            <CouponCad key={idx} {...item}>
-              <div className="flex space-x-3  justify-end mt-3">
-                <AEditbtn onClick={() => setState("isUpdate", true)} />
-                <ADeletebtn onClick={() => handleDelete("1234")} />
-              </div>
-            </CouponCad>
-          ))}
+          {isLoading ? (
+            <Repeat count={10}>
+              <Skeleton className="w-full h-45" />
+            </Repeat>
+          ) : (
+            coupon?.data?.map((item: any, idx: any) => (
+              <CouponCad key={idx} {...item}>
+                <div className="flex space-x-3  justify-end mt-3">
+                  <AEditbtn
+                    onClick={() => {
+                      setState("isUpdate", true);
+                      setIsDetails(item);
+                    }}
+                  />
+                  <ADeletebtn onClick={() => handleDelete(item.id)} />
+                </div>
+              </CouponCad>
+            ))
+          )}
         </div>
+        {coupon?.meta?.total > coupon?.meta?.per_page && (
+          <ul className="flex items-center flex-wrap justify-between py-3">
+            <li className="flex">
+              Total:
+              <sup className="font-medium text-2xl relative -top-3 px-2 ">
+                {coupon?.meta?.total || 0}
+              </sup>
+              Coupons
+            </li>
+            <li>
+              <Pagination
+                onPageChange={(v: any) => updateGlobal("page", v)}
+                {...coupon?.meta}
+              />
+            </li>
+          </ul>
+        )}
       </div>
       {/* ====================== isStore ================== */}
       <Modal2
@@ -84,7 +136,7 @@ export default function Coupons() {
         setIsOpen={(v) => setState("isUpdate", v)}
         className="sm:max-w-xl"
       >
-        <CouponUpdate setState={setState} />
+        <CouponUpdate isDetails={isDetails} setState={setState} />
       </Modal2>
     </div>
   );
@@ -92,18 +144,47 @@ export default function Coupons() {
 
 //  ===================== CouponStore ==================
 const CouponStore = ({ setState }: any) => {
+  const [storeCoupon, { isLoading: storeLoading }] = useStoreCouponMutation();
+
   const from = useForm({
     resolver: zodResolver(coupons_st),
     defaultValues: {
-      coupon_code: "",
       coupon_type: "flat",
+      coupon_code: "",
       price: "",
       date: "",
     },
   });
 
+  const type = from.watch("coupon_type") || "flat";
+
   const handleSubmit = async (values: FieldValues) => {
-    console.log(values);
+    const { date, price, coupon_type, coupon_code } = values;
+    if (coupon_type === copunType.percentage && parseInt(price) > 100) {
+      from.setError("price", {
+        type: "manual",
+        message: "Percentage value should be between 1-100",
+      });
+    }
+
+    try {
+      const data = helpers.fromData({
+        coupon_code: coupon_code,
+        price: price,
+        expiry_date: date,
+        coupon_type: coupon_type,
+      });
+      const res = await storeCoupon(data).unwrap();
+      if (res.status) {
+        sonner.success(
+          "Coupon Added",
+          "Coupon stored successfully",
+          "bottom-right"
+        );
+        from.reset();
+        setState("isStore", false);
+      }
+    } catch (err) {}
   };
 
   return (
@@ -130,9 +211,10 @@ const CouponStore = ({ setState }: any) => {
           className="h-10 rounded-xl"
           name="price"
           placeholder="Enter your hare"
+          type="number"
         >
           <span className="text-figma-a_gray text-sm absolute top-1/2 -translate-y-1/2 right-4">
-            {`/${helpers.capitalize(from.watch("coupon_type"))}`}
+            {`/${helpers.capitalize(type)}`}
           </span>
         </FromInput2>
         <FromInput2
@@ -144,7 +226,7 @@ const CouponStore = ({ setState }: any) => {
         <div>
           <SingleCalendar
             onChange={(v: any) => {
-              from.setValue("date", v?.toString());
+              from.setValue("date", helpers.formatDate(v, "YYYY-MM-DD"));
             }}
             className="h-10 rounded-xl px-3! text-black!"
           />
@@ -155,7 +237,7 @@ const CouponStore = ({ setState }: any) => {
             </p>
           )}
         </div>
-        <Button size="lg" className="w-full rounded-xl">
+        <Button disabled={storeLoading} size="lg" className="w-full rounded-xl">
           Create
         </Button>
       </Form>
@@ -163,19 +245,59 @@ const CouponStore = ({ setState }: any) => {
   );
 };
 //   ================ Coupon Update ================
-const CouponUpdate = ({ setState }: any) => {
+const CouponUpdate = ({ isDetails, setState }: any) => {
+  const [updateCoupon, { isLoading }] = useUpdateCouponMutation();
   const from = useForm({
-    // resolver: zodResolver(sign_In),
+    resolver: zodResolver(coupons_st),
     defaultValues: {
       coupon_code: "",
       coupon_type: "flat",
       price: "",
+      date: "",
     },
   });
 
+  useEffect(() => {
+    if (isDetails) {
+      from.reset({
+        coupon_code: isDetails.coupon_code,
+        coupon_type: isDetails.coupon_type || "flat",
+        price: isDetails?.price,
+        date: isDetails?.expiry_date,
+      });
+    }
+  }, [isDetails]);
+
   const handleSubmit = async (values: FieldValues) => {
-    console.log(values);
+    const { date, price, coupon_type, coupon_code } = values;
+    if (coupon_type === copunType.percentage && parseInt(price) > 100) {
+      from.setError("price", {
+        type: "manual",
+        message: "Percentage value should be between 1-100",
+      });
+    }
+
+    try {
+      const data = helpers.fromData({
+        coupon_code: coupon_code,
+        price: price,
+        expiry_date: date,
+        coupon_type: coupon_type,
+      });
+      const res = await updateCoupon({ id: isDetails.id, data: data }).unwrap();
+      if (res.status) {
+        sonner.success(
+          "Update Added",
+          "Coupon Update successfully",
+          "bottom-right"
+        );
+        from.reset();
+        setState("isUpdate", false);
+      }
+    } catch (err) {}
   };
+
+  const type = from.watch("coupon_type") || "flat";
 
   return (
     <div>
@@ -204,7 +326,7 @@ const CouponUpdate = ({ setState }: any) => {
             placeholder="Enter your hare"
           />
           <span className="text-figma-a_gray text-sm absolute top-1/2 -translate-y-1/2 right-4">
-            {`/${helpers.capitalize(from.watch("coupon_type"))}`}
+            {`/${helpers.capitalize(type)}`}
           </span>
         </div>
         <FromInput2
@@ -213,8 +335,11 @@ const CouponUpdate = ({ setState }: any) => {
           label="Coupon Code"
           placeholder="Enter your Coupon code"
         />
-        <SingleCalendar className="h-10 rounded-xl px-3! text-black!" />
-        <Button size="lg" className="w-full rounded-xl">
+        <SingleCalendar
+          defaultDate={isDetails?.expiry_date}
+          className="h-10 rounded-xl px-3! text-black!"
+        />
+        <Button disabled={isLoading} size="lg" className="w-full rounded-xl">
           Save Changes
         </Button>
       </Form>

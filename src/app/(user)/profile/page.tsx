@@ -14,22 +14,16 @@ import {
 } from "@/components/ui";
 import { couponsItem } from "@/components/view/user/dummy-json";
 import { AppAlert } from "@/components/view/user/reuse";
+import CouponBox from "@/components/view/user/simple/coupon";
 import ProfileBox from "@/components/view/user/simple/profile-box";
 import { useGetFqaQuery } from "@/redux/api/admin/fqaApi";
 import { useGetPrivacyQuery } from "@/redux/api/admin/privacyApi";
 import { useGetTermsQuery } from "@/redux/api/admin/termsApi";
-import { useState } from "react";
 
 export default function Profile() {
-  const [copied, setCopied] = useState("");
   const { data: terms, isLoading: termsLoading } = useGetTermsQuery({});
   const { data: privacy, isLoading: privacyLoading } = useGetPrivacyQuery({});
   const { data: fqa, isLoading: fqaLoading } = useGetFqaQuery({});
-
-  const handleCopy = async (value: any) => {
-    await navigator.clipboard.writeText(value);
-    setCopied(value);
-  };
 
   return (
     <div className="container py-10">
@@ -113,43 +107,7 @@ export default function Profile() {
               </TabsContent>
 
               <TabsContent value="coupons" className="mt-8 space-y-6">
-                <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
-                  {couponsItem.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="flex rounded-2xl  overflow-hidden coupons-shadow  bg-white"
-                    >
-                      <div className="w-24 bg-[#5D37C5] flex items-center justify-center relative">
-                        <div className="absolute -left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-figma-gray! rounded-full shadow-lg" />
-                        <span className="text-white text-xl font-bold lg:text-2xl  transform -rotate-90 whitespace-nowrap">
-                          Discount
-                        </span>
-                      </div>
-
-                      {/* Right White Section with Details */}
-                      <div className="flex-1 p-4 flex flex-col justify-between">
-                        <div>
-                          <h4 className="text-gray-500 text-base lg:text-lg font-semibold">
-                            {item.offer}
-                          </h4>
-                          <h2 className="text-xl lg:text-[28px] font-bold text-figma-black">
-                            {item.code}
-                          </h2>
-                          <h4 className="text-article mt-1">
-                            Expiry: {item.expiry}
-                          </h4>
-                        </div>
-
-                        <Button
-                          onClick={() => handleCopy(item.code)}
-                          className={`w-fit text-lg text-black font-normal mt-5 md:h-12 px-5 lg:px-10 rounded-full bg-transparent border `}
-                        >
-                          {copied === item.code ? "Copied!" : "Copy code"}
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <CouponBox />
               </TabsContent>
             </TabBox>
           </div>

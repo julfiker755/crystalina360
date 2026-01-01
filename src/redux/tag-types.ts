@@ -5,13 +5,15 @@ export enum tagTypes {
   a_terms = "a_terms",
   a_privacy = "a_privacy",
   a_fqa = "a_fqa",
+  a_coupon = "a_coupon",
 }
 
 export const tagTypesList = [
   tagTypes.profile,
+  tagTypes.notification,
   tagTypes.u_contact_us,
   tagTypes.a_terms,
   tagTypes.a_privacy,
   tagTypes.a_fqa,
-  tagTypes.notification,
+  tagTypes.a_coupon,
 ];

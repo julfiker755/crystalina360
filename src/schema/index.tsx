@@ -81,12 +81,12 @@ export const add_on = z.object({
 
 // === coupons===
 export const coupons_st = z.object({
+  coupon_type: z.string().default("flat"),
   coupon_code: z.string().nonempty("Coupon is required"),
   price: z.string().nonempty("Price is required"),
-  coupon_type: z.string().nonempty("Coupon Type is required"),
-  benefits: z.array(z.string()).nonempty("benefits is required"),
   date: z.string().nonempty("Date is required"),
 });
+
 // === coupons code ===
 export const blog_st = z.object({
   title: z.string().nonempty("Title is required"),

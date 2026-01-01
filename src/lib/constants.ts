@@ -7,4 +7,7 @@ export enum roleKey {
   admin = "admin",
 }
 
-// "signIn" | "forgot" | "verify" | "reset" | "success" | null;
+export enum copunType {
+  flat = "flat",
+  percentage = "percentage",
+}
