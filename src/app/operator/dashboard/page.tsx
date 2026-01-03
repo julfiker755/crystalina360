@@ -2,36 +2,47 @@
 import { SingleCalendar } from "@/components/reuseable/single-date";
 import { PieCharts } from "@/components/view/oparator/simple/pie-chart";
 import TicketChart from "@/components/view/oparator/simple/ticket-chart";
+import { useGetDashboardQuery } from "@/redux/api/admin/dashboardApi";
 import FavIcon from "@/icon/favIcon";
 
-const dashboardStats = [
-  {
-    id: 1,
-    title: "Total revenue",
-    value: "$15,000",
-    icon: "revenue",
-  },
-  {
-    id: 2,
-    title: "Total events",
-    value: "50",
-    icon: "events",
-  },
-  {
-    id: 3,
-    title: "Total bookings",
-    value: "1200",
-    icon: "bookings",
-  },
-  {
-    id: 4,
-    title: "Ticket sold",
-    value: "1,350",
-    icon: "ticket",
-  },
-];
-
 export default function DashboardHome() {
+  const { data: overview } = useGetDashboardQuery({});
+  const {
+    totalSold,
+    totalRevenue,
+    totalBookings,
+    totalEvents,
+    dailyStatistics,
+    monthlyStatistics,
+  } = overview?.data || {};
+
+  const statsItem = [
+    {
+      id: 1,
+      title: "Total revenue",
+      value: totalRevenue,
+      icon: "revenue",
+    },
+    {
+      id: 2,
+      title: "Total events",
+      value: totalEvents,
+      icon: "events",
+    },
+    {
+      id: 3,
+      title: "Total bookings",
+      value: totalBookings,
+      icon: "bookings",
+    },
+    {
+      id: 4,
+      title: "Ticket sold",
+      value: totalSold,
+      icon: "ticket",
+    },
+  ];
+
   return (
     <div className="container lg:h-[calc(100vh-80px)]">
       <div className="mt-10">
@@ -52,7 +63,7 @@ export default function DashboardHome() {
           </div>
         </div>
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-4">
-          {dashboardStats.map((item) => (
+          {statsItem.map((item) => (
             <div key={item.id} className="border py-6 space-y-1  rounded-md">
               <div className="bg-[#EDEDED] mx-auto size-12 rounded-full grid place-items-center">
                 {" "}
@@ -60,7 +71,7 @@ export default function DashboardHome() {
               </div>
 
               <p className="text-center text-figma-black">{item.title}</p>
-              <h1 className="text-center">{item.value}</h1>
+              <h1 className="text-center">{item.value || 0}</h1>
             </div>
           ))}
         </div>
@@ -70,13 +81,13 @@ export default function DashboardHome() {
           <h1 className="text-2xl text-left text-figma-black mb-4">
             Ticket Sold Statistics
           </h1>
-          <TicketChart />
+          <TicketChart data={monthlyStatistics} />
         </div>
         <div>
           <h1 className="text-2xl text-left text-figma-black mb-4">
             Total Booking Statistics
           </h1>
-          <PieCharts />
+          <PieCharts data={dailyStatistics} />
         </div>
       </div>
     </div>

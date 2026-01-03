@@ -9,49 +9,48 @@ import {
   ChartLegendContent,
 } from "@/components/ui/chart";
 
-const chartData = [
-  { day: "Fri", value: 1264.2, fill: "hsl(260 80% 60%)" }, // Medium purple
-  { day: "Thu", value: 1308.7, fill: "hsl(140 70% 70%)" }, // Light green
-  { day: "Wed", value: 1110.7, fill: "hsl(240 60% 40%)" }, // Darker blue-purple
-  { day: "Tue", value: 954.6, fill: "hsl(36 90% 60%)" }, // Orange
-  { day: "Mon", value: 1201.8, fill: "hsl(190 70% 60%)" }, // Light blue
-  { day: "Sun", value: 740.1, fill: "hsl(0 80% 70%)" }, // Light coral
-  { day: "Sat", value: 1343.3, fill: "hsl(280 70% 40%)" }, // Darker purple
-];
+interface ChartData {
+  day: string;
+  count: number;
+}
 
-const chartConfig = {
+interface PieChartsProps {
+  data: ChartData[];
+}
+
+const chartConfig: ChartConfig = {
   value: {
     label: "Value",
   },
   Fri: {
     label: "Fri",
-    color: "hsl(260 80% 60%)",
+    color: "hsl(260 80% 60%)", // Purple
   },
   Thu: {
     label: "Thu",
-    color: "hsl(140 70% 70%)",
+    color: "hsl(140 70% 70%)", // Green
   },
   Wed: {
     label: "Wed",
-    color: "hsl(240 60% 40%)",
+    color: "hsl(240 60% 40%)", // Blue
   },
   Tue: {
     label: "Tue",
-    color: "hsl(36 90% 60%)",
+    color: "hsl(36 90% 60%)", // Orange
   },
   Mon: {
     label: "Mon",
-    color: "hsl(190 70% 60%)",
+    color: "hsl(190 70% 60%)", // Light blue
   },
   Sun: {
     label: "Sun",
-    color: "hsl(0 80% 70%)",
+    color: "hsl(0 80% 70%)", // Coral
   },
   Sat: {
     label: "Sat",
-    color: "hsl(280 70% 40%)",
+    color: "hsl(280 70% 40%)", // Dark purple
   },
-} satisfies ChartConfig;
+};
 
 const RADIAN = Math.PI / 180;
 
@@ -110,8 +109,8 @@ const renderCustomizedLabel = ({
   );
 };
 
-export function PieCharts() {
-  const totalValue = chartData.reduce((sum, entry) => sum + entry.value, 0);
+export function PieCharts({ data }: PieChartsProps) {
+  const totalValue = data?.reduce((sum, entry) => sum + entry.count, 0);
 
   return (
     <div className="bg-white p-3 border rounded-xl h-fit w-full overflow-x-auto">
@@ -125,8 +124,8 @@ export function PieCharts() {
             content={<ChartTooltipContent hideLabel />}
           />
           <Pie
-            data={chartData}
-            dataKey="value"
+            data={data}
+            dataKey="count"
             nameKey="day"
             innerRadius={80}
             outerRadius={120}
@@ -134,11 +133,15 @@ export function PieCharts() {
             labelLine={false}
             label={renderCustomizedLabel}
           >
-            {chartData.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={entry.fill} />
-            ))}
+            {data?.map((entry, index) => {
+              const dayConfig =
+                chartConfig[entry.day as keyof typeof chartConfig];
+              return (
+                <Cell key={`cell-${index}`} fill={dayConfig?.color || "#ccc"} />
+              );
+            })}
             <Label
-              value={`$${totalValue.toFixed(1)}`}
+              value={`$${totalValue?.toFixed(1)}`}
               position="center"
               className="fill-foreground text-3xl font-bold"
             />

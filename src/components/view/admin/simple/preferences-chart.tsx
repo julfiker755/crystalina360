@@ -16,16 +16,11 @@ import {
 } from "@/components/ui/chart";
 import { cn } from "@/lib/utils";
 
-export default function PreferencesChart({ className }: any) {
-  const chartData = [
-    { day: "Sat", events: 8 },
-    { day: "Sun", events: 12 },
-    { day: "Mon", events: 70 },
-    { day: "Tue", events: 10 },
-    { day: "Wed", events: 50 },
-    { day: "Thu", events: 32 },
-    { day: "Fri", events: 12 },
-  ];
+export default function PreferencesChart({ className, data }: any) {
+  const chartData = data?.map((item: { day: number; events: number }) => ({
+    day: item?.day?.toString(),
+    events: item?.events || 0,
+  }));
 
   const chartConfig = {
     events: {

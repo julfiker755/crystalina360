@@ -1,5 +1,4 @@
 "use client";
-import AddOn from "@/components/view/user/landing/add-on";
 import Advertise from "@/components/view/user/landing/advertise";
 import Business from "@/components/view/user/landing/business";
 import ContactUs from "@/components/view/user/landing/contact-us";
@@ -15,7 +14,6 @@ import { useAppSelector } from "@/redux/hooks";
 
 export default function UserHome() {
   const { user } = useAppSelector((state: any) => state.auth);
-  console.log(user);
   return (
     <>
       <HeroSec role={user?.role} />

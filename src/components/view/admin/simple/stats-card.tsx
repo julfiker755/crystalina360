@@ -9,7 +9,9 @@ export function StatsCard({ icon, title, value }: any) {
         <FavIcon color={icon == "t_ticket" ? "" : "#fff"} name={icon as any} />
       </li>
       <li className="text-figma-a_gray mt-2">{title}</li>
-      <li className="font-bold text-xl leading-9 lg:text-[28px]">{value}</li>
+      <li className="font-bold text-xl leading-9 lg:text-[28px]">
+        {value || 0}
+      </li>
     </ul>
   );
 }
