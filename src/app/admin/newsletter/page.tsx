@@ -1,93 +1,47 @@
 "use client";
 import useConfirmation from "@/provider/confirmation";
-import Avatars from "@/components/reuseable/avater";
-import { DeleteBtn, PreviewBtn } from "@/components/reuseable/btn";
+import { DeleteBtn } from "@/components/reuseable/btn";
 import { CustomTable } from "@/components/reuseable/custom-table";
-import Modal from "@/components/reuseable/modal";
 import NavTitle from "@/components/reuseable/nav-title";
 import { Pagination } from "@/components/reuseable/pagination";
 import SearchBox from "@/components/reuseable/search-box";
 import { TableNoItem } from "@/components/reuseable/table-no-item";
 import { TableSkeleton } from "@/components/reuseable/table-skeleton";
 import { Button, TableCell, TableRow, Textarea } from "@/components/ui";
-import { dummyJson } from "@/components/view/user/dummy-json";
-import { useGlobalState } from "@/hooks";
-import FavIcon from "@/icon/favIcon";
 import { InputShow } from "@/components/reuseable/input-show";
+import { useGlobalState } from "@/hooks";
+import {
+  useDeleteNewsletMutation,
+  useGetNewsletQuery,
+  useReplayNewsletMutation,
+} from "@/redux/api/admin/newsletterApi";
+import { useDebounce } from "use-debounce";
+import { FormEvent, useState } from "react";
+import sonner from "@/components/reuseable/sonner";
+import Modal from "@/components/reuseable/modal";
+import { helpers } from "@/lib";
 
-const intState = {
+const intState: any = {
   page: 1,
   isPreview: false,
+  search: "",
+  details: {},
 };
 
 export default function Newsletter() {
   const { confirm } = useConfirmation();
   const [global, updateGlobal] = useGlobalState(intState);
   const headers = ["Email", "Date", "Time", "Action"];
-  const isLoading = false;
+  const [value] = useDebounce(global.search, 1000);
+  const [deleteNewslet] = useDeleteNewsletMutation();
+  const [replayNewslet, { isLoading: replayLoading }] =
+    useReplayNewsletMutation();
+  const [message, setMessage] = useState("");
 
-  const data = [
-    {
-      email: "example@gmail.com",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-      action: "Reply",
-    },
-    {
-      email: "example@gmail.com",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-      action: "Reply",
-    },
-    {
-      email: "example@gmail.com",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-      action: "Reply",
-    },
-    {
-      email: "example@gmail.com",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-      action: "Reply",
-    },
-    {
-      email: "example@gmail.com",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-      action: "Reply",
-    },
-    {
-      email: "example@gmail.com",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-      action: "Reply",
-    },
-    {
-      email: "example@gmail.com",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-      action: "Reply",
-    },
-    {
-      email: "example@gmail.com",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-      action: "Reply",
-    },
-    {
-      email: "example@gmail.com",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-      action: "Reply",
-    },
-    {
-      email: "example@gmail.com",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-      action: "Reply",
-    },
-  ];
+  const { data: newsletter, isLoading } = useGetNewsletQuery({
+    page: global.page,
+    ...(value && { search: value }),
+  });
 
   const handleDelete = async (id: any) => {
     const confirmed = await confirm({
@@ -97,7 +51,26 @@ export default function Newsletter() {
         "After deleting, you won't be able to find this subscription in your system",
     });
     if (confirmed) {
-      console.log(id);
+      await deleteNewslet(id).unwrap();
+    }
+  };
+  const id = global?.details?.id;
+  // == replaySubmit ==
+  const replaySubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const data = helpers.fromData({
+      msg: message,
+    });
+    const res = await replayNewslet({ id, data }).unwrap();
+    if (res.status) {
+      setMessage("");
+      sonner.success(
+        "Reply Successful",
+        "The newsletter reply email has been sent",
+        "bottom-right"
+      );
+      updateGlobal("isPreview", false);
+      updateGlobal("details", {});
     }
   };
 
@@ -107,7 +80,7 @@ export default function Newsletter() {
         title="Newsletter"
         subTitle="Manage Newsletter subscriptions of your systemn from this section"
       />
-      <SearchBox onChange={(e) => console.log(e)} />
+      <SearchBox onChange={(v: any) => updateGlobal("search", v)} />
       <CustomTable
         headers={headers}
         pagination={
@@ -115,14 +88,14 @@ export default function Newsletter() {
             <li className="flex">
               Total:
               <sup className="font-medium text-2xl relative -top-3 px-2 ">
-                500
+                {newsletter?.meta?.total || 0}
               </sup>
               subscriptions
             </li>
             <li>
               <Pagination
                 onPageChange={(v: any) => updateGlobal("page", v)}
-                {...dummyJson.meta}
+                {...newsletter?.meta}
               />
             </li>
           </ul>
@@ -130,24 +103,27 @@ export default function Newsletter() {
       >
         {isLoading ? (
           <TableSkeleton colSpan={headers?.length} tdStyle="!pl-2" />
-        ) : data?.length > 0 ? (
-          data?.map((item, index) => (
+        ) : newsletter?.data?.length > 0 ? (
+          newsletter?.data?.map((item: any, index: any) => (
             <TableRow key={index} className="border">
               <TableCell>{item.email}</TableCell>
-              <TableCell>{item.date}</TableCell>
-              <TableCell>{item.time}</TableCell>
+              <TableCell>{helpers.formatDate(item.created_at)}</TableCell>
+              <TableCell>{helpers.formatTime(item.created_at)}</TableCell>
               <TableCell>
                 <ul className="flex gap-2">
                   <li>
                     <Button
                       className="bg-figma-delete  text-primary h-10"
-                      onClick={() => updateGlobal("isPreview", true)}
+                      onClick={() => {
+                        updateGlobal("isPreview", true);
+                        updateGlobal("details", item);
+                      }}
                     >
                       Reply
                     </Button>
                   </li>
                   <li>
-                    <DeleteBtn onClick={() => handleDelete("4343")} />
+                    <DeleteBtn onClick={() => handleDelete(item.id)} />
                   </li>
                 </ul>
               </TableCell>
@@ -156,7 +132,7 @@ export default function Newsletter() {
         ) : (
           <TableNoItem
             colSpan={headers?.length}
-            title="No users are available at the moment"
+            title="No Newsletter are available at the moment"
             tdStyle="!bg-background"
           />
         )}
@@ -169,11 +145,11 @@ export default function Newsletter() {
         titleStyle="text-center"
         className="sm:max-w-xl"
       >
-        <div className="space-y-5">
+        <form onSubmit={replaySubmit} className="space-y-5">
           <InputShow
             className="rounded-xl"
             label="Email"
-            value="example@gmail.com"
+            value={global?.details?.email}
           />
           <div className="relative">
             <span className="text-blacks text-base font-medium bg-background absolute -top-3 left-5  px-3">
@@ -183,11 +159,18 @@ export default function Newsletter() {
           <Textarea
             className="sm:min-h-30 resize-none rounded-xl"
             placeholder="Type here..."
+            required={true}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
           ></Textarea>
-          <Button size="lg" className="rounded-xl w-full">
+          <Button
+            disabled={replayLoading}
+            size="lg"
+            className="rounded-xl w-full"
+          >
             Send
           </Button>
-        </div>
+        </form>
       </Modal>
     </div>
   );
