@@ -95,6 +95,11 @@ export const blog_st = z.object({
     message: "Image is required",
   }),
 });
+export const blogUp_st = z.object({
+  title: z.string().nonempty("Title is required"),
+  description: z.string().nonempty("Description is required"),
+  image: z.any().optional(),
+});
 
 // === coupons code ===
 export const banner_st = z.object({

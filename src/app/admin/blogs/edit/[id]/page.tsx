@@ -6,37 +6,69 @@ import { ImgBox } from "@/components/reuseable/Img-box";
 import ImgUpload from "@/components/reuseable/img-upload";
 import NavTitle from "@/components/reuseable/nav-title";
 import TextEditor from "@/components/reuseable/text-editor";
+import {
+  useSlgBlogQuery,
+  useUpdateBlogMutation,
+} from "@/redux/api/admin/blogApi";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FieldValues, useForm } from "react-hook-form";
+import { blogUp_st } from "@/schema";
+import { CircleAlert } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui";
 import FavIcon from "@/icon/favIcon";
-import { blog_st } from "@/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CircleAlert } from "lucide-react";
-import { useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
+import { useParams } from "next/navigation";
+import { helpers } from "@/lib";
+import sonner from "@/components/reuseable/sonner";
 
 const intImg = {
   file: null,
-  preview:
-    "https://fastly.picsum.photos/id/1070/900/600.jpg?hmac=GDne9IdC0W1PNcmlRX9M2idWCT_sFmCNRl_QVdDJOZQ",
+  preview: "",
 };
 
 export default function BlogStore() {
+  const { id } = useParams();
   const [img, setIsImg] = useState<any>(intImg);
+  const [updateBlog, { isLoading: updateLoading }] = useUpdateBlogMutation();
+  const { data: blog } = useSlgBlogQuery(id);
+  const { img: image, description, title } = blog?.data || {};
   const from = useForm({
-    resolver: zodResolver(blog_st),
+    resolver: zodResolver(blogUp_st),
     defaultValues: {
-      title: "Blog title goes here",
-      description: "Blog description goes here",
+      title: "",
+      description: "",
       image: null,
     },
   });
 
+  useEffect(() => {
+    if (blog) {
+      from.reset({
+        title: title,
+        description: description,
+      });
+    }
+  }, [blog]);
+
   const handleSubmit = async (values: FieldValues) => {
-    console.log(values);
-    //  const value = {
-    //   name: values.name,
-    //   ...(img?.file && { image: img?.file }),
-    // };
+    const value = {
+      title: values.title,
+      description: values.description,
+      ...(values?.image && { img: values?.image }),
+    };
+    try {
+      const data = helpers.fromData(value);
+      const res = await updateBlog({ id, data }).unwrap();
+      if (res.status) {
+        sonner.success(
+          "Blog updated",
+          "Blog has been updated successfully",
+          "bottom-right"
+        );
+      }
+    } catch (err: any) {
+      console.log(err);
+    }
   };
   return (
     <div>
@@ -50,7 +82,9 @@ export default function BlogStore() {
             <BackBtn className="bg-figma-sidebar" iconStyle="text-primary" />
           </li>
           <li className="flex items-center space-x-3">
-            <Button size="lg">Save Changes</Button>
+            <Button disabled={updateLoading} size="lg">
+              Save Changes
+            </Button>
           </li>
         </ul>
         <div>
@@ -61,6 +95,7 @@ export default function BlogStore() {
                 onFileSelect={(file: File) => {
                   setIsImg({
                     ...img,
+                    file: file,
                     preview: URL.createObjectURL(file),
                   });
                   from.setValue("image", file as any);
@@ -71,30 +106,15 @@ export default function BlogStore() {
                   h-[260px] flex flex-col items-center justify-center 
                   transition"
                 >
-                  {img.preview ? (
-                    <ImgBox
-                      src={img.preview}
-                      alt="img"
-                      className="w-full h-full object-cover rounded-md"
-                    >
-                      <div className="size-10 grid place-items-center absolute rounded-md bg-white/20 backdrop-blur-[20px] right-4 top-4">
-                        <FavIcon name="upload22" />
-                      </div>
-                    </ImgBox>
-                  ) : (
-                    <div className="text-center">
-                      <p className="text-blacks mb-2 text-sm">
-                        Upload Blog Banner
-                      </p>
-                      <p className="text-gray-400 font-medium mb-4 text-xs">
-                        Or
-                      </p>
-
-                      <Button variant="primary" type="button">
-                        Browse files
-                      </Button>
+                  <ImgBox
+                    src={img.preview || image || "/not.png"}
+                    alt="img"
+                    className="w-full h-full object-cover rounded-md"
+                  >
+                    <div className="size-10 grid place-items-center absolute rounded-md bg-white/20 backdrop-blur-[20px] right-4 top-4">
+                      <FavIcon name="upload22" />
                     </div>
-                  )}
+                  </ImgBox>
                 </div>
               </ImgUpload>
               {from.watch("image") === null &&

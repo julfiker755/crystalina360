@@ -2,18 +2,20 @@
 import { BackBtn } from "@/components/reuseable/back-btn";
 import { UploadBtn } from "@/components/reuseable/btn";
 import { FromInput2 } from "@/components/reuseable/form-input2";
-import Form from "@/components/reuseable/from";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import ImgUpload from "@/components/reuseable/img-upload";
 import NavTitle from "@/components/reuseable/nav-title";
 import TextEditor from "@/components/reuseable/text-editor";
-import { Button } from "@/components/ui";
-import FavIcon from "@/icon/favIcon";
-import { blog_st } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CircleAlert } from "lucide-react";
-import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
+import Form from "@/components/reuseable/from";
+import { CircleAlert } from "lucide-react";
+import { Button } from "@/components/ui";
+import { blog_st } from "@/schema";
+import { useState } from "react";
+import { helpers } from "@/lib";
+import { useStoreBlogMutation } from "@/redux/api/admin/blogApi";
+import sonner from "@/components/reuseable/sonner";
 
 const intImg = {
   file: null,
@@ -22,6 +24,7 @@ const intImg = {
 
 export default function BlogStore() {
   const [img, setIsImg] = useState<any>(intImg);
+  const [storeBlog, { isLoading: storeLoading }] = useStoreBlogMutation();
   const from = useForm({
     resolver: zodResolver(blog_st),
     defaultValues: {
@@ -32,11 +35,22 @@ export default function BlogStore() {
   });
 
   const handleSubmit = async (values: FieldValues) => {
-    console.log(values);
-    //  const value = {
-    //   name: values.name,
-    //   ...(img?.file && { image: img?.file }),
-    // };
+    const value = {
+      img: values.image,
+      title: values.title,
+      description: values.description,
+    };
+    const data = helpers.fromData(value);
+    const res = await storeBlog(data).unwrap();
+    if (res.status) {
+      from.reset();
+      setIsImg(intImg);
+      sonner.success(
+        "Blog created",
+        "Blog has been created successfully",
+        "bottom-right"
+      );
+    }
   };
   return (
     <div>
@@ -50,7 +64,9 @@ export default function BlogStore() {
             <BackBtn className="bg-figma-sidebar" iconStyle="text-primary" />
           </li>
           <li className="flex items-center space-x-3">
-            <Button size="lg">Save Changes</Button>
+            <Button disabled={storeLoading} size="lg">
+              Save Changes
+            </Button>
           </li>
         </ul>
         <div>
