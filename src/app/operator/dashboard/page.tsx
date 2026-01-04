@@ -4,9 +4,16 @@ import { PieCharts } from "@/components/view/oparator/simple/pie-chart";
 import TicketChart from "@/components/view/oparator/simple/ticket-chart";
 import { useGetDashboardQuery } from "@/redux/api/admin/dashboardApi";
 import FavIcon from "@/icon/favIcon";
+import { useState } from "react";
+import { helpers } from "@/lib";
 
 export default function DashboardHome() {
-  const { data: overview } = useGetDashboardQuery({});
+  const [tempDate, setTempDate] = useState({
+    start_date: "",
+    end_date: "",
+  });
+  const [filterDate, setFilterDate] = useState<any>(null);
+  const { data: overview } = useGetDashboardQuery(filterDate ?? {});
   const {
     totalSold,
     totalRevenue,
@@ -43,6 +50,11 @@ export default function DashboardHome() {
     },
   ];
 
+  const applyDateFilter = () => {
+    if (!tempDate.start_date || !tempDate.end_date) return;
+    setFilterDate(tempDate);
+  };
+
   return (
     <div className="container lg:h-[calc(100vh-80px)]">
       <div className="mt-10">
@@ -51,13 +63,30 @@ export default function DashboardHome() {
           <div className="flex flex-wrap items-center space-x-5 space-y-2 lg:space-y-0">
             <div className="flex items-center space-x-2">
               <h2 className="text-lg">From:</h2>
-              <SingleCalendar onChange={(e: any) => console.log(e)} />
+              <SingleCalendar
+                onChange={(start_date: any) =>
+                  setTempDate((prev) => ({
+                    ...prev,
+                    start_date: helpers.formatDate(start_date, "YYYY-MM-DD"),
+                  }))
+                }
+              />
             </div>
             <div className="flex items-center space-x-2">
               <h2 className="text-lg">To:</h2>
-              <SingleCalendar onChange={(e: any) => console.log(e)} />
+              <SingleCalendar
+                onChange={(end_date: any) =>
+                  setTempDate((prev) => ({
+                    ...prev,
+                    end_date: helpers.formatDate(end_date, "YYYY-MM-DD"),
+                  }))
+                }
+              />
             </div>
-            <h1 className="size-9 grid place-items-center rounded-md bg-primary">
+            <h1
+              onClick={() => applyDateFilter()}
+              className="size-9 grid cursor-pointer place-items-center rounded-md bg-primary"
+            >
               <FavIcon className="size-5" name="date_s" />
             </h1>
           </div>

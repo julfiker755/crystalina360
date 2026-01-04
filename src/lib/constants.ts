@@ -1,3 +1,4 @@
+import { tagTypes } from "./../redux/tag-types";
 export const authKey = "auth_token";
 export const routeName = "/operator";
 

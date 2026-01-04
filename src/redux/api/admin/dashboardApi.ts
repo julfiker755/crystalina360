@@ -4,11 +4,12 @@ import { baseApi } from "../baseApi";
 export const dashApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getDashboard: build.query({
-      query: () => ({
+      query: (arg) => ({
         url: "/dashboard",
         method: "GET",
+        params: arg,
       }),
-      providesTags: [tagTypes.a_fqa],
+      providesTags: [tagTypes.a_dashboard],
     }),
   }),
 });

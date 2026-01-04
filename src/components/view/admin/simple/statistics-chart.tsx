@@ -16,14 +16,43 @@ import {
 } from "@/components/ui/chart";
 import { cn } from "@/lib/utils";
 
-export default function StatisticsChart({ className, data }: any) {
-  const chartData = data?.map(
-    (item: { day: number; user: number; operator: number }) => ({
+interface statisticsProps {
+  className?: string;
+  type: "monthly" | "yearly";
+  data: any[];
+}
+
+interface dataProps {
+  user: number;
+  operator: number;
+}
+
+interface monthlyProps extends dataProps {
+  day: number;
+}
+interface yearlyProps extends dataProps {
+  month: string;
+}
+
+export default function StatisticsChart({
+  className,
+  type,
+  data,
+}: statisticsProps) {
+  let chartData: any;
+  if (type === "monthly") {
+    chartData = data?.map((item: monthlyProps) => ({
       day: item?.day?.toString(),
       user: item?.user || 0,
       operator: item?.operator || 0,
-    })
-  );
+    }));
+  } else if (type == "yearly") {
+    chartData = data?.map((item: yearlyProps) => ({
+      day: item?.month?.toString(),
+      user: item?.user || 0,
+      operator: item?.operator || 0,
+    }));
+  }
 
   const chartConfig = {
     user: {

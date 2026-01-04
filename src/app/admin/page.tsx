@@ -1,4 +1,5 @@
 "use client";
+import { DropdownBox } from "@/components/reuseable/dropdown-menu";
 import NavTitle from "@/components/reuseable/nav-title";
 import { ScrollArea } from "@/components/ui";
 import PreferencesChart from "@/components/view/admin/simple/preferences-chart";
@@ -7,9 +8,11 @@ import {
   RecentCard,
   StatsCard,
 } from "@/components/view/admin/simple/stats-card";
+import { helpers } from "@/lib";
 import { useGetDashboardQuery } from "@/redux/api/admin/dashboardApi";
 import { useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
+import { useState } from "react";
 
 const activityData = [
   {
@@ -40,7 +43,10 @@ const activityData = [
 
 export default function HomePage() {
   const auth = useAppSelector((state: AppState) => state.auth.user);
-  const { data: overview } = useGetDashboardQuery({});
+  const [filter, setIsFilter] = useState<any>("monthly");
+  const { data: overview } = useGetDashboardQuery({
+    type: filter,
+  });
   const {
     statistics,
     eventPostingPreference: preference,
@@ -96,10 +102,21 @@ export default function HomePage() {
       </div>
       <div className="my-8 space-y-8">
         <div>
-          <h2 className="text-2xl font-medium mb-3">
-            User and operator Registration Statistics
-          </h2>
-          <StatisticsChart data={statistics} />
+          <ul className="flex items-center justify-between">
+            <li>
+              <h2 className="text-2xl font-medium mb-3">
+                User and operator Registration Statistics
+              </h2>
+            </li>
+            <li>
+              <DropdownBox
+                label={helpers.capitalize(filter)}
+                menuItems={["Monthly", "Yearly"]}
+                onChange={(v: any) => setIsFilter(v)}
+              />
+            </li>
+          </ul>
+          <StatisticsChart type={filter} data={statistics} />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <div>
