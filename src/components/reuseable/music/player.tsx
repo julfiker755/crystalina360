@@ -24,9 +24,7 @@ export function MusicPlayer({
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const progressBarRef = useRef<HTMLDivElement | null>(null);
 
-  const audioLink = custom
-    ? process.env.NEXT_PUBLIC_IMG_URL + audioSource
-    : audioSource;
+  const audioLink = custom ? audioSource : audioSource;
 
   /** 🎵 Play / Pause */
   const togglePlay = (e: any) => {

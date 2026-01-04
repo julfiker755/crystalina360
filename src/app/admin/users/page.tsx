@@ -10,93 +10,31 @@ import SearchBox from "@/components/reuseable/search-box";
 import { TableNoItem } from "@/components/reuseable/table-no-item";
 import { TableSkeleton } from "@/components/reuseable/table-skeleton";
 import { TableCell, TableRow } from "@/components/ui";
-import { dummyJson } from "@/components/view/user/dummy-json";
 import { useGlobalState } from "@/hooks";
 import FavIcon from "@/icon/favIcon";
+import {
+  useDeleteUserMutation,
+  useGetUsersQuery,
+} from "@/redux/api/admin/userApi";
+import { useDebounce } from "use-debounce";
 
-const intState = {
+const intState: any = {
   page: 1,
   isPreview: false,
+  search: "",
+  details: {},
 };
 
 export default function Users() {
   const { confirm } = useConfirmation();
   const [global, updateGlobal] = useGlobalState(intState);
   const headers = ["Name", "Email", "Total Booked ", "Total Paid", "Action"];
-  const isLoading = false;
-
-  const data = [
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      totalBooked: 20,
-      totalPaid: "$200",
-      action: "View",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      totalBooked: 20,
-      totalPaid: "$200",
-      action: "View",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      totalBooked: 20,
-      totalPaid: "$200",
-      action: "View",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      totalBooked: 20,
-      totalPaid: "$200",
-      action: "View",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      totalBooked: 20,
-      totalPaid: "$200",
-      action: "View",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      totalBooked: 20,
-      totalPaid: "$200",
-      action: "View",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      totalBooked: 20,
-      totalPaid: "$200",
-      action: "View",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      totalBooked: 20,
-      totalPaid: "$200",
-      action: "View",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      totalBooked: 20,
-      totalPaid: "$200",
-      action: "View",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      totalBooked: 20,
-      totalPaid: "$200",
-      action: "View",
-    },
-  ];
+  const [value] = useDebounce(global.search, 1000);
+  const { data: users, isLoading } = useGetUsersQuery({
+    page: global.page,
+    ...(value && { search: value }),
+  });
+  const [deleteUser] = useDeleteUserMutation();
 
   const handleDelete = async (id: any) => {
     const confirmed = await confirm({
@@ -106,7 +44,9 @@ export default function Users() {
         "After deleting, this user will no longer available in your system",
     });
     if (confirmed) {
-      console.log(id);
+      await deleteUser(id).unwrap();
+      updateGlobal("details", {});
+      updateGlobal("isPreview", false);
     }
   };
 
@@ -116,36 +56,38 @@ export default function Users() {
         title="Manage users"
         subTitle="Manage your system users from this section"
       />
-      <SearchBox onChange={(e) => console.log(e)} />
+      <SearchBox onChange={(v: any) => updateGlobal("search", v)} />
       <CustomTable
         headers={headers}
         pagination={
-          <ul className="flex items-center flex-wrap justify-between py-3">
-            <li className="flex">
-              Total:
-              <sup className="font-medium text-2xl relative -top-3 px-2 ">
-                500
-              </sup>
-              users
-            </li>
-            <li>
-              <Pagination
-                onPageChange={(v: any) => updateGlobal("page", v)}
-                {...dummyJson.meta}
-              />
-            </li>
-          </ul>
+          users?.meta?.total > 10 && (
+            <ul className="flex items-center flex-wrap justify-between py-3">
+              <li className="flex">
+                Total:
+                <sup className="font-medium text-2xl relative -top-3 px-2 ">
+                  {users?.meta?.total}
+                </sup>
+                users
+              </li>
+              <li>
+                <Pagination
+                  onPageChange={(v: any) => updateGlobal("page", v)}
+                  {...users?.meta}
+                />
+              </li>
+            </ul>
+          )
         }
       >
         {isLoading ? (
           <TableSkeleton colSpan={headers?.length} tdStyle="!pl-2" />
-        ) : data?.length > 0 ? (
-          data?.map((item, index) => (
+        ) : users?.data?.length > 0 ? (
+          users?.data?.map((item: any, index: any) => (
             <TableRow key={index} className="border">
               <TableCell className="relative">
                 <div className="flex items-center gap-3">
                   <Avatars
-                    src={""}
+                    src={item.img || "/avater.png"}
                     fallback={item.name}
                     alt="profile"
                     fallbackStyle="aStyle"
@@ -156,21 +98,24 @@ export default function Users() {
               <TableCell>{item.email}</TableCell>
               <TableCell>
                 {" "}
-                <h5 className="ml-6">{item.totalBooked}</h5>
+                <h5 className="ml-6">{item.ticket_booked || 0}</h5>
               </TableCell>
               <TableCell>
                 {" "}
-                <h5 className="ml-4">{item.totalPaid}</h5>
+                <h5 className="ml-4">{item.total_paid || 0}</h5>
               </TableCell>
               <TableCell>
                 <ul className="flex gap-2">
                   <li>
                     <PreviewBtn
-                      onClick={() => updateGlobal("isPreview", true)}
+                      onClick={() => {
+                        updateGlobal("isPreview", true);
+                        updateGlobal("details", item);
+                      }}
                     />
                   </li>
                   <li>
-                    <DeleteBtn onClick={() => handleDelete("4343")} />
+                    <DeleteBtn onClick={() => handleDelete(item?.id)} />
                   </li>
                 </ul>
               </TableCell>
@@ -196,32 +141,36 @@ export default function Users() {
           <div className="flex items-center justify-between gap-2 border p-2 rounded-md">
             <div className="flex items-center gap-2">
               <Avatars
-                src={""}
-                fallback={"Julfiker"}
+                src={global?.details?.img || "/avater.png"}
+                fallback={global?.details?.name || ""}
                 alt="profile"
                 fallbackStyle="aStyle"
               />
               <ul className="leading-5 mb-1">
-                <li className="font-semibold">Md. Abid Hasan</li>
-                <li className="text-figma-a_gray">example@gmail.com</li>
+                <li className="font-semibold">{global?.details?.name}</li>
+                <li className="text-figma-a_gray">{global?.details?.email}</li>
               </ul>
             </div>
-            <DeleteBtn onClick={() => handleDelete("4343")} />
+            <DeleteBtn onClick={() => handleDelete(global?.details?.id)} />
           </div>
           <div className="space-y-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
               <EventCardSm
                 icon="events_i"
                 title="Total event bookings"
-                value="15"
+                value={global?.details?.total_event_bookings || 0}
               />
               <EventCardSm
                 icon="tickets_i"
                 title="Total ticket bought"
-                value="30"
+                value={global?.details?.total_ticket_bought || 0}
               />
             </div>
-            <EventCardSm icon="costed_" title="Total costed" value="$1,500" />
+            <EventCardSm
+              icon="costed_"
+              title="Total costed"
+              value={global?.details?.total_cost || 0}
+            />
           </div>
         </div>
       </Modal>

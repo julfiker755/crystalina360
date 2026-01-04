@@ -118,3 +118,10 @@ export const add_plan = z.object({
   price: z.string().nonempty("price is required"),
   services: z.array(z.string()).nonempty("benefits is required"),
 });
+
+export const audio_sc = z.object({
+  title: z.string().nonempty("title is required"),
+  audio: z.any().refine((file) => file instanceof File, {
+    message: "Audio is required",
+  }),
+});
