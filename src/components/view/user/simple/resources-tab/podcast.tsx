@@ -1,37 +1,17 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { AppAlert } from "../../reuse";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import { RandomImg } from "@/lib";
 import MusicCard from "../../reuse/music-card";
-
-const musicItem = [
-  {
-    id: 1,
-    title: "Mental Health & Wellness Journey",
-    author: "by Mindful Voices",
-    duration: "1:32:15",
-    likes: 245,
-    progress: 20,
-  },
-  {
-    id: 2,
-    title: "Understanding Anxiety Disorders",
-    author: "by Dr. Sarah Johnson",
-    duration: "45:30",
-    likes: 187,
-    progress: 75,
-  },
-  {
-    id: 3,
-    title: "Coping Strategies for Stress",
-    author: "by Wellness Today",
-    duration: "38:45",
-    likes: 312,
-    progress: 90,
-  },
-];
+import { useGetPodcastQuery } from "@/redux/api/admin/podcastApi";
+import { Repeat } from "@/components/reuseable/repeat";
+import { Skeleton } from "@/components/ui";
+import { Pagination } from "@/components/reuseable/pagination";
 
 export function Podcast() {
+  const [page, setIsPate] = useState(1);
+  const { data: padcast, isLoading } = useGetPodcastQuery({ page });
   return (
     <div>
       <div className="flex flex-col md:flex-row gap-8 md:gap-6 bg-[#FFFAF9]  p-4 lg:p-10 rounded-lg">
@@ -60,9 +40,21 @@ export function Podcast() {
         </div>
       </div>
       <div className="space-y-8 pt-8">
-        {musicItem.map((item) => (
-          <MusicCard key={item.id} item={item} />
-        ))}
+        {isLoading ? (
+          <Repeat count={10}>
+            <Skeleton className="w-full h-40" />
+          </Repeat>
+        ) : (
+          padcast?.data?.map((item: any) => (
+            <MusicCard key={item.id} {...item} />
+          ))
+        )}
+        <div className="flex justify-center my-10">
+          <Pagination
+            onPageChange={(v: any) => setIsPate(v)}
+            {...padcast?.meta}
+          />
+        </div>
       </div>
       <AppAlert />
     </div>

@@ -28,7 +28,7 @@ export function Blogs() {
           ))
         )}
       </div>
-      <div className="flex justify-end my-10">
+      <div className="flex justify-center my-10">
         <Pagination onPageChange={(v: any) => setIsPate(v)} {...blog?.meta} />
       </div>
       <AppAlert className="mb-10" />

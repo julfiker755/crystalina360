@@ -39,7 +39,7 @@ export const AudioUpload: React.FC<AudioUploaderProps> = ({
         ref={fileInputRef}
         onChange={handleFileChange}
         style={{ display: "none" }}
-        accept="audio/*" // Restrict to audio files
+        accept="audio/mpeg,.mp3"
       />
       {/* The visible trigger element (e.g., an icon or button) */}
       {children}

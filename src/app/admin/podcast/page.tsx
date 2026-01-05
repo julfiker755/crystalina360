@@ -18,14 +18,16 @@ import {
   useDeletePodcastMutation,
   useGetPodcastQuery,
   useStorePodcastMutation,
+  useUpdatePadcastMutation,
 } from "@/redux/api/admin/podcastApi";
 import { Repeat } from "@/components/reuseable/repeat";
 import { Pagination } from "@/components/reuseable/pagination";
 import { useDebounce } from "use-debounce";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { add_on, audio_sc } from "@/schema";
+import { audio_sc } from "@/schema";
 import { ErrorInput } from "@/components/reuseable/error";
 import sonner from "@/components/reuseable/sonner";
+import { useEffect, useState } from "react";
 
 const initState = {
   isStore: false,
@@ -48,6 +50,7 @@ export default function Podcast() {
     ...(value && { search: value }),
   });
   const [deletePodcast] = useDeletePodcastMutation();
+  const [details, setIsDetails] = useState<any>({});
 
   const handleDelete = async (id: any) => {
     const confirmed = await confirm({
@@ -68,7 +71,7 @@ export default function Podcast() {
         subTitle="Manage all of your podcasts from this section"
       />
       <div className="flex-between gap-10 mb-5">
-        <SearchBox onChange={(e) => console.log(e)} />
+        <SearchBox onChange={(v) => updateGlobal("search", v)} />
         <Button
           onClick={() => setState("isStore", true)}
           type="button"
@@ -107,7 +110,10 @@ export default function Podcast() {
                 </ul>
                 <div className="flex space-x-2 mt-3 md:mt-0 sm:space-x-3">
                   <AEditbtn
-                    onClick={() => setState("isUpdate", true)}
+                    onClick={() => {
+                      setState("isUpdate", true);
+                      setIsDetails(item);
+                    }}
                     color="#fff"
                     className="bg-primary rounded-md"
                   />
@@ -153,7 +159,7 @@ export default function Podcast() {
         setIsOpen={(v) => setState("isUpdate", v)}
         className="sm:max-w-xl"
       >
-        <PadcastUpdate setState={setState} />
+        <PadcastUpdate details={details} setState={setState} />
       </Modal2>
     </div>
   );
@@ -167,7 +173,7 @@ const initglobalState = {
 //  ========================== PadcastStore  ==============
 const PadcastStore = ({ setState }: any) => {
   const [global, updateGlobal] = useGlobalState(initglobalState);
-  // const [isPreview, setIsPreview] = useState("");
+  const [progress, setProgress] = useState(0);
 
   const [storePodcast, { isLoading }] = useStorePodcastMutation();
 
@@ -180,14 +186,23 @@ const PadcastStore = ({ setState }: any) => {
   });
 
   const handleSubmit = async (values: FieldValues) => {
-    console.log(values);
     const value = {
       title: values.title,
       audio_file: values.audio,
     };
     try {
       const data = helpers.fromData(value);
-      const res = await storePodcast(data).unwrap();
+      const res = await storePodcast({
+        data,
+        onUploadProgress: (progressEvent: ProgressEvent) => {
+          if (progressEvent.total) {
+            const progress = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setProgress(progress);
+          }
+        },
+      }).unwrap();
       if (res.status) {
         sonner.success(
           "Upload Complete",
@@ -196,10 +211,22 @@ const PadcastStore = ({ setState }: any) => {
         );
         setState("isStore", false);
         from.reset();
+        setProgress(0);
       }
     } catch (err: any) {
       console.log(err);
     }
+  };
+
+  const handleAudioSelect = (file: File) => {
+    // 🔥 revoke old preview
+    if (global.preview) {
+      URL.revokeObjectURL(global.preview);
+    }
+    const previewUrl = URL.createObjectURL(file);
+    updateGlobal("preview", previewUrl);
+    updateGlobal("idx", crypto.randomUUID());
+    from.setValue("audio", file as any);
   };
 
   return (
@@ -215,7 +242,7 @@ const PadcastStore = ({ setState }: any) => {
               <div className="flex items-center w-full space-x-5 justify-between px-3">
                 <div className="w-[300px]  flex flex-start">
                   <MusicPlayer
-                    custom={false}
+                    key={global.idx}
                     className="py-1 bg-figma-sidebar"
                     idx={global.idx as any}
                     audioSource={global.preview}
@@ -223,13 +250,7 @@ const PadcastStore = ({ setState }: any) => {
                 </div>
 
                 <div>
-                  <AudioUpload
-                    onFileSelect={(file) => {
-                      updateGlobal("preview", URL.createObjectURL(file));
-                      updateGlobal("idx", helpers.randomNumber());
-                      from.setValue("audio", file as any);
-                    }}
-                  >
+                  <AudioUpload onFileSelect={(file) => handleAudioSelect(file)}>
                     <Button
                       type="button"
                       className="border bg-transparent text-primary font-medium rounded-full"
@@ -240,14 +261,7 @@ const PadcastStore = ({ setState }: any) => {
                 </div>
               </div>
             ) : (
-              <AudioUpload
-                onFileSelect={(file) => {
-                  updateGlobal("preview", URL.createObjectURL(file));
-                  updateGlobal("idx", helpers.randomNumber());
-
-                  from.setValue("audio", file as any);
-                }}
-              >
+              <AudioUpload onFileSelect={(file) => handleAudioSelect(file)}>
                 <Button type="button" className="bg-[#FEF6F3]">
                   {" "}
                   <FavIcon color="#99796f" name="upload2" />
@@ -271,17 +285,33 @@ const PadcastStore = ({ setState }: any) => {
           className="h-10 rounded-xl"
         />
 
-        <Button disabled={isLoading} size="lg" className="w-full rounded-xl">
-          Upload
+        <Button
+          disabled={isLoading}
+          size="lg"
+          className="w-full rounded-xl disabled:opacity-100 z-10 relative"
+        >
+          <div
+            className={`absolute top-0 z-0 left-0  h-full rounded-xl bg-[#3990dcbb]`}
+            style={{
+              width: `${progress}%`,
+            }}
+          ></div>
+          <span className="relative z-10">
+            {isLoading ? "Uploading..." : "Upload"}
+          </span>
         </Button>
       </Form>
     </div>
   );
 };
 //  ========================== PadcastUpdate   ================
-const PadcastUpdate = ({ setState }: any) => {
+const PadcastUpdate = ({ setState, details }: any) => {
   const [global, updateGlobal] = useGlobalState(initglobalState);
-  // const [isPreview, setIsPreview] = useState("");
+  const [updatePadcast, { isLoading }] = useUpdatePadcastMutation();
+  const [progress, setProgress] = useState(0);
+
+  const { id, title, audio_file } = details || {};
+
   const from = useForm({
     // resolver: zodResolver(add_on),
     defaultValues: {
@@ -290,8 +320,55 @@ const PadcastUpdate = ({ setState }: any) => {
     },
   });
 
+  useEffect(() => {
+    from.reset({
+      title: title,
+    });
+  }, [details]);
+
   const handleSubmit = async (values: FieldValues) => {
-    console.log(values);
+    const value = {
+      title: values.title,
+      ...(values.audio && { audio_file: values.audio }),
+    };
+
+    try {
+      const data = helpers.fromData(value);
+      const res = await updatePadcast({
+        id,
+        data,
+        onUploadProgress: (progressEvent: ProgressEvent) => {
+          if (progressEvent.total) {
+            const progress = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setProgress(progress);
+          }
+        },
+      }).unwrap();
+      if (res.status) {
+        sonner.success(
+          "Update Complete",
+          "Music update successfully.",
+          "bottom-right"
+        );
+        setState("isUpdate", false);
+        from.reset();
+        setProgress(0);
+      }
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
+
+  const handleAudioSelect = (file: File) => {
+    if (global.preview) {
+      URL.revokeObjectURL(global.preview);
+    }
+    const previewUrl = URL.createObjectURL(file);
+    updateGlobal("preview", previewUrl);
+    updateGlobal("idx", crypto.randomUUID());
+    from.setValue("audio", file as any);
   };
 
   return (
@@ -302,46 +379,27 @@ const PadcastUpdate = ({ setState }: any) => {
       />
       <Form className="space-y-5 pt-5" from={from} onSubmit={handleSubmit}>
         <div className="border min-h-20 rounded-xl flex items-center justify-center">
-          {global.preview ? (
-            <div className="flex items-center w-full space-x-5 justify-between px-3">
-              <div className="w-[300px]  flex flex-start">
-                <MusicPlayer
-                  custom={false}
-                  className="py-1 bg-figma-sidebar"
-                  idx={global.idx as any}
-                  audioSource={global.preview}
-                />
-              </div>
-
-              <div>
-                <AudioUpload
-                  onFileSelect={(file) => {
-                    updateGlobal("preview", URL.createObjectURL(file));
-                    updateGlobal("idx", helpers.randomNumber());
-                    from.setValue("audio", file as any);
-                  }}
-                >
-                  <Button className="border bg-transparent text-primary font-medium rounded-full">
-                    Change Audio
-                  </Button>
-                </AudioUpload>
-              </div>
+          <div className="flex items-center w-full space-x-5 justify-between px-3">
+            <div className="w-[300px]  flex flex-start">
+              <MusicPlayer
+                custom={false}
+                className="py-1 bg-figma-sidebar"
+                idx={global.idx as any}
+                audioSource={global.preview || audio_file}
+              />
             </div>
-          ) : (
-            <AudioUpload
-              onFileSelect={(file) => {
-                updateGlobal("preview", URL.createObjectURL(file));
-                updateGlobal("idx", helpers.randomNumber());
-                from.setValue("audio", file as any);
-              }}
-            >
-              <Button className="bg-[#FEF6F3]">
-                {" "}
-                <FavIcon color="#99796f" name="upload2" />
-                <span className="text-primary"> Upload Podcast Audio</span>
-              </Button>
-            </AudioUpload>
-          )}
+
+            <div>
+              <AudioUpload onFileSelect={(file) => handleAudioSelect(file)}>
+                <Button
+                  type="button"
+                  className="border bg-transparent text-primary font-medium rounded-full"
+                >
+                  Change Audio
+                </Button>
+              </AudioUpload>
+            </div>
+          </div>
         </div>
         <FromInput2
           label="Podcast title"
@@ -350,8 +408,18 @@ const PadcastUpdate = ({ setState }: any) => {
           className="h-10 rounded-xl"
         />
 
-        <Button size="lg" className="w-full rounded-xl">
-          Save Changes
+        <Button
+          disabled={isLoading}
+          size="lg"
+          className="w-full rounded-xl disabled:opacity-100 z-10 relative"
+        >
+          <div
+            className={`absolute top-0 z-0 left-0  h-full rounded-xl bg-[#3990dcbb]`}
+            style={{
+              width: `${progress}%`,
+            }}
+          ></div>
+          <span className="relative z-10">Save Changes</span>
         </Button>
       </Form>
     </div>

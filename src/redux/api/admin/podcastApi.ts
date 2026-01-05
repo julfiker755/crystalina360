@@ -16,21 +16,25 @@ export const podcastsApi = baseApi.injectEndpoints({
       },
     }),
     storePodcast: build.mutation({
-      query: (data: any) => ({
+      query: ({ data, onUploadProgress }) => ({
         url: "/podcast",
         method: "POST",
+        ContentType: "multipart/form-data",
         data,
+        onUploadProgress,
       }),
       invalidatesTags: [tagTypes.a_podcast],
     }),
-    // updateFqa: build.mutation({
-    //   query: ({ id, data }) => ({
-    //     url: `/faq/${id}`,
-    //     method: "POST",
-    //     data,
-    //   }),
-    //   invalidatesTags: [tagTypes.a_fqa],
-    // }),
+    updatePadcast: build.mutation({
+      query: ({ id, data, onUploadProgress }) => ({
+        url: `/podcast/${id}`,
+        method: "POST",
+        ContentType: "multipart/form-data",
+        data,
+        onUploadProgress,
+      }),
+      invalidatesTags: [tagTypes.a_podcast],
+    }),
     deletePodcast: build.mutation({
       query: (id) => ({
         url: `/podcast/${id}`,
@@ -45,4 +49,5 @@ export const {
   useGetPodcastQuery,
   useDeletePodcastMutation,
   useStorePodcastMutation,
+  useUpdatePadcastMutation,
 } = podcastsApi;

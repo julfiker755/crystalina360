@@ -3,7 +3,7 @@ import { ImgBox } from "@/components/reuseable/Img-box";
 import NavTitle from "@/components/reuseable/nav-title";
 import SearchBox from "@/components/reuseable/search-box";
 import useConfirmation from "@/provider/confirmation";
-import { Button } from "@/components/ui";
+import { Button, Skeleton } from "@/components/ui";
 import { useGlobalState, useModalState } from "@/hooks";
 import FavIcon from "@/icon/favIcon";
 import { CircleAlert, Plus } from "lucide-react";
@@ -20,49 +20,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import ImgUpload from "@/components/reuseable/img-upload";
 import { UploadBtn } from "@/components/reuseable/btn";
-
-const stash = [
-  { icon: "running", title: "Currently Running Promotion", value: "05" },
-  { icon: "total_promotion", title: "Total Promotions", value: "60" },
-];
-
-const profilesData = [
-  {
-    id: "1",
-    name: "John Doe",
-    email: "example@gmail.com",
-    image:
-      "https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=500&h=300&fit=crop",
-  },
-  {
-    id: "2",
-    name: "John Doe",
-    email: "example@gmail.com",
-    image:
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop",
-  },
-  {
-    id: "3",
-    name: "John Doe",
-    email: "example@gmail.com",
-    image:
-      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&h=300&fit=crop",
-  },
-  {
-    id: "4",
-    name: "John Doe",
-    email: "example@gmail.com",
-    image:
-      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=500&h=300&fit=crop",
-  },
-  {
-    id: "5",
-    name: "John Doe",
-    email: "example@gmail.com",
-    image:
-      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&h=300&fit=crop",
-  },
-];
+import {
+  useDeletePromotionMutation,
+  useGetPromotionQuery,
+  useStorePromotionMutation,
+} from "@/redux/api/admin/promotionApi";
+import { Repeat } from "@/components/reuseable/repeat";
+import { Pagination } from "@/components/reuseable/pagination";
+import { useDebounce } from "use-debounce";
+import { helpers } from "@/lib";
+import sonner from "@/components/reuseable/sonner";
 
 const initState = {
   isPreview: false,
@@ -70,9 +37,34 @@ const initState = {
   isUpdate: false,
 };
 
+const intState: any = {
+  page: 1,
+  search: "",
+};
+
 export default function Promotions() {
   const { confirm } = useConfirmation();
   const [state, setState] = useModalState(initState);
+  const [global, updateGlobal] = useGlobalState(intState);
+  const [value] = useDebounce(global.search, 1000);
+  const { data, isLoading } = useGetPromotionQuery({
+    page: global.page,
+    ...(value && { search: value }),
+  });
+  const [deletePromotion] = useDeletePromotionMutation();
+
+  const stash = [
+    {
+      icon: "running",
+      title: "Currently Running Promotion",
+      value: data?.currentlyRunning,
+    },
+    {
+      icon: "total_promotion",
+      title: "Total Promotions",
+      value: data?.totalBanner,
+    },
+  ];
 
   const handleDelete = async (id: any) => {
     const confirmed = await confirm({
@@ -82,16 +74,17 @@ export default function Promotions() {
         "After deleting, user's won't be able to find this banner in your system.",
     });
     if (confirmed) {
-      console.log(id);
+      await deletePromotion(id).unwrap();
     }
   };
+
   return (
     <div>
       <NavTitle
         title="Manage Promotions"
         subTitle="Manage your promotions from this section"
       />
-      <SearchBox onChange={(e) => console.log(e)} />
+      <SearchBox onChange={(v) => updateGlobal("search", v)} />
       <div className="grid grid-cols-1 lg:grid-cols-3 mt-10 gap-10">
         {stash.map((item) => (
           <div
@@ -118,55 +111,78 @@ export default function Promotions() {
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-10">
-        {profilesData.map((profile) => (
-          <div key={profile.id}>
-            {/* Background Image */}
-            <ImgBox
-              src={profile.image}
-              className="w-full h-[250px]"
-              alt={profile.name}
-            >
-              <div
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.60) 100%)",
-                }}
-                className="absolute inset-0  transition-colors"
-              />
-              <div>
-                <div className="absolute top-3 right-3 flex gap-2 transition-opacity [&_button]:bg-[#FFFFFF]/20 [&_button]:cursor-pointer [&_button]:grid [&_button]:place-items-center [&_button]:size-11 [&_button]:backdrop-blur-[15px] [&_button]:rounded-md">
-                  <button
-                    onClick={() => setState("isPreview", true)}
-                    aria-label="View"
-                  >
-                    <FavIcon color="#fff" name="preview" />
-                  </button>
-                  <button
-                    onClick={() => setState("isUpdate", true)}
-                    aria-label="Edit"
-                  >
-                    <FavIcon color="#fff" name="pencil00" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete("1234")}
-                    aria-label="Delete"
-                  >
-                    <FavIcon color="#ff8080" name="delete_two" />
-                  </button>
-                </div>
-              </div>
-              <div className="absolute bottom-0 flex flex-col justify-between p-4 text-white">
+        {isLoading ? (
+          <Repeat count={10}>
+            <Skeleton className="w-full h-63 rounded-md" />
+          </Repeat>
+        ) : (
+          data?.promo?.data?.map((item: any) => (
+            <div key={item.id}>
+              <ImgBox
+                src={item?.img || "/not.png"}
+                className="w-full h-[250px]"
+                alt={item.name}
+              >
+                <div
+                  style={{
+                    background:
+                      "linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.60) 100%)",
+                  }}
+                  className="absolute inset-0  transition-colors"
+                />
                 <div>
-                  <h3 className="font-semibold text-lg text-white">
-                    {profile.name}
-                  </h3>
-                  <p className="text-base text-white">{profile.email}</p>
+                  <div className="absolute top-3 right-3 flex gap-2 transition-opacity [&_button]:bg-[#FFFFFF]/20 [&_button]:cursor-pointer [&_button]:grid [&_button]:place-items-center [&_button]:size-11 [&_button]:backdrop-blur-[15px] [&_button]:rounded-md">
+                    <button
+                      onClick={() => setState("isPreview", true)}
+                      aria-label="View"
+                    >
+                      <FavIcon color="#fff" name="preview" />
+                    </button>
+                    <button
+                      onClick={() => setState("isUpdate", true)}
+                      aria-label="Edit"
+                    >
+                      <FavIcon color="#fff" name="pencil00" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      aria-label="Delete"
+                    >
+                      <FavIcon color="#ff8080" name="delete_two" />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </ImgBox>
-          </div>
-        ))}
+                <div className="absolute bottom-0 flex flex-col justify-between p-4 text-white">
+                  <div>
+                    <h3 className="font-semibold text-lg text-white">
+                      {item.name}
+                    </h3>
+                    <p className="text-base text-white">{item.email}</p>
+                  </div>
+                </div>
+              </ImgBox>
+            </div>
+          ))
+        )}
+        {}
       </div>
+      {data?.promo?.meta?.total > 10 && (
+        <ul className="flex items-center flex-wrap justify-between py-3">
+          <li className="flex">
+            Total:
+            <sup className="font-medium text-2xl relative -top-3 px-2">
+              {data?.promo?.meta?.total}
+            </sup>
+            podcasts
+          </li>
+          <li>
+            <Pagination
+              onPageChange={(v: any) => updateGlobal("page", v)}
+              {...data?.promo?.meta}
+            />
+          </li>
+        </ul>
+      )}
       {/* =================== is Preview ================== */}
       <Modal
         title="Promotion Details"
@@ -239,6 +255,7 @@ export default function Promotions() {
 //  ================ store banner ===================
 const StoreBanner = ({ setState }: any) => {
   const [preview, setIsPreview] = useState("");
+  const [storePromotion, { isLoading }] = useStorePromotionMutation();
   const from = useForm({
     resolver: zodResolver(banner_st),
     defaultValues: {
@@ -251,7 +268,28 @@ const StoreBanner = ({ setState }: any) => {
   });
 
   const handleSubmit = async (values: FieldValues) => {
-    console.log(values);
+    console.log(values.date);
+    const data = helpers.fromData({
+      name: values.client_name,
+      email: values.client_email,
+      promotion_link: values.promotion_link,
+      expire_date: values.date,
+      ...(values.banner && { img: values.banner }),
+    });
+    try {
+      const res = await storePromotion(data).unwrap();
+      if (res.status) {
+        setState("isStore", false);
+        from.reset();
+        sonner.success(
+          "Promotion created successfully",
+          "New promotion has been added to your system",
+          "bottom-right"
+        );
+      }
+    } catch (err: any) {
+      console.log(err);
+    }
   };
   return (
     <div>
@@ -281,7 +319,7 @@ const StoreBanner = ({ setState }: any) => {
         <div>
           <SingleCalendar
             onChange={(v: any) => {
-              from.setValue("date", v?.toString());
+              from.setValue("date", helpers.formatDate(v, "YYYY-MM-DD"));
             }}
             className="h-10 rounded-xl px-3! text-black!"
           />
@@ -335,7 +373,7 @@ const StoreBanner = ({ setState }: any) => {
           )}
         </div>
 
-        <Button className="w-full" type="submit">
+        <Button disabled={isLoading} className="w-full" type="submit">
           Upload
         </Button>
       </Form>

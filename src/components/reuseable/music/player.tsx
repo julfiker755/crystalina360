@@ -26,7 +26,6 @@ export function MusicPlayer({
 
   const audioLink = custom ? audioSource : audioSource;
 
-  /** 🎵 Play / Pause */
   const togglePlay = (e: any) => {
     e.stopPropagation();
     const audio = audioRef.current;
@@ -35,21 +34,22 @@ export function MusicPlayer({
     if (isPlaying) {
       audio.pause();
       setIsPlaying(false);
-    } else {
-      // Pause other audio players
-      window.dispatchEvent(new CustomEvent("pauseAllAudios", { detail: idx }));
-      audio.play();
-      setIsPlaying(true);
+      return;
     }
+
+    window.dispatchEvent(new CustomEvent("pauseAllAudios", { detail: idx }));
+
+    audio.play();
+    setIsPlaying(true);
   };
 
-  /** 🧠 Pause other audio players */
   useEffect(() => {
     const handlePauseAll = (event: CustomEvent) => {
       if (event.detail !== idx && audioRef.current) {
         audioRef.current.pause();
+        audioRef.current.currentTime = 0;
         setIsPlaying(false);
-        setCurrentTime(0); // Reset progress for other tracks
+        setCurrentTime(0);
       }
     };
 
@@ -62,14 +62,15 @@ export function MusicPlayer({
     };
   }, [idx]);
 
-  /** 🕒 Load duration and track progress */
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    // Reset on new audio
+    audio.currentTime = 0;
     setCurrentTime(0);
     setDuration(null);
+    setIsPlaying(false);
+    audio.load();
 
     const updateTime = () => {
       setCurrentTime(audio.currentTime);
@@ -86,11 +87,6 @@ export function MusicPlayer({
     audio.addEventListener("canplay", setMeta);
     audio.addEventListener("timeupdate", updateTime);
 
-    // Manual fallback (sometimes metadata loads late)
-    setTimeout(() => {
-      if (audio.duration && !isNaN(audio.duration)) setDuration(audio.duration);
-    }, 300);
-
     return () => {
       audio.removeEventListener("loadedmetadata", setMeta);
       audio.removeEventListener("canplay", setMeta);
@@ -98,7 +94,7 @@ export function MusicPlayer({
     };
   }, [audioLink]);
 
-  /** ⏱ mm:ss formatting */
+  /* ================= TIME FORMAT ================= */
   const formatTime = (t: number | null) => {
     if (!t || isNaN(t)) return "0:00";
     const m = Math.floor(t / 60);
@@ -106,19 +102,21 @@ export function MusicPlayer({
     return `${m}:${s < 10 ? "0" : ""}${s}`;
   };
 
-  /** 📈 Progress % */
+  /* ================= PROGRESS ================= */
   const progress = duration ? (currentTime / duration) * 100 : 0;
 
-  /** ⏭ Seek */
+  /* ================= SEEK ================= */
   const handleProgressBarClick = (e: React.MouseEvent) => {
-    if (!audioRef.current || !progressBarRef.current) return;
-    const rect = progressBarRef.current.getBoundingClientRect();
-    const newTime = ((e.clientX - rect.left) / rect.width) * (duration || 0);
-    audioRef.current.currentTime = newTime;
-    setCurrentTime(newTime);
+    if (isPlaying) {
+      if (!audioRef.current || !progressBarRef.current || !duration) return;
+      const rect = progressBarRef.current.getBoundingClientRect();
+      const newTime = ((e.clientX - rect.left) / rect.width) * duration;
+      audioRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
+    }
   };
 
-  /** ⏹ When track ends */
+  /* ================= END ================= */
   const handleEnded = () => {
     setIsPlaying(false);
     setCurrentTime(0);
@@ -134,18 +132,20 @@ export function MusicPlayer({
         )}
         onClick={handleProgressBarClick}
       >
+        {/* Progress */}
         <div
-          className="absolute top-0 left-0  h-full bg-[#21201f9b] transition-all duration-300"
+          className="absolute top-0 left-0 h-full bg-[#21201f9b] transition-all duration-300"
           style={{ width: `${progress}%` }}
         />
 
         <div className="relative flex items-center justify-between">
+          {/* Play Button */}
           <Button
             onClick={togglePlay}
             variant="ghost"
             size="sm"
             type="button"
-            className="h-8 w-8 p-0 cursor-pointer text-white hover:bg-white/20 rounded-full mr-4"
+            className="h-8 w-8 p-0 cursor-pointer text-white hover:bg-transparent rounded-full mr-4"
           >
             {isPlaying ? (
               <FavIcon className="size-8 sm:size-10" name="playOn" />
@@ -154,12 +154,15 @@ export function MusicPlayer({
             )}
           </Button>
 
+          {/* Wave Icon */}
           <FavIcon className="w-full h-12" name="bers_music" />
 
+          {/* Time */}
           <span className="text-sm text-secondery-figma select-none ml-3">
             {isPlaying ? formatTime(currentTime) : formatTime(duration)}
           </span>
 
+          {/* Audio */}
           <audio ref={audioRef} preload="metadata" onEnded={handleEnded}>
             <source src={audioLink} type="audio/mpeg" />
             <source src={audioLink} type="audio/ogg" />
