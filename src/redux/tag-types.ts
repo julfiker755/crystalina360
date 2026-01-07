@@ -14,6 +14,7 @@ export enum tagTypes {
   a_ticket = "a_ticket",
   a_podcast = "a_podcast",
   a_promotion = "a_promotion",
+  a_slg_promotion = "a_slg_promotion",
 }
 
 export const tagTypesList = [
@@ -32,4 +33,5 @@ export const tagTypesList = [
   tagTypes.a_ticket,
   tagTypes.a_podcast,
   tagTypes.a_promotion,
+  tagTypes.a_slg_promotion,
 ];

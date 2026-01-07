@@ -15,15 +15,17 @@ import Form from "@/components/reuseable/from";
 import { FromInput2 } from "@/components/reuseable/form-input2";
 import Modal2 from "@/components/reuseable/modal2";
 import { SingleCalendar } from "@/components/reuseable/single-date";
-import { banner_st } from "@/schema";
+import { banner_st, banner_st_up } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImgUpload from "@/components/reuseable/img-upload";
 import { UploadBtn } from "@/components/reuseable/btn";
 import {
   useDeletePromotionMutation,
   useGetPromotionQuery,
+  useSlgPromotionQuery,
   useStorePromotionMutation,
+  useUpdatePromotionMutation,
 } from "@/redux/api/admin/promotionApi";
 import { Repeat } from "@/components/reuseable/repeat";
 import { Pagination } from "@/components/reuseable/pagination";
@@ -40,18 +42,21 @@ const initState = {
 const intState: any = {
   page: 1,
   search: "",
+  id: "",
 };
 
 export default function Promotions() {
   const { confirm } = useConfirmation();
   const [state, setState] = useModalState(initState);
   const [global, updateGlobal] = useGlobalState(intState);
+  const [details, setDetails] = useState(null);
   const [value] = useDebounce(global.search, 1000);
   const { data, isLoading } = useGetPromotionQuery({
     page: global.page,
     ...(value && { search: value }),
   });
   const [deletePromotion] = useDeletePromotionMutation();
+  const { data: del } = useSlgPromotionQuery(global.id, { skip: !global?.id });
 
   const stash = [
     {
@@ -94,7 +99,7 @@ export default function Promotions() {
             <FavIcon name={item.icon as any} />
             <p className="text-center text-black">{item.title}</p>
             <p className="text-center font-bold text-black text-2xl lg:text-3xl">
-              {item.value}
+              {item.value || 0}
             </p>
           </div>
         ))}
@@ -133,13 +138,19 @@ export default function Promotions() {
                 <div>
                   <div className="absolute top-3 right-3 flex gap-2 transition-opacity [&_button]:bg-[#FFFFFF]/20 [&_button]:cursor-pointer [&_button]:grid [&_button]:place-items-center [&_button]:size-11 [&_button]:backdrop-blur-[15px] [&_button]:rounded-md">
                     <button
-                      onClick={() => setState("isPreview", true)}
+                      onClick={() => {
+                        setState("isPreview", true);
+                        updateGlobal("id", item.id);
+                      }}
                       aria-label="View"
                     >
                       <FavIcon color="#fff" name="preview" />
                     </button>
                     <button
-                      onClick={() => setState("isUpdate", true)}
+                      onClick={() => {
+                        setState("isUpdate", true);
+                        setDetails(item);
+                      }}
                       aria-label="Edit"
                     >
                       <FavIcon color="#fff" name="pencil00" />
@@ -201,7 +212,7 @@ export default function Promotions() {
               <FavIcon className="size-8" stroke="#000" name="calender" />
               <ul className="leading-4">
                 <li className="font-medium leading-normal text-xl">Posted</li>
-                <li>28-09-2025</li>
+                <li>{helpers.formatDate(del?.data?.createdAt)}</li>
               </ul>
             </div>
             <div className="flex items-center space-x-2">
@@ -210,13 +221,19 @@ export default function Promotions() {
                 <li className="font-medium leading-normal text-xl">
                   Remaining
                 </li>
-                <li>6 days</li>
+                <li>
+                  {del?.data?.is_expire_date > 0
+                    ? `${del?.data?.is_expire_date} days`
+                    : del?.data?.is_expire_date || 0}
+                </li>
               </ul>
             </div>
           </div>
           <ul className="leading-4">
-            <li className="font-medium leading-normal text-xl">John Doe</li>
-            <li>example@gmail.com</li>
+            <li className="font-medium leading-normal text-xl">
+              {del?.data?.name}
+            </li>
+            <li>{del?.data?.email}</li>
           </ul>
           <div>
             <h5 className="font-medium leading-normal text-xl">
@@ -224,7 +241,10 @@ export default function Promotions() {
             </h5>
           </div>
           <div className="overflow-x-auto max-w-sm border rounded-md pb-5 lg:pb-0 mx-auto sm:max-w-3xl sm:overflow-visible overflow-y-hidden scrollbar-thin scrollbar-thumb-gray-300">
-            <PromoPerforChart className="h-[330px] border-none" />
+            <PromoPerforChart
+              items={del?.data?.viewsByDate || []}
+              className="h-[330px] border-none"
+            />
           </div>
         </div>
       </Modal>
@@ -246,7 +266,7 @@ export default function Promotions() {
         titleStyle="text-center"
         className="sm:max-w-xl"
       >
-        <UpdateBanner setState={setState} />
+        <UpdateBanner setState={setState} details={details} />
       </Modal2>
     </div>
   );
@@ -268,7 +288,6 @@ const StoreBanner = ({ setState }: any) => {
   });
 
   const handleSubmit = async (values: FieldValues) => {
-    console.log(values.date);
     const data = helpers.fromData({
       name: values.client_name,
       email: values.client_email,
@@ -381,10 +400,11 @@ const StoreBanner = ({ setState }: any) => {
   );
 };
 //  ================ Update Banner ===================
-const UpdateBanner = ({ setState }: any) => {
+const UpdateBanner = ({ setState, details }: any) => {
+  const [updatePromotion, { isLoading }] = useUpdatePromotionMutation();
   const [preview, setIsPreview] = useState("");
   const from = useForm({
-    resolver: zodResolver(banner_st),
+    resolver: zodResolver(banner_st_up),
     defaultValues: {
       client_name: "",
       client_email: "",
@@ -394,8 +414,41 @@ const UpdateBanner = ({ setState }: any) => {
     },
   });
 
+  useEffect(() => {
+    if (details) {
+      from.reset({
+        client_name: details.name,
+        client_email: details.email,
+        promotion_link: details.promotion_link,
+        date: details.expire_date,
+      });
+      setIsPreview(details.banner);
+    }
+  }, [details]);
+
   const handleSubmit = async (values: FieldValues) => {
-    console.log(values);
+    const data = helpers.fromData({
+      name: values.client_name,
+      email: values.client_email,
+      promotion_link: values.promotion_link,
+      expire_date: values.date,
+      ...(values.banner && { img: values.banner }),
+    });
+
+    try {
+      const res = await updatePromotion({ id: details.id, data }).unwrap();
+      if (res.status) {
+        setState("isUpdate", false);
+        from.reset();
+        sonner.success(
+          "Promotion updated successfully",
+          "Promotion has been updated",
+          "bottom-right"
+        );
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <div>
@@ -424,8 +477,9 @@ const UpdateBanner = ({ setState }: any) => {
         />
         <div>
           <SingleCalendar
+            defaultDate={details.expire_date}
             onChange={(v: any) => {
-              from.setValue("date", v?.toString());
+              from.setValue("date", helpers.formatDate(v, "YYYY-MM-DD"));
             }}
             className="h-10 rounded-xl px-3! text-black!"
           />
@@ -438,38 +492,23 @@ const UpdateBanner = ({ setState }: any) => {
         </div>
         <div>
           <div className="border min-h-20 rounded-xl p-2 flex items-center justify-center">
-            {preview ? (
-              <div className="w-full relative">
-                <picture>
-                  <img
-                    className="h-[200px] w-full! rounded-md object-cover flex flex-start overflow-hidden"
-                    src={preview}
-                    alt="Banner Preview"
-                  />
-                </picture>
-                <ImgUpload
-                  onFileSelect={(file) => {
-                    setIsPreview(URL.createObjectURL(file));
-                    from.setValue("banner", file as any);
-                  }}
-                >
-                  <UploadBtn />
-                </ImgUpload>
-              </div>
-            ) : (
+            <div className="w-full relative">
+              <picture>
+                <img
+                  className="h-[200px] w-full! rounded-md object-cover flex flex-start overflow-hidden"
+                  src={preview || details.img || "/not.png"}
+                  alt="Banner Preview"
+                />
+              </picture>
               <ImgUpload
                 onFileSelect={(file) => {
                   setIsPreview(URL.createObjectURL(file));
                   from.setValue("banner", file as any);
                 }}
               >
-                <Button type="button" className="bg-[#FEF6F3]">
-                  {" "}
-                  <FavIcon color="#99796f" name="upload2" />
-                  <span className="text-primary">Upload Promotion Banner</span>
-                </Button>
+                <UploadBtn />
               </ImgUpload>
-            )}
+            </div>
           </div>
           {from.watch("banner") === null && from?.formState?.errors?.banner && (
             <p className="text-reds flex mt-2 text-red-400 justify-end  items-center gap-1 text-sm">
@@ -479,8 +518,8 @@ const UpdateBanner = ({ setState }: any) => {
           )}
         </div>
 
-        <Button className="w-full" type="submit">
-          Upload
+        <Button disabled={isLoading} className="w-full" type="submit">
+          Save Changes
         </Button>
       </Form>
     </div>

@@ -147,7 +147,7 @@ export default function Newsletter() {
       >
         <form onSubmit={replaySubmit} className="space-y-5">
           <InputShow
-            className="rounded-xl"
+            className="rounded-xl text-black"
             label="Email"
             value={global?.details?.email}
           />

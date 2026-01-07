@@ -23,7 +23,7 @@ export default function BlogStatisticsChart({ className, data }: any) {
   }));
 
   const chartConfig = {
-    user: {
+    views: {
       label: "Views",
       color: "#9e92fe",
     },
@@ -64,7 +64,7 @@ export default function BlogStatisticsChart({ className, data }: any) {
                   tick={{ fill: "#999" }}
                 />
 
-                <Bar dataKey="user" fill="#9e92fe" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="views" fill="#9e92fe" radius={[4, 4, 0, 0]} />
                 <ChartLegend content={<ChartLegendContent />} />
               </BarChart>
             </ResponsiveContainer>

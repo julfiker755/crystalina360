@@ -18,10 +18,10 @@ export default function Provider({ children }: childrenProps) {
           <Toaster
             toastOptions={{
               style: {
-                background: "rgba(29, 29, 29, 0.20)",
+                background: "rgba(153, 121, 111, 0.90)",
                 border: "1px solid rgba(255, 255, 255, 0.1)",
                 color: "white",
-                backdropFilter: "blur(48px)",
+                // backdropFilter: "blur(48px)",
               },
               classNames: {
                 description: "!text-white",

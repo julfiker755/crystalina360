@@ -105,11 +105,24 @@ export const blogUp_st = z.object({
 export const banner_st = z.object({
   client_name: z.string().nonempty("Client Name is required"),
   client_email: z.string().nonempty("Client Email is required"),
-  promotion_link: z.string().nonempty("Promotion Link is required"),
+  promotion_link: z
+    .string()
+    .nonempty("Promotion Link is required")
+    .url("Please enter a valid URL (e.g. https://example.com)"),
   date: z.string().nonempty("Date is required"),
   banner: z.any().refine((file) => file instanceof File, {
     message: "Banner is required",
   }),
+});
+export const banner_st_up = z.object({
+  client_name: z.string().nonempty("Client Name is required"),
+  client_email: z.string().nonempty("Client Email is required"),
+  promotion_link: z
+    .string()
+    .nonempty("Promotion Link is required")
+    .url("Please enter a valid URL (e.g. https://example.com)"),
+  date: z.string().nonempty("Date is required"),
+  banner: z.any().optional(),
 });
 
 // === addPlan ===

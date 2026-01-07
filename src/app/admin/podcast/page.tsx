@@ -419,7 +419,9 @@ const PadcastUpdate = ({ setState, details }: any) => {
               width: `${progress}%`,
             }}
           ></div>
-          <span className="relative z-10">Save Changes</span>
+          <span className="relative z-10">
+            {isLoading ? "Save Changes ... " : "Save Changes"}
+          </span>
         </Button>
       </Form>
     </div>

@@ -10,12 +10,18 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import Fade from "embla-carousel-fade";
 import { Button } from "@/components/ui";
+import {
+  useGetPromotionQuery,
+  usePromotionCountMutation,
+} from "@/redux/api/admin/promotionApi";
 
 export default function CarouselHero() {
   // ✅ Strongly type the API
   const [api, setApi] = React.useState<CarouselApi | null>(null);
   const [current, setCurrent] = React.useState(0);
   const [count, setCount] = React.useState(0);
+  const { data: advertise } = useGetPromotionQuery({});
+  const [promotionCount] = usePromotionCountMutation();
 
   React.useEffect(() => {
     if (!api) return;
@@ -29,13 +35,7 @@ export default function CarouselHero() {
     });
   }, [api]);
 
-  const images = [
-    { src: "https://picsum.photos/1600/700", href: "#" },
-    { src: "https://picsum.photos/1500/800", href: "#" },
-    { src: "https://picsum.photos/1400/600", href: "#" },
-    { src: "https://picsum.photos/1500/800", href: "#" },
-    { src: "https://picsum.photos/1400/600", href: "#" },
-  ];
+  const images = advertise?.promo?.data || [];
 
   return (
     <div className="pt-16 container">
@@ -55,23 +55,34 @@ export default function CarouselHero() {
           ]}
         >
           <CarouselContent>
-            {images.map((item, index) => (
+            {images?.map((item: any, index: any) => (
               <CarouselItem key={index}>
                 <div className="relative w-full h-[350px] xl:h-[400px] rounded-xl overflow-hidden">
                   <Image
-                    src={item.src}
+                    src={item.img || "/not.png"}
                     alt={`Slide ${index + 1}`}
                     fill
                     className="object-cover"
                   />
 
                   {/* Dark overlay */}
-                  <div className="absolute inset-0 bg-black/40 z-0" />
+                  <div className="absolute inset-0 bg-black/20 z-0" />
 
                   {/* Text + Button Layer */}
-                  <div className="absolute bottom-6 left-6 right-6 z-10 flex items-end justify-end text-white">
-                    <Button size="lg">Open Link</Button>
-                  </div>
+                  <a
+                    target="_blank"
+                    href={item.promotion_link}
+                    className="absolute bottom-6 left-6 right-6 z-10 flex items-end justify-end text-white"
+                  >
+                    <Button
+                      onClick={async () => {
+                        await promotionCount(item.id).unwrap();
+                      }}
+                      size="lg"
+                    >
+                      Open Link
+                    </Button>
+                  </a>
                 </div>
               </CarouselItem>
             ))}
@@ -80,7 +91,7 @@ export default function CarouselHero() {
 
         {/* Carousel indicators */}
         <div className="flex justify-center gap-2 mt-4">
-          {Array.from({ length: count }).map((_, index) => (
+          {Array.from({ length: 10 }).map((_, index) => (
             <button
               key={index}
               className={`h-2 rounded-full cursor-pointer transition-all duration-300 ${

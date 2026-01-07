@@ -1,6 +1,5 @@
 import { tagTypes } from "@/redux/tag-types";
 import { baseApi } from "../baseApi";
-import { buildResponse } from "@/lib";
 
 export const promotionsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -32,6 +31,13 @@ export const promotionsApi = baseApi.injectEndpoints({
         };
       },
     }),
+    slgPromotion: build.query({
+      query: (id) => ({
+        url: `/promotions/${id}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.a_slg_promotion],
+    }),
     storePromotion: build.mutation({
       query: (data: any) => ({
         url: "/promotion",
@@ -41,19 +47,26 @@ export const promotionsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.a_promotion],
     }),
-    // updateBlog: build.mutation({
-    //   query: ({ id, data }) => ({
-    //     url: `/blogs/${id}`,
-    //     method: "POST",
-    //     ContentType: "multipart/form-data",
-    //     data,
-    //   }),
-    //   invalidatesTags: [tagTypes.a_single_blog],
-    // }),
+    updatePromotion: build.mutation({
+      query: ({ id, data }) => ({
+        url: `/promotion/${id}`,
+        method: "POST",
+        ContentType: "multipart/form-data",
+        data,
+      }),
+      invalidatesTags: [tagTypes.a_promotion],
+    }),
     deletePromotion: build.mutation({
       query: (id) => ({
         url: `/promotion/${id}`,
         method: "DELETE",
+      }),
+      invalidatesTags: [tagTypes.a_promotion],
+    }),
+    promotionCount: build.mutation({
+      query: (id) => ({
+        url: `/promotions/count/${id}`,
+        method: "POST",
       }),
       invalidatesTags: [tagTypes.a_promotion],
     }),
@@ -64,4 +77,7 @@ export const {
   useGetPromotionQuery,
   useDeletePromotionMutation,
   useStorePromotionMutation,
+  useUpdatePromotionMutation,
+  usePromotionCountMutation,
+  useSlgPromotionQuery,
 } = promotionsApi;
