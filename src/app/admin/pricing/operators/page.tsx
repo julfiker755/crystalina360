@@ -4,81 +4,52 @@ import Form from "@/components/reuseable/from";
 import FromDropdown from "@/components/reuseable/from-dropdown";
 import ModalHeading from "@/components/reuseable/modal-heading";
 import Modal2 from "@/components/reuseable/modal2";
-import { Button } from "@/components/ui";
-import { ADeletebtn, AEditbtn } from "@/components/view/admin/reuse/btn";
+import NavTitle from "@/components/reuseable/nav-title";
+import { Button, Skeleton } from "@/components/ui";
+import { AEditbtn } from "@/components/view/admin/reuse/btn";
 import PricingCd from "@/components/view/admin/reuse/pricing-cd";
-import { useModalState } from "@/hooks";
-import useConfirmation from "@/provider/confirmation";
+import { useGetPricingQuery } from "@/redux/api/admin/pricingApi";
 import { add_plan } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert, Plus } from "lucide-react";
-import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-
-const plansItems = [
-  {
-    planId: "basic",
-    planName: "Basic Plan",
-    monthlyPrice: 5643,
-    billingCycle: "/monthly",
-    includedFeatures: [
-      "Up to 5 PC bookings per day.",
-      "Listing in the Nexus app.",
-      "Email support.",
-    ],
-  },
-  {
-    planId: "pro",
-    planName: "Pro Plan",
-    monthlyPrice: 5643,
-    billingCycle: "/monthly",
-    includedFeatures: [
-      "Unlimited bookings.",
-      "Priority placement.",
-      "Featured venue badges.",
-      "Priority support.",
-      "First access to beta features.",
-    ],
-  },
-];
+import { useModalState } from "@/hooks";
+import { useState } from "react";
 
 const initState = {
   isStore: false,
   isUpdate: false,
 };
 export default function Pricing() {
-  const { confirm } = useConfirmation();
   const [state, setState] = useModalState(initState);
+  const { data: pricing, isLoading } = useGetPricingQuery({
+    pricing_for: "operator",
+  });
 
-  const handleDelete = async (id: any) => {
-    const confirmed = await confirm({
-      subTitle: "Delete Plan",
-      title: "You are going to delete this plan",
-      description:
-        "After deleting, user's won't be able to find this plan on your system.",
-    });
-    if (confirmed) {
-      console.log(id);
-    }
-  };
+  console.log(pricing);
+
   return (
     <div>
+      <NavTitle
+        title="Pricing"
+        subTitle="Manage pricing of subscription system os your app from this section"
+      />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        {plansItems.map((item, idx) => (
-          <PricingCd key={idx} {...item}>
-            <div className="flex space-x-3  justify-end mt-3">
-              <AEditbtn
-                onClick={() => setState("isUpdate", true)}
-                color="#fff"
-                className="bg-[#A6A996] rounded-md"
-              />
-              <ADeletebtn
-                onClick={() => handleDelete("123")}
-                className="rounded-md"
-              />
-            </div>
-          </PricingCd>
-        ))}
+        {isLoading ? (
+          <Skeleton className="w-full h-60" />
+        ) : (
+          pricing?.data?.map((item: any, idx: any) => (
+            <PricingCd key={idx} {...item}>
+              <div className="flex space-x-3  justify-end mt-3">
+                <AEditbtn
+                  onClick={() => setState("isUpdate", true)}
+                  color="#fff"
+                  className="bg-[#A6A996] rounded-md"
+                />
+              </div>
+            </PricingCd>
+          ))
+        )}
       </div>
       <div className="flex-between justify-end mt-10">
         <Button

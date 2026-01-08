@@ -129,6 +129,7 @@ export const banner_st_up = z.object({
 export const add_plan = z.object({
   title: z.string().nonempty("title is required"),
   price: z.string().nonempty("price is required"),
+  interval: z.string().nonempty("interval is required"),
   services: z.array(z.string()).nonempty("benefits is required"),
 });
 

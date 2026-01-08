@@ -5,10 +5,6 @@ import { childrenProps } from "@/types";
 export default function PricingLayout({ children }: childrenProps) {
   return (
     <div>
-      <NavTitle
-        title="Pricing"
-        subTitle="Manage pricing of subscription system os your app from this section."
-      />
       <div className="flex flex-1 flex-col lg:flex-row gap-4 space-x-10">
         <div className="block w-full lg:w-[280px] lg:shrink-0 lg:sticky top-24 h-fit">
           <SidebarNav items={sidebarNavItems} defaultPath="/admin/pricing" />
