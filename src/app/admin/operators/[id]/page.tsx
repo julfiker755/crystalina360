@@ -4,42 +4,39 @@ import { ImgBox } from "@/components/reuseable/Img-box";
 import Modal from "@/components/reuseable/modal";
 import NavTitle from "@/components/reuseable/nav-title";
 import { Badge, Button } from "@/components/ui";
-import { events } from "@/components/view/admin/dummy-json";
 import OpEvtCd from "@/components/view/admin/reuse/op-event-cd";
-import FavIcon from "@/icon/favIcon";
-import { cn, RandomImg } from "@/lib";
 import useConfirmation from "@/provider/confirmation";
-import { useParams } from "next/navigation";
+import {
+  useDeleteUserMutation,
+  useSlgOpratorsQuery,
+} from "@/redux/api/admin/userApi";
+import { useParams, useRouter } from "next/navigation";
+import FavIcon from "@/icon/favIcon";
+import { cn, helpers, RandomImg } from "@/lib";
 import { useState } from "react";
 
-const item2 = [
-  {
-    title: "Total events",
-    value: 16,
-    icon: "events",
-  },
-  {
-    title: "Ticket sold",
-    value: 600,
-    icon: "tiket",
-  },
-  {
-    title: "Total revenue",
-    value: 16000,
-    currency: "$",
-    icon: "price22",
-  },
-  {
-    title: "Joined since",
-    value: "16 Sep, 2024",
-    icon: "ongoing_events",
-  },
-];
-
 export default function OperatorDetils() {
+  const { id } = useParams();
+  const router = useRouter();
   const { confirm } = useConfirmation();
   const [isPreview, setIsPreview] = useState(false);
-  const { id } = useParams();
+  const { data: details } = useSlgOpratorsQuery(id);
+  const [deleteUser] = useDeleteUserMutation();
+
+  const {
+    id: oprator_id,
+    name,
+    email,
+    img,
+    skills,
+    bio,
+    is_top_seller,
+    events,
+    total_events,
+    total_earned,
+    total_tickets_sold,
+    created_at,
+  } = details?.data || {};
 
   const handleOperatorDelete = async (id: any) => {
     const confirmed = await confirm({
@@ -49,7 +46,8 @@ export default function OperatorDetils() {
         "After deleting, this operator will no longer available in your system",
     });
     if (confirmed) {
-      console.log(id);
+      await deleteUser(id).unwrap();
+      router.back();
     }
   };
 
@@ -64,6 +62,31 @@ export default function OperatorDetils() {
       console.log(id);
     }
   };
+
+  const stash = [
+    {
+      title: "Total events",
+      value: total_events,
+      icon: "events",
+    },
+    {
+      title: "Ticket sold",
+      value: total_tickets_sold,
+      icon: "tiket",
+    },
+    {
+      title: "Total revenue",
+      value: total_earned,
+      currency: "$",
+      icon: "price22",
+    },
+    {
+      title: "Joined since",
+      value: helpers.formatDate(created_at),
+      icon: "ongoing_events",
+    },
+  ];
+
   return (
     <div>
       <NavTitle
@@ -77,37 +100,37 @@ export default function OperatorDetils() {
             <div>
               <ImgBox
                 className="size-28 rounded-full mx-auto"
-                src={RandomImg()}
+                src={img || "/avater.png"}
                 alt="img"
               />
               <ul className="mt-2">
-                <li className="text-center font-medium text-xl">
-                  Elizabeth Olson
-                </li>
-                <li className="text-center">example@gmail.com</li>
+                <li className="text-center font-medium text-xl">{name}</li>
+                <li className="text-center">{email}</li>
                 <li className="flex items-center mt-1 mx-auto bg-white w-fit py-1 px-3 rounded-md">
-                  {" "}
-                  <FavIcon name="top_seller" />
-                  <span className="font-semibold text-lg  ml-1">
-                    {" "}
-                    Top Seller
-                  </span>
+                  {is_top_seller == true ? (
+                    <>
+                      <FavIcon name="top_seller" />
+                      <span className="font-semibold text-lg  ml-1">
+                        Top Seller
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <FavIcon className="size-5" name="verified" />
+                      <span className="font-semibold text-lg  ml-1">
+                        Verified
+                      </span>
+                    </>
+                  )}
                 </li>
               </ul>
             </div>
             <div className="space-y-3">
-              <p className="text-center">
-                Lorem ipsum dolor sit amet consectetur. Viverra pretium maecenas
-                tortor odio interdum arcu sed gravida aliquam. Eros amet
-                pulvinar amet sit. Viverra tortor auctor faucibus nulla sapien
-                consequat ligula lectus in. Ut at quis dolor senectus turpis.
-                Nunc at vitae duis quis ornare tempus. Et ornare erat molestie
-                lacus. Iaculis sed metus vitae egestas adipiscing pulvinar{" "}
-              </p>
+              <p className="text-center">{bio}</p>
               <div className="flex items-center justify-center gap-2">
-                {["Skill 1", "Skill 2", "Skill 3"].map((skill) => (
+                {skills?.map((skill: any, idx: any) => (
                   <div
-                    key={skill}
+                    key={idx}
                     className="text-center w-fit bg-white px-3 rounded-full"
                   >
                     {skill}
@@ -116,7 +139,7 @@ export default function OperatorDetils() {
               </div>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {item2.map((item, idx) => (
+              {stash?.map((item, idx) => (
                 <div
                   key={idx}
                   className="flex bg-white p-4 rounded-xl space-x-2 items-center"
@@ -131,7 +154,7 @@ export default function OperatorDetils() {
             </div>
             <div className="flex justify-center">
               <Button
-                onClick={() => handleOperatorDelete("1234")}
+                onClick={() => handleOperatorDelete(oprator_id)}
                 size="lg"
                 className="w-fit bg-white mx-auto text-black"
               >
@@ -143,7 +166,7 @@ export default function OperatorDetils() {
         </div>
         <div className="col-span-1 lg:col-span-2">
           <div className="grid grid-cols-1 md:grid-cols-2  gap-10">
-            {events.map((item, idx) => (
+            {events?.map((item: any, idx: any) => (
               <OpEvtCd key={idx} item={item}>
                 <div
                   className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-white 

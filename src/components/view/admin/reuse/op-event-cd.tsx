@@ -18,6 +18,9 @@ export default function OpEvtCd({ item, children }: opevtcdProps) {
     dateTime,
     price,
     attendees,
+    img,
+    event_title,
+    event_description,
   } = item || {};
 
   return (
@@ -25,14 +28,12 @@ export default function OpEvtCd({ item, children }: opevtcdProps) {
       {/* Event Image */}
       <div className="relative h-60  group rounded-md bg-muted overflow-hidden">
         <img
-          src={
-            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop"
-          }
-          alt={title}
+          src={img}
+          alt={event_title}
           className="w-full h-full object-cover"
         />
         <div className="absolute  right-2 top-2">
-          <div className="flex items-center space-x-2">
+          {/* <div className="flex items-center space-x-2">
             <Button size="default" className="bg-[#434549] text-white">
               {getDeliveryType(helpers.slugify(mode) as any, "#fff")}
               {mode}
@@ -40,18 +41,22 @@ export default function OpEvtCd({ item, children }: opevtcdProps) {
             <Button size="default" variant={helpers.lowerCase(status) as any}>
               {status}
             </Button>
-          </div>
+          </div> */}
         </div>
         {children}
       </div>
 
       <div className="py-3 space-y-1">
         <div className="flex justify-between items-center">
-          <h3 className="text-xl font-semibold  text-foreground">{title}</h3>
+          <h3 className="text-xl font-semibold  text-foreground">
+            {event_title}
+          </h3>
         </div>
 
         {/* Event Description */}
-        <p className="text-muted-foreground line-clamp-2">{description}</p>
+        <p className="text-muted-foreground line-clamp-2">
+          {event_description}
+        </p>
 
         {/* Event Details */}
         <div className="space-y-1 text-sm mt-5">

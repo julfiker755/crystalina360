@@ -2,6 +2,7 @@ import { tagTypes } from "@/redux/tag-types";
 import { baseApi } from "../baseApi";
 
 export const promotionsApi = baseApi.injectEndpoints({
+  overrideExisting: true,
   endpoints: (build) => ({
     getPromotion: build.query({
       query: (arg) => ({
