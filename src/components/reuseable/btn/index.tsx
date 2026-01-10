@@ -19,6 +19,7 @@ export function DeleteBtn({
       className={cn("bg-figma-delete size-10", className)}
       onClick={onClick}
       disabled={disabled}
+      type="button"
     >
       <FavIcon className="size-4" name="delete_a" />
     </Button>

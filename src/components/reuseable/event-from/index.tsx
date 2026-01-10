@@ -8,8 +8,6 @@ import SearchBox from "@/components/reuseable/search-box";
 import { SingleCalendar } from "@/components/reuseable/single-date";
 import { Button, Checkbox, Input, Label } from "@/components/ui";
 import { disciplineItem } from "@/components/view/oparator/dummy-json";
-import SvgBox from "@/components/view/oparator/reuse/svg-box";
-import AlertDiscard from "@/components/view/oparator/simple/alert-discard";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { FieldValues, useForm } from "react-hook-form";
 import { ChevronRight, X } from "lucide-react";
@@ -17,13 +15,14 @@ import Form from "@/components/reuseable/from";
 import Modal from "@/components/reuseable/modal";
 import { useModalState } from "@/hooks";
 import FavIcon from "@/icon/favIcon";
-import { helpers, RandomImg } from "@/lib";
+import { cn, helpers, RandomImg } from "@/lib";
 import { useState } from "react";
 import Avatars from "@/components/reuseable/avater";
 import { FormSelDropdown } from "@/components/reuseable/from-select@1";
 import { UploadBtn } from "@/components/reuseable/btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import { useParams } from "next/navigation";
+import { accessibilityItem } from "@/components/dummy-data";
 
 const initialState = {
   holistic: false,
@@ -35,8 +34,8 @@ export default function EventFrom({ handleFormSubmit }: any) {
   const isOne = slug === "one-to-one";
   const [searchText, setSearchText] = useState("");
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
-  const [accessibility, setAccessibility] = useState(false);
   const [state, setState] = useModalState(initialState);
+  const [selAccbility, setSelAccbility] = useState<string[]>([]);
   const from = useForm({
     // resolver: zodResolver(sign_In),
     defaultValues: {
@@ -247,27 +246,10 @@ export default function EventFrom({ handleFormSubmit }: any) {
                 />
 
                 {/* Accessibility */}
-                <div className="flex items-center justify-between">
-                  <label className="text-lg font-semibold">
-                    Accessibilities
-                  </label>
-                  <div className="flex items-center gap-3">
-                    <span className="text-gray-600">No</span>
-                    <button
-                      onClick={() => setAccessibility(!accessibility)}
-                      className={`relative inline-flex cursor-pointer h-6 w-11 items-center rounded-full transition-colors ${
-                        accessibility ? "bg-primary" : "bg-[#79747E]"
-                      }`}
-                    >
-                      <span
-                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                          accessibility ? "translate-x-6" : "translate-x-1"
-                        }`}
-                      />
-                    </button>
-                    <span className=" text-figma-black">Yes</span>
-                  </div>
-                </div>
+                <AccessibilityBox
+                  selAccbility={selAccbility}
+                  setSelAccbility={setSelAccbility}
+                />
                 <FromTagInput name="tags" label="Tags" className="py-2" />
 
                 {/* Attendees */}
@@ -348,7 +330,6 @@ export default function EventFrom({ handleFormSubmit }: any) {
       >
         <SearchBox
           className="w-full"
-          time={10}
           onChange={(value) => setSearchText(value)}
         />
         <div className="flex items-center flex-wrap gap-3 pt-5 pb-6">
@@ -566,9 +547,7 @@ const TimeSelect = ({ selectedTimes, setSelectedTimes, setState }: any) => {
   );
 };
 
-{
-  /* Location Dropdowns */
-}
+//  --------------------  Location Dropdowns ------------------
 const LocationDroupDown = () => {
   return (
     <>
@@ -617,7 +596,7 @@ const LocationDroupDown = () => {
   );
 };
 
-// date ote,
+// ----------------- date otp -------------------
 const DateAndtime = ({ from, setState }: any) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -638,7 +617,7 @@ const DateAndtime = ({ from, setState }: any) => {
   );
 };
 
-// person limit
+// --------------- person limit ---------------------
 const PersonLimit = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -662,7 +641,7 @@ const PersonLimit = () => {
   );
 };
 
-// ticket quantity
+// -------------- ticket quantity ---------------
 const TicketQuantity = ({ isOne }: any) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -691,6 +670,74 @@ const TicketQuantity = ({ isOne }: any) => {
           placeholder="price hare"
         />
       </div>
+    </div>
+  );
+};
+
+// -----------------Accessibility ---------------
+interface accessibilityProps {
+  selAccbility: string[];
+  setSelAccbility: React.Dispatch<React.SetStateAction<string[]>>;
+}
+const AccessibilityBox = ({
+  selAccbility,
+  setSelAccbility,
+}: accessibilityProps) => {
+  const [accessibility, setAccessibility] = useState(false);
+
+  const handleToggle = (option: string) => {
+    setSelAccbility((prev) =>
+      prev.includes(option)
+        ? prev.filter((item) => item !== option)
+        : [...prev, option]
+    );
+  };
+
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <label className="text-lg font-semibold">Accessibilities</label>
+        <div className="flex items-center gap-3">
+          <span className="text-gray-600">No</span>
+          <button
+            onClick={() => setAccessibility(!accessibility)}
+            className={`relative inline-flex cursor-pointer h-6 w-11 items-center rounded-full transition-colors duration-300 ${
+              accessibility ? "bg-primary" : "bg-[#79747E]"
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ${
+                accessibility ? "translate-x-6" : "translate-x-1"
+              }`}
+            />
+          </button>
+          <span className="text-figma-black">Yes</span>
+        </div>
+      </div>
+
+      {accessibility && (
+        <div className="mt-4 animate-in fade-in slide-in-from-top-2 duration-100">
+          <div className="overflow-hidden rounded-lg border bg-card p-6">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+              {accessibilityItem.map((option) => (
+                <div key={option} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={option}
+                    checked={selAccbility.includes(option)}
+                    onCheckedChange={() => handleToggle(option)}
+                  />
+                  <label
+                    htmlFor={option}
+                    className="text-sm font-medium leading-none cursor-pointer"
+                  >
+                    {option}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

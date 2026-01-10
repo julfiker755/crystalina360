@@ -1,0 +1,15 @@
+export const accessibilityItem = [
+  "Wheelchair accessible",
+  "Quiet environment",
+  "Guide dog allowed",
+  "Reserved parking for disabled",
+  "Visual support available",
+  "Braille materials",
+  "Hearing support",
+  "Accessible toilets",
+  "Sign language interpreter",
+  "High readability materials",
+  "Cognitive support",
+  "Elevator available",
+  "Other",
+];

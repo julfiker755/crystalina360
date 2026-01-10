@@ -149,6 +149,7 @@ function PlanStoreForm({ setState }: { setState: any }) {
           label="Price"
           placeholder="Enter your price"
           className="h-10 rounded-xl"
+          type="number"
         />
         <FromSelect2
           name="interval"
@@ -261,6 +262,7 @@ function PlanUpdateForm({ setState, details }: planUpateProps) {
           label="Price"
           placeholder="Enter your price"
           className="h-10 rounded-xl"
+          type="number"
         />
         <FromSelect2
           name="interval"
