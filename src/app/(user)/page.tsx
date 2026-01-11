@@ -9,8 +9,8 @@ import KeyFeature from "@/components/view/user/landing/key-features";
 import PrivacyPolicy from "@/components/view/user/landing/privacy-policy";
 import Subscription from "@/components/view/user/landing/subscription";
 import Testimonial from "@/components/view/user/landing/testimonial";
-import { roleKey } from "@/lib";
 import { useAppSelector } from "@/redux/hooks";
+import { roleKey } from "@/lib";
 
 export default function UserHome() {
   const { user } = useAppSelector((state: any) => state.auth);

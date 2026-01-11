@@ -31,7 +31,7 @@ const initialState = {
 
 export default function EventFrom({ handleFormSubmit }: any) {
   const { slug } = useParams();
-  const isOne = slug === "one-to-one";
+  const isOne = slug === "onetoone";
   const [searchText, setSearchText] = useState("");
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
   const [state, setState] = useModalState(initialState);
@@ -70,6 +70,9 @@ export default function EventFrom({ handleFormSubmit }: any) {
   console.log(files);
 
   const handleSubmit = async (values: FieldValues) => {
+    const data = {
+      event_type: isOne,
+    };
     // quantity 3
     handleFormSubmit(values);
     console.log(files[0]?.file);
@@ -717,6 +720,9 @@ const AccessibilityBox = ({
 
       {accessibility && (
         <div className="mt-4 animate-in fade-in slide-in-from-top-2 duration-100">
+          <h5 className="col-span-1 lg:col-span-2 text-primary text-end mb-1 text-sm">
+            Select 1 or more
+          </h5>
           <div className="overflow-hidden rounded-lg border bg-card p-6">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
               {accessibilityItem.map((option) => (

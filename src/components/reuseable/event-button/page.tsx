@@ -7,7 +7,7 @@ import { cn } from "@/lib";
 
 const eventOptions = [
   {
-    id: "one-to-one",
+    id: "onetoone",
     title: "One to One",
     description:
       "A private event designed for personal interaction and focused discussion between two individuals.",
