@@ -22,6 +22,7 @@ interface formInputProps {
   matching?: boolean;
   icon?: any;
   [key: string]: any;
+  err?: boolean;
 }
 
 export function FromInput({
@@ -33,6 +34,7 @@ export function FromInput({
   stylelabel,
   className,
   icon,
+  err = true,
   ...rest
 }: formInputProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
@@ -98,7 +100,7 @@ export function FromInput({
               </div>
             )}
           </div>
-          {error?.message && (
+          {err && error?.message && (
             <h3 className="text-sm pt-px text-end text-red-400 flex gap-1 items-center justify-end">
               {error.message}
               <CircleAlert size={14} />

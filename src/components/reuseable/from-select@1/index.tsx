@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui";
 import { cn } from "@/lib";
-import { Check, ChevronDown, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronDown, ChevronsUpDown, CircleAlert } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useFormContext, Controller, FieldValues } from "react-hook-form";
 
@@ -137,7 +137,7 @@ export const FormSelDropdown: React.FC<FormSelect2Props> = ({
       {errors[name]?.message && (
         <h3 className="text-sm pt-px text-end text-red-400 flex gap-1 items-center justify-end">
           {errors[name]?.message as string}
-          <Check size={14} className="text-red-400" />
+          <CircleAlert size={14} />
         </h3>
       )}
     </div>

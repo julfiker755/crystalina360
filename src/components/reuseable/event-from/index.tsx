@@ -15,14 +15,17 @@ import Form from "@/components/reuseable/from";
 import Modal from "@/components/reuseable/modal";
 import { useModalState } from "@/hooks";
 import FavIcon from "@/icon/favIcon";
-import { cn, helpers, RandomImg } from "@/lib";
-import { useState } from "react";
+import { helpers, RandomImg } from "@/lib";
+import { useEffect, useState } from "react";
 import Avatars from "@/components/reuseable/avater";
 import { FormSelDropdown } from "@/components/reuseable/from-select@1";
 import { UploadBtn } from "@/components/reuseable/btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import { useParams } from "next/navigation";
 import { accessibilityItem } from "@/components/dummy-data";
+import { event_sc } from "@/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ErrorInput } from "../error";
 
 const initialState = {
   holistic: false,
@@ -37,17 +40,17 @@ export default function EventFrom({ handleFormSubmit }: any) {
   const [state, setState] = useModalState(initialState);
   const [selAccbility, setSelAccbility] = useState<string[]>([]);
   const from = useForm({
-    // resolver: zodResolver(sign_In),
+    resolver: zodResolver(event_sc),
     defaultValues: {
       delivery_type: "offline",
-      event_purpose: "experiential",
+      event_purpose: "educational",
       holistic: [],
       event_title: "",
       description: "",
       date: "",
-      timeSlot: [],
-      minilimit: 1,
-      maxlimit: 1,
+      timeSlot: selectedTimes || [],
+      minilimit: "1",
+      maxlimit: "2",
       price: "",
       duration: "",
       tags: [],
@@ -56,10 +59,16 @@ export default function EventFrom({ handleFormSubmit }: any) {
       region: "",
       country: "",
       image: "",
-      tiket: isOne ? 2 : 200,
+      tiket: isOne ? "2" : "200",
       //
     },
   });
+  console.log(from.formState.errors);
+
+  useEffect(() => {
+    from.setValue("timeSlot", selectedTimes);
+  }, [selectedTimes]);
+
   // accept: "video/*",
   //   multiple: false
   const deliType = from.watch("delivery_type") === "ondemand";
@@ -154,9 +163,9 @@ export default function EventFrom({ handleFormSubmit }: any) {
               <div className="flex gap-3">
                 {[
                   { value: "educational", label: "Educational" },
-                  { value: "experiential", label: "Experiential" },
+                  { value: "experimental", label: "Experiential" },
                   { value: "mixed", label: "Mixed" },
-                ].map((item) => (
+                ]?.map((item) => (
                   <Button
                     key={item.value}
                     onClick={() => {
@@ -183,24 +192,32 @@ export default function EventFrom({ handleFormSubmit }: any) {
                   Select 1 or more
                 </button>
               </div>
-              <div className="border p-3 flex items-center flex-wrap gap-3 rounded-md">
-                {disciplineItem.slice(0, 10).map((item, idx) => (
-                  <label key={idx} className="flex items-center gap-3">
-                    <Checkbox
-                      checked={from
-                        .watch("holistic")
-                        ?.includes(item.value as never)}
-                      onCheckedChange={() => toggleHolistic(item.value)}
-                    />
-                    <span>{item.label}</span>
-                  </label>
-                ))}
-                <h5
-                  onClick={() => setState("holistic", true)}
-                  className="font-semibold cursor-pointer"
-                >
-                  ...more
-                </h5>
+              <div>
+                <div className="border p-3 flex items-center flex-wrap gap-3 rounded-md">
+                  {disciplineItem.slice(0, 10).map((item, idx) => (
+                    <label key={idx} className="flex items-center gap-3">
+                      <Checkbox
+                        checked={from
+                          .watch("holistic")
+                          ?.includes(item.value as never)}
+                        onCheckedChange={() => toggleHolistic(item.value)}
+                      />
+                      <span>{item.label}</span>
+                    </label>
+                  ))}
+                  <h5
+                    onClick={() => setState("holistic", true)}
+                    className="font-semibold cursor-pointer"
+                  >
+                    ...more
+                  </h5>
+                </div>
+
+                {from.watch("holistic")?.length == 0 && (
+                  <ErrorInput
+                    error={from?.formState?.errors?.holistic?.message as string}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -225,8 +242,8 @@ export default function EventFrom({ handleFormSubmit }: any) {
               <>
                 <LocationDroupDown />
                 <DateAndtime from={from} setState={setState} />
-                <PersonLimit />
-                <TicketQuantity isOne={isOne} />
+                <PersonLimit isOne={isOne} />
+                <TicketQuantity from={from} isOne={isOne} />
                 <FromSelect2
                   items={[
                     {
@@ -305,7 +322,7 @@ export default function EventFrom({ handleFormSubmit }: any) {
                 </div>
                 <DateAndtime from={from} setState={setState} />
                 <PersonLimit />
-                <TicketQuantity isOne={isOne} />
+                <TicketQuantity from={from} isOne={isOne} />
                 <FromTagInput name="tags" label="Tags" className="py-2" />
               </>
             ) : (
@@ -373,35 +390,38 @@ export default function EventFrom({ handleFormSubmit }: any) {
   );
 }
 //  ================= image box ================
-const ImageBannerBox = ({ files, getInputProps }: any) => {
+const ImageBannerBox = ({ files, getInputProps, from }: any) => {
   return (
-    <Label
-      htmlFor="image"
-      className="border-2 p-1 cursor-pointer border-dashed border-primary rounded-lg flex flex-col items-center justify-center h-60 overflow-hidden"
-    >
-      {files[0]?.preview ? (
-        <ImgBox
-          src={files[0].preview}
-          alt="img"
-          className="w-full h-full object-cover rounded-md"
-        >
-          <UploadBtn />
-        </ImgBox>
-      ) : (
-        <>
-          <FavIcon name="upload2" />
-          <p className="text-center mt-2 text-figma-black">
-            Upload event banner image
-          </p>
-        </>
-      )}
-      <input
-        {...getInputProps()}
-        className="sr-only"
-        aria-label="Upload image file"
-        id="image"
-      />
-    </Label>
+    <div>
+      <Label
+        htmlFor="image"
+        className="border-2 p-1 cursor-pointer border-dashed border-primary rounded-lg flex flex-col items-center justify-center h-60 overflow-hidden"
+      >
+        {files[0]?.preview ? (
+          <ImgBox
+            src={files[0].preview}
+            alt="img"
+            className="w-full h-full object-cover rounded-md"
+          >
+            <UploadBtn />
+          </ImgBox>
+        ) : (
+          <>
+            <FavIcon name="upload2" />
+            <p className="text-center mt-2 text-figma-black">
+              Upload event banner image
+            </p>
+          </>
+        )}
+        <input
+          {...getInputProps()}
+          className="sr-only"
+          aria-label="Upload image file"
+          id="image"
+        />
+      </Label>
+      <ErrorInput error={from?.formState?.errors?.image?.message} />
+    </div>
   );
 };
 //  ================= video box ================
@@ -603,25 +623,31 @@ const LocationDroupDown = () => {
 const DateAndtime = ({ from, setState }: any) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <SingleCalendar
-        onChange={(value: any) => {
-          from.setValue("date", value);
-        }}
-        className="h-10 text-black"
-      />
-      <Button
-        onClick={() => setState("istime", true)}
-        type="button"
-        className="flex h-10   bg-transparent border text-black font-normal justify-between items-center"
-      >
-        <span>Create time slot</span> <ChevronRight />
-      </Button>
+      <div>
+        <SingleCalendar
+          onChange={(value: any) => {
+            from.setValue("date", helpers.formatDate(value, "YYYY-MM-DD"));
+          }}
+          className="h-10 text-black"
+        />
+        <ErrorInput error={from?.formState?.errors?.date?.message} />
+      </div>
+      <div className="w-full">
+        <Button
+          onClick={() => setState("istime", true)}
+          type="button"
+          className="flex h-10 w-full  bg-transparent border text-black font-normal justify-between items-center"
+        >
+          <span>Create time slot</span> <ChevronRight />
+        </Button>
+        <ErrorInput error={from?.formState?.errors?.timeSlot?.message} />
+      </div>
     </div>
   );
 };
 
 // --------------- person limit ---------------------
-const PersonLimit = () => {
+const PersonLimit = ({ isOne }: any) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div className="h-10 flex items-center justify-between px-2 border rounded-md">
@@ -629,6 +655,7 @@ const PersonLimit = () => {
           name="minilimit"
           className="w-[100px] h-10 bg-transparent p-0"
           type="number"
+          readOnly={isOne}
         />
         <span>-minimum person limit-</span>
       </div>
@@ -637,6 +664,7 @@ const PersonLimit = () => {
           name="maxlimit"
           className="w-[100px] h-10 bg-transparent p-0"
           type="number"
+          readOnly={isOne}
         />
         <span>-maximum person limit-</span>
       </div>
@@ -645,7 +673,7 @@ const PersonLimit = () => {
 };
 
 // -------------- ticket quantity ---------------
-const TicketQuantity = ({ isOne }: any) => {
+const TicketQuantity = ({ from, isOne }: any) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div className="h-10 flex items-center justify-between px-2 border rounded-md">
@@ -661,17 +689,21 @@ const TicketQuantity = ({ isOne }: any) => {
           readOnly={isOne}
         />
       </div>
-      <div className="h-10 flex items-center justify-between px-2 border rounded-md">
-        <span className="flex items-center">
-          <FavIcon className="size-5" name="price22" />
-          <span className="ml-1">Ticket Price</span>
-        </span>
-        <FromInput
-          name="price"
-          className="w-[100px] h-10 bg-transparent p-0"
-          type="number"
-          placeholder="price hare"
-        />
+      <div>
+        <div className="h-10 flex items-center justify-between px-2 border rounded-md">
+          <span className="flex items-center">
+            <FavIcon className="size-5" name="price22" />
+            <span className="ml-1">Ticket Price</span>
+          </span>
+          <FromInput
+            name="price"
+            className="w-[100px] h-10 bg-transparent p-0"
+            type="number"
+            placeholder="price hare"
+            err={false}
+          />
+        </div>
+        <ErrorInput error={from?.formState?.errors?.price?.message} />
       </div>
     </div>
   );
