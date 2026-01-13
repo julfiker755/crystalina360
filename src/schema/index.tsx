@@ -159,25 +159,50 @@ export const audio_sc = z.object({
 //       image: "",
 //       tiket: isOne ? 2 : 200,
 
-export const event_sc = z.object({
+export const event = z.object({
+  img: z.any().refine((file) => file instanceof File, {
+    message: "image is required",
+  }),
   delivery_type: z.string().nonempty("Delivery is required"),
   event_purpose: z.string().nonempty("Purpose is required"),
-  holistic: z.array(z.string()).nonempty("Holistic is required"),
+  holistic_discipline: z.array(z.string()).nonempty("Holistic is required"),
   event_title: z.string().nonempty("title is required"),
-  description: z.string().nonempty("description is required"),
-  date: z.string().nonempty("date is required"),
-  timeSlot: z.array(z.string()).nonempty("time Slot is required"),
-  minilimit: z.string().optional(),
-  maxlimit: z.string().optional(),
+  event_description: z.string().nonempty("description is required"),
+  event_date: z.string().nonempty("date is required"),
+  event_time: z.array(z.string()).nonempty("time Slot is required"),
+  min_person: z.string().optional(),
+  max_person: z.string().optional(),
   price: z.string().nonempty("Price is required"),
-  duration: z.string().nonempty("duration is required"),
+  event_duration: z.string().nonempty("duration is required"),
   tags: z.array(z.string()).nonempty("tags is required"),
+  ticket_quantity: z.string().nonempty("tiket is required"),
+  accessibility: z.array(z.string()).optional(),
+});
+
+export const offline_sc = event.extend({
   city: z.string().nonempty("city is required"),
   province: z.string().nonempty("province is required"),
   region: z.string().nonempty("region is required"),
   country: z.string().nonempty("country is required"),
-  tiket: z.string().nonempty("tiket is required"),
-  image: z.any().refine((file) => file instanceof File, {
-    message: "image is required",
+});
+export const online_sc = event.extend({
+  link: z.string().nonempty("Link is required"),
+});
+
+export const demand_sc = z.object({
+  img: z.any().refine((file) => file instanceof File, {
+    message: "Video is required",
   }),
+  delivery_type: z.string().nonempty("Delivery is required"),
+  event_purpose: z.string().nonempty("Purpose is required"),
+  holistic_discipline: z.array(z.string()).nonempty("Holistic is required"),
+  event_title: z.string().nonempty("title is required"),
+  event_description: z.string().nonempty("description is required"),
+  city: z.string().nonempty("city is required"),
+  province: z.string().nonempty("province is required"),
+  region: z.string().nonempty("region is required"),
+  country: z.string().nonempty("country is required"),
+  event_date: z.string().nonempty("date is required"),
+  event_time: z.string().nonempty("time is required"),
+  tags: z.array(z.string()).nonempty("tags is required"),
 });

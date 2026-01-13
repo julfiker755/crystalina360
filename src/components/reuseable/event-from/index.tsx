@@ -23,13 +23,16 @@ import { UploadBtn } from "@/components/reuseable/btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import { useParams } from "next/navigation";
 import { accessibilityItem } from "@/components/dummy-data";
-import { event_sc } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorInput } from "../error";
+import { InputTime } from "../timeInput";
+import { getDefaultValues, getSchema } from "./element/default";
+import { DeliveryBox } from "./element/delivery-box";
 
 const initialState = {
   holistic: false,
   istime: false,
+  isDate: false,
 };
 
 export default function EventFrom({ handleFormSubmit }: any) {
@@ -39,35 +42,18 @@ export default function EventFrom({ handleFormSubmit }: any) {
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
   const [state, setState] = useModalState(initialState);
   const [selAccbility, setSelAccbility] = useState<string[]>([]);
-  const from = useForm({
-    resolver: zodResolver(event_sc),
-    defaultValues: {
-      delivery_type: "offline",
-      event_purpose: "educational",
-      holistic: [],
-      event_title: "",
-      description: "",
-      date: "",
-      timeSlot: selectedTimes || [],
-      minilimit: "1",
-      maxlimit: "2",
-      price: "",
-      duration: "",
-      tags: [],
-      city: "",
-      province: "",
-      region: "",
-      country: "",
-      image: "",
-      tiket: isOne ? "2" : "200",
-      //
-    },
-  });
-  console.log(from.formState.errors);
+  const [isDelivery, setIsDelivery] = useState<any>("offline");
+  const [selectDate, setSelectDate] = useState<any>([]);
 
-  useEffect(() => {
-    from.setValue("timeSlot", selectedTimes);
-  }, [selectedTimes]);
+  const defaultValues = getDefaultValues(isDelivery, isOne) as any;
+  const defaultSchema = getSchema(isDelivery) as any;
+
+  const from = useForm({
+    resolver: zodResolver(defaultSchema),
+    defaultValues: defaultValues,
+    mode: "onChange", // optional but recommended
+    reValidateMode: "onChange",
+  });
 
   // accept: "video/*",
   //   multiple: false
@@ -76,84 +62,73 @@ export default function EventFrom({ handleFormSubmit }: any) {
     accept: deliType ? "video/*" : "image/*",
   });
 
-  console.log(files);
+  // useEffect(() => {
+  //   from.setValue("event_time", selectedTimes);
+  //   from.setValue("img", files[0]?.file);
+  // }, [selectedTimes, files]);
+
+  const resetFrom = () => {
+    from.reset();
+    setSelAccbility([]);
+    setSelectDate([]);
+    setIsDelivery("offline");
+    setSelectedTimes([]);
+  };
 
   const handleSubmit = async (values: FieldValues) => {
     const data = {
       event_type: isOne,
     };
     // quantity 3
-    handleFormSubmit(values);
-    console.log(files[0]?.file);
-    console.log(values);
+    // handleFormSubmit(values);
+    // console.log(files[0]?.file);
+    // console.log(values);
   };
 
   const toggleHolistic = (value: any) => {
-    const current = from.getValues("holistic") || [];
+    const current = from.getValues("holistic_discipline") || [];
     if (current.includes(value as never)) {
       from.setValue(
-        "holistic",
-        current.filter((v) => v !== value)
+        "holistic_discipline",
+        current.filter((v: any) => v !== value)
       );
     } else {
-      from.setValue("holistic", [...current, value] as any);
+      from.setValue("holistic_discipline", [...current, value] as any);
     }
   };
-
-  //  Delivery Type Options
-  const options =
-    slug === "retreat"
-      ? [{ value: "offline", label: "Offline", icon: "offline" }]
-      : [
-          { value: "offline", label: "Offline", icon: "offline" },
-          { value: "online", label: "Online", icon: "online" },
-          { value: "ondemand", label: "On demand", icon: "ondemand" },
-        ];
 
   return (
     <div>
       <Form className="py-15" from={from} onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* LEFT SIDE */}
           <div className="space-y-8">
-            {/* image / video uplaod example */}
             {deliType ? (
-              <VideoBannerBox files={files} getInputProps={getInputProps} />
-            ) : (
-              <ImageBannerBox files={files} getInputProps={getInputProps} />
-            )}
-
-            {/* === Delivery Type ==*/}
-            <div>
-              <label className="block text-lg mb-2 font-semibold">
-                Select Delivery Type
-              </label>
-              <div className="flex gap-3">
-                {options.map((item) => (
-                  <Button
-                    key={item.value}
-                    onClick={() => {
-                      clearFiles();
-                      from.setValue("delivery_type", item.value);
-                    }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == from.watch("delivery_type") &&
-                      "bg-primary text-white"
-                    }`}
-                  >
-                    <FavIcon
-                      color={
-                        item.value == from.watch("delivery_type")
-                          ? "#fff"
-                          : undefined
-                      }
-                      name={item.icon as any}
-                    />
-                    {item.label}
-                  </Button>
-                ))}
+              <div>
+                <VideoBannerBox files={files} getInputProps={getInputProps} />
+                {from?.formState?.errors?.img && (
+                  <ErrorInput
+                    error={from?.formState?.errors?.img?.message as string}
+                  />
+                )}
               </div>
-            </div>
+            ) : (
+              <div>
+                <ImageBannerBox files={files} getInputProps={getInputProps} />
+                {from?.formState?.errors?.img && (
+                  <ErrorInput
+                    error={from?.formState?.errors?.img?.message as string}
+                  />
+                )}
+              </div>
+            )}
+            <DeliveryBox
+              slug={slug}
+              from={from}
+              onClick={(value: any) => {
+                resetFrom();
+                setIsDelivery(value);
+              }}
+            />
 
             {/* Event Purpose */}
             <div>
@@ -175,6 +150,7 @@ export default function EventFrom({ handleFormSubmit }: any) {
                       item.value == from.watch("event_purpose") &&
                       "bg-primary text-white"
                     }`}
+                    type="button"
                   >
                     {item.label}
                   </Button>
@@ -198,7 +174,7 @@ export default function EventFrom({ handleFormSubmit }: any) {
                     <label key={idx} className="flex items-center gap-3">
                       <Checkbox
                         checked={from
-                          .watch("holistic")
+                          .watch("holistic_discipline")
                           ?.includes(item.value as never)}
                         onCheckedChange={() => toggleHolistic(item.value)}
                       />
@@ -213,9 +189,12 @@ export default function EventFrom({ handleFormSubmit }: any) {
                   </h5>
                 </div>
 
-                {from.watch("holistic")?.length == 0 && (
+                {from.watch("holistic_discipline")?.length == 0 && (
                   <ErrorInput
-                    error={from?.formState?.errors?.holistic?.message as string}
+                    error={
+                      from?.formState?.errors?.holistic_discipline
+                        ?.message as string
+                    }
                   />
                 )}
               </div>
@@ -232,16 +211,35 @@ export default function EventFrom({ handleFormSubmit }: any) {
             />
 
             <FromTextarea2
-              name="description"
+              name="event_description"
               label="Description"
               placeholder="Enter your description"
               className="min-h-30"
             />
+            {/*  type  ------------ */}
             {from.watch("delivery_type") === "offline" ? (
               //  ===================== offline ==========================
               <>
                 <LocationDroupDown />
-                <DateAndtime from={from} setState={setState} />
+                {slug == "onetoone" ? (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <SingleDateBox from={from} />
+                    <MultipleTime from={from} setState={setState} />
+                  </div>
+                ) : slug === "group" ? (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <MultipleDate from={from} setState={setState} />
+                    <InputTime name="time" placeholder="select time" />
+                  </div>
+                ) : (
+                  slug === "retreat" && (
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                      <SingleDateBox from={from} />
+                      <InputTime name="time" placeholder="select time" />
+                    </div>
+                  )
+                )}
+
                 <PersonLimit isOne={isOne} />
                 <TicketQuantity from={from} isOne={isOne} />
                 <FromSelect2
@@ -260,7 +258,7 @@ export default function EventFrom({ handleFormSubmit }: any) {
                       value: "more_than_one_week",
                     },
                   ]}
-                  name="duration"
+                  name="event_duration"
                   placeholder="-Select duration-"
                   className="rounded-md"
                 />
@@ -320,7 +318,19 @@ export default function EventFrom({ handleFormSubmit }: any) {
                     Generate Link
                   </Button>
                 </div>
-                <DateAndtime from={from} setState={setState} />
+                {slug == "onetoone" ? (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <SingleDateBox from={from} />
+                    <MultipleTime from={from} setState={setState} />
+                  </div>
+                ) : (
+                  slug === "group" && (
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                      <MultipleDate from={from} setState={setState} />
+                      <InputTime name="time" placeholder="select time" />
+                    </div>
+                  )
+                )}
                 <PersonLimit />
                 <TicketQuantity from={from} isOne={isOne} />
                 <FromTagInput name="tags" label="Tags" className="py-2" />
@@ -329,7 +339,21 @@ export default function EventFrom({ handleFormSubmit }: any) {
               from.watch("delivery_type") === "ondemand" && (
                 <>
                   <LocationDroupDown />
-                  <DateAndtime from={from} setState={setState} />
+                  <div>
+                    {slug == "onetoone" ? (
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <SingleDateBox from={from} />
+                        <InputTime name="time" placeholder="select time" />
+                      </div>
+                    ) : (
+                      slug === "group" && (
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                          <SingleDateBox from={from} />
+                          <InputTime name="time" placeholder="select time" />
+                        </div>
+                      )
+                    )}
+                  </div>
                   <FromTagInput name="tags" label="Tags" className="py-2" />
                 </>
               )
@@ -363,7 +387,7 @@ export default function EventFrom({ handleFormSubmit }: any) {
               <label key={idx} className="flex items-center gap-3">
                 <Checkbox
                   checked={from
-                    .watch("holistic")
+                    .watch("holistic_discipline")
                     ?.includes(item.value as never)}
                   onCheckedChange={() => toggleHolistic(item.value)}
                 />
@@ -386,42 +410,54 @@ export default function EventFrom({ handleFormSubmit }: any) {
           setState={setState}
         />
       </Modal>
+      {/*  === date === */}
+      <Modal
+        open={state.isDate}
+        setIsOpen={(v) => setState("isDate", v)}
+        title="Create Date Slot"
+        className="sm:max-w-xl"
+        titleStyle="text-center"
+      >
+        <MultiDateSelect
+          selectDate={selectDate}
+          setSelectDate={setSelectDate}
+          setState={setState}
+        />
+      </Modal>
     </div>
   );
 }
+//  -------------------------------------------------------------- X ----------------------------------------------------------
 //  ================= image box ================
-const ImageBannerBox = ({ files, getInputProps, from }: any) => {
+const ImageBannerBox = ({ files, getInputProps }: any) => {
   return (
-    <div>
-      <Label
-        htmlFor="image"
-        className="border-2 p-1 cursor-pointer border-dashed border-primary rounded-lg flex flex-col items-center justify-center h-60 overflow-hidden"
-      >
-        {files[0]?.preview ? (
-          <ImgBox
-            src={files[0].preview}
-            alt="img"
-            className="w-full h-full object-cover rounded-md"
-          >
-            <UploadBtn />
-          </ImgBox>
-        ) : (
-          <>
-            <FavIcon name="upload2" />
-            <p className="text-center mt-2 text-figma-black">
-              Upload event banner image
-            </p>
-          </>
-        )}
-        <input
-          {...getInputProps()}
-          className="sr-only"
-          aria-label="Upload image file"
-          id="image"
-        />
-      </Label>
-      <ErrorInput error={from?.formState?.errors?.image?.message} />
-    </div>
+    <Label
+      htmlFor="image"
+      className="border-2 p-1 cursor-pointer border-dashed border-primary rounded-lg flex flex-col items-center justify-center h-60 overflow-hidden"
+    >
+      {files[0]?.preview ? (
+        <ImgBox
+          src={files[0].preview}
+          alt="img"
+          className="w-full h-full object-cover rounded-md"
+        >
+          <UploadBtn />
+        </ImgBox>
+      ) : (
+        <>
+          <FavIcon name="upload2" />
+          <p className="text-center mt-2 text-figma-black">
+            Upload event banner image
+          </p>
+        </>
+      )}
+      <input
+        {...getInputProps()}
+        className="sr-only"
+        aria-label="Upload image file"
+        id="image"
+      />
+    </Label>
   );
 };
 //  ================= video box ================
@@ -570,6 +606,113 @@ const TimeSelect = ({ selectedTimes, setSelectedTimes, setState }: any) => {
   );
 };
 
+//  ================== time select ========
+const MultiDateSelect = ({ selectDate, setSelectDate, setState }: any) => {
+  const [error, setError] = useState<string>("");
+  const [newDate, setNewDate] = useState<string>();
+
+  const handleAddDate = () => {
+    if (!newDate) {
+      setError("Please select a date");
+      return;
+    }
+
+    if (selectDate.includes(newDate)) {
+      setError("This date is already selected");
+      return;
+    }
+
+    setSelectDate((prev: string[]) => [...prev, newDate].sort());
+    setError("");
+  };
+
+  const handleRemoveDate = (date: string) => {
+    setSelectDate((prev: string[]) => prev.filter((d) => d !== date));
+  };
+
+  const handleSave = () => {
+    setState("isDate", false);
+  };
+
+  const handleDateChange = (value: any) => {
+    const formattedDate = helpers.formatDate(value, "YYYY-MM-DD");
+    setNewDate(formattedDate);
+    setError(""); // Clear error if date is selected
+  };
+
+  return (
+    <div>
+      <div className="mb-8">
+        <div>
+          <div className="flex gap-3 items-center">
+            <div className="flex-1">
+              <SingleCalendar
+                onChange={handleDateChange}
+                className="h-10 text-black"
+              />
+            </div>
+            <Button onClick={handleAddDate}>Add</Button>
+          </div>
+          {error && <p className="text-red-400 text-sm mt-1">{error}</p>}
+        </div>
+      </div>
+
+      <div className="mb-10">
+        <h2 className="text-sm font-medium text-black mb-4">
+          Selected dates ({selectDate.length})
+        </h2>
+        {selectDate.length > 0 ? (
+          <div className="flex flex-wrap gap-3">
+            {selectDate.map((date: string) => (
+              <div
+                key={date}
+                className="flex items-center gap-3 bg-figma-delete px-4 py-2 rounded-full border"
+              >
+                <span className="text-sm font-medium text-article">{date}</span>
+                <button
+                  onClick={() => handleRemoveDate(date)}
+                  className="text-figma-black cursor-pointer transition-colors p-0.5"
+                  aria-label={`Remove ${date}`}
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-slate-500 text-sm italic">No dates selected yet</p>
+        )}
+      </div>
+
+      {/* Action Buttons */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Button
+          onClick={() => setState("isDate", false)}
+          className="bg-[#ededed] text-figma-black"
+        >
+          Cancel
+        </Button>
+        <Button onClick={handleSave}>Save</Button>
+      </div>
+    </div>
+  );
+};
+
+const MultipleDate = ({ from, setState }: any) => {
+  return (
+    <div className="w-full">
+      <Button
+        onClick={() => setState("isDate", true)}
+        type="button"
+        className="flex h-10 w-full  bg-transparent border text-black font-normal justify-between items-center"
+      >
+        <span>Create date slot</span> <ChevronRight />
+      </Button>
+      <ErrorInput error={from?.formState?.errors?.date?.message} />
+    </div>
+  );
+};
+
 //  --------------------  Location Dropdowns ------------------
 const LocationDroupDown = () => {
   return (
@@ -619,29 +762,33 @@ const LocationDroupDown = () => {
   );
 };
 
-// ----------------- date otp -------------------
-const DateAndtime = ({ from, setState }: any) => {
+//  ----------------------single date --------------------
+const SingleDateBox = ({ from }: any) => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <div>
-        <SingleCalendar
-          onChange={(value: any) => {
-            from.setValue("date", helpers.formatDate(value, "YYYY-MM-DD"));
-          }}
-          className="h-10 text-black"
-        />
-        <ErrorInput error={from?.formState?.errors?.date?.message} />
-      </div>
-      <div className="w-full">
-        <Button
-          onClick={() => setState("istime", true)}
-          type="button"
-          className="flex h-10 w-full  bg-transparent border text-black font-normal justify-between items-center"
-        >
-          <span>Create time slot</span> <ChevronRight />
-        </Button>
-        <ErrorInput error={from?.formState?.errors?.timeSlot?.message} />
-      </div>
+    <div>
+      <SingleCalendar
+        onChange={(value: any) => {
+          from.setValue("event_date", helpers.formatDate(value, "YYYY-MM-DD"));
+        }}
+        className="h-10 text-black"
+      />
+      <ErrorInput error={from?.formState?.errors?.event_date?.message} />
+    </div>
+  );
+};
+
+//  ------------------- multiple time -------------------------
+const MultipleTime = ({ from, setState }: any) => {
+  return (
+    <div className="w-full">
+      <Button
+        onClick={() => setState("istime", true)}
+        type="button"
+        className="flex h-10 w-full  bg-transparent border text-black font-normal justify-between items-center"
+      >
+        <span>Create time slot</span> <ChevronRight />
+      </Button>
+      <ErrorInput error={from?.formState?.errors?.event_time?.message} />
     </div>
   );
 };
@@ -652,7 +799,7 @@ const PersonLimit = ({ isOne }: any) => {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div className="h-10 flex items-center justify-between px-2 border rounded-md">
         <FromInput
-          name="minilimit"
+          name="min_person"
           className="w-[100px] h-10 bg-transparent p-0"
           type="number"
           readOnly={isOne}
@@ -661,7 +808,7 @@ const PersonLimit = ({ isOne }: any) => {
       </div>
       <div className="h-10 flex items-center justify-between px-2 border rounded-md">
         <FromInput
-          name="maxlimit"
+          name="max_person"
           className="w-[100px] h-10 bg-transparent p-0"
           type="number"
           readOnly={isOne}
@@ -682,7 +829,7 @@ const TicketQuantity = ({ from, isOne }: any) => {
           <span className="ml-1"> Ticket quantity</span>
         </span>
         <FromInput
-          name="tiket"
+          name="ticket_quantity"
           className="w-[100px] h-10 text-end bg-transparent p-0"
           type="number"
           placeholder="quantity hare"
@@ -779,3 +926,5 @@ const AccessibilityBox = ({
     </div>
   );
 };
+
+// ---  Delivery Box --
