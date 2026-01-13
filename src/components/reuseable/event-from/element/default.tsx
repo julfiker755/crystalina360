@@ -59,9 +59,47 @@ export const getDefaultValues = (isDelivery: string, isOne: boolean) => {
 };
 
 export const getSchema = (isDelivery: string) => {
-  return isDelivery == "offline"
-    ? offline_sc
-    : isDelivery == "online"
-    ? online_sc
-    : isDelivery === "ondemand" && demand_sc;
+  if (isDelivery === "offline") return offline_sc;
+  if (isDelivery === "online") return online_sc;
+  if (isDelivery === "ondemand") return demand_sc;
 };
+
+export const getDelivery = (type: any) => {
+  if (type === "retreat") {
+    return [{ value: "offline", label: "Offline", icon: "offline" }];
+  } else {
+    return [
+      { value: "offline", label: "Offline", icon: "offline" },
+      { value: "online", label: "Online", icon: "online" },
+      { value: "ondemand", label: "On demand", icon: "ondemand" },
+    ];
+  }
+};
+
+export enum delivary {
+  offline = "offline",
+  online = "online",
+  ondemand = "ondemand",
+}
+
+export const purposeItem = [
+  { value: "educational", label: "Educational" },
+  { value: "experimental", label: "Experiential" },
+  { value: "mixed", label: "Mixed" },
+];
+
+export const durationItem = [
+  {
+    label: "Less than 30 minutes",
+    value: "less_than_30_minutes",
+  },
+  { label: "30-60 minutes", value: "30_60_minutes" },
+  { label: "Half day", value: "half_day" },
+  { label: "One day", value: "one_day" },
+  { label: "Two days", value: "two_days" },
+  { label: "One week", value: "one_week" },
+  {
+    label: "More than one week",
+    value: "more_than_one_week",
+  },
+];

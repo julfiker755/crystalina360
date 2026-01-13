@@ -16,7 +16,7 @@ import Modal from "@/components/reuseable/modal";
 import { useModalState } from "@/hooks";
 import FavIcon from "@/icon/favIcon";
 import { helpers, RandomImg } from "@/lib";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Avatars from "@/components/reuseable/avater";
 import { FormSelDropdown } from "@/components/reuseable/from-select@1";
 import { UploadBtn } from "@/components/reuseable/btn";
@@ -26,8 +26,15 @@ import { accessibilityItem } from "@/components/dummy-data";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorInput } from "../error";
 import { InputTime } from "../timeInput";
-import { getDefaultValues, getSchema } from "./element/default";
-import { DeliveryBox } from "./element/delivery-box";
+import {
+  delivary,
+  durationItem,
+  getDefaultValues,
+  getDelivery,
+  getSchema,
+  purposeItem,
+} from "./element/default";
+import TimeSelect from "./element/time-select";
 
 const initialState = {
   holistic: false,
@@ -51,15 +58,16 @@ export default function EventFrom({ handleFormSubmit }: any) {
   const from = useForm({
     resolver: zodResolver(defaultSchema),
     defaultValues: defaultValues,
-    mode: "onChange", // optional but recommended
+    mode: "onChange",
     reValidateMode: "onChange",
   });
 
   // accept: "video/*",
   //   multiple: false
-  const deliType = from.watch("delivery_type") === "ondemand";
+  const get = (v: any) => from.watch(v);
+  const delivaryType = get("delivery_type") == delivary.ondemand;
   const [{ files }, { getInputProps, clearFiles }] = useFileUpload({
-    accept: deliType ? "video/*" : "image/*",
+    accept: delivaryType ? "video/*" : "image/*",
   });
 
   // useEffect(() => {
@@ -102,7 +110,7 @@ export default function EventFrom({ handleFormSubmit }: any) {
       <Form className="py-15" from={from} onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-8">
-            {deliType ? (
+            {delivaryType ? (
               <div>
                 <VideoBannerBox files={files} getInputProps={getInputProps} />
                 {from?.formState?.errors?.img && (
@@ -121,33 +129,51 @@ export default function EventFrom({ handleFormSubmit }: any) {
                 )}
               </div>
             )}
-            <DeliveryBox
-              slug={slug}
-              from={from}
-              onClick={(value: any) => {
-                resetFrom();
-                setIsDelivery(value);
-              }}
-            />
-
-            {/* Event Purpose */}
+            {/*  ------ Select Delivery Type --------  */}
+            <div>
+              <label className="block text-lg mb-2 font-semibold">
+                Select Delivery Type
+              </label>
+              <div className="flex gap-3">
+                {getDelivery(slug)?.map((item) => (
+                  <Button
+                    key={item.value}
+                    onClick={() => {
+                      resetFrom();
+                      setIsDelivery(item.value);
+                      from.setValue("delivery_type", item.value);
+                    }}
+                    type="button"
+                    className={`font-normal transition-colors border bg-transparent text-figma-black ${
+                      item.value === get("delivery_type") &&
+                      "bg-primary text-white"
+                    }`}
+                  >
+                    <FavIcon
+                      color={
+                        item.value === get("delivery_type") ? "#fff" : undefined
+                      }
+                      name={item.icon as any}
+                    />
+                    {item.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            {/* --------  Select Event Purpose --------- */}
             <div>
               <label className="block text-lg mb-2 font-semibold">
                 Select Event Purpose
               </label>
               <div className="flex gap-3">
-                {[
-                  { value: "educational", label: "Educational" },
-                  { value: "experimental", label: "Experiential" },
-                  { value: "mixed", label: "Mixed" },
-                ]?.map((item) => (
+                {purposeItem?.map((item) => (
                   <Button
                     key={item.value}
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
                     className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == from.watch("event_purpose") &&
+                      item.value == get("event_purpose") &&
                       "bg-primary text-white"
                     }`}
                     type="button"
@@ -173,9 +199,9 @@ export default function EventFrom({ handleFormSubmit }: any) {
                   {disciplineItem.slice(0, 10).map((item, idx) => (
                     <label key={idx} className="flex items-center gap-3">
                       <Checkbox
-                        checked={from
-                          .watch("holistic_discipline")
-                          ?.includes(item.value as never)}
+                        checked={get("holistic_discipline")?.includes(
+                          item.value as never
+                        )}
                         onCheckedChange={() => toggleHolistic(item.value)}
                       />
                       <span>{item.label}</span>
@@ -189,7 +215,7 @@ export default function EventFrom({ handleFormSubmit }: any) {
                   </h5>
                 </div>
 
-                {from.watch("holistic_discipline")?.length == 0 && (
+                {get("holistic_discipline")?.length == 0 && (
                   <ErrorInput
                     error={
                       from?.formState?.errors?.holistic_discipline
@@ -217,7 +243,7 @@ export default function EventFrom({ handleFormSubmit }: any) {
               className="min-h-30"
             />
             {/*  type  ------------ */}
-            {from.watch("delivery_type") === "offline" ? (
+            {get("delivery_type") === delivary.offline ? (
               //  ===================== offline ==========================
               <>
                 <LocationDroupDown />
@@ -243,21 +269,7 @@ export default function EventFrom({ handleFormSubmit }: any) {
                 <PersonLimit isOne={isOne} />
                 <TicketQuantity from={from} isOne={isOne} />
                 <FromSelect2
-                  items={[
-                    {
-                      label: "Less than 30 minutes",
-                      value: "less_than_30_minutes",
-                    },
-                    { label: "30-60 minutes", value: "30_60_minutes" },
-                    { label: "Half day", value: "half_day" },
-                    { label: "One day", value: "one_day" },
-                    { label: "Two days", value: "two_days" },
-                    { label: "One week", value: "one_week" },
-                    {
-                      label: "More than one week",
-                      value: "more_than_one_week",
-                    },
-                  ]}
+                  items={durationItem}
                   name="event_duration"
                   placeholder="-Select duration-"
                   className="rounded-md"
@@ -408,6 +420,7 @@ export default function EventFrom({ handleFormSubmit }: any) {
           selectedTimes={selectedTimes}
           setSelectedTimes={setSelectedTimes}
           setState={setState}
+          from={from}
         />
       </Modal>
       {/*  === date === */}
@@ -502,107 +515,6 @@ const VideoBannerBox = ({ files, getInputProps }: any) => {
         id="image"
       />
     </Label>
-  );
-};
-
-//  ================== time select ========
-const TimeSelect = ({ selectedTimes, setSelectedTimes, setState }: any) => {
-  const [newTime, setNewTime] = useState("12:00");
-  const [error, setError] = useState("");
-
-  const formatTime = (time: string) => {
-    const [hours, minutes] = time.split(":");
-    const hour = parseInt(hours);
-    const ampm = hour >= 12 ? "PM" : "AM";
-    const displayHour = hour % 12 || 12;
-    return `${displayHour.toString().padStart(2, "0")}:${minutes} ${ampm}`;
-  };
-
-  const handleAddTime = () => {
-    if (!newTime) {
-      setError("Please select a time");
-      return;
-    }
-
-    if (selectedTimes.includes(newTime)) {
-      setError("This time is already selected");
-      return;
-    }
-
-    setSelectedTimes((prev: any) => [...prev, newTime].sort());
-    setNewTime("12:00");
-    setError("");
-  };
-
-  const handleRemoveTime = (time: string) => {
-    setSelectedTimes((prev: any) => prev.filter((t: any) => t !== time));
-  };
-
-  const handleSave = () => {
-    selectedTimes.map(formatTime);
-    setState("istime", false);
-  };
-
-  return (
-    <div>
-      <div className="mb-8">
-        <div>
-          <div className="flex gap-3 items-center">
-            <div className="flex-1">
-              <Input
-                type="time"
-                value={newTime}
-                onChange={(e) => setNewTime(e.target.value)}
-                className="h-10"
-              />
-            </div>
-            <Button onClick={handleAddTime}>Add</Button>
-          </div>
-          {error && <p className="text-red-400 text-sm mt-1">{error}</p>}
-        </div>
-      </div>
-
-      <div className="mb-10">
-        <h2 className="text-sm font-medium text-black mb-4">
-          Selected times ({selectedTimes.length})
-        </h2>
-        {selectedTimes.length > 0 ? (
-          <div className="flex flex-wrap gap-3">
-            {selectedTimes.map((time: any) => (
-              <div
-                key={time}
-                className="flex items-center gap-3 bg-figma-delete px-4 py-2 rounded-full border"
-              >
-                <span className="text-sm font-medium text-article">
-                  {formatTime(time)}
-                </span>
-                <button
-                  onClick={() => handleRemoveTime(time)}
-                  className="text-figma-black cursor-pointer transition-colors p-0.5"
-                  aria-label={`Remove ${formatTime(time)}`}
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-slate-500 text-sm italic">No times selected yet</p>
-        )}
-      </div>
-
-      {/* Action Buttons */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Button
-          onClick={() => setState("istime", false)}
-          className="bg-[#ededed] text-figma-black"
-        >
-          {" "}
-          Cancel
-        </Button>
-        <Button onClick={handleSave}>Save</Button>
-      </div>
-    </div>
   );
 };
 
@@ -764,6 +676,7 @@ const LocationDroupDown = () => {
 
 //  ----------------------single date --------------------
 const SingleDateBox = ({ from }: any) => {
+  const val = from.watch("event_date");
   return (
     <div>
       <SingleCalendar
@@ -772,13 +685,16 @@ const SingleDateBox = ({ from }: any) => {
         }}
         className="h-10 text-black"
       />
-      <ErrorInput error={from?.formState?.errors?.event_date?.message} />
+      {!val && (
+        <ErrorInput error={from?.formState?.errors?.event_date?.message} />
+      )}
     </div>
   );
 };
 
 //  ------------------- multiple time -------------------------
 const MultipleTime = ({ from, setState }: any) => {
+  const val = from.watch("event_time");
   return (
     <div className="w-full">
       <Button
@@ -788,7 +704,9 @@ const MultipleTime = ({ from, setState }: any) => {
       >
         <span>Create time slot</span> <ChevronRight />
       </Button>
-      <ErrorInput error={from?.formState?.errors?.event_time?.message} />
+      {val?.length == 0 && (
+        <ErrorInput error={from?.formState?.errors?.event_time?.message} />
+      )}
     </div>
   );
 };
