@@ -72,6 +72,12 @@ export const authApi = baseApi.injectEndpoints({
         data,
       }),
     }),
+    emailFind: build.query({
+      query: () => ({
+        url: "/find/email",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -85,4 +91,5 @@ export const {
   useLogoutMutation,
   useUpdateProfileMutation,
   useUpdatePassMutation,
+  useEmailFindQuery,
 } = authApi;

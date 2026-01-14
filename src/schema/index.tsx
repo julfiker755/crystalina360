@@ -140,25 +140,6 @@ export const audio_sc = z.object({
   }),
 });
 
-// delivery_type: "offline",
-//       event_purpose: "educational",
-//       holistic: [],
-//       event_title: "",
-//       description: "",
-//       date: "",
-//       timeSlot: [],
-//       minilimit: 1,
-//       maxlimit: 2,
-//       price: "",
-//       duration: "",
-//       tags: [],
-//       city: "",
-//       province: "",
-//       region: "",
-//       country: "",
-//       image: "",
-//       tiket: isOne ? 2 : 200,
-
 export const event = z.object({
   img: z.any().refine((file) => file instanceof File, {
     message: "image is required",
@@ -168,28 +149,61 @@ export const event = z.object({
   holistic_discipline: z.array(z.string()).nonempty("Holistic is required"),
   event_title: z.string().nonempty("title is required"),
   event_description: z.string().nonempty("description is required"),
-  event_date: z.string().nonempty("date is required"),
-  event_time: z.array(z.string()).nonempty("time Slot is required"),
   min_person: z.string().optional(),
   max_person: z.string().optional(),
   price: z.string().nonempty("Price is required"),
-  event_duration: z.string().nonempty("duration is required"),
+  event_duration: z.string().optional(),
   tags: z.array(z.string()).nonempty("tags is required"),
   ticket_quantity: z.string().nonempty("tiket is required"),
   accessibility: z.array(z.string()).optional(),
 });
 
-export const offline_sc = event.extend({
+//  one to one
+export const online_sc = event.extend({
+  event_date: z.string().nonempty("date is required"),
+  event_time: z.array(z.string()).nonempty("time Slot is required"),
+});
+
+export const offline_sc = online_sc.extend({
   city: z.string().nonempty("city is required"),
   province: z.string().nonempty("province is required"),
   region: z.string().nonempty("region is required"),
   country: z.string().nonempty("country is required"),
 });
-export const online_sc = event.extend({
-  link: z.string().nonempty("Link is required"),
+
+// === event group from  ==
+export const online_sc2 = event.extend({
+  event_date: z.array(z.string()).nonempty("Date Slot is required"),
+  event_time: z.string().nonempty("Time is required"),
 });
 
+export const offline_sc2 = online_sc2.extend({
+  city: z.string().nonempty("city is required"),
+  province: z.string().nonempty("province is required"),
+  region: z.string().nonempty("region is required"),
+  country: z.string().nonempty("country is required"),
+});
+
+//  ----------
 export const demand_sc = z.object({
+  img: z.any().refine((file) => file instanceof File, {
+    message: "Video is required",
+  }),
+  delivery_type: z.string().nonempty("Delivery is required"),
+  event_purpose: z.string().nonempty("Purpose is required"),
+  holistic_discipline: z.array(z.string()).nonempty("Holistic is required"),
+  event_title: z.string().nonempty("title is required"),
+  event_description: z.string().nonempty("description is required"),
+  city: z.string().nonempty("city is required"),
+  province: z.string().nonempty("province is required"),
+  region: z.string().nonempty("region is required"),
+  country: z.string().nonempty("country is required"),
+  event_date: z.string().nonempty("date is required"),
+  event_time: z.string().nonempty("time is required"),
+  tags: z.array(z.string()).nonempty("tags is required"),
+});
+//  ======= demand_sc2 ========
+export const demand_sc2 = z.object({
   img: z.any().refine((file) => file instanceof File, {
     message: "Video is required",
   }),

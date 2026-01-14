@@ -5,33 +5,13 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib";
 
-const eventOptions = [
-  {
-    id: "onetoone",
-    title: "One to One",
-    description:
-      "A private event designed for personal interaction and focused discussion between two individuals.",
-  },
-  {
-    id: "group",
-    title: "Group",
-    description:
-      "An exclusive gathering with a set number of participants, ensuring closer connections and meaningful engagement.",
-  },
-  {
-    id: "retreat",
-    title: "Retreat",
-    description:
-      "An immersive event. It can only be o line (therefore, it cannot be online or on demand). ",
-  },
-];
-
 interface eventButtonProps {
   selectEvent: any;
   setSelectEvent: any;
   handleSubmitEvent: any;
   icon?: boolean;
   className?: string;
+  eventOptions?: any;
 }
 
 export default function EventButton({
@@ -40,6 +20,7 @@ export default function EventButton({
   handleSubmitEvent,
   icon = false,
   className,
+  eventOptions,
 }: eventButtonProps) {
   const [isStore, setIsStore] = useState(false);
   return (
@@ -63,7 +44,7 @@ export default function EventButton({
           value={selectEvent}
           onValueChange={(v) => setSelectEvent(v)}
         >
-          {eventOptions.map((option) => (
+          {eventOptions.map((option: any) => (
             <div key={option.id} className="border rounded-lg">
               <div className="flex items-center px-2 py-4 gap-4">
                 <RadioGroupItem

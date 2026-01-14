@@ -1,5 +1,4 @@
 "use client";
-import { FromInput } from "@/components/reuseable/form-input";
 import { FromInput2 } from "@/components/reuseable/form-input2";
 import { FromSelect2 } from "@/components/reuseable/from-select2";
 import { FromTagInput } from "@/components/reuseable/from-tag";
@@ -18,24 +17,25 @@ import FavIcon from "@/icon/favIcon";
 import { helpers, RandomImg } from "@/lib";
 import { useEffect, useState } from "react";
 import Avatars from "@/components/reuseable/avater";
-import { FormSelDropdown } from "@/components/reuseable/from-select@1";
 import { UploadBtn } from "@/components/reuseable/btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
-import { useParams } from "next/navigation";
-import { accessibilityItem } from "@/components/dummy-data";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ErrorInput } from "../error";
-import { InputTime } from "../timeInput";
 import {
   delivary,
   durationItem,
-  getDefaultValues,
-  getDelivery,
   getSchema,
+  getValuesOne,
   purposeItem,
 } from "./element/default";
 import TimeSelect from "./element/time-select";
 import MultiDate from "./element/multi-date";
+import { ErrorInput } from "../reuseable/error";
+import { InputTime } from "../reuseable/timeInput";
+import PersonLimit from "./element/person-limit";
+import { LocationDroupDown } from "./element/location";
+import { AccessibilityBox } from "./element/accessibility";
+import TicketQuantity from "./element/ticket-quantity";
+import EmailCollent from "./element/email-collect";
 
 const initialState = {
   holistic: false,
@@ -43,9 +43,7 @@ const initialState = {
   isDate: false,
 };
 
-export default function EventFrom({ handleFormSubmit }: any) {
-  const { slug } = useParams();
-  const isOne = slug === "onetoone";
+export default function OnetoOneStore() {
   const [searchText, setSearchText] = useState("");
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
   const [state, setState] = useModalState(initialState);
@@ -53,14 +51,13 @@ export default function EventFrom({ handleFormSubmit }: any) {
   const [isDelivery, setIsDelivery] = useState<any>("offline");
   const [selectDate, setSelectDate] = useState<any>([]);
 
-  const defaultValues = getDefaultValues(isDelivery, isOne) as any;
+  const defaultValues = getValuesOne(isDelivery, "2") as any;
   const defaultSchema = getSchema(isDelivery) as any;
 
   const from = useForm({
-    // resolver: zodResolver(defaultSchema),
+    resolver: zodResolver(defaultSchema),
     defaultValues: defaultValues,
     mode: "onChange",
-    reValidateMode: "onChange",
   });
 
   // accept: "video/*",
@@ -76,7 +73,7 @@ export default function EventFrom({ handleFormSubmit }: any) {
   }, [files]);
 
   const resetFrom = () => {
-    from.reset();
+    from.reset({});
     setSelAccbility([]);
     setSelectDate([]);
     setIsDelivery("offline");
@@ -86,7 +83,7 @@ export default function EventFrom({ handleFormSubmit }: any) {
 
   const handleSubmit = async (values: FieldValues) => {
     const data = {
-      event_type: isOne,
+      //   event_type: isOne,
     };
     console.log(values);
   };
@@ -111,7 +108,7 @@ export default function EventFrom({ handleFormSubmit }: any) {
             {delivaryType ? (
               <div>
                 <VideoBannerBox files={files} getInputProps={getInputProps} />
-                {from?.formState?.errors?.img && (
+                {!get("img") && (
                   <ErrorInput
                     error={from?.formState?.errors?.img?.message as string}
                   />
@@ -133,7 +130,11 @@ export default function EventFrom({ handleFormSubmit }: any) {
                 Select Delivery Type
               </label>
               <div className="flex gap-3">
-                {getDelivery(slug)?.map((item) => (
+                {[
+                  { value: "offline", label: "Offline", icon: "offline" },
+                  { value: "online", label: "Online", icon: "online" },
+                  { value: "ondemand", label: "On demand", icon: "ondemand" },
+                ]?.map((item) => (
                   <Button
                     key={item.value}
                     onClick={() => {
@@ -245,130 +246,43 @@ export default function EventFrom({ handleFormSubmit }: any) {
               //  ===================== offline ==========================
               <>
                 <LocationDroupDown />
-                {slug == "onetoone" ? (
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <SingleDateBox from={from} />
-                    <MultipleTime from={from} setState={setState} />
-                  </div>
-                ) : slug === "group" ? (
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <MultipleDate from={from} setState={setState} />
-                    <InputTime name="time" placeholder="select time" />
-                  </div>
-                ) : (
-                  slug === "retreat" && (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                      <SingleDateBox from={from} />
-                      <InputTime name="time" placeholder="select time" />
-                    </div>
-                  )
-                )}
-
-                <PersonLimit isOne={isOne} />
-                <TicketQuantity from={from} isOne={isOne} />
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  <SingleDateBox from={from} />
+                  <MultipleTime from={from} setState={setState} />
+                </div>
+                <PersonLimit read={true} />
+                <TicketQuantity from={from} read={false} />
                 <FromSelect2
                   items={durationItem}
                   name="event_duration"
                   placeholder="-Select duration-"
                   className="rounded-md"
                 />
-
-                {/* Accessibility */}
                 <AccessibilityBox
                   selAccbility={selAccbility}
                   setSelAccbility={setSelAccbility}
                 />
                 <FromTagInput name="tags" label="Tags" className="py-2" />
-
-                {/* Attendees */}
-                <div className="border rounded-md h-10 flex items-center">
-                  <div className="flex items-center space-x-1 px-2">
-                    <Avatars
-                      className="size-8!"
-                      src={RandomImg(50, 50)}
-                      alt="Attendees"
-                      fallback="A"
-                    />
-                    <span>example@gmail.com</span>
-                    <span>
-                      <X className="size-4 cursor-pointer" />
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-1 px-2">
-                    <Avatars
-                      className="size-8!"
-                      src={RandomImg(50, 50)}
-                      alt="Attendees"
-                      fallback="A"
-                    />
-                    <span>example@gmail.com</span>
-                    <span>
-                      <X className="size-4 cursor-pointer" />
-                    </span>
-                  </div>
-                  <Input
-                    type="email"
-                    className="border-none"
-                    placeholder="Type recipients email here"
-                  />
-                </div>
+                <EmailCollent />
               </>
             ) : from.watch("delivery_type") === "online" ? (
               //  ============================= online =====================
               <>
-                <div className="flex items-center gap-4">
-                  <div className="border w-full h-10 flex items-center rounded-md px-3">
-                    <FavIcon name="link" />
-                    <span className="text-primary ml-2 text-sm">
-                      Click generate link button to create a new link...
-                    </span>
-                  </div>
-                  <Button className="w-fit h-10">
-                    <FavIcon name="generate" />
-                    Generate Link
-                  </Button>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  <SingleDateBox from={from} />
+                  <MultipleTime from={from} setState={setState} />
                 </div>
-                {slug == "onetoone" ? (
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <SingleDateBox from={from} />
-                    <MultipleTime from={from} setState={setState} />
-                  </div>
-                ) : (
-                  slug === "group" && (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                      <MultipleDate from={from} setState={setState} />
-                      <InputTime name="event_time" placeholder="select time" />
-                    </div>
-                  )
-                )}
-                <PersonLimit />
-                <TicketQuantity from={from} isOne={isOne} />
+                <PersonLimit read={false} />
+                <TicketQuantity from={from} read={false} />
                 <FromTagInput name="tags" label="Tags" className="py-2" />
               </>
             ) : (
               from.watch("delivery_type") === "ondemand" && (
                 <>
                   <LocationDroupDown />
-                  <div>
-                    {slug == "onetoone" ? (
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <SingleDateBox from={from} />
-                        <InputTime
-                          name="event_time"
-                          placeholder="select time"
-                        />
-                      </div>
-                    ) : (
-                      slug === "group" && (
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                          <SingleDateBox from={from} />
-                          <InputTime
-                            name="event_time"
-                            placeholder="select time"
-                          />
-                        </div>
-                      )
-                    )}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <SingleDateBox from={from} />
+                    <InputTime name="event_time" placeholder="select time" />
                   </div>
                   <FromTagInput name="tags" label="Tags" className="py-2" />
                 </>
@@ -523,79 +437,6 @@ const VideoBannerBox = ({ files, getInputProps }: any) => {
   );
 };
 
-//  ================== time select ========
-
-const MultipleDate = ({ from, setState }: any) => {
-  const val = from.watch("event_date");
-  console.log(val);
-  return (
-    <div className="w-full">
-      <Button
-        onClick={() => setState("isDate", true)}
-        type="button"
-        className="flex h-10 w-full  bg-transparent border text-black font-normal justify-between items-center"
-      >
-        <span>Create date slot</span> <ChevronRight />
-      </Button>
-      {val.length === 0 && (
-        <ErrorInput
-          className="text-xs"
-          error={from?.formState?.errors?.event_date?.message}
-        />
-      )}
-    </div>
-  );
-};
-
-//  --------------------  Location Dropdowns ------------------
-const LocationDroupDown = () => {
-  return (
-    <>
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
-        <FormSelDropdown
-          label="-Country-"
-          name="country"
-          options={[
-            { label: "USA", value: "usa" },
-            { label: "Canada", value: "canada" },
-            { label: "Australia", value: "australia" },
-          ]}
-        />
-
-        <FormSelDropdown
-          label="-Region-"
-          name="region"
-          options={[
-            { label: "California", value: "california" },
-            { label: "Texas", value: "texas" },
-            { label: "Ontario", value: "ontario" },
-          ]}
-        />
-
-        <FormSelDropdown
-          label="-Province-"
-          name="province"
-          options={[
-            { label: "British Columbia", value: "bc" },
-            { label: "Quebec", value: "quebec" },
-            { label: "Victoria", value: "victoria" },
-          ]}
-        />
-
-        <FormSelDropdown
-          label="-City-"
-          name="city"
-          options={[
-            { label: "Los Angeles", value: "la" },
-            { label: "Toronto", value: "toronto" },
-            { label: "Melbourne", value: "melbourne" },
-          ]}
-        />
-      </div>
-    </>
-  );
-};
-
 //  ----------------------single date --------------------
 const SingleDateBox = ({ from }: any) => {
   const val = from.watch("event_date");
@@ -632,139 +473,3 @@ const MultipleTime = ({ from, setState }: any) => {
     </div>
   );
 };
-
-// --------------- person limit ---------------------
-const PersonLimit = ({ isOne }: any) => {
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <div className="h-10 flex items-center justify-between px-2 border rounded-md">
-        <FromInput
-          name="min_person"
-          className="w-[100px] h-10 bg-transparent p-0"
-          type="number"
-          readOnly={isOne}
-        />
-        <span>-minimum person limit-</span>
-      </div>
-      <div className="h-10 flex items-center justify-between px-2 border rounded-md">
-        <FromInput
-          name="max_person"
-          className="w-[100px] h-10 bg-transparent p-0"
-          type="number"
-          readOnly={isOne}
-        />
-        <span>-maximum person limit-</span>
-      </div>
-    </div>
-  );
-};
-
-// -------------- ticket quantity ---------------
-const TicketQuantity = ({ from, isOne }: any) => {
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <div className="h-10 flex items-center justify-between px-2 border rounded-md">
-        <span className="flex items-center">
-          <FavIcon className="size-5" name="tiket" />
-          <span className="ml-1"> Ticket quantity</span>
-        </span>
-        <FromInput
-          name="ticket_quantity"
-          className="w-[100px] h-10 text-end bg-transparent p-0"
-          type="number"
-          placeholder="quantity hare"
-          readOnly={isOne}
-        />
-      </div>
-      <div>
-        <div className="h-10 flex items-center justify-between px-2 border rounded-md">
-          <span className="flex items-center">
-            <FavIcon className="size-5" name="price22" />
-            <span className="ml-1">Ticket Price</span>
-          </span>
-          <FromInput
-            name="price"
-            className="w-[100px] h-10 bg-transparent p-0"
-            type="number"
-            placeholder="price hare"
-            err={false}
-          />
-        </div>
-        <ErrorInput error={from?.formState?.errors?.price?.message} />
-      </div>
-    </div>
-  );
-};
-
-// -----------------Accessibility ---------------
-interface accessibilityProps {
-  selAccbility: string[];
-  setSelAccbility: React.Dispatch<React.SetStateAction<string[]>>;
-}
-const AccessibilityBox = ({
-  selAccbility,
-  setSelAccbility,
-}: accessibilityProps) => {
-  const [accessibility, setAccessibility] = useState(false);
-
-  const handleToggle = (option: string) => {
-    setSelAccbility((prev) =>
-      prev.includes(option)
-        ? prev.filter((item) => item !== option)
-        : [...prev, option]
-    );
-  };
-
-  return (
-    <div>
-      <div className="flex items-center justify-between">
-        <label className="text-lg font-semibold">Accessibilities</label>
-        <div className="flex items-center gap-3">
-          <span className="text-gray-600">No</span>
-          <button
-            onClick={() => setAccessibility(!accessibility)}
-            className={`relative inline-flex cursor-pointer h-6 w-11 items-center rounded-full transition-colors duration-300 ${
-              accessibility ? "bg-primary" : "bg-[#79747E]"
-            }`}
-          >
-            <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ${
-                accessibility ? "translate-x-6" : "translate-x-1"
-              }`}
-            />
-          </button>
-          <span className="text-figma-black">Yes</span>
-        </div>
-      </div>
-
-      {accessibility && (
-        <div className="mt-4 animate-in fade-in slide-in-from-top-2 duration-100">
-          <h5 className="col-span-1 lg:col-span-2 text-primary text-end mb-1 text-sm">
-            Select 1 or more
-          </h5>
-          <div className="overflow-hidden rounded-lg border bg-card p-6">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-              {accessibilityItem.map((option) => (
-                <div key={option} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={option}
-                    checked={selAccbility.includes(option)}
-                    onCheckedChange={() => handleToggle(option)}
-                  />
-                  <label
-                    htmlFor={option}
-                    className="text-sm font-medium leading-none cursor-pointer"
-                  >
-                    {option}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-// ---  Delivery Box --

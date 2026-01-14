@@ -3,12 +3,10 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { CircleAlert } from "lucide-react";
 import { Controller, useFormContext } from "react-hook-form";
-import { TextareaHTMLAttributes } from "react";
+import { InputHTMLAttributes } from "react";
 import { Input } from "@/components/ui";
 
-// Props interface
-interface FromTextAreaProps
-  extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TimeInputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label?: string;
   placeholder?: string;
@@ -23,20 +21,14 @@ export function InputTime({
   className,
   stylelabel,
   ...rest
-}: FromTextAreaProps) {
+}: TimeInputProps) {
   const { control } = useFormContext();
 
   return (
     <Controller
       control={control}
       name={name}
-      render={({
-        field,
-        fieldState: { error },
-      }: {
-        field: any;
-        fieldState: any;
-      }) => (
+      render={({ field, fieldState: { error } }) => (
         <div>
           {label && (
             <h5
@@ -49,22 +41,20 @@ export function InputTime({
             </h5>
           )}
           <div className="relative">
-            <Label htmlFor="time123">
-              <Input
-                className={cn("block h-10 w-full", className)} // Make input visible
-                {...field}
-                {...rest}
-                placeholder={placeholder}
-                type="time"
-                id="time123"
-              />
-            </Label>
+            <Input
+              className={cn("block h-10 w-full", className)}
+              {...field}
+              {...rest}
+              placeholder={placeholder}
+              type="time"
+              id={`time-${name}`}
+            />
           </div>
           {error?.message && (
-            <h3 className="text-sm pt-px text-end text-red-400 flex gap-1 items-center justify-end">
+            <p className="text-sm pt-1 text-red-400 flex gap-1 items-center justify-end">
               {error.message}
               <CircleAlert size={14} />
-            </h3>
+            </p>
           )}
         </div>
       )}

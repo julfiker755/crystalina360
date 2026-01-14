@@ -110,6 +110,28 @@ export default function EventAll() {
     },
   ];
 
+  const eventOptions = [
+    {
+      id: "onetoone",
+      title: "One to One",
+      description:
+        "A private event designed for personal interaction and focused discussion between two individuals.",
+      path: "",
+    },
+    {
+      id: "group",
+      title: "Group",
+      description:
+        "An exclusive gathering with a set number of participants, ensuring closer connections and meaningful engagement.",
+    },
+    {
+      id: "retreat",
+      title: "Retreat",
+      description:
+        "An immersive event. It can only be o line (therefore, it cannot be online or on demand). ",
+    },
+  ];
+
   const handleSubmitEvent = () => {
     router.push(`/operator/events/store/${selectEvent}`);
   };
@@ -132,6 +154,7 @@ export default function EventAll() {
             ))}
           </div>
           <EventButton
+            eventOptions={eventOptions}
             selectEvent={selectEvent}
             setSelectEvent={setSelectEvent}
             handleSubmitEvent={handleSubmitEvent}
