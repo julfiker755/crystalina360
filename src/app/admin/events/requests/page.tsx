@@ -1,7 +1,12 @@
 "use client";
+import {
+  useApproveAllMutation,
+  useApproveEventMutation,
+  useGetPandingEventQuery,
+} from "@/redux/api/admin/eventsApi";
 import Avatars from "@/components/reuseable/avater";
 import { BackBtn } from "@/components/reuseable/back-btn";
-import { DeleteBtn, PreviewBtn } from "@/components/reuseable/btn";
+import { PreviewBtn } from "@/components/reuseable/btn";
 import { CustomTable } from "@/components/reuseable/custom-table";
 import Modal from "@/components/reuseable/modal";
 import { Pagination } from "@/components/reuseable/pagination";
@@ -10,109 +15,87 @@ import { TableNoItem } from "@/components/reuseable/table-no-item";
 import { TableSkeleton } from "@/components/reuseable/table-skeleton";
 import { Button, TableCell, TableRow } from "@/components/ui";
 import SvgBox from "@/components/view/oparator/reuse/svg-box";
-import { dummyJson } from "@/components/view/user/dummy-json";
 import { useGlobalState } from "@/hooks";
 import FavIcon from "@/icon/favIcon";
-import { cn, RandomImg } from "@/lib";
+import { cn, event_t, helpers } from "@/lib";
 import useConfirmation from "@/provider/confirmation";
 import useSuccessDialog from "@/provider/success";
-import { Check } from "lucide-react";
+import { Calendar, Check } from "lucide-react";
+import { useDebounce } from "use-debounce";
+import NavTitle from "@/components/reuseable/nav-title";
+import sonner from "@/components/reuseable/sonner";
+import { useState } from "react";
 
-const initialState = { isPreview: false };
+const initialState = {
+  isPreview: false,
+  page: 1,
+  search: "",
+};
 
 export default function EventRequests() {
   const { confirm } = useConfirmation();
   const { open } = useSuccessDialog();
   const [global, updateGlobal] = useGlobalState(initialState);
+  const [value] = useDebounce(global.search, 1000);
+  const [details, setIsDetails] = useState<any>({});
+  const { data: pendingEvents, isLoading } = useGetPandingEventQuery({
+    page: global.page,
+    ...(value && { search: value }),
+  });
+  const [approveEvent] = useApproveEventMutation();
+  const [approveAll] = useApproveAllMutation();
 
   const headers = ["Operator name", "Email", "Title", "Date", "Time", "Action"];
-  const isLoading = false;
 
-  const data = [
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      eventTitle: "Event title goes here",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      eventTitle: "Event title goes here",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      eventTitle: "Event title goes here",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      eventTitle: "Event title goes here",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      eventTitle: "Event title goes here",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      eventTitle: "Event title goes here",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      eventTitle: "Event title goes here",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      eventTitle: "Event title goes here",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      eventTitle: "Event title goes here",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-    },
-    {
-      name: "Elizabeth Olson",
-      email: "example@gmail.com",
-      eventTitle: "Event title goes here",
-      date: "5 Sep, 2025",
-      time: "10:00 AM",
-    },
-  ];
-  const handleDelete = async (id: any) => {
-    const confirmed = await confirm({
-      subTitle: "Decline Event",
-      title: "You are going to decline this event",
-      description:
-        "After declining, this event will no longer available in your system",
-    });
-    if (confirmed) {
-      console.log(id);
-    }
-  };
+  // const handleDelete = async (id: any) => {
+  //   const confirmed = await confirm({
+  //     subTitle: "Decline Event",
+  //     title: "You are going to decline this event",
+  //     description:
+  //       "After declining, this event will no longer available in your system",
+  //   });
+  //   if (confirmed) {
+  //     console.log(id);
+  //   }
+  // };
+
+  let elementShow: any;
+
+  if (
+    details?.event_type === event_t.onetoone ||
+    details?.event_type == event_t.retreat
+  ) {
+    elementShow = (
+      <div className="flex items-center gap-2 text-muted-foreground">
+        <Calendar className="size-5 text-primary" />
+        <div className="flex flex-col">
+          <span className="text-base text-figma-black">Date</span>
+          <span className="text-base text-figma-black font-medium">
+            {details?.event_date?.[0]}
+          </span>
+        </div>
+      </div>
+    );
+  } else if (details?.event_type === event_t.group) {
+    elementShow = (
+      <div className="flex items-center gap-2 text-muted-foreground">
+        <FavIcon className="size-5" name="ongoing_events" />
+        <div className="flex flex-col">
+          <span className="text-base text-figma-black">Time</span>
+          <span className="text-base text-figma-black font-medium">
+            {details.event_time?.[0]}
+          </span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
+      <NavTitle
+        title="Manage events"
+        subTitle="Manage all of the events from this section"
+      />
       <SvgBox>
         <div className="flex items-center space-x-2">
           <BackBtn className="bg-white rounded-md" />
@@ -120,8 +103,20 @@ export default function EventRequests() {
         </div>
       </SvgBox>
       <div className="mt-5 flex items-center justify-between">
-        <SearchBox onChange={() => {}} />
-        <Button size="lg" className="bg-figma-green rounded-xl">
+        <SearchBox onChange={(v: any) => updateGlobal("search", v)} />
+        <Button
+          onClick={async () => {
+            const res = await approveAll({}).unwrap();
+            if (res.status) {
+              open({
+                title: "Approved successfully",
+                description: "All events approved successfully",
+              });
+            }
+          }}
+          size="lg"
+          className="bg-figma-green rounded-xl"
+        >
           <Check />
           Approve all
         </Button>
@@ -130,58 +125,66 @@ export default function EventRequests() {
         <CustomTable
           headers={headers}
           pagination={
-            <ul className="flex items-center flex-wrap justify-between py-3">
-              <li className="flex">
-                Total:
-                <sup className="font-medium text-2xl relative -top-3 px-2 ">
-                  500
-                </sup>
-                Requests
-              </li>
-              <li>
-                <Pagination
-                  onPageChange={(v: any) => console.log(v)}
-                  {...dummyJson.meta}
-                />
-              </li>
-            </ul>
+            pendingEvents?.meta?.total > 10 ? (
+              <ul className="flex items-center flex-wrap justify-between py-3">
+                <li className="flex">
+                  Total:
+                  <sup className="font-medium text-2xl relative -top-3 px-2 ">
+                    {pendingEvents?.meta?.total}
+                  </sup>
+                  Requests
+                </li>
+                <li>
+                  <Pagination
+                    onPageChange={(v: any) => updateGlobal("page", v)}
+                    {...pendingEvents?.meta}
+                  />
+                </li>
+              </ul>
+            ) : null
           }
         >
           {isLoading ? (
             <TableSkeleton colSpan={headers?.length} tdStyle="!pl-2" />
-          ) : data?.length > 0 ? (
-            data?.map((item, index) => (
+          ) : pendingEvents?.data?.length > 0 ? (
+            pendingEvents?.data?.map((item: any, index: any) => (
               <TableRow key={index} className="border">
                 <TableCell className="relative">
                   <div className="flex items-center gap-3">
                     <Avatars
-                      src={""}
-                      fallback={item.name}
-                      alt="profile"
+                      src={item?.organizer?.img}
+                      fallback={item?.organizer?.name}
+                      alt="profile ++++ organizer name"
                       fallbackStyle="aStyle"
                     />
-                    <span>{item.name}</span>
+                    <span>{item?.organizer?.name}</span>
                   </div>
                 </TableCell>
-                <TableCell>{item.email}</TableCell>
-                <TableCell>{item.eventTitle}</TableCell>
-                <TableCell>{item.date}</TableCell>
-                <TableCell>{item.time}</TableCell>
+                <TableCell>{item?.organizer?.email}</TableCell>
+                <TableCell>{item.event_title}</TableCell>
+                <TableCell>{helpers.formatDate(item?.created_at)}</TableCell>
+                <TableCell>{helpers.formatTime(item?.created_at)}</TableCell>
                 <TableCell>
                   <ul className="flex gap-2">
                     <li>
                       <PreviewBtn
-                        onClick={() => updateGlobal("isPreview", true)}
+                        onClick={() => {
+                          updateGlobal("isPreview", true);
+                          setIsDetails(item);
+                        }}
                       />
                     </li>
                     <li>
                       <div
-                        onClick={() => {
-                          open({
-                            title: "Event approved successfully",
-                            description:
-                              "Now users can find this event on your system",
-                          });
+                        onClick={async () => {
+                          const res = await approveEvent(item?.id).unwrap();
+                          if (res.status) {
+                            sonner.success(
+                              "Approved successfully",
+                              "The event has been approved successfully",
+                              "bottom-right"
+                            );
+                          }
                         }}
                         className="bg-figma-delete rounded-md grid place-items-center  size-10"
                       >
@@ -191,9 +194,9 @@ export default function EventRequests() {
                         />
                       </div>
                     </li>
-                    <li>
+                    {/* <li>
                       <DeleteBtn onClick={() => handleDelete("4343")} />
-                    </li>
+                    </li> */}
                   </ul>
                 </TableCell>
               </TableRow>
@@ -201,7 +204,7 @@ export default function EventRequests() {
           ) : (
             <TableNoItem
               colSpan={headers?.length}
-              title="No users are available at the moment"
+              title="No request are available at the moment"
               tdStyle="!bg-background"
             />
           )}
@@ -219,7 +222,7 @@ export default function EventRequests() {
           {/* Event Image */}
           <div className="relative h-60 rounded-md bg-muted overflow-hidden">
             <img
-              src={RandomImg()}
+              src={details?.img || "/not.png"}
               alt={"title"}
               className="w-full h-full object-cover"
             />
@@ -228,43 +231,40 @@ export default function EventRequests() {
           <div className="py-3 space-y-1">
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-semibold  text-foreground">
-                Event title goes here
+                {details?.event_title}
               </h3>
             </div>
 
             {/* Event Description */}
             <p className="text-muted-foreground line-clamp-2">
-              Lorem ipsum dolor sit amet consectetur. Dignissim donec nunc
-              tellus bibendum neque vel ut vulputate id. Aliquet quis enim
-              tristique dictumst. Odio nec semper ornare maecenas eget diam
-              tellus enim id. Mattis erat a dignissim mauris velit aliquam
-              nulla. Auctor vestibulum id et risus in. Facilisi libero vitae
-              neque feugiat volutpat risus eget. Vehicula nec morbi risus
-              sodales tempor. Nibh sem diam dui gravida felis eu molestie
-              euismod. In quisque viverra nisi facilisi tellus.
+              {details?.description}
             </p>
             <div className="space-y-3 py-2">
               <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-                <ShowBox icon="events" name="Event type" text="Group" />
+                <ShowBox
+                  icon="events"
+                  name="Event type"
+                  text={details?.event_type}
+                />
                 <ShowBox
                   icon="delivery"
                   name="Delivery mode"
-                  text="Offline (In-person)"
+                  text={details?.delivery_type}
                 />
               </div>
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 <ShowBox
                   icon="location"
                   name="Location"
-                  text="Event location goes here"
+                  text={`${details?.city}, ${details?.province}, ${details?.region}, ${details?.country}`}
                 />
-                <ShowBox icon="tiket" name="Ticket sold" text="153 / 300" />
+                <ShowBox
+                  icon="tiket"
+                  name="Ticket sold"
+                  text={details?.ticket_quantity}
+                />
               </div>
-              <ShowBox
-                icon="ongoing_events"
-                name="Date & Time"
-                text="10 Sep, 2025 at 05:00 PM - 09:00 PM"
-              />
+              {elementShow}
             </div>
           </div>
         </div>

@@ -1,7 +1,6 @@
-import { Badge, Button } from "@/components/ui";
 import FavIcon from "@/icon/favIcon";
-import { helpers } from "@/lib";
-import { getDeliveryType } from "@/lib/function-utils";
+import { event_t } from "@/lib";
+import { Calendar } from "lucide-react";
 
 interface opevtcdProps {
   children?: React.ReactNode;
@@ -10,18 +9,38 @@ interface opevtcdProps {
 
 export default function OpEvtCd({ item, children }: opevtcdProps) {
   const {
-    title,
-    status,
-    mode,
-    description,
-    location,
-    dateTime,
-    price,
-    attendees,
-    img,
+    event_type,
     event_title,
+    img,
+    status,
     event_description,
+    ticket_quantity,
+    price,
+    event_date,
+    event_time,
+    city,
+    province,
+    region,
+    country,
   } = item || {};
+
+  let elementShow: any;
+
+  if (event_type === event_t.onetoone || event_type == event_t.retreat) {
+    elementShow = (
+      <div className="flex  gap-2  items-center text-muted-foreground">
+        <Calendar className="size-5 text-primary" />
+        <span className="text-base text-primary">{event_date?.[0]}</span>
+      </div>
+    );
+  } else if (event_type === event_t.group) {
+    elementShow = (
+      <div className="flex  gap-2  items-center text-muted-foreground">
+        <FavIcon className="size-5" name="ongoing_events" />
+        <span className="text-base text-primary">{event_time?.[0]}</span>
+      </div>
+    );
+  }
 
   return (
     <div className="overflow-hidden   transition-shadow bg-figma-gray rounded-lg p-3">
@@ -52,29 +71,24 @@ export default function OpEvtCd({ item, children }: opevtcdProps) {
             {event_title}
           </h3>
         </div>
-
-        {/* Event Description */}
         <p className="text-muted-foreground line-clamp-2">
           {event_description}
         </p>
-
-        {/* Event Details */}
         <div className="space-y-1 text-sm mt-5">
           <div className="[&_div]:flex  [&_div]:gap-2  [&_div]:items-center [&_div]:text-muted-foreground flex flex-col lg:flex-row lg:justify-between">
             <div>
               <FavIcon className="size-5" name="location" />
-              <span className="text-base text-primary">{location}</span>
+              <span className="text-base text-primary">
+                {city}, {province}, {region}, {country}
+              </span>
             </div>
             <div className="flex  gap-2  items-center text-muted-foreground">
               <FavIcon className="size-5" name="tiket" />
-              <span className="text-base text-primary">{attendees}</span>
+              <span className="text-base text-primary">{ticket_quantity}</span>
             </div>
           </div>
           <div className="[&_div]:flex  [&_div]:gap-2  [&_div]:items-center [&_div]:text-muted-foreground flex flex-col lg:flex-row lg:justify-between">
-            <div className="flex  gap-2  items-center text-muted-foreground">
-              <FavIcon className="size-5" name="ongoing_events" />
-              <span className="text-base text-primary">{dateTime}</span>
-            </div>
+            {elementShow}
             <div className="flex  gap-2  items-center text-muted-foreground">
               <FavIcon className="size-5" name="price22" />
               <span className="text-base text-primary">{price}</span>

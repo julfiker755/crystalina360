@@ -30,10 +30,12 @@ export default function EventCard({ item }: any) {
       </div>
     );
   } else if (event_type === event_t.group) {
-    <div className="flex  gap-2  items-center text-muted-foreground">
-      <FavIcon className="size-5" name="ongoing_events" />
-      <span className="text-base text-primary">{event_time?.[0]}</span>
-    </div>;
+    elementShow = (
+      <div className="flex  gap-2  items-center text-muted-foreground">
+        <FavIcon className="size-5" name="ongoing_events" />
+        <span className="text-base text-primary">{event_time?.[0]}</span>
+      </div>
+    );
   }
   return (
     <div className="overflow-hidden  transition-shadow bg-figma-gray rounded-lg p-3">
@@ -47,7 +49,7 @@ export default function EventCard({ item }: any) {
 
       <div className="py-3 space-y-1">
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold  text-foreground">
+          <h3 className="text-lg font-semibold truncate  text-foreground">
             {event_title}
           </h3>
           <Badge variant={helpers.lowerCase(status) as any}>

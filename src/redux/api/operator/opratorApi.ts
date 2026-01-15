@@ -31,7 +31,7 @@ export const opratorsApi = baseApi.injectEndpoints({
         ContentType: "multipart/form-data",
         data,
       }),
-      invalidatesTags: [tagTypes.o_events],
+      invalidatesTags: [tagTypes.o_events, tagTypes.a_admin_events],
     }),
   }),
 });

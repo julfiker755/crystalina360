@@ -1,14 +1,13 @@
 "use client";
-import EventFrom from "@/components/reuseable/event-from";
+import RetreatStore from "@/components/event-store/retreat";
+import NavTitle from "@/components/reuseable/nav-title";
 import SvgBox from "@/components/view/oparator/reuse/svg-box";
 import AlertDiscard from "@/components/view/oparator/simple/alert-discard";
 import { Button } from "@/components/ui";
 import { X } from "lucide-react";
-import NavTitle from "@/components/reuseable/nav-title";
+import React from "react";
 
-export default function EventStore() {
-  const handleFormSubmit = () => {};
-
+export default function Retreat() {
   return (
     <div>
       <NavTitle
@@ -29,7 +28,7 @@ export default function EventStore() {
         </div>
       </SvgBox>
 
-      <EventFrom handleFormSubmit={handleFormSubmit} />
+      <RetreatStore />
     </div>
   );
 }

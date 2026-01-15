@@ -15,19 +15,42 @@ import {
 } from "@/components/ui";
 import FavIcon from "@/icon/favIcon";
 import Link from "next/link";
+import { useAdminEventCountQuery } from "@/redux/api/admin/eventsApi";
+
+const eventOptions = [
+  {
+    id: "onetoone",
+    title: "One to One",
+    description:
+      "A private event designed for personal interaction and focused discussion between two individuals.",
+    path: "/admin/events/store/one-to-one",
+  },
+  {
+    id: "group",
+    title: "Group",
+    description:
+      "An exclusive gathering with a set number of participants, ensuring closer connections and meaningful engagement.",
+    path: "/admin/events/store/group",
+  },
+  {
+    id: "retreat",
+    title: "Retreat",
+    description:
+      "An immersive event. It can only be o line (therefore, it cannot be online or on demand). ",
+    path: "/admin/events/store/retreat",
+  },
+];
 
 function PricingCloneLayout({ children }: childrenProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
   const defaultQuery = "my-events";
   const queryType = searchParams.get("type") || defaultQuery;
 
   const [selectEvent, setSelectEvent] = useState("");
   const [activeTab, setActiveTab] = useState(queryType);
 
-  // Ensure URL always has the query and sync tab with URL
   useEffect(() => {
     const currentType = searchParams.get("type");
     if (!currentType) {
@@ -40,10 +63,6 @@ function PricingCloneLayout({ children }: childrenProps) {
   const handleTabChange = (value: string) => {
     setActiveTab(value);
     router.push(`${pathname}?type=${value}`);
-  };
-
-  const handleSubmitEvent = () => {
-    if (selectEvent) router.push(`/admin/events/store/${selectEvent}`);
   };
 
   const sidebarNavItems = [
@@ -66,6 +85,10 @@ function PricingCloneLayout({ children }: childrenProps) {
       to: `/admin/events/manage/retreat?type=${activeTab}`,
     },
   ];
+
+  const { data: eventData } = useAdminEventCountQuery({});
+  const { totalEvents, totalRequestedEvents, totalOperatorEvents } =
+    eventData?.data || {};
 
   return (
     <div>
@@ -103,12 +126,12 @@ function PricingCloneLayout({ children }: childrenProps) {
                 />
                 <div className="h-11 flex rounded-full items-center justify-between border px-3">
                   <span>Total event:</span>
-                  <span>4</span>
+                  <span>{totalEvents}</span>
                 </div>
                 <EventButton
                   selectEvent={selectEvent}
                   setSelectEvent={setSelectEvent}
-                  handleSubmitEvent={handleSubmitEvent}
+                  eventOptions={eventOptions}
                   className="w-full rounded-full"
                   icon={true}
                 />
@@ -124,7 +147,7 @@ function PricingCloneLayout({ children }: childrenProps) {
                 />
                 <div className="h-11 flex rounded-full items-center justify-between border px-3">
                   <span>Total event:</span>
-                  <span>4</span>
+                  <span>{totalOperatorEvents}</span>
                 </div>
                 <Link href="/admin/events/requests">
                   <Button
@@ -135,7 +158,7 @@ function PricingCloneLayout({ children }: childrenProps) {
                       <FavIcon className="size-3" name="question" />
                       <span className="ml-1">Requests</span>
                     </span>
-                    <span>20</span>
+                    <span>{totalRequestedEvents}</span>
                   </Button>
                 </Link>
               </div>

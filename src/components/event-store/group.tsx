@@ -83,7 +83,7 @@ export default function GroupStore() {
   const handleSubmit = async (values: FieldValues) => {
     const { ticket_quantity, max_person, min_person, ...rest } = values || {};
     const data = helpers.fromData({
-      event_type: "retreat",
+      event_type: "group",
       ticket_quantity: "2",
       min_person: "1",
       max_person: "2",

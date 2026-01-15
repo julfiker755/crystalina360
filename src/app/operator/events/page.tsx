@@ -1,25 +1,22 @@
 "use client";
 import { eventItem } from "@/components/dummy-data";
 import EventButton from "@/components/reuseable/event-button/page";
-import Modal from "@/components/reuseable/modal";
 import { Pagination } from "@/components/reuseable/pagination";
+import { Repeat } from "@/components/reuseable/repeat";
 import { NoItemData } from "@/components/reuseable/table-no-item";
-import { Button, ButtonGroup, Label } from "@/components/ui";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Button, ButtonGroup, Skeleton } from "@/components/ui";
 import EventCard from "@/components/view/oparator/reuse/event-card";
 import SvgBox from "@/components/view/oparator/reuse/svg-box";
 import FavIcon from "@/icon/favIcon";
 import { useGetEventsQuery } from "@/redux/api/operator/opratorApi";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function EventAll() {
-  const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>("");
   const [selectEvent, setSelectEvent] = useState("");
   const [page, setPage] = useState(1);
-  const { data: events } = useGetEventsQuery({
+  const { data: events, isLoading } = useGetEventsQuery({
     page,
     search: activeButton,
   });
@@ -118,40 +115,54 @@ export default function EventAll() {
         </ButtonGroup>
       </div>
       <div className="space-y-3">
-        {events?.data?.data?.length === 0 && (
-          <NoItemData title="No Events Items Available at the Moment" />
-        )}
-        {ongoingItem?.length > 0 && (
-          <div>
-            <h2 className="text-2xl text-black">Ongoing Events</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {ongoingItem?.map((item: any, idx: any) => (
-                <Link key={idx} href={`/operator/events/3`}>
-                  <EventCard item={item} />
-                </Link>
-              ))}
-            </div>
+        {isLoading ? (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <Repeat count={10}>
+              <Skeleton className="w-full h-[420px]" />
+            </Repeat>
           </div>
-        )}
+        ) : (
+          <>
+            {events?.data?.data?.length === 0 && (
+              <NoItemData title="No Events Items Available at the Moment" />
+            )}
+            {ongoingItem?.length > 0 && (
+              <div>
+                <h2 className="text-2xl text-black">Ongoing Events</h2>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {ongoingItem?.map((item: any, idx: any) => (
+                    <Link key={idx} href={`/operator/events/3`}>
+                      <EventCard item={item} />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
 
-        {upcommingItem?.length > 0 && (
-          <div>
-            <h2 className="text-2xl text-black">Upcoming Events</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {upcommingItem.map((item: any, idx: any) => (
-                <Link key={idx} href={`/operator/events/3`}>
-                  <EventCard item={item} />
-                </Link>
-              ))}
-            </div>
-          </div>
+            {upcommingItem?.length > 0 && (
+              <div>
+                <h2 className="text-2xl text-black">Upcoming Events</h2>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {upcommingItem.map((item: any, idx: any) => (
+                    <Link key={idx} href={`/operator/events/3`}>
+                      <EventCard item={item} />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
 
-      <Pagination
-        onPageChange={(v: any) => setPage(v)}
-        {...events?.data?.meta}
-      />
+      {events?.data?.data?.length >= 10 && (
+        <div className="flex justify-center mt-10">
+          <Pagination
+            onPageChange={(v: any) => setPage(v)}
+            {...events?.data?.meta}
+          />
+        </div>
+      )}
     </div>
   );
 }
