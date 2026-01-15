@@ -131,7 +131,7 @@ export default function EventAll() {
                 <h2 className="text-2xl text-black">Ongoing Events</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {ongoingItem?.map((item: any, idx: any) => (
-                    <Link key={idx} href={`/operator/events/3`}>
+                    <Link key={idx} href={`/operator/events/${item.id}`}>
                       <EventCard item={item} />
                     </Link>
                   ))}
@@ -144,7 +144,7 @@ export default function EventAll() {
                 <h2 className="text-2xl text-black">Upcoming Events</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {upcommingItem.map((item: any, idx: any) => (
-                    <Link key={idx} href={`/operator/events/3`}>
+                    <Link key={idx} href={`/operator/events/${item?.id}`}>
                       <EventCard item={item} />
                     </Link>
                   ))}

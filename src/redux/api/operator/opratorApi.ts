@@ -33,7 +33,18 @@ export const opratorsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.o_events, tagTypes.a_admin_events],
     }),
+    singleEvents: build.query({
+      query: (id) => ({
+        url: `/events/${id}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.o_single_events],
+    }),
   }),
 });
 
-export const { useGetEventsQuery, useStoreEventsMutation } = opratorsApi;
+export const {
+  useGetEventsQuery,
+  useStoreEventsMutation,
+  useSingleEventsQuery,
+} = opratorsApi;

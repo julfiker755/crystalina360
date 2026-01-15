@@ -5,14 +5,14 @@ import { TableNoItem } from "@/components/reuseable/table-no-item";
 import { TableSkeleton } from "@/components/reuseable/table-skeleton";
 import { Badge, TableCell, TableRow } from "@/components/ui";
 import TicketChart from "@/components/view/oparator/simple/ticket-chart";
-import FavIcon from "@/icon/favIcon";
-import { cn, RandomImg } from "@/lib";
+import { useSingleEventsQuery } from "@/redux/api/operator/opratorApi";
 import { useParams } from "next/navigation";
+import FavIcon from "@/icon/favIcon";
+import { cn, helpers } from "@/lib";
 
 export default function EvnetSingle() {
   const { id } = useParams();
   const headers = ["Attendee name", "Ticket booked", "Booking date", "Price"];
-  const isLoading = false;
 
   const data = [
     {
@@ -40,15 +40,41 @@ export default function EvnetSingle() {
       image: "/images/user1.png",
     },
   ];
+  const { data: events_all, isLoading } = useSingleEventsQuery(id);
+  const { event, attendee_list } = events_all?.data || {};
+  const {
+    img,
+    event_title,
+    event_description,
+    event_type,
+    delivery_type,
+    status,
+    city,
+    province,
+    region,
+    country,
+    ticket_quantity,
+    price,
+    revenue,
+    ticket_sold_stats,
+  } = event || {};
+
+  console.log(attendee_list);
+
+  console.log(
+    ticket_sold_stats?.map((item: any) => ({
+      id: item?.day,
+      count: item?.total,
+    }))
+  );
 
   return (
     <div className="container py-10">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-6">
         <div className="overflow-hidden col-span-1 lg:col-span-2 transition-shadow  rounded-lg p-3">
-          {/* Event Image */}
           <div className="relative h-60 rounded-md bg-muted overflow-hidden">
             <img
-              src={RandomImg()}
+              src={img || "/not.png"}
               alt={"title"}
               className="w-full h-full object-cover"
             />
@@ -57,35 +83,32 @@ export default function EvnetSingle() {
           <div className="py-3 space-y-1">
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-semibold  text-foreground">
-                Event title goes here
+                {event_title}
               </h3>
-              <Badge variant={"upcoming"}>Upcoming</Badge>
+              <Badge variant={helpers.lowerCase(status) as any}>
+                {helpers.capitalize(status)}
+              </Badge>
             </div>
-
-            {/* Event Description */}
             <p className="text-muted-foreground line-clamp-2">
-              Lorem ipsum dolor sit amet consectetur. Dignissim donec nunc
-              tellus bibendum neque vel ut vulputate id. Aliquet quis enim
-              tristique dictumst. Odio nec semper ornare maecenas eget diam
-              tellus enim id. Mattis erat a dignissim mauris velit aliquam
-              nulla. Auctor vestibulum id et risus in. Facilisi libero vitae
-              neque feugiat volutpat risus eget. Vehicula nec morbi risus
-              sodales tempor. Nibh sem diam dui gravida felis eu molestie
-              euismod. In quisque viverra nisi facilisi tellus.
+              {event_description}
             </p>
             <div className="space-y-3 py-2">
               <div className="grid grid-cols-1 lg:grid-cols-2">
-                <ShowBox icon="events" name="Event type" text="Group" />
+                <ShowBox
+                  icon="events"
+                  name="Event type"
+                  text={helpers.capitalize(event_type)}
+                />
                 <ShowBox
                   icon="delivery"
                   name="Delivery mode"
-                  text="Offline (In-person)"
+                  text={helpers.capitalize(delivery_type)}
                 />
               </div>
               <ShowBox
                 icon="location"
                 name="Location"
-                text="Event location goes here"
+                text={`${city},${province},${region},${country}`}
               />
               <ShowBox
                 icon="ongoing_events"
@@ -93,13 +116,17 @@ export default function EvnetSingle() {
                 text="10 Sep, 2025 at 05:00 PM - 09:00 PM"
               />
               <div className="grid grid-cols-1 lg:grid-cols-2">
-                <ShowBox icon="tiket" name="Ticket sold" text="153 / 300" />
-                <ShowBox icon="price22" name="Ticket price" text="$15.00" />
+                <ShowBox
+                  icon="tiket"
+                  name="Ticket sold"
+                  text={ticket_quantity}
+                />
+                <ShowBox icon="price22" name="Ticket price" text={price} />
               </div>
               <ShowBox
                 icon="price22"
                 name="Total earned from this event"
-                text="$2,295"
+                text={revenue}
                 className="g-figma-delete px-2 py-2 rounded-md"
               />
             </div>
@@ -110,7 +137,13 @@ export default function EvnetSingle() {
             <h1 className="text-2xl font-semibold text-left text-figma-black mb-3">
               Ticket Sold Statistics
             </h1>
-            <TicketChart className="h-[300px]" />
+            <TicketChart
+              data={ticket_sold_stats?.map((item: any) => ({
+                id: item?.day,
+                count: item?.total,
+              }))}
+              className="h-[300px]"
+            />
           </div>
           <h4 className="text-figma-black text-xl font-semibold relative mt-10">
             Attendee List
