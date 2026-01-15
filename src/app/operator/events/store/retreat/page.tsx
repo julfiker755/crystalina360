@@ -1,14 +1,12 @@
 "use client";
-import EventFrom from "@/components/reuseable/event-from";
+import RetreatStore from "@/components/event-store/retreat";
 import { Button } from "@/components/ui";
 import SvgBox from "@/components/view/oparator/reuse/svg-box";
 import AlertDiscard from "@/components/view/oparator/simple/alert-discard";
 import { X } from "lucide-react";
-import { useParams } from "next/navigation";
+import React from "react";
 
-export default function EventStore() {
-  const handleFormSubmit = () => {};
-
+export default function Retreat() {
   return (
     <div className="container py-10">
       <SvgBox>
@@ -25,7 +23,7 @@ export default function EventStore() {
         </div>
       </SvgBox>
 
-      <EventFrom handleFormSubmit={handleFormSubmit} />
+      <RetreatStore />
     </div>
   );
 }

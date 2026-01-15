@@ -4,11 +4,12 @@ import { Button, Label } from "@/components/ui";
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib";
+import { useRouter } from "next/navigation";
 
 interface eventButtonProps {
   selectEvent: any;
   setSelectEvent: any;
-  handleSubmitEvent: any;
+  handleSubmitEvent?: any;
   icon?: boolean;
   className?: string;
   eventOptions?: any;
@@ -17,12 +18,13 @@ interface eventButtonProps {
 export default function EventButton({
   selectEvent,
   setSelectEvent,
-  handleSubmitEvent,
   icon = false,
   className,
   eventOptions,
 }: eventButtonProps) {
   const [isStore, setIsStore] = useState(false);
+  const [isPath, setIsPath] = useState("");
+  const router = useRouter();
   return (
     <div className="z-10">
       <Button
@@ -45,7 +47,13 @@ export default function EventButton({
           onValueChange={(v) => setSelectEvent(v)}
         >
           {eventOptions.map((option: any) => (
-            <div key={option.id} className="border rounded-lg">
+            <div
+              key={option.id}
+              onClick={() => {
+                setIsPath(option.path);
+              }}
+              className="border rounded-lg"
+            >
               <div className="flex items-center px-2 py-4 gap-4">
                 <RadioGroupItem
                   value={option.id}
@@ -71,7 +79,7 @@ export default function EventButton({
           className="w-full mt-4"
           onClick={() => {
             setIsStore(false);
-            handleSubmitEvent();
+            router.push(isPath);
           }}
           disabled={selectEvent === ""}
         >

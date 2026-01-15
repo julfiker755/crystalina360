@@ -18,6 +18,7 @@ export enum tagTypes {
   a_operator = "a_operator",
   a_slg_opertor = "a_slg_opertor",
   a_pricing = "a_pricing",
+  o_events = "o_events",
 }
 
 export const tagTypesList = [
@@ -40,4 +41,5 @@ export const tagTypesList = [
   tagTypes.a_operator,
   tagTypes.a_slg_opertor,
   tagTypes.a_pricing,
+  tagTypes.o_events,
 ];

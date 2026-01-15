@@ -9,18 +9,17 @@ import { Button, Checkbox, Label } from "@/components/ui";
 import { disciplineItem } from "@/components/view/oparator/dummy-json";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { FieldValues, useForm } from "react-hook-form";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Form from "@/components/reuseable/from";
 import Modal from "@/components/reuseable/modal";
 import { useModalState } from "@/hooks";
 import FavIcon from "@/icon/favIcon";
-import { helpers } from "@/lib";
+import { delivary_t, helpers } from "@/lib";
 import { useEffect, useState } from "react";
 import { UploadBtn } from "@/components/reuseable/btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  delivary,
   durationItem,
   getSchema2,
   getValuesGroup,
@@ -34,6 +33,9 @@ import { LocationDroupDown } from "./element/location";
 import { AccessibilityBox } from "./element/accessibility";
 import TicketQuantity from "./element/ticket-quantity";
 import EmailCollent from "./element/email-collect";
+import { useStoreEventsMutation } from "@/redux/api/operator/opratorApi";
+import sonner from "../reuseable/sonner";
+import { useRouter } from "next/navigation";
 
 const initialState = {
   holistic: false,
@@ -48,7 +50,7 @@ export default function GroupStore() {
   const [isDelivery, setIsDelivery] = useState<any>("offline");
   const [selectDate, setSelectDate] = useState<any>([]);
 
-  const defaultValues = getValuesGroup(isDelivery, "200") as any;
+  const defaultValues = getValuesGroup(isDelivery, "2") as any;
   const defaultSchema = getSchema2(isDelivery) as any;
 
   const from = useForm({
@@ -56,11 +58,9 @@ export default function GroupStore() {
     defaultValues: defaultValues,
     mode: "onChange",
   });
-
-  // accept: "video/*",
-  //   multiple: false
+  const router = useRouter();
   const get = (v: any) => from.watch(v);
-  const delivaryType = get("delivery_type") == delivary.ondemand;
+  const delivaryType = get("delivery_type") == delivary_t.ondemand;
   const [{ files }, { getInputProps, clearFiles }] = useFileUpload({
     accept: delivaryType ? "video/*" : "image/*",
   });
@@ -69,19 +69,40 @@ export default function GroupStore() {
     from.setValue("img", files[0]?.file);
   }, [files]);
 
-  const resetFrom = () => {
-    from.reset();
+  const resetFrom = (deliveryType: string) => {
+    const values = getValuesGroup(deliveryType, "2") as any;
+    from.reset(values);
     setSelAccbility([]);
     setSelectDate([]);
-    setIsDelivery("offline");
+    setIsDelivery(deliveryType);
     clearFiles();
   };
 
+  const [storeEvents, { isLoading }] = useStoreEventsMutation();
+
   const handleSubmit = async (values: FieldValues) => {
-    const data = {
-      //   event_type: isOne,
-    };
-    console.log(values);
+    const { ticket_quantity, max_person, min_person, ...rest } = values || {};
+    const data = helpers.fromData({
+      event_type: "retreat",
+      ticket_quantity: "2",
+      min_person: "1",
+      max_person: "2",
+      ...rest,
+    });
+    try {
+      const res = await storeEvents(data).unwrap();
+      if (res.status) {
+        resetFrom(get("delivery_type"));
+        router.back();
+        sonner.success(
+          "Event Added Successfully",
+          "Your event has been added successfully.",
+          "bottom-right"
+        );
+      }
+    } catch (err: any) {
+      sonner.error("Error", err.message, "bottom-right");
+    }
   };
 
   const toggleHolistic = (value: any) => {
@@ -134,8 +155,7 @@ export default function GroupStore() {
                   <Button
                     key={item.value}
                     onClick={() => {
-                      resetFrom();
-                      setIsDelivery(item.value);
+                      resetFrom(item.value);
                       from.setValue("delivery_type", item.value);
                     }}
                     type="button"
@@ -238,7 +258,7 @@ export default function GroupStore() {
               className="min-h-30"
             />
             {/*  type  ------------ */}
-            {get("delivery_type") === delivary.offline ? (
+            {get("delivery_type") === delivary_t.offline ? (
               //  ===================== offline ==========================
               <>
                 <LocationDroupDown />
@@ -286,7 +306,9 @@ export default function GroupStore() {
             )}
 
             {/* Submit Button */}
-            <Button className="w-full">Submit</Button>
+            <Button disabled={isLoading} className="w-full">
+              Submit
+            </Button>
           </div>
         </div>
       </Form>

@@ -1,112 +1,44 @@
 "use client";
+import { eventItem } from "@/components/dummy-data";
 import EventButton from "@/components/reuseable/event-button/page";
 import Modal from "@/components/reuseable/modal";
+import { Pagination } from "@/components/reuseable/pagination";
+import { NoItemData } from "@/components/reuseable/table-no-item";
 import { Button, ButtonGroup, Label } from "@/components/ui";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import EventCard from "@/components/view/oparator/reuse/event-card";
 import SvgBox from "@/components/view/oparator/reuse/svg-box";
 import FavIcon from "@/icon/favIcon";
+import { useGetEventsQuery } from "@/redux/api/operator/opratorApi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const eventOptions = [
-  {
-    id: "one-to-one",
-    title: "One to One",
-    description:
-      "A private event designed for personal interaction and focused discussion between two individuals.",
-  },
-  {
-    id: "group",
-    title: "Group",
-    description:
-      "An exclusive gathering with a set number of participants, ensuring closer connections and meaningful engagement.",
-  },
-  {
-    id: "retreat",
-    title: "Retreat",
-    description:
-      "An immersive event. It can only be o line (therefore, it cannot be online or on demand). ",
-  },
-];
-
-const ongoingItem = [
-  {
-    title: "Event title goes here",
-    status: "Ongoing",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Lectus urna etiam imperdiet in amet sit tortor. Molestie quis mauris pellentesque.",
-    location: "Event location goes here",
-    dateTime: "10 Sep, 2025 at 05:00 PM - 09:00 PM",
-    price: 15.0,
-    attendees: "1/2",
-  },
-  {
-    title: "Event title goes here",
-    status: "Ongoing",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Lectus urna etiam imperdiet in amet sit tortor. Molestie quis mauris pellentesque.",
-    location: "Event location goes here",
-    dateTime: "10 Sep, 2025 at 05:00 PM - 09:00 PM",
-    price: 15.0,
-    attendees: "1/2",
-  },
-];
-
-const upcomingItem = [
-  {
-    title: "Event title goes here",
-    status: "Upcoming",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Lectus urna etiam imperdiet in amet sit tortor. Molestie quis mauris pellentesque.",
-    location: "Event location goes here",
-    dateTime: "10 Sep, 2025 at 05:00 PM - 09:00 PM",
-    price: 15.0,
-    attendees: "1/2",
-  },
-  {
-    title: "Event title goes here",
-    status: "Upcoming",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Lectus urna etiam imperdiet in amet sit tortor. Molestie quis mauris pellentesque.",
-    location: "Event location goes here",
-    dateTime: "10 Sep, 2025 at 05:00 PM - 09:00 PM",
-    price: 15.0,
-    attendees: "1/2",
-  },
-  {
-    title: "Event title goes here",
-    status: "Upcoming",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Lectus urna etiam imperdiet in amet sit tortor. Molestie quis mauris pellentesque.",
-    location: "Event location goes here",
-    dateTime: "10 Sep, 2025 at 05:00 PM - 09:00 PM",
-    price: 15.0,
-    attendees: "1/2",
-  },
-];
-
 export default function EventAll() {
   const router = useRouter();
-  const [activeButton, setActiveButton] = useState<string>("1:1");
+  const [activeButton, setActiveButton] = useState<string>("");
   const [selectEvent, setSelectEvent] = useState("");
+  const [page, setPage] = useState(1);
+  const { data: events } = useGetEventsQuery({
+    page,
+    search: activeButton,
+  });
 
   const overviewItem = [
     {
       icon: "events",
       title: "Total events",
-      count: "12",
+      count: events?.info.total_events,
     },
     {
       icon: "ongoing_events",
       title: "Ongoing events",
-      count: "02",
+      count: events?.info?.ongoing_events,
     },
     {
       icon: "up_events",
       title: "Upcoming events",
-      count: "15",
+      count: events?.info?.upcoming_events,
     },
   ];
 
@@ -116,25 +48,30 @@ export default function EventAll() {
       title: "One to One",
       description:
         "A private event designed for personal interaction and focused discussion between two individuals.",
-      path: "",
+      path: "/operator/events/store/one-to-one",
     },
     {
       id: "group",
       title: "Group",
       description:
         "An exclusive gathering with a set number of participants, ensuring closer connections and meaningful engagement.",
+      path: "/operator/events/store/group",
     },
     {
       id: "retreat",
       title: "Retreat",
       description:
         "An immersive event. It can only be o line (therefore, it cannot be online or on demand). ",
+      path: "/operator/events/store/retreat",
     },
   ];
 
-  const handleSubmitEvent = () => {
-    router.push(`/operator/events/store/${selectEvent}`);
-  };
+  const ongoingItem = events?.data?.data?.filter(
+    (item: any) => item.status == "ongoing"
+  );
+  const upcommingItem = events?.data?.data?.filter(
+    (item: any) => item.status === "upcoming"
+  );
 
   return (
     <div className="container pb-10">
@@ -148,7 +85,7 @@ export default function EventAll() {
                 </h1>
                 <div>
                   <h4 className="text-black font-normal">{item.title}</h4>
-                  <h2>{item.count}</h2>
+                  <h2>{item.count || 0}</h2>
                 </div>
               </div>
             ))}
@@ -157,52 +94,64 @@ export default function EventAll() {
             eventOptions={eventOptions}
             selectEvent={selectEvent}
             setSelectEvent={setSelectEvent}
-            handleSubmitEvent={handleSubmitEvent}
           />
         </div>
       </SvgBox>
       {/* filter group item */}
       <div className="my-7 flex justify-end">
         <ButtonGroup>
-          {["1:1", "Group", "Retreat"].map((btn) => (
+          {eventItem?.map((btn) => (
             <Button
-              key={btn}
+              key={btn.value}
               size="sm"
               variant="outline"
               className={
-                activeButton === btn
+                activeButton === btn.value
                   ? "bg-primary text-white hover:bg-primary hover:text-white"
                   : ""
               }
-              onClick={() => setActiveButton(btn)}
+              onClick={() => setActiveButton(btn.value)}
             >
-              {btn}
+              {btn.label}
             </Button>
           ))}
         </ButtonGroup>
       </div>
       <div className="space-y-3">
-        <div>
-          <h2 className="text-2xl text-black">Ongoing Events</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {ongoingItem.map((item, idx) => (
-              <Link key={idx} href={`/operator/events/3`}>
-                <EventCard item={item} />
-              </Link>
-            ))}
+        {events?.data?.data?.length === 0 && (
+          <NoItemData title="No Events Items Available at the Moment" />
+        )}
+        {ongoingItem?.length > 0 && (
+          <div>
+            <h2 className="text-2xl text-black">Ongoing Events</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {ongoingItem?.map((item: any, idx: any) => (
+                <Link key={idx} href={`/operator/events/3`}>
+                  <EventCard item={item} />
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-        <div>
-          <h2 className="text-2xl text-black">Upcoming Events</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {upcomingItem.map((item, idx) => (
-              <Link key={idx} href={`/operator/events/3`}>
-                <EventCard item={item} />
-              </Link>
-            ))}
+        )}
+
+        {upcommingItem?.length > 0 && (
+          <div>
+            <h2 className="text-2xl text-black">Upcoming Events</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {upcommingItem.map((item: any, idx: any) => (
+                <Link key={idx} href={`/operator/events/3`}>
+                  <EventCard item={item} />
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
+
+      <Pagination
+        onPageChange={(v: any) => setPage(v)}
+        {...events?.data?.meta}
+      />
     </div>
   );
 }

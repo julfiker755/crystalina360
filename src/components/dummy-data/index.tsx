@@ -13,3 +13,18 @@ export const accessibilityItem = [
   "Elevator available",
   "Other",
 ];
+
+export const eventItem = [
+  {
+    value: "onetoone",
+    label: "1:1",
+  },
+  {
+    value: "group",
+    label: "Group",
+  },
+  {
+    value: "retreat",
+    label: "Retreat",
+  },
+];

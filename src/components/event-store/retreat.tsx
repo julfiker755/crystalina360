@@ -28,7 +28,6 @@ import {
 import TimeSelect from "./element/time-select";
 import MultiDate from "./element/multi-date";
 import { ErrorInput } from "../reuseable/error";
-import { InputTime } from "../reuseable/timeInput";
 import PersonLimit from "./element/person-limit";
 import { LocationDroupDown } from "./element/location";
 import { AccessibilityBox } from "./element/accessibility";
@@ -44,17 +43,16 @@ const initialState = {
   isDate: false,
 };
 
-export default function OnetoOneStore() {
+export default function RetreatStore() {
   const [searchText, setSearchText] = useState("");
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
   const [state, setState] = useModalState(initialState);
   const [selAccbility, setSelAccbility] = useState<string[]>([]);
   const [isDelivery, setIsDelivery] = useState<any>("offline");
   const [selectDate, setSelectDate] = useState<any>([]);
-
+  const router = useRouter();
   const defaultValues = getValuesOne(isDelivery, "2") as any;
   const defaultSchema = getSchema(isDelivery) as any;
-  const router = useRouter();
 
   const from = useForm({
     resolver: zodResolver(defaultSchema),
@@ -62,6 +60,8 @@ export default function OnetoOneStore() {
     mode: "onChange",
   });
 
+  // accept: "video/*",
+  //   multiple: false
   const get = (v: any) => from.watch(v);
   const delivaryType = get("delivery_type") == delivary_t.ondemand;
   const [{ files }, { getInputProps, clearFiles }] = useFileUpload({
@@ -70,8 +70,7 @@ export default function OnetoOneStore() {
 
   useEffect(() => {
     from.setValue("img", files[0]?.file);
-    from.setValue("accessibility", selAccbility || []);
-  }, [files, selAccbility]);
+  }, [files]);
 
   const resetFrom = (deliveryType: string) => {
     const values = getValuesOne(deliveryType, "2") as any;
@@ -82,15 +81,16 @@ export default function OnetoOneStore() {
     setSelectedTimes([]);
     clearFiles();
   };
+
   const [storeEvents, { isLoading }] = useStoreEventsMutation();
 
   const handleSubmit = async (values: FieldValues) => {
     const { ticket_quantity, max_person, min_person, ...rest } = values || {};
     const data = helpers.fromData({
-      event_type: "onetoone",
-      ticket_quantity: "2",
+      event_type: "group",
+      ticket_quantity: "200",
       min_person: "1",
-      max_person: "2",
+      max_person: "200",
       ...rest,
     });
     try {
@@ -108,7 +108,6 @@ export default function OnetoOneStore() {
       sonner.error("Error", err.message, "bottom-right");
     }
   };
-
   const toggleHolistic = (value: any) => {
     const current = from.getValues("holistic_discipline") || [];
     if (current.includes(value as never)) {
@@ -151,32 +150,32 @@ export default function OnetoOneStore() {
                 Select Delivery Type
               </label>
               <div className="flex gap-3">
-                {[
-                  { value: "offline", label: "Offline", icon: "offline" },
-                  { value: "online", label: "Online", icon: "online" },
-                  { value: "ondemand", label: "On demand", icon: "ondemand" },
-                ]?.map((item) => (
-                  <Button
-                    key={item.value}
-                    onClick={() => {
-                      resetFrom(item.value);
-                      from.setValue("delivery_type", item.value);
-                    }}
-                    type="button"
-                    className={`font-normal transition-colors border bg-transparent text-figma-black ${
-                      item.value === get("delivery_type") &&
-                      "bg-primary text-white"
-                    }`}
-                  >
-                    <FavIcon
-                      color={
-                        item.value === get("delivery_type") ? "#fff" : undefined
-                      }
-                      name={item.icon as any}
-                    />
-                    {item.label}
-                  </Button>
-                ))}
+                {[{ value: "offline", label: "Offline", icon: "offline" }]?.map(
+                  (item) => (
+                    <Button
+                      key={item.value}
+                      onClick={() => {
+                        resetFrom(item.value);
+                        from.setValue("delivery_type", item.value);
+                      }}
+                      type="button"
+                      className={`font-normal transition-colors border bg-transparent text-figma-black ${
+                        item.value === get("delivery_type") &&
+                        "bg-primary text-white"
+                      }`}
+                    >
+                      <FavIcon
+                        color={
+                          item.value === get("delivery_type")
+                            ? "#fff"
+                            : undefined
+                        }
+                        name={item.icon as any}
+                      />
+                      {item.label}
+                    </Button>
+                  )
+                )}
               </div>
             </div>
             {/* --------  Select Event Purpose --------- */}
@@ -261,55 +260,25 @@ export default function OnetoOneStore() {
               placeholder="Enter your description"
               className="min-h-30"
             />
-            {/*  type  ------------ */}
-            {get("delivery_type") === delivary_t.offline ? (
-              //  ===================== offline ==========================
-              <>
-                <LocationDroupDown />
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  <SingleDateBox from={from} />
-                  <MultipleTime from={from} setState={setState} />
-                </div>
-                <PersonLimit read={true} />
-                <TicketQuantity from={from} read={false} />
-                <FromSelect2
-                  items={durationItem}
-                  name="event_duration"
-                  placeholder="-Select duration-"
-                  className="rounded-md"
-                />
-                <AccessibilityBox
-                  selAccbility={selAccbility}
-                  setSelAccbility={setSelAccbility}
-                />
-                <FromTagInput name="tags" label="Tags" className="py-2" />
-                <EmailCollent />
-              </>
-            ) : from.watch("delivery_type") === "online" ? (
-              //  ============================= online =====================
-              <>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  <SingleDateBox from={from} />
-                  <MultipleTime from={from} setState={setState} />
-                </div>
-                <PersonLimit read={false} />
-                <TicketQuantity from={from} read={false} />
-                <FromTagInput name="tags" label="Tags" className="py-2" />
-              </>
-            ) : (
-              from.watch("delivery_type") === "ondemand" && (
-                <>
-                  <LocationDroupDown />
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <SingleDateBox from={from} />
-                    <InputTime name="event_time" placeholder="select time" />
-                  </div>
-                  <FromTagInput name="tags" label="Tags" className="py-2" />
-                </>
-              )
-            )}
-
-            {/* Submit Button */}
+            <LocationDroupDown />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <SingleDateBox from={from} />
+              <MultipleTime from={from} setState={setState} />
+            </div>
+            <PersonLimit read={true} />
+            <TicketQuantity from={from} read={false} />
+            <FromSelect2
+              items={durationItem}
+              name="event_duration"
+              placeholder="-Select duration-"
+              className="rounded-md"
+            />
+            <AccessibilityBox
+              selAccbility={selAccbility}
+              setSelAccbility={setSelAccbility}
+            />
+            <FromTagInput name="tags" label="Tags" className="py-2" />
+            <EmailCollent />
             <Button disabled={isLoading} className="w-full">
               Submit
             </Button>

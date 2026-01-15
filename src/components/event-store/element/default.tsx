@@ -1,7 +1,6 @@
 import {
   demand_sc,
   demand_sc2,
-  event,
   offline_sc,
   offline_sc2,
   online_sc,
@@ -34,7 +33,7 @@ export const getValuesOne = (isDelivery: string, ticket: string) => {
   } else if (isDelivery == "online") {
     return {
       img: "",
-      delivery_type: "offline",
+      delivery_type: "online",
       event_purpose: "educational",
       holistic_discipline: [],
       event_title: "",
@@ -51,7 +50,7 @@ export const getValuesOne = (isDelivery: string, ticket: string) => {
   } else if (isDelivery == "ondemand") {
     return {
       img: "",
-      delivery_type: "offline",
+      delivery_type: "ondemand",
       event_purpose: "educational",
       holistic_discipline: [],
       event_title: "",
@@ -72,12 +71,6 @@ export const getSchema = (isDelivery: string) => {
   if (isDelivery === "online") return online_sc;
   if (isDelivery === "ondemand") return demand_sc;
 };
-
-export enum delivary {
-  offline = "offline",
-  online = "online",
-  ondemand = "ondemand",
-}
 
 export const purposeItem = [
   { value: "educational", label: "Educational" },
@@ -127,7 +120,7 @@ export const getValuesGroup = (isDelivery: string, ticket: string) => {
   } else if (isDelivery == "online") {
     return {
       img: "",
-      delivery_type: "offline",
+      delivery_type: "online",
       event_purpose: "educational",
       holistic_discipline: [],
       event_title: "",
@@ -144,7 +137,7 @@ export const getValuesGroup = (isDelivery: string, ticket: string) => {
   } else if (isDelivery == "ondemand") {
     return {
       img: "",
-      delivery_type: "offline",
+      delivery_type: "ondemand",
       event_purpose: "educational",
       holistic_discipline: [],
       event_title: "",
