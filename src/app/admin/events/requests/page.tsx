@@ -65,11 +65,6 @@ export default function EventRequests() {
         title="Manage events"
         subTitle="Manage all of the events from this section"
       />
-      {/* <VideoPlayer
-        src={
-          "https://d1eq61xqboylxw.cloudfront.net/videos/oU7eT815Mm36zEQWg8e9g86rkIQouQHhUlEJIZIl.mp4"
-        }
-      /> */}
       <SvgBox>
         <div className="flex items-center space-x-2">
           <BackBtn className="bg-white rounded-md" />

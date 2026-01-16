@@ -10,6 +10,7 @@ import { useParams } from "next/navigation";
 import FavIcon from "@/icon/favIcon";
 import { cn, delivary_t, event_t, helpers } from "@/lib";
 import { Calendar } from "lucide-react";
+import VideoPlayer from "@/components/reuseable/player";
 
 export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
   const { id } = useParams();
@@ -100,28 +101,26 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
     );
   }
 
+  // {details?.delivery_type == delivary_t.ondemand ? (
+  //   <div>
+  //     <VideoPlayer key={details?.id} src={details?.img} />
+  //   </div>
+  // ) : (
+  //   <div className="relative h-60 overflow-hidden rounded-md ">
+  //     <img
+  //       src={details?.img || "/not.png"}
+  //       alt={"title"}
+  //       className="w-full h-full object-cover"
+  //     />
+  //   </div>
+  // )}
+
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-6">
       <div className="overflow-hidden col-span-1 lg:col-span-2 transition-shadow  rounded-lg p-3">
         <div className="h-60 rounded-md bg-muted overflow-hidden relative">
           {delivery_type == delivary_t.ondemand ? (
-            <video
-              key={img}
-              autoPlay
-              loop
-              playsInline
-              muted
-              preload="auto"
-              style={{
-                width: "100%",
-                height: "220px",
-                objectFit: "cover",
-                borderRadius: "10px",
-              }}
-            >
-              <source src={img} />
-              Your browser does not support the video tag.
-            </video>
+            <VideoPlayer key={"id"} src={img} />
           ) : (
             <img
               src={img || "/not.png"}

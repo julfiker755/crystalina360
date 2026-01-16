@@ -330,3 +330,10 @@
   border-radius: 10px;
   overflow: hidden;
 }
+
+/* volme size small */
+.plyr__controls__item.plyr__volume {
+  width: 80px !important;
+  margin-right: 10px !important;
+  overflow: hidden !important;
+}

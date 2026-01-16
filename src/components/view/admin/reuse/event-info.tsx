@@ -85,11 +85,7 @@ export default function EventInfo({
       <div>
         {details?.delivery_type == delivary_t.ondemand ? (
           <div>
-            <VideoPlayer
-              className="rounded-md!"
-              key={details?.id}
-              src={details?.img}
-            />
+            <VideoPlayer key={details?.id} src={details?.img} />
           </div>
         ) : (
           <div className="relative h-60 overflow-hidden rounded-md ">
