@@ -2,45 +2,59 @@
 import React, { useEffect, useRef } from "react";
 import Plyr from "plyr";
 import "plyr/dist/plyr.css";
-import { cn } from "@/lib";
 
 interface VideoPlayerProps {
-  className?: string;
   src: string;
+  poster?: string;
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ className, src }) => {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, poster }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (videoRef.current) {
-      const player = new Plyr(videoRef.current, {
-        autoplay: true,
-        controls: [
-          "play",
-          "progress",
-          "current-time",
-          "mute",
-          "volume",
-          "fullscreen",
-        ],
-      });
+    if (!containerRef.current) return;
 
-      return () => {
-        player.destroy();
-      };
-    }
+    // Find video inside container
+    const videoEl = containerRef.current.querySelector("video");
+
+    if (!videoEl) return;
+
+    const player = new Plyr(videoEl, {
+      controls: [
+        "play-large",
+        "play",
+        "progress",
+        "current-time",
+        "mute",
+        "volume",
+        "captions",
+        "settings",
+        "pip",
+        "airplay",
+        "fullscreen",
+      ],
+      settings: ["captions", "quality", "speed"],
+    });
+
+    return () => {
+      player.destroy();
+    };
   }, [src]);
 
   return (
-    <video
-      ref={videoRef}
-      className={cn("plyr video-js vjs-default-skin w-full h-full", className)}
-      controls
+    <div
+      ref={containerRef}
+      className="plyr__video-embed custom-plyr  w-full aspect-video"
     >
-      <source src={src} type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
+      <video
+        playsInline
+        preload="metadata"
+        poster={"/video.png"}
+        className="w-full h-full object-cover"
+      >
+        <source src={src} type="video/mp4" />
+      </video>
+    </div>
   );
 };
 

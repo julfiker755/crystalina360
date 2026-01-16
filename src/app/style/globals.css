@@ -316,3 +316,17 @@
     transition: background-color 5000s ease-in-out 0s;
   }
 }
+
+.custom-plyr {
+  --plyr-color-main: var(--primary);
+  --plyr-control-bg: var(--primary);
+  --plyr-control-color: #ffffff;
+  --plyr-progress-played: var(--primary);
+  --plyr-progress-buffer: #888888;
+}
+
+.custom-plyr,
+.custom-plyr .plyr__video-wrapper {
+  border-radius: 10px;
+  overflow: hidden;
+}
