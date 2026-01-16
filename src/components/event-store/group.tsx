@@ -6,7 +6,6 @@ import { FromTextarea2 } from "@/components/reuseable/from-textarea2";
 import SearchBox from "@/components/reuseable/search-box";
 import { SingleCalendar } from "@/components/reuseable/single-date";
 import { Button, Checkbox, Label } from "@/components/ui";
-import { disciplineItem } from "@/components/view/oparator/dummy-json";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { FieldValues, useForm } from "react-hook-form";
 import { ChevronRight } from "lucide-react";
@@ -36,6 +35,7 @@ import EmailCollent from "./element/email-collect";
 import { useStoreEventsMutation } from "@/redux/api/operator/opratorApi";
 import sonner from "../reuseable/sonner";
 import { useRouter } from "next/navigation";
+import { disciplineOptions } from "../dummy-data";
 
 const initialState = {
   holistic: false,
@@ -50,7 +50,7 @@ export default function GroupStore() {
   const [isDelivery, setIsDelivery] = useState<any>("offline");
   const [selectDate, setSelectDate] = useState<any>([]);
 
-  const defaultValues = getValuesGroup(isDelivery, "2") as any;
+  const defaultValues = getValuesGroup(isDelivery, "200") as any;
   const defaultSchema = getSchema2(isDelivery) as any;
 
   const from = useForm({
@@ -70,7 +70,7 @@ export default function GroupStore() {
   }, [files]);
 
   const resetFrom = (deliveryType: string) => {
-    const values = getValuesGroup(deliveryType, "2") as any;
+    const values = getValuesGroup(deliveryType, "200") as any;
     from.reset(values);
     setSelAccbility([]);
     setSelectDate([]);
@@ -84,9 +84,9 @@ export default function GroupStore() {
     const { ticket_quantity, max_person, min_person, ...rest } = values || {};
     const data = helpers.fromData({
       event_type: "group",
-      ticket_quantity: "2",
+      ticket_quantity: "200",
       min_person: "1",
-      max_person: "2",
+      max_person: "200",
       ...rest,
     });
     try {
@@ -211,7 +211,7 @@ export default function GroupStore() {
               </div>
               <div>
                 <div className="border p-3 flex items-center flex-wrap gap-3 rounded-md">
-                  {disciplineItem.slice(0, 10).map((item, idx) => (
+                  {disciplineOptions.slice(0, 10).map((item, idx) => (
                     <label key={idx} className="flex items-center gap-3">
                       <Checkbox
                         checked={get("holistic_discipline")?.includes(
@@ -267,7 +267,7 @@ export default function GroupStore() {
                   <InputTime name="event_time" />
                 </div>
                 <PersonLimit read={true} />
-                <TicketQuantity from={from} read={false} />
+                <TicketQuantity from={from} read={true} />
                 <FromSelect2
                   items={durationItem}
                   name="event_duration"
@@ -288,8 +288,8 @@ export default function GroupStore() {
                   <MultipleDate from={from} setState={setState} />
                   <InputTime name="event_time" />
                 </div>
-                <PersonLimit read={false} />
-                <TicketQuantity from={from} read={false} />
+                <PersonLimit read={true} />
+                <TicketQuantity from={from} read={true} />
                 <FromTagInput name="tags" label="Tags" className="py-2" />
               </>
             ) : (
@@ -317,15 +317,15 @@ export default function GroupStore() {
         open={state.holistic}
         setIsOpen={(v) => setState("holistic", v)}
         title="Select Holistic Descipline"
-        className="sm:max-w-xl"
+        className="sm:max-w-4xl"
         titleStyle="text-center"
       >
         <SearchBox
-          className="w-full"
+          className="w-full mx-auto"
           onChange={(value) => setSearchText(value)}
         />
         <div className="flex items-center flex-wrap gap-3 pt-5 pb-6">
-          {disciplineItem
+          {disciplineOptions
             ?.filter((item) =>
               helpers
                 .lowerCase(item?.label)

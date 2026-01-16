@@ -16,7 +16,7 @@ export default function Navber({ sidebarOpen, setSidebarOpen }: SidebarProps) {
   const user = useAppSelector((state: AppState) => state.auth.user);
 
   return (
-    <div className="sticky top-0  flex w-full bg-[white] py-3 z-10 shadow-xs">
+    <div className="sticky top-0  flex w-full bg-[white] py-3 z-50! shadow-xs">
       <header className="w-full px-3">
         <div className="flex justify-between items-center">
           {/* left side*/}

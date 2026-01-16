@@ -1,5 +1,6 @@
 "use client";
 import RetreatStore from "@/components/event-store/retreat";
+import { BackBtn } from "@/components/reuseable/back-btn";
 import { Button } from "@/components/ui";
 import SvgBox from "@/components/view/oparator/reuse/svg-box";
 import AlertDiscard from "@/components/view/oparator/simple/alert-discard";
@@ -12,8 +13,10 @@ export default function Retreat() {
       <SvgBox>
         <div className="flex justify-between">
           <div className="flex items-center space-x-2">
-            <h2>Creating One to one event</h2>
+            <BackBtn className="bg-white rounded-md" />
+            <h2>Creating Retreat event</h2>
           </div>
+
           <AlertDiscard>
             <Button className="z-10" variant="destructive">
               <X />

@@ -29,7 +29,7 @@ export default function TicketQuantity({ from, read = true }: any) {
             name="price"
             className="w-[100px] h-10 bg-transparent p-0"
             type="number"
-            placeholder="price hare"
+            placeholder="Price here"
             err={false}
           />
         </div>

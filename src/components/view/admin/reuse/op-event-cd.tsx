@@ -1,13 +1,19 @@
+import { Button } from "@/components/ui";
 import FavIcon from "@/icon/favIcon";
-import { event_t } from "@/lib";
+import { event_t, helpers } from "@/lib";
 import { Calendar } from "lucide-react";
 
 interface opevtcdProps {
   children?: React.ReactNode;
   item: any;
+  admin?: boolean;
 }
 
-export default function OpEvtCd({ item, children }: opevtcdProps) {
+export default function OpEvtCd({
+  item,
+  children,
+  admin = false,
+}: opevtcdProps) {
   const {
     event_type,
     event_title,
@@ -44,24 +50,24 @@ export default function OpEvtCd({ item, children }: opevtcdProps) {
 
   return (
     <div className="overflow-hidden   transition-shadow bg-figma-gray rounded-lg p-3">
-      {/* Event Image */}
       <div className="relative h-60  group rounded-md bg-muted overflow-hidden">
         <img
           src={img}
           alt={event_title}
           className="w-full h-full object-cover"
         />
-        <div className="absolute  right-2 top-2">
-          {/* <div className="flex items-center space-x-2">
-            <Button size="default" className="bg-[#434549] text-white">
-              {getDeliveryType(helpers.slugify(mode) as any, "#fff")}
-              {mode}
-            </Button>
-            <Button size="default" variant={helpers.lowerCase(status) as any}>
-              {status}
-            </Button>
-          </div> */}
-        </div>
+        {admin && (
+          <div className="absolute  right-2 top-2">
+            <div className="flex items-center space-x-2">
+              <Button size="default" className="bg-[#434549] text-white">
+                {helpers.capitalize(event_type)}
+              </Button>
+              <Button size="default" variant={helpers.lowerCase(status) as any}>
+                {helpers.capitalize(status)}
+              </Button>
+            </div>
+          </div>
+        )}
         {children}
       </div>
 

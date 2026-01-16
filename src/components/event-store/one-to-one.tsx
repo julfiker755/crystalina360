@@ -6,7 +6,6 @@ import { FromTextarea2 } from "@/components/reuseable/from-textarea2";
 import SearchBox from "@/components/reuseable/search-box";
 import { SingleCalendar } from "@/components/reuseable/single-date";
 import { Button, Checkbox, Label } from "@/components/ui";
-import { disciplineItem } from "@/components/view/oparator/dummy-json";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { FieldValues, useForm } from "react-hook-form";
 import { ChevronRight } from "lucide-react";
@@ -37,6 +36,7 @@ import EmailCollent from "./element/email-collect";
 import { useStoreEventsMutation } from "@/redux/api/operator/opratorApi";
 import { useRouter } from "next/navigation";
 import sonner from "../reuseable/sonner";
+import { disciplineOptions } from "../dummy-data";
 
 const initialState = {
   holistic: false,
@@ -215,7 +215,7 @@ export default function OnetoOneStore() {
               </div>
               <div>
                 <div className="border p-3 flex items-center flex-wrap gap-3 rounded-md">
-                  {disciplineItem.slice(0, 10).map((item, idx) => (
+                  {disciplineOptions.slice(0, 10).map((item, idx) => (
                     <label key={idx} className="flex items-center gap-3">
                       <Checkbox
                         checked={get("holistic_discipline")?.includes(
@@ -271,7 +271,7 @@ export default function OnetoOneStore() {
                   <MultipleTime from={from} setState={setState} />
                 </div>
                 <PersonLimit read={true} />
-                <TicketQuantity from={from} read={false} />
+                <TicketQuantity from={from} read={true} />
                 <FromSelect2
                   items={durationItem}
                   name="event_duration"
@@ -292,8 +292,8 @@ export default function OnetoOneStore() {
                   <SingleDateBox from={from} />
                   <MultipleTime from={from} setState={setState} />
                 </div>
-                <PersonLimit read={false} />
-                <TicketQuantity from={from} read={false} />
+                <PersonLimit read={true} />
+                <TicketQuantity from={from} read={true} />
                 <FromTagInput name="tags" label="Tags" className="py-2" />
               </>
             ) : (
@@ -321,15 +321,15 @@ export default function OnetoOneStore() {
         open={state.holistic}
         setIsOpen={(v) => setState("holistic", v)}
         title="Select Holistic Descipline"
-        className="sm:max-w-xl"
+        className="sm:max-w-4xl"
         titleStyle="text-center"
       >
         <SearchBox
-          className="w-full"
+          className="mx-auto"
           onChange={(value) => setSearchText(value)}
         />
         <div className="flex items-center flex-wrap gap-3 pt-5 pb-6">
-          {disciplineItem
+          {disciplineOptions
             ?.filter((item) =>
               helpers
                 .lowerCase(item?.label)
