@@ -1,6 +1,7 @@
 "use client";
 import { DropdownBox } from "@/components/reuseable/dropdown-menu";
 import NavTitle from "@/components/reuseable/nav-title";
+import VideoPlayer from "@/components/reuseable/player";
 import { ScrollArea } from "@/components/ui";
 import PreferencesChart from "@/components/view/admin/simple/preferences-chart";
 import StatisticsChart from "@/components/view/admin/simple/statistics-chart";

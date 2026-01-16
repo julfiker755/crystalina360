@@ -50,7 +50,7 @@ export const eventsApi = baseApi.injectEndpoints({
         url: `/events/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: [tagTypes.a_admin_events],
+      invalidatesTags: [tagTypes.a_admin_events, tagTypes.a_slg_opertor],
     }),
     adminEventCount: build.query({
       query: (arg) => ({

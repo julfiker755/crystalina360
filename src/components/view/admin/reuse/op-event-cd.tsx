@@ -1,18 +1,21 @@
+import Avatars from "@/components/reuseable/avater";
 import { Button } from "@/components/ui";
 import FavIcon from "@/icon/favIcon";
-import { event_t, helpers } from "@/lib";
+import { delivary_t, event_t, helpers } from "@/lib";
 import { Calendar } from "lucide-react";
 
 interface opevtcdProps {
   children?: React.ReactNode;
   item: any;
   admin?: boolean;
+  operator?: boolean;
 }
 
 export default function OpEvtCd({
   item,
   children,
   admin = false,
+  operator = false,
 }: opevtcdProps) {
   const {
     event_type,
@@ -28,6 +31,8 @@ export default function OpEvtCd({
     province,
     region,
     country,
+    organizer,
+    delivery_type,
   } = item || {};
 
   let elementShow: any;
@@ -51,11 +56,32 @@ export default function OpEvtCd({
   return (
     <div className="overflow-hidden   transition-shadow bg-figma-gray rounded-lg p-3">
       <div className="relative h-60  group rounded-md bg-muted overflow-hidden">
-        <img
-          src={img}
-          alt={event_title}
-          className="w-full h-full object-cover"
-        />
+        {delivery_type == delivary_t.ondemand ? (
+          <video
+            key={img}
+            autoPlay
+            loop
+            playsInline
+            muted
+            preload="auto"
+            style={{
+              width: "100%",
+              height: "240px",
+              objectFit: "cover",
+              borderRadius: "10px",
+            }}
+          >
+            <source src={img} />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <img
+            src={img || "/not.png"}
+            alt={event_title}
+            className="w-full h-full object-cover"
+          />
+        )}
+
         {admin && (
           <div className="absolute  right-2 top-2">
             <div className="flex items-center space-x-2">
@@ -70,6 +96,23 @@ export default function OpEvtCd({
         )}
         {children}
       </div>
+
+      {operator && (
+        <div className="flex items-center gap-x-1 mt-2">
+          <Avatars
+            src={organizer?.img || "/avater.png"}
+            fallback={organizer?.name}
+            alt="profile"
+            fallbackStyle="aStyle"
+          />
+          <span className="font-medium">{organizer?.name}</span>
+          {organizer?.is_top_seller === true ? (
+            <FavIcon name="top_seller" />
+          ) : (
+            <FavIcon className="size-5" name="verified" />
+          )}
+        </div>
+      )}
 
       <div className="py-3 space-y-1">
         <div className="flex justify-between items-center">
@@ -97,7 +140,7 @@ export default function OpEvtCd({
             {elementShow}
             <div className="flex  gap-2  items-center text-muted-foreground">
               <FavIcon className="size-5" name="price22" />
-              <span className="text-base text-primary">{price}</span>
+              <span className="text-base text-primary">{price || 0}</span>
             </div>
           </div>
         </div>

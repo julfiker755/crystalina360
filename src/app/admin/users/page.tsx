@@ -153,6 +153,15 @@ export default function Users() {
             </div>
             <DeleteBtn onClick={() => handleDelete(global?.details?.id)} />
           </div>
+          <div className="bg-figma-delete w-full py-1 px-3 rounded-md">
+            <div className="flex justify-between space-x-10">
+              <div className="flex items-center">
+                <FavIcon name="a_plans" />{" "}
+                <span className="ml-2 text-base font-normal">Active plan:</span>
+              </div>
+              <div className="font-medium text-lg">Annual</div>
+            </div>
+          </div>
           <div className="space-y-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
               <EventCardSm

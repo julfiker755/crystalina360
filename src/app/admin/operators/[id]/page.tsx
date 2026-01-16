@@ -3,7 +3,7 @@ import { BackBtn } from "@/components/reuseable/back-btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import Modal from "@/components/reuseable/modal";
 import NavTitle from "@/components/reuseable/nav-title";
-import { Badge, Button } from "@/components/ui";
+import { Badge, Button, Skeleton } from "@/components/ui";
 import OpEvtCd from "@/components/view/admin/reuse/op-event-cd";
 import useConfirmation from "@/provider/confirmation";
 import {
@@ -12,17 +12,23 @@ import {
 } from "@/redux/api/admin/userApi";
 import { useParams, useRouter } from "next/navigation";
 import FavIcon from "@/icon/favIcon";
-import { cn, helpers, RandomImg } from "@/lib";
+import { cn, helpers } from "@/lib";
 import { useState } from "react";
+import { Repeat } from "@/components/reuseable/repeat";
+import { NoItemData } from "@/components/reuseable/table-no-item";
+import { useDeleteEventMutation } from "@/redux/api/admin/eventsApi";
+import EventInfo from "@/components/view/admin/reuse/event-info";
+import Link from "next/link";
 
 export default function OperatorDetils() {
   const { id } = useParams();
   const router = useRouter();
   const { confirm } = useConfirmation();
   const [isPreview, setIsPreview] = useState(false);
-  const { data: details } = useSlgOpratorsQuery(id);
+  const { data: details, isLoading } = useSlgOpratorsQuery(id);
+  const [isDetails, setIsDetails] = useState<any>({});
   const [deleteUser] = useDeleteUserMutation();
-
+  const [deleteEvent] = useDeleteEventMutation();
   const {
     id: oprator_id,
     name,
@@ -51,7 +57,7 @@ export default function OperatorDetils() {
     }
   };
 
-  const handleDeleteEvent = async (id: any) => {
+  const handleDeleteEvent = async (e_id: any) => {
     const confirmed = await confirm({
       subTitle: "Delete Event",
       title: "You are going to delete this event",
@@ -59,7 +65,7 @@ export default function OperatorDetils() {
         "After deleting, this event will no longer available in your system",
     });
     if (confirmed) {
-      console.log(id);
+      await deleteEvent(e_id).unwrap();
     }
   };
 
@@ -123,6 +129,17 @@ export default function OperatorDetils() {
                     </>
                   )}
                 </li>
+                <li className="flex items-center mt-3 mx-auto bg-white w-fit py-1 px-3 rounded-md">
+                  <ul className="flex justify-between space-x-10">
+                    <li className="flex items-center">
+                      <FavIcon name="a_plans" />{" "}
+                      <span className="ml-2 text-base font-normal">
+                        Active plan:
+                      </span>
+                    </li>
+                    <li className="font-medium text-lg">Annual</li>
+                  </ul>
+                </li>
               </ul>
             </div>
             <div className="space-y-3">
@@ -165,30 +182,59 @@ export default function OperatorDetils() {
           </div>
         </div>
         <div className="col-span-1 lg:col-span-2">
-          <div className="grid grid-cols-1 md:grid-cols-2  gap-10">
-            {events?.map((item: any, idx: any) => (
-              <OpEvtCd key={idx} item={item}>
-                <div
-                  className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-white 
-                               opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          <ul className="flex items-center justify-between mb-2">
+            <li className="text-xl font-semibold text-gray-900">
+              Latest Events
+            </li>
+            {events?.length > 0 && (
+              <li>
+                <Link
+                  className="text-sm text-primary cursor-pointer hover:underline"
+                  href={`/admin/operators/event-all/${oprator_id}`}
                 >
-                  <div className="flex items-center space-x-2 [&_button]:bg-[#FFFFFF]/20 [&_button]:cursor-pointer [&_button]:grid [&_button]:place-items-center [&_button]:size-11 [&_button]:backdrop-blur-[15px] [&_button]:rounded-md">
-                    <button
-                      onClick={() => setIsPreview(true)}
-                      aria-label="View"
-                    >
-                      <FavIcon color="#fff" name="preview" />
-                    </button>
-                    <button
-                      onClick={() => handleDeleteEvent("1234")}
-                      aria-label="Delete"
-                    >
-                      <FavIcon color="#ff8080" name="delete_two" />
-                    </button>
+                  See all
+                </Link>
+              </li>
+            )}
+          </ul>
+          <div className="grid grid-cols-1 md:grid-cols-2  gap-10">
+            {isLoading ? (
+              <Repeat count={6}>
+                <Skeleton className="w-full h-[500px] rounded-md" />
+              </Repeat>
+            ) : events?.length > 0 ? (
+              events?.map((item: any, idx: any) => (
+                <OpEvtCd key={idx} item={item}>
+                  <div
+                    className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-white 
+                               opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  >
+                    <div className="flex items-center space-x-2 [&_button]:bg-[#FFFFFF]/20 [&_button]:cursor-pointer [&_button]:grid [&_button]:place-items-center [&_button]:size-11 [&_button]:backdrop-blur-[15px] [&_button]:rounded-md">
+                      <button
+                        onClick={() => {
+                          setIsPreview(true);
+                          setIsDetails(item);
+                        }}
+                        aria-label="View"
+                      >
+                        <FavIcon color="#fff" name="preview" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteEvent(item.id)}
+                        aria-label="Delete"
+                      >
+                        <FavIcon color="#ff8080" name="delete_two" />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </OpEvtCd>
-            ))}
+                </OpEvtCd>
+              ))
+            ) : (
+              <NoItemData
+                className="col-span-1 lg:col-span-2"
+                title="No events found at this moment"
+              />
+            )}
           </div>
         </div>
       </div>
@@ -200,8 +246,9 @@ export default function OperatorDetils() {
         titleStyle="text-center"
         className="sm:max-w-xl"
       >
-        <div className="overflow-hidden col-span-1 lg:col-span-2 transition-shadow  rounded-lg p-2">
-          {/* Event Image */}
+        <EventInfo oprator={true} details={isDetails} />
+        {/* <div className="overflow-hidden col-span-1 lg:col-span-2 transition-shadow  rounded-lg p-2">
+
           <div className="relative h-60 rounded-md bg-muted overflow-hidden">
             <img
               src={RandomImg()}
@@ -218,7 +265,6 @@ export default function OperatorDetils() {
               <Badge variant={"upcoming"}>Upcoming</Badge>
             </div>
 
-            {/* Event Description */}
             <p className="text-muted-foreground line-clamp-2">
               Lorem ipsum dolor sit amet consectetur. Dignissim donec nunc
               tellus bibendum neque vel ut vulputate id. Aliquet quis enim
@@ -252,7 +298,7 @@ export default function OperatorDetils() {
               />
             </div>
           </div>
-        </div>
+        </div> */}
       </Modal>
     </div>
   );

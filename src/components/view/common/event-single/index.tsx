@@ -8,7 +8,7 @@ import TicketChart from "@/components/view/oparator/simple/ticket-chart";
 import { useSingleEventsQuery } from "@/redux/api/operator/opratorApi";
 import { useParams } from "next/navigation";
 import FavIcon from "@/icon/favIcon";
-import { cn, event_t, helpers } from "@/lib";
+import { cn, delivary_t, event_t, helpers } from "@/lib";
 import { Calendar } from "lucide-react";
 
 export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
@@ -75,7 +75,7 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
           <FavIcon className="size-6" name="ongoing_events" />
           <div className="flex flex-col">
             <span className="text-base text-figma-black">Time</span>
-            <span className="text-base bg-figma-delete px-3 rounded-full text-figma-black">
+            <span className="text-base text-figma-black font-medium">
               {event_time?.[0]}
             </span>
           </div>
@@ -104,11 +104,32 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-6">
       <div className="overflow-hidden col-span-1 lg:col-span-2 transition-shadow  rounded-lg p-3">
         <div className="h-60 rounded-md bg-muted overflow-hidden relative">
-          <img
-            src={img || "/not.png"}
-            alt={"title"}
-            className="w-full h-full object-cover"
-          />
+          {delivery_type == delivary_t.ondemand ? (
+            <video
+              key={img}
+              autoPlay
+              loop
+              playsInline
+              muted
+              preload="auto"
+              style={{
+                width: "100%",
+                height: "220px",
+                objectFit: "cover",
+                borderRadius: "10px",
+              }}
+            >
+              <source src={img} />
+              Your browser does not support the video tag.
+            </video>
+          ) : (
+            <img
+              src={img || "/not.png"}
+              alt={"title"}
+              className="w-full h-full object-cover"
+            />
+          )}
+
           {admin && !isLoading && (
             <div className="absolute  right-2 top-2">
               <div className="flex items-center space-x-2">

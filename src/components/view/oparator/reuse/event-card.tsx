@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui";
 import FavIcon from "@/icon/favIcon";
-import { event_t, helpers } from "@/lib";
+import { delivary_t, event_t, helpers } from "@/lib";
 import { Calendar } from "lucide-react";
 
 export default function EventCard({ item }: any) {
@@ -18,6 +18,7 @@ export default function EventCard({ item }: any) {
     province,
     region,
     country,
+    delivery_type,
   } = item || {};
 
   let elementShow: any;
@@ -40,11 +41,31 @@ export default function EventCard({ item }: any) {
   return (
     <div className="overflow-hidden  transition-shadow bg-figma-gray rounded-lg p-3">
       <div className="relative h-60 rounded-md bg-muted overflow-hidden">
-        <img
-          src={img || "/not.png"}
-          alt={event_title}
-          className="w-full h-full object-cover"
-        />
+        {delivery_type == delivary_t.ondemand ? (
+          <video
+            key={img}
+            autoPlay
+            loop
+            playsInline
+            muted
+            preload="auto"
+            style={{
+              width: "100%",
+              height: "240px",
+              objectFit: "cover",
+              borderRadius: "10px",
+            }}
+          >
+            <source src={img} />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <img
+            src={img || "/not.png"}
+            alt={event_title}
+            className="w-full h-full object-cover"
+          />
+        )}
       </div>
 
       <div className="py-3 space-y-1">

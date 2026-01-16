@@ -20,15 +20,15 @@ function EventsBox() {
   const params = qry.get("type");
   const [page, setPage] = useState(1);
   const status = params === "operator" ? "operator" : "";
+  const opratorby = params === "operator" ? true : false;
   const { data: eventItem, isLoading } = useAdminEventQuery({
     ...(status && { status: status }),
     tags: "onetoone",
     page: page,
   });
-
   const [deleteEvent] = useDeleteEventMutation();
 
-  const handleDeleteEvent = async (id: any) => {
+  const handleDeleteEvent = async (ids: any) => {
     const confirmed = await confirm({
       subTitle: "Delete event",
       title: "You are going to delete this event",
@@ -36,7 +36,7 @@ function EventsBox() {
         "After deleting, event's won't be able to find this event on your system",
     });
     if (confirmed) {
-      await deleteEvent(id).unwrap();
+      await deleteEvent(ids).unwrap();
     }
   };
 
@@ -49,7 +49,7 @@ function EventsBox() {
           </Repeat>
         ) : eventItem?.data?.length > 0 ? (
           eventItem?.data?.map((item: any, idx: any) => (
-            <OpEvtCd admin={true} key={idx} item={item}>
+            <OpEvtCd admin={true} operator={opratorby} key={idx} item={item}>
               <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-white  opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="flex items-center space-x-2 [&_button]:bg-[#FFFFFF]/20 [&_button]:cursor-pointer [&_button]:grid [&_button]:place-items-center [&_button]:size-11 [&_button]:backdrop-blur-[15px] [&_button]:rounded-md">
                   <Link href={`/admin/events/${item.id}`}>
