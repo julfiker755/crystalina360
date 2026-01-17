@@ -37,22 +37,30 @@ export default function EventDetails() {
     event_time,
     sold_tickets,
     organizer,
+    available_tickets,
   } = events_all?.data?.event || {};
+
+  const NotOnDemand = (item: any) => {
+    return delivery_type === delivary_t.ondemand ? null : item;
+  };
+
+  console.log(events_all);
+
   return (
     <div className="container">
       <BackBtn2 className="my-6" />
       <div className="bg-[#FBFBFB] p-3 rounded-xs">
         <div>
           {delivery_type == delivary_t.ondemand ? (
-            <div className="h-100">
+            <div className="h-100 w-full">
               <VideoPlayer
-                className="sm:w-full xl:w-[60%]"
+                className="sm:w-full mx-auto xl:w-[60%]"
                 key={id}
                 src={img}
               />
             </div>
           ) : (
-            <div className="relative h-100 overflow-hidden rounded-md ">
+            <div className="relative h-100 max-w-4xl mx-auto overflow-hidden rounded-md ">
               <img
                 src={img || "/not.png"}
                 alt={event_title}
@@ -62,7 +70,7 @@ export default function EventDetails() {
           )}
         </div>
 
-        <ul className="flex-between my-5">
+        <ul className="flex-between mb-5 mt-10">
           <li className="flex items-center space-x-2">
             <Avatars
               src={organizer?.img || "/avater.png"}
@@ -89,26 +97,44 @@ export default function EventDetails() {
         </ul>
         <div>
           <h2 className="font-semibold text-lg">{event_title}</h2>
+
+          <div className="w-fit flex items-center  bg-[#FAD1D2] py-2 rounded-sm px-2">
+            <div className="pt-0.5">
+              <span className="relative flex items-center size-3">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#DD1938] opacity-75"></span>
+                <span className="relative inline-flex size-3 rounded-full bg-[#DD1938] "></span>
+              </span>
+            </div>
+            <span className="text-[#DD1938] font-semibold text-lg ml-2">
+              Almost sold out
+            </span>
+          </div>
           <p className="text-muted-foreground">{event_description}</p>
         </div>
 
         <div className="space-y-1 text-sm mt-5">
           <div className="flex gap-2 items-center text-muted-foreground">
             <Tag size={20} />
-            <span className="text-base">$100</span>
+            <span className="text-base">{price}</span>
           </div>
           <div className="flex gap-2 items-center text-muted-foreground">
             <MapPin size={20} />
-            <span className="text-base">Bangladesh</span>
+            <span className="text-base">{`${city}, ${province}, ${region}, ${country}`}</span>
           </div>
           <div className="flex gap-2 items-center text-muted-foreground">
             <Clock size={20} />
             <span className="text-base">9:60 AM</span>
           </div>
-          <div className="flex gap-2 items-center text-muted-foreground">
-            <RectangleEllipsis size={20} />
-            <span className="text-base">Available: 10</span>
-          </div>
+          {NotOnDemand(
+            parseInt(available_tickets) > 0 && (
+              <div className="flex gap-2 items-center text-muted-foreground">
+                <RectangleEllipsis size={20} />
+                <span className="text-base">
+                  Available: {available_tickets}
+                </span>
+              </div>
+            )
+          )}
         </div>
 
         {user.role == roleKey.user && <EventApply />}
