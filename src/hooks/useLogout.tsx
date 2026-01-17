@@ -16,7 +16,7 @@ export const useLogout = () => {
   //   hanlde logout
   const handleLogout = async () => {
     try {
-      await logout({}).unwrap();
+      // await logout({}).unwrap();
       if (role === roleKey.operator) {
         router.push("/operator");
       } else {

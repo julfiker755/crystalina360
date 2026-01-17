@@ -118,7 +118,7 @@ export default function ProfileEdit2() {
             name="description"
             label="Description"
             placeholder="Enter your description"
-            className="overflow-hidden resize-none"
+            className="field-sizing-content min-h-[100px]"
           />
           <FromTagInput label="Your Skills" name="tag" />
         </div>

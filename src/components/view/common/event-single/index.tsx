@@ -6,11 +6,12 @@ import { TableSkeleton } from "@/components/reuseable/table-skeleton";
 import { Badge, Button, TableCell, TableRow } from "@/components/ui";
 import TicketChart from "@/components/view/oparator/simple/ticket-chart";
 import { useSingleEventsQuery } from "@/redux/api/operator/opratorApi";
+import { cn, delivary_t, event_t, helpers } from "@/lib";
+import VideoPlayer from "@/components/reuseable/player";
+import { getDeliveryIcon } from "@/lib/function-utils";
+import { Calendar } from "lucide-react";
 import { useParams } from "next/navigation";
 import FavIcon from "@/icon/favIcon";
-import { cn, delivary_t, event_t, helpers } from "@/lib";
-import { Calendar } from "lucide-react";
-import VideoPlayer from "@/components/reuseable/player";
 
 export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
   const { id } = useParams();
@@ -37,6 +38,10 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
     event_time,
     sold_tickets,
   } = event || {};
+
+  const NotOnDemand = (item: any) => {
+    return delivery_type === delivary_t.ondemand ? null : item;
+  };
 
   let elementShow: any;
   if (event_type === event_t.onetoone || event_type == event_t.retreat) {
@@ -101,39 +106,28 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
     );
   }
 
-  // {details?.delivery_type == delivary_t.ondemand ? (
-  //   <div>
-  //     <VideoPlayer key={details?.id} src={details?.img} />
-  //   </div>
-  // ) : (
-  //   <div className="relative h-60 overflow-hidden rounded-md ">
-  //     <img
-  //       src={details?.img || "/not.png"}
-  //       alt={"title"}
-  //       className="w-full h-full object-cover"
-  //     />
-  //   </div>
-  // )}
-
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-6">
       <div className="overflow-hidden col-span-1 lg:col-span-2 transition-shadow  rounded-lg p-3">
-        <div className="h-60 rounded-md bg-muted overflow-hidden relative">
+        <div className="overflow-hidden relative">
           {delivery_type == delivary_t.ondemand ? (
             <VideoPlayer key={"id"} src={img} />
           ) : (
-            <img
-              src={img || "/not.png"}
-              alt={"title"}
-              className="w-full h-full object-cover"
-            />
+            <div className="h-60 rounded-md bg-muted ">
+              <img
+                src={img || "/not.png"}
+                alt={"title"}
+                className="w-full h-full rounded-md object-cover"
+              />
+            </div>
           )}
 
           {admin && !isLoading && (
             <div className="absolute  right-2 top-2">
               <div className="flex items-center space-x-2">
                 <Button size="default" className="bg-[#434549] text-white">
-                  {helpers.capitalize(event_type)}
+                  {getDeliveryIcon(delivery_type, "#FFFFFF")}{" "}
+                  {helpers.capitalize(delivery_type)}
                 </Button>
                 <Button
                   size="default"
@@ -179,20 +173,28 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
               text={`${city},${province},${region},${country}` || "N/A"}
             />
             {elementShow}
-            <div className="grid grid-cols-1 lg:grid-cols-2">
-              <ShowBox
-                icon="tiket"
-                name="Ticket sold"
-                text={`${sold_tickets} / ${ticket_quantity}` || "N/A"}
-              />
-              <ShowBox icon="price22" name="Ticket price" text={price || "0"} />
-            </div>
-            <ShowBox
-              icon="price22"
-              name="Total earned from this event"
-              text={revenue || "0"}
-              className="bg-figma-delete px-2 py-2 rounded-md"
-            />
+            {NotOnDemand(
+              <>
+                <div className="grid grid-cols-1 lg:grid-cols-2">
+                  <ShowBox
+                    icon="tiket"
+                    name="Ticket sold"
+                    text={`${sold_tickets} / ${ticket_quantity}` || "N/A"}
+                  />
+                  <ShowBox
+                    icon="price22"
+                    name="Ticket price"
+                    text={price || "0"}
+                  />
+                </div>
+                <ShowBox
+                  icon="price22"
+                  name="Total earned from this event"
+                  text={revenue || "0"}
+                  className="bg-figma-delete px-2 py-2 rounded-md"
+                />
+              </>
+            )}
           </div>
         </div>
       </div>

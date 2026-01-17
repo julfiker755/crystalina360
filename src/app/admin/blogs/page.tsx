@@ -53,21 +53,23 @@ export default function Blog() {
             ))
           )}
         </div>
-        <ul className="flex items-center flex-wrap justify-between pt-10 pb-3">
-          <li className="flex">
-            Total:
-            <sup className="font-medium text-2xl relative -top-3 px-2 ">
-              {blog?.meta?.total}
-            </sup>
-            blogs
-          </li>
-          <li>
-            <Pagination
-              onPageChange={(v: any) => updateGlobal("page", v)}
-              {...blog?.meta}
-            />
-          </li>
-        </ul>
+        {blog?.meta?.total > 10 && (
+          <ul className="flex items-center flex-wrap justify-between pt-10 pb-3">
+            <li className="flex">
+              Total:
+              <sup className="font-medium text-2xl relative -top-3 px-2 ">
+                {blog?.meta?.total}
+              </sup>
+              blogs
+            </li>
+            <li>
+              <Pagination
+                onPageChange={(v: any) => updateGlobal("page", v)}
+                {...blog?.meta}
+              />
+            </li>
+          </ul>
+        )}
       </div>
     </div>
   );

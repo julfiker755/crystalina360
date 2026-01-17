@@ -8,11 +8,9 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Button,
   Skeleton,
   TabsContent,
 } from "@/components/ui";
-import { couponsItem } from "@/components/view/user/dummy-json";
 import { AppAlert } from "@/components/view/user/reuse";
 import CouponBox from "@/components/view/user/simple/coupon";
 import ProfileBox from "@/components/view/user/simple/profile-box";

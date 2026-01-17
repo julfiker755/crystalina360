@@ -21,6 +21,10 @@ export default function EventCard({ item }: any) {
     delivery_type,
   } = item || {};
 
+  const NotOnDemand = (item: any) => {
+    return delivery_type === delivary_t.ondemand ? null : item;
+  };
+
   let elementShow: any;
 
   if (event_type === event_t.onetoone || event_type == event_t.retreat) {
@@ -90,17 +94,23 @@ export default function EventCard({ item }: any) {
                 {city}, {province}, {region}, {country}
               </span>
             </div>
-            <div className="flex  gap-2  items-center text-muted-foreground">
-              <FavIcon className="size-5" name="tiket" />
-              <span className="text-base text-primary">{ticket_quantity}</span>
-            </div>
+            {NotOnDemand(
+              <div className="flex  gap-2  items-center text-muted-foreground">
+                <FavIcon className="size-5" name="tiket" />
+                <span className="text-base text-primary">
+                  {ticket_quantity}
+                </span>
+              </div>
+            )}
           </div>
           <div className="[&_div]:flex  [&_div]:gap-2  [&_div]:items-center [&_div]:text-muted-foreground flex flex-col lg:flex-row lg:justify-between">
             {elementShow}
-            <div className="flex  gap-2  items-center text-muted-foreground">
-              <FavIcon className="size-5" name="price22" />
-              <span className="text-base text-primary">{price}</span>
-            </div>
+            {NotOnDemand(
+              <div className="flex  gap-2  items-center text-muted-foreground">
+                <FavIcon className="size-5" name="price22" />
+                <span className="text-base text-primary">{price}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -1,14 +1,15 @@
 import FavIcon from "@/icon/favIcon";
+import { delivary_t } from "./constants";
 
-type DeliveryType = "offline" | "online" | "on-demand";
+type DeliveryType = "offline" | "online" | "ondemand";
 
 const deliveryTypeConfig = {
-  offline: "offline",
-  online: "online",
-  "on-demand": "ondemand",
+  offline: delivary_t.offline,
+  online: delivary_t.online,
+  ondemand: delivary_t.ondemand,
 } as const satisfies Record<DeliveryType, string>;
 
-export function getDeliveryType(type: DeliveryType, color?: string) {
+export function getDeliveryIcon(type: DeliveryType, color?: string) {
   return (
     <FavIcon name={deliveryTypeConfig[type]} color={color} className="size-4" />
   );

@@ -2,6 +2,7 @@ import Avatars from "@/components/reuseable/avater";
 import { Button } from "@/components/ui";
 import FavIcon from "@/icon/favIcon";
 import { delivary_t, event_t, helpers } from "@/lib";
+import { getDeliveryIcon } from "@/lib/function-utils";
 import { Calendar } from "lucide-react";
 
 interface opevtcdProps {
@@ -86,7 +87,8 @@ export default function OpEvtCd({
           <div className="absolute  right-2 top-2">
             <div className="flex items-center space-x-2">
               <Button size="default" className="bg-[#434549] text-white">
-                {helpers.capitalize(event_type)}
+                {getDeliveryIcon(delivery_type, "#FFFFFF")}{" "}
+                {helpers.capitalize(delivery_type)}
               </Button>
               <Button size="default" variant={helpers.lowerCase(status) as any}>
                 {helpers.capitalize(status)}
@@ -96,7 +98,7 @@ export default function OpEvtCd({
         )}
         {children}
       </div>
-
+      {/* ==================== operator ================= */}
       {operator && (
         <div className="flex items-center gap-x-1 mt-2">
           <Avatars
@@ -131,17 +133,25 @@ export default function OpEvtCd({
                 {city}, {province}, {region}, {country}
               </span>
             </div>
-            <div className="flex  gap-2  items-center text-muted-foreground">
-              <FavIcon className="size-5" name="tiket" />
-              <span className="text-base text-primary">{ticket_quantity}</span>
-            </div>
+            {/* -- ondemad not show -- */}
+            {delivery_type === delivary_t.ondemand ? null : (
+              <div className="flex  gap-2  items-center text-muted-foreground">
+                <FavIcon className="size-5" name="tiket" />
+                <span className="text-base text-primary">
+                  {ticket_quantity}
+                </span>
+              </div>
+            )}
           </div>
           <div className="[&_div]:flex  [&_div]:gap-2  [&_div]:items-center [&_div]:text-muted-foreground flex flex-col lg:flex-row lg:justify-between">
             {elementShow}
-            <div className="flex  gap-2  items-center text-muted-foreground">
-              <FavIcon className="size-5" name="price22" />
-              <span className="text-base text-primary">{price || 0}</span>
-            </div>
+            {/* --- ondemad not show -- */}
+            {delivery_type === delivary_t.ondemand ? null : (
+              <div className="flex  gap-2  items-center text-muted-foreground">
+                <FavIcon className="size-5" name="price22" />
+                <span className="text-base text-primary">{price || 0}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

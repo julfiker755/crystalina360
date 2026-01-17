@@ -14,6 +14,10 @@ export default function EventInfo({
   details,
   oprator = false,
 }: eventinfoProps) {
+  // --- not show ondemand ---
+  const NotOnDemand = (item: any) => {
+    return details?.delivery_type === delivary_t.ondemand ? null : item;
+  };
   let elementShow: any;
   if (
     details?.event_type === event_t.onetoone ||
@@ -108,21 +112,31 @@ export default function EventInfo({
         {oprator ? (
           // =================================== oprator details ================================
           <div className="space-y-3 pt-2">
-            <div className="grid grid-cols-1 lg:grid-cols-2">
-              <ShowBox icon="tiket" name="Ticket sold" text="153 / 300" />
+            {NotOnDemand(
+              <div className="grid grid-cols-1 lg:grid-cols-2">
+                <ShowBox
+                  icon="tiket"
+                  name="Ticket sold"
+                  text={`${details?.sold_tickets || 0} /${
+                    details?.ticket_quantity
+                  }`}
+                />
+                <ShowBox
+                  icon="price22"
+                  name="Ticket price"
+                  text={details?.price || 0}
+                />
+              </div>
+            )}
+            {elementShow}
+            {NotOnDemand(
               <ShowBox
                 icon="price22"
-                name="Ticket price"
-                text={details?.price}
+                name="Total earned from this event"
+                text={details?.revenue || 0}
+                className="bg-figma-delete px-2 py-2 rounded-md"
               />
-            </div>
-            {elementShow}
-            <ShowBox
-              icon="price22"
-              name="Total earned from this event"
-              text="$2,295"
-              className="bg-figma-delete px-2 py-2 rounded-md"
-            />
+            )}
           </div>
         ) : (
           //  ================================= request oprator events ================================
@@ -145,11 +159,13 @@ export default function EventInfo({
                 name="Location"
                 text={`${details?.city}, ${details?.province}, ${details?.region}, ${details?.country}`}
               />
-              <ShowBox
-                icon="tiket"
-                name="Ticket sold"
-                text={details?.ticket_quantity}
-              />
+              {NotOnDemand(
+                <ShowBox
+                  icon="tiket"
+                  name="Ticket sold"
+                  text={details?.ticket_quantity}
+                />
+              )}
             </div>
             {elementShow}
           </div>

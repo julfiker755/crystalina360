@@ -3,6 +3,7 @@ import {
   useApproveAllMutation,
   useApproveEventMutation,
   useGetPandingEventQuery,
+  useRejectEventsMutation,
 } from "@/redux/api/admin/eventsApi";
 import Avatars from "@/components/reuseable/avater";
 import { BackBtn } from "@/components/reuseable/back-btn";
@@ -16,24 +17,32 @@ import { TableSkeleton } from "@/components/reuseable/table-skeleton";
 import { Button, TableCell, TableRow } from "@/components/ui";
 import SvgBox from "@/components/view/oparator/reuse/svg-box";
 import { useGlobalState } from "@/hooks";
-import useConfirmation from "@/provider/confirmation";
 import useSuccessDialog from "@/provider/success";
 import { Check } from "lucide-react";
 import { useDebounce } from "use-debounce";
 import NavTitle from "@/components/reuseable/nav-title";
 import sonner from "@/components/reuseable/sonner";
 import EventInfo from "@/components/view/admin/reuse/event-info";
+import { FieldValues, useForm } from "react-hook-form";
+import Form from "@/components/reuseable/from";
+import { FromTextarea2 } from "@/components/reuseable/from-textarea2";
+import { InputShow } from "@/components/reuseable/input-show";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { rejection_sc } from "@/schema";
 import { useState } from "react";
 import { helpers } from "@/lib";
+import FavIcon from "@/icon/favIcon";
+import ModalHeading from "@/components/reuseable/modal-heading";
+import Modal2 from "@/components/reuseable/modal2";
 
 const initialState = {
   isPreview: false,
+  isReject: false,
   page: 1,
   search: "",
 };
 
 export default function EventRequests() {
-  const { confirm } = useConfirmation();
   const { open } = useSuccessDialog();
   const [global, updateGlobal] = useGlobalState(initialState);
   const [value] = useDebounce(global.search, 1000);
@@ -44,20 +53,37 @@ export default function EventRequests() {
   });
   const [approveEvent] = useApproveEventMutation();
   const [approveAll] = useApproveAllMutation();
-
+  const [rejectEvents, { isLoading: rejectLoading }] =
+    useRejectEventsMutation();
   const headers = ["Operator name", "Email", "Title", "Date", "Time", "Action"];
 
-  // const handleDelete = async (id: any) => {
-  //   const confirmed = await confirm({
-  //     subTitle: "Decline Event",
-  //     title: "You are going to decline this event",
-  //     description:
-  //       "After declining, this event will no longer available in your system",
-  //   });
-  //   if (confirmed) {
-  //     console.log(id);
-  //   }
-  // };
+  const from = useForm({
+    resolver: zodResolver(rejection_sc),
+    defaultValues: {
+      message: "",
+    },
+  });
+
+  //  ======== handleSubmit =========
+  const handleSubmit = async (values: FieldValues) => {
+    try {
+      const data = helpers.fromData({
+        message: values.message,
+      });
+      const res = await rejectEvents({ id: details?.id, data }).unwrap();
+      if (res.status) {
+        sonner.warning(
+          "Event Rejected Successfully",
+          "The operator has been notified via email",
+          "bottom-right"
+        );
+        from.reset();
+        updateGlobal("isReject", false);
+      }
+    } catch (error) {
+      // Handle error if needed
+    }
+  };
 
   return (
     <div>
@@ -74,6 +100,7 @@ export default function EventRequests() {
       <div className="mt-5 flex items-center justify-between">
         <SearchBox onChange={(v: any) => updateGlobal("search", v)} />
         <Button
+          disabled={pendingEvents?.data?.length === 0}
           onClick={async () => {
             const res = await approveAll({}).unwrap();
             if (res.status) {
@@ -163,9 +190,17 @@ export default function EventRequests() {
                         />
                       </div>
                     </li>
-                    {/* <li>
-                      <DeleteBtn onClick={() => handleDelete("4343")} />
-                    </li> */}
+                    <li>
+                      <div
+                        onClick={() => {
+                          updateGlobal("isReject", true);
+                          setIsDetails(item);
+                        }}
+                        className="bg-figma-delete cursor-pointer rounded-md grid place-items-center  size-10"
+                      >
+                        <FavIcon name="reject_icon" />
+                      </div>
+                    </li>
                   </ul>
                 </TableCell>
               </TableRow>
@@ -189,6 +224,39 @@ export default function EventRequests() {
       >
         <EventInfo details={details} />
       </Modal>
+      {/*  =========== reject message ========== */}
+      <Modal2
+        open={global.isReject}
+        setIsOpen={(v) => updateGlobal("isReject", v)}
+        title="Cause of Rejection"
+        titleStyle="text-center"
+        className="sm:max-w-2xl"
+      >
+        <ModalHeading
+          title="Cause of Rejection"
+          onClose={() => {
+            updateGlobal("isReject", false);
+            from.reset();
+          }}
+        />
+        <Form className="space-y-5 pt-5" from={from} onSubmit={handleSubmit}>
+          <InputShow value={details?.organizer?.email} label="Email" />
+          <FromTextarea2
+            name="message"
+            label="Message"
+            placeholder="Enter your message"
+            className="min-h-30"
+          />
+
+          <Button
+            disabled={rejectLoading}
+            size="lg"
+            className="w-full rounded-xl"
+          >
+            Send
+          </Button>
+        </Form>
+      </Modal2>
     </div>
   );
 }

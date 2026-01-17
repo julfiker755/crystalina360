@@ -50,7 +50,11 @@ export const eventsApi = baseApi.injectEndpoints({
         url: `/events/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: [tagTypes.a_admin_events, tagTypes.a_slg_opertor],
+      invalidatesTags: [
+        tagTypes.a_admin_events,
+        tagTypes.a_slg_opertor,
+        tagTypes?.o_events_all_list,
+      ],
     }),
     adminEventCount: build.query({
       query: (arg) => ({
@@ -59,6 +63,16 @@ export const eventsApi = baseApi.injectEndpoints({
         params: arg,
       }),
       providesTags: [tagTypes.a_admin_events_count],
+    }),
+    rejectEvents: build.mutation({
+      query: ({ id, data }) => {
+        return {
+          url: `/reject-event/${id}`,
+          method: "POST",
+          data,
+        };
+      },
+      invalidatesTags: [tagTypes.a_pending_events],
     }),
   }),
 });
@@ -70,4 +84,5 @@ export const {
   useAdminEventQuery,
   useDeleteEventMutation,
   useAdminEventCountQuery,
+  useRejectEventsMutation,
 } = eventsApi;

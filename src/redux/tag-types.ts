@@ -23,6 +23,7 @@ export enum tagTypes {
   a_admin_events = "a_admin_events",
   a_admin_events_count = "a_admin_events",
   o_single_events = "o_single_events",
+  o_events_all_list = "o_events_all_list",
 }
 
 export const tagTypesList = [
@@ -50,4 +51,5 @@ export const tagTypesList = [
   tagTypes.a_admin_events,
   tagTypes.a_admin_events_count,
   tagTypes.o_single_events,
+  tagTypes.o_events_all_list,
 ];

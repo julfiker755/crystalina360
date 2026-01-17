@@ -78,6 +78,9 @@ export const add_on = z.object({
   primary_color: z.string().optional(),
   secondery_color: z.string().optional(),
 });
+export const rejection_sc = z.object({
+  message: z.string().nonempty("Message is required"),
+});
 
 // === coupons===
 export const coupons_st = z.object({

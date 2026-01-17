@@ -65,7 +65,7 @@ export function BadgeShow({ stylelabel, label, items }: InputShowProps) {
           items?.map((item: any, idx: any) => (
             <div
               key={idx}
-              className="bg-figma-delete px-3 text-sm rounded-full"
+              className="bg-figma-delete px-3 py-px text-sm rounded-full"
             >
               {item}
             </div>

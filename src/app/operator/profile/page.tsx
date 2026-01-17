@@ -50,7 +50,7 @@ export default function Profile() {
   return (
     <div className="container py-10">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        <div className="bg-figma-delete p-6 rounded-md space-y-6 *:text-figma-black">
+        <div className="bg-figma-delete px-6 py-8 rounded-md space-y-6 *:text-figma-black">
           <div>
             <ImgBox
               src={img || "/avater.png"}
@@ -64,6 +64,7 @@ export default function Profile() {
               <span>{email}</span>
             </div>
           </div>
+          <h1 className="w-full h-px bg-[#C4ACA4]/15"></h1>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {stashItem?.map((item) => (
               <div
@@ -80,6 +81,7 @@ export default function Profile() {
               </div>
             ))}
           </div>
+          <h1 className="w-full h-px bg-[#C4ACA4]/15"></h1>
           <div className="flex justify-center mt-5">
             <Button
               disabled={logoutLoading}

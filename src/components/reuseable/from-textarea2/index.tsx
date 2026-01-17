@@ -49,7 +49,7 @@ export function FromTextarea2({
             <Textarea
               id={inputId}
               className={cn(
-                "w-full rounded-md py-3 text-blacks text-sm",
+                "w-full rounded-md py-3 min-h-16 text-blacks text-sm",
                 className
               )}
               placeholder={placeholder}

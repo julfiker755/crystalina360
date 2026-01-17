@@ -84,21 +84,23 @@ export default function Newsletter() {
       <CustomTable
         headers={headers}
         pagination={
-          <ul className="flex items-center flex-wrap justify-between py-3">
-            <li className="flex">
-              Total:
-              <sup className="font-medium text-2xl relative -top-3 px-2 ">
-                {newsletter?.meta?.total || 0}
-              </sup>
-              subscriptions
-            </li>
-            <li>
-              <Pagination
-                onPageChange={(v: any) => updateGlobal("page", v)}
-                {...newsletter?.meta}
-              />
-            </li>
-          </ul>
+          newsletter?.meta?.total > 10 ? (
+            <ul className="flex items-center flex-wrap justify-between py-3">
+              <li className="flex">
+                Total:
+                <sup className="font-medium text-2xl relative -top-3 px-2 ">
+                  {newsletter?.meta?.total || 0}
+                </sup>
+                subscriptions
+              </li>
+              <li>
+                <Pagination
+                  onPageChange={(v: any) => updateGlobal("page", v)}
+                  {...newsletter?.meta}
+                />
+              </li>
+            </ul>
+          ) : null
         }
       >
         {isLoading ? (

@@ -186,7 +186,7 @@ export default function OperatorDetils() {
             <li className="text-xl font-semibold text-gray-900">
               Latest Events
             </li>
-            {events?.length > 0 && (
+            {events?.length > 6 && (
               <li>
                 <Link
                   className="text-sm text-primary cursor-pointer hover:underline"
@@ -204,7 +204,7 @@ export default function OperatorDetils() {
               </Repeat>
             ) : events?.length > 0 ? (
               events?.map((item: any, idx: any) => (
-                <OpEvtCd key={idx} item={item}>
+                <OpEvtCd admin={true} key={idx} item={item}>
                   <div
                     className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-white 
                                opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -247,73 +247,7 @@ export default function OperatorDetils() {
         className="sm:max-w-xl"
       >
         <EventInfo oprator={true} details={isDetails} />
-        {/* <div className="overflow-hidden col-span-1 lg:col-span-2 transition-shadow  rounded-lg p-2">
-
-          <div className="relative h-60 rounded-md bg-muted overflow-hidden">
-            <img
-              src={RandomImg()}
-              alt={"title"}
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          <div className="pt-4 space-y-1">
-            <div className="flex justify-between items-center">
-              <h3 className="text-xl font-semibold  text-foreground">
-                Event title goes here
-              </h3>
-              <Badge variant={"upcoming"}>Upcoming</Badge>
-            </div>
-
-            <p className="text-muted-foreground line-clamp-2">
-              Lorem ipsum dolor sit amet consectetur. Dignissim donec nunc
-              tellus bibendum neque vel ut vulputate id. Aliquet quis enim
-              tristique dictumst. Odio nec semper ornare maecenas eget diam
-              tellus enim id. Mattis erat a dignissim mauris velit aliquam
-              nulla. Auctor vestibulum id et risus in. Facilisi libero vitae
-              neque feugiat volutpat risus eget. Vehicula nec morbi risus
-              sodales tempor. Nibh sem diam dui gravida felis eu molestie
-              euismod. In quisque viverra nisi facilisi tellus.
-            </p>
-            <div className="space-y-3 pt-2">
-              <div className="grid grid-cols-1 lg:grid-cols-2">
-                <ShowBox icon="tiket" name="Ticket sold" text="153 / 300" />
-                <ShowBox icon="price22" name="Ticket price" text="$15.00" />
-              </div>
-              <ShowBox
-                icon="location"
-                name="Location"
-                text="Event location goes here"
-              />
-              <ShowBox
-                icon="ongoing_events"
-                name="Date & Time"
-                text="10 Sep, 2025 at 05:00 PM - 09:00 PM"
-              />
-              <ShowBox
-                icon="price22"
-                name="Total earned from this event"
-                text="$2,295"
-                className="bg-figma-delete px-2 py-2 rounded-md"
-              />
-            </div>
-          </div>
-        </div> */}
       </Modal>
-    </div>
-  );
-}
-
-function ShowBox({ icon, text, name, className }: any) {
-  return (
-    <div
-      className={cn("flex items-center gap-2 text-muted-foreground", className)}
-    >
-      <FavIcon className="size-6" name={icon as any} />
-      <div className="flex flex-col">
-        <span className="text-base text-figma-black">{name}</span>
-        <span className="text-lg text-figma-black font-medium">{text}</span>
-      </div>
     </div>
   );
 }

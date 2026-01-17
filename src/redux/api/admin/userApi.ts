@@ -3,6 +3,7 @@ import { baseApi } from "../baseApi";
 import { buildResponse } from "@/lib";
 
 export const usersApi = baseApi.injectEndpoints({
+  overrideExisting: true,
   endpoints: (build) => ({
     getUsers: build.query({
       query: (arg) => ({
@@ -40,6 +41,17 @@ export const usersApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.a_slg_opertor],
     }),
+    opratorsEventAll: build.query({
+      query: ({ id, arg }) => ({
+        url: `/operator/events/list/${id}`,
+        method: "GET",
+        params: arg,
+      }),
+      providesTags: [tagTypes.o_events_all_list],
+      transformResponse: (res: any) => {
+        return buildResponse(res);
+      },
+    }),
   }),
 });
 
@@ -48,4 +60,5 @@ export const {
   useDeleteUserMutation,
   useGetOperatorQuery,
   useSlgOpratorsQuery,
+  useOpratorsEventAllQuery,
 } = usersApi;
