@@ -22,8 +22,8 @@ export class helpers {
     Cookies.remove(key);
   }
 
-  static hasAuthToken(): string | undefined {
-    return Cookies.get(authKey);
+  static hasAuthToken(): boolean {
+    return !!Cookies.get(authKey);
   }
 
   static decodeToken(token: string): any {

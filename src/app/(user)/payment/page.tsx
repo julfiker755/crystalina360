@@ -17,86 +17,11 @@ import { ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { helpers } from "@/lib";
 export default function Payment() {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleSwipe = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  };
-
   return (
     <div className="container">
       <BackBtn2 className="mt-10 mb-2" label="Payment Procedure" />
-      <div className="w-full max-w-md">
-        {/* Payment Card */}
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-primary backdrop-blur-sm">
-          <div className="bg-[#000000]/5 px-6 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-6 bg-blue-500 rounded flex items-center justify-center">
-                <span className="text-white text-xs font-bold">P</span>
-              </div>
-              <span className="text-white font-bold text-sm">PayPal</span>
-            </div>
-            <span className="text-black text-xs font-semibold">
-              {helpers.formatTime(new Date())}
-            </span>
-          </div>
 
-          {/* Body */}
-          <div className="p-8 flex flex-col items-center gap-6">
-            {/* Status Text */}
-            <p className="text-center text-slate-600 text-sm font-medium">
-              Sending payment to Nayim
-            </p>
-
-            {/* Profile Image */}
-            <div className="relative">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center overflow-hidden border-2 border-gray-100">
-                <div className="w-full h-full bg-gradient-to-br from-slate-400 to-slate-500 flex items-center justify-center">
-                  <span className="text-white text-2xl font-bold">N</span>
-                </div>
-              </div>
-              <div className="absolute bottom-0 right-0 w-6 h-6 bg-green-400 rounded-full border-2 border-white"></div>
-            </div>
-
-            {/* Amount */}
-            <div className="text-center">
-              <p className="text-5xl font-black text-slate-900 tracking-tight">
-                £350
-              </p>
-            </div>
-
-            {/* Swipe Button */}
-            <button
-              onClick={handleSwipe}
-              disabled={isLoading}
-              className="w-full mt-4 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 active:scale-95 disabled:opacity-50 transition-all duration-200 text-white font-bold py-4 px-6 rounded-full flex items-center justify-center gap-3 shadow-lg hover:shadow-xl group"
-            >
-              <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center group-hover:bg-opacity-30 transition-all">
-                <ChevronRight className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-lg">
-                {isLoading ? "Processing..." : "Swipe to pay"}
-              </span>
-            </button>
-
-            {/* Security Info */}
-            <p className="text-center text-xs text-gray-400 mt-2">
-              Secure transaction • Encrypted
-            </p>
-          </div>
-
-          {/* Footer */}
-          <div className="bg-gray-50 px-8 py-4 text-center">
-            <p className="text-xs text-gray-500">
-              Your payment is protected by PayPal's Buyer Protection
-            </p>
-          </div>
-        </div>
-      </div>
-      {/* <div className="w-11/12 lg:max-w-md mx-auto space-y-5 py-10 lg:py-20">
+      <div className="w-11/12 lg:max-w-md mx-auto space-y-5 py-10 lg:py-20">
         <div className="space-y-1">
           <h3 className="text-lg font-medium">Card information</h3>
           <div className="space-y-0 border rounded-md">
@@ -197,7 +122,7 @@ export default function Payment() {
           </Button>
           <Button className="w-full">Pay now</Button>
         </div>
-      </div> */}
+      </div>
       <AppAlert className="mb-10" />
     </div>
   );
