@@ -43,7 +43,7 @@ export default function Navber({ className }: any) {
   ];
   const navUserItems = [
     { name: "Home", href: "/" },
-    { name: "Explore", href: "/events-all" },
+    { name: "Explore", href: "/events" },
     { name: "Booking", href: "/booking" },
     { name: "Contact Us", href: "/contact-us" },
     { name: "Resources", href: "/resources" },

@@ -24,7 +24,7 @@ export default function HeroSec({ role }: any) {
             className: "text-primary bg-white",
             size: "lg",
           })}
-          href="/events-all"
+          href="/events"
         >
           Find Events
         </Link>

@@ -2,13 +2,19 @@
 import React, { useEffect, useRef } from "react";
 import Plyr from "plyr";
 import "plyr/dist/plyr.css";
+import { cn } from "@/lib";
 
 interface VideoPlayerProps {
   src: string;
   poster?: string;
+  className?: string;
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, poster }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({
+  src,
+  poster,
+  className,
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,7 +50,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, poster }) => {
   return (
     <div
       ref={containerRef}
-      className="plyr__video-embed custom-plyr  w-full aspect-video"
+      className={cn("plyr__video-embed custom-plyr w-full", className)}
     >
       <video
         playsInline
