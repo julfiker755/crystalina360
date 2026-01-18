@@ -179,7 +179,7 @@ const CouponStore = ({ setState }: any) => {
         sonner.success(
           "Coupon Added",
           "Coupon stored successfully",
-          "bottom-right"
+          "bottom-right",
         );
         from.reset();
         setState("isStore", false);
@@ -289,7 +289,7 @@ const CouponUpdate = ({ isDetails, setState }: any) => {
         sonner.success(
           "Update Added",
           "Coupon Update successfully",
-          "bottom-right"
+          "bottom-right",
         );
         from.reset();
         setState("isUpdate", false);

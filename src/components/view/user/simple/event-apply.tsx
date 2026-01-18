@@ -1,47 +1,139 @@
-import { useState } from "react";
+"use client";
+import { useState, useEffect } from "react";
 import { Button, Input, Label } from "@/components/ui";
-import { Minus, Plus, ChevronDown } from "lucide-react";
+import { Minus, Plus, ChevronDown, CircleAlert } from "lucide-react";
 import clsx from "clsx";
 import Link from "next/link";
+import { event_t, helpers } from "@/lib";
+import { useCouponCheckMutation } from "@/redux/api/user/userCouponApi";
+import { useFormFields } from "@/hooks";
+import { usePurchaseStoreMutation } from "@/redux/api/user/userEventsApi";
+import { useRouter } from "next/navigation";
 
-const dates = [
-  { date: "Oct 9, 2025", time: "07:00 AM" },
-  { date: "Oct 10, 2025", time: "07:00 AM" },
-  { date: "Oct 11, 2025", time: "07:00 AM" },
-  { date: "Oct 12, 2025", time: "07:00 AM" },
-];
-
-export default function EventApply() {
+export default function EventApply({
+  id,
+  event_type,
+  event_date,
+  event_time,
+  available_tickets,
+  price,
+}: any) {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [items, setItems] = useState<any>([]);
+  const [isDate, setIsDate] = useState(false);
+  const [couponValid, setCouponValid] = useState<boolean>(false);
+  const [couponCheck] = useCouponCheckMutation();
+  const [purchaseStore, { isLoading: purchaseLoading }] =
+    usePurchaseStoreMutation();
+  const from = useFormFields({
+    coupon: "",
+  });
+  const [total, setTotal] = useState(0);
   const [isBooking, setIsBooking] = useState({
     date: "",
     coupon_code: "",
     quantity: 1,
   });
 
-  // handle quantity change
-  const handleQuantity = (type: "plus" | "minus") => {
-    setIsBooking((prev) => ({
-      ...prev,
-      quantity:
-        type === "plus"
-          ? prev.quantity + 1
-          : prev.quantity > 1
-          ? prev.quantity - 1
-          : 1,
-    }));
+  //   ============== discount calculation =============
+  const totalTaka = isBooking.quantity * price;
+  useEffect(() => {
+    setTotal(totalTaka);
+  }, [isBooking.quantity, price]);
+
+  //  =========== handleSubmitCoupon ==========
+  const handleSubmitCoupon = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setCouponValid(true);
+    try {
+      const isValid = from.validateFields({
+        coupon: "Coupon is required",
+      });
+      if (!isValid) return;
+
+      const data = helpers.fromData({
+        coupon_code: from?.formData?.coupon,
+      });
+      const res = await couponCheck(data).unwrap();
+      if (res.status) {
+        const amount = res?.data?.price;
+        const type = res?.data?.coupon_type;
+        //  ===== Apply discount if coupon is present =======
+        if (type === "flat" && amount) {
+          setTotal(totalTaka - amount);
+        } else if (type === "percentage" && amount) {
+          setTotal(totalTaka - (totalTaka * amount) / 100);
+        }
+        setIsBooking((prev) => ({
+          ...prev,
+          coupon_code: res.data.coupon_code,
+        }));
+        from.reset();
+        setCouponValid(true);
+      }
+    } catch (err: any) {
+      from.setError("coupon", err?.data?.message);
+      setCouponValid(false);
+    }
   };
+
+  useEffect(() => {
+    if (event_type === event_t.onetoone || event_type === event_t.retreat) {
+      setItems(event_time);
+      setIsDate(false);
+    } else if (event_type === event_t.group) {
+      setItems(event_date);
+      setIsDate(true);
+    }
+  }, [event_type, event_date, event_time]);
+
+  const handleQuantity = (type: "plus" | "minus") => {
+    setIsBooking((prev) => {
+      if (type === "plus") {
+        return {
+          ...prev,
+          quantity:
+            prev.quantity < available_tickets
+              ? prev.quantity + 1
+              : prev.quantity,
+        };
+      }
+
+      return {
+        ...prev,
+        quantity: prev.quantity > 1 ? prev.quantity - 1 : 1,
+      };
+    });
+  };
+  // =======  handlePurchase ========
+  const handlePurchase = async () => {
+    const data = {
+      event_id: id,
+      ...(isDate
+        ? { event_date: isBooking.date }
+        : { event_time: isBooking.date }),
+      coupon_id: isBooking?.coupon_code,
+      quantity: isBooking.quantity,
+    };
+
+    const res = await purchaseStore(data).unwrap();
+    if (res.status) {
+      router.push(`/ticket-payment/${res?.data?.invoice_no}`);
+    }
+  };
+
   return (
     <div className="space-y-5 pt-10">
-      {/* Accordion Select */}
       <div className="w-full">
-        <Label className="mb-2 block">Select Date</Label>
+        <Label className="mb-2 block text-base">
+          {isDate ? "Select Date" : "Select Time"}
+        </Label>
         <div
           className={clsx(
             "relative bg-figma-input rounded-md p-3 cursor-pointer transition-all duration-200"
           )}
         >
-          {/* Trigger */}
           <div
             onClick={() => setIsOpen(!isOpen)}
             className="flex items-center justify-between"
@@ -57,7 +149,6 @@ export default function EventApply() {
             />
           </div>
 
-          {/* Accordion Content */}
           <div
             className={clsx(
               "overflow-hidden transition-all duration-300",
@@ -65,80 +156,85 @@ export default function EventApply() {
             )}
           >
             <ul className="space-y-2">
-              {dates.map((item, index) => (
-                <li
-                  key={index}
-                  onClick={() => {
-                    setIsBooking((prev) => ({
-                      ...prev,
-                      date: `${item.date} · ${item.time}`,
-                    }));
-                    setIsOpen(false);
-                  }}
-                  className="p-2 rounded-md hover:bg-primary/10 cursor-pointer text-sm"
-                >
-                  {item.date} ·{" "}
-                  <span className="text-muted-foreground">{item.time}</span>
-                </li>
-              ))}
+              {items &&
+                items.map((item: any, index: number) => (
+                  <li
+                    key={index}
+                    onClick={() => {
+                      setIsBooking((prev) => ({
+                        ...prev,
+                        date: item,
+                      }));
+                      setIsOpen(false);
+                    }}
+                    className="p-2 rounded-md hover:bg-primary/10 cursor-pointer text-sm"
+                  >
+                    <span className="text-muted-foreground">{item}</span>
+                  </li>
+                ))}
             </ul>
           </div>
         </div>
       </div>
 
-      {/* Quantity */}
-      <div>
-        <Label className="mb-2">Quantity of Tickets</Label>
-        <ul className="flex items-center">
-          <li>
-            <Button
-              size="icon-sm"
-              className="bg-transparent btn-shadow1"
-              onClick={() => handleQuantity("minus")}
-            >
-              <Minus size={25} className="text-primary" />
-            </Button>
-          </li>
-          <li className="text-lg mx-4 text-figma-black">
-            {isBooking.quantity}
-          </li>
-          <li>
-            <Button
-              size="icon-sm"
-              className="bg-transparent btn-shadow1"
-              onClick={() => handleQuantity("plus")}
-            >
-              <Plus size={25} className="text-primary" />
-            </Button>
-          </li>
-        </ul>
+      <div className="flex items-center justify-between">
+        <div>
+          <Label className="mb-2 font-medium text-base">
+            Quantity of Tickets
+          </Label>
+          <ul className="flex items-center">
+            <li>
+              <Button
+                size="icon-sm"
+                className="bg-transparent btn-shadow1"
+                onClick={() => handleQuantity("minus")}
+              >
+                <Minus size={25} className="text-primary" />
+              </Button>
+            </li>
+            <li className="text-lg mx-4 font-medium text-figma-black">
+              {isBooking.quantity}
+            </li>
+            <li>
+              <Button
+                size="icon-sm"
+                className="bg-transparent btn-shadow1"
+                onClick={() => handleQuantity("plus")}
+              >
+                <Plus size={25} className="text-primary" />
+              </Button>
+            </li>
+          </ul>
+        </div>
+        <h5 className="font-medium text-base">Total:{total}</h5>
       </div>
 
       {/* Coupon */}
-      <div>
-        <Label>Coupon code</Label>
-        <div className="flex items-center space-x-3 mt-3">
-          <Input
-            placeholder="Enter Your Coupon code"
-            className="bg-figma-input border-none"
-            value={isBooking.coupon_code}
-            onChange={(e) =>
-              setIsBooking((prev) => ({
-                ...prev,
-                coupon_code: e.target.value,
-              }))
-            }
-          />
+      <form onSubmit={handleSubmitCoupon} className="mb-10">
+        <Label className="font-medium text-base">Coupon code</Label>
+        <div className="flex items-center space-x-3">
+          <div className="w-full relative">
+            <Input
+              placeholder="Enter Your Coupon code"
+              className="bg-figma-input border-none"
+              value={from.formData.coupon}
+              onChange={(e) => from.handleChange("coupon", e.target.value)}
+            />
+            {from?.errors?.coupon && (
+              <p className="text-red-500 absolute -bottom-5 text-sm left-2  flex justify-end items-center text-right">
+                <span className="mr-1"> {from?.errors?.coupon}</span>{" "}
+              </p>
+            )}
+          </div>
           <Button
+            disabled={couponValid}
             className="bg-transparent border border-primary text-primary"
-            onClick={() => console.log("Coupon:", isBooking.coupon_code)}
           >
             Apply
           </Button>
         </div>
-      </div>
+      </form>
 
-      {/* Buttons */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <Link href="/conversation">
           <Button className="bg-transparent w-full border border-primary text-primary">
@@ -146,9 +242,13 @@ export default function EventApply() {
           </Button>
         </Link>
 
-        <Link href="/payment">
-          <Button className="w-full">Purchase</Button>
-        </Link>
+        <Button
+          disabled={isBooking?.date?.length > 0 ? false : true}
+          onClick={() => handlePurchase()}
+          className="w-full"
+        >
+          {purchaseLoading ? "Waiting..." : "Purchase Now"}
+        </Button>
       </div>
     </div>
   );

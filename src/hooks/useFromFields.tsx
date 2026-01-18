@@ -37,5 +37,22 @@ export function useFormFields<T extends Record<string, any>>(
     return valid;
   };
 
-  return { formData, handleChange, setFormData, errors, validateFields };
+  const setError = (name: keyof T, message: string) => {
+    setErrors({ ...errors, [name]: message });
+  };
+
+  const reset = () => {
+    setFormData(initialState);
+    setErrors(initialErrors);
+  };
+
+  return {
+    formData,
+    handleChange,
+    setFormData,
+    errors,
+    validateFields,
+    setError,
+    reset,
+  };
 }

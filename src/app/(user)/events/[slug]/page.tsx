@@ -1,16 +1,15 @@
 "use client";
 import Avatars from "@/components/reuseable/avater";
 import { BackBtn2 } from "@/components/reuseable/back-btn";
-import { ImgBox } from "@/components/reuseable/Img-box";
 import VideoPlayer from "@/components/reuseable/player";
 import { AppAlert } from "@/components/view/user/reuse";
 import EventApply from "@/components/view/user/simple/event-apply";
 import FavIcon from "@/icon/favIcon";
-import { delivary_t, event_t, helpers, PlaceholderImg, roleKey } from "@/lib";
+import { delivary_t, event_t, helpers, roleKey } from "@/lib";
 import { useSingleEventsQuery } from "@/redux/api/operator/opratorApi";
 import { useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
-import { Clock, MapPin, RectangleEllipsis, Tag } from "lucide-react";
+import { Calendar, Clock, MapPin, RectangleEllipsis, Tag } from "lucide-react";
 import { useParams } from "next/navigation";
 
 export default function EventDetails() {
@@ -38,27 +37,41 @@ export default function EventDetails() {
     sold_tickets,
     organizer,
     available_tickets,
+    ticket_status,
   } = events_all?.data?.event || {};
 
   const NotOnDemand = (item: any) => {
     return delivery_type === delivary_t.ondemand ? null : item;
   };
 
-  console.log(events_all);
+  let elementShow: any;
+  if (event_type === event_t.onetoone || event_type == event_t.retreat) {
+    elementShow = (
+      <div className="flex  gap-2  items-center text-muted-foreground">
+        <Calendar className="text-figma-black" size={22} />
+        <span className="text-base">{event_date?.[0]}</span>
+      </div>
+    );
+  } else if (event_type === event_t.group) {
+    elementShow = (
+      <div className="flex gap-2 items-center text-muted-foreground">
+        <Clock className="text-figma-black" size={20} />
+        <span className="text-base">{event_time?.[0]}</span>
+      </div>
+    );
+  }
 
   return (
     <div className="container">
       <BackBtn2 className="my-6" />
-      <div className="bg-[#FBFBFB] p-3 rounded-xs">
+      <div className="bg-[#FBFBFB] p-3 rounded-xs overflow-clip">
         <div>
           {delivery_type == delivary_t.ondemand ? (
-            <div className="h-100 w-full">
-              <VideoPlayer
-                className="sm:w-full mx-auto xl:w-[60%]"
-                key={id}
-                src={img}
-              />
-            </div>
+            <VideoPlayer
+              className="sm:w-full mx-auto xl:w-[60%]"
+              key={id}
+              src={img}
+            />
           ) : (
             <div className="relative h-100 max-w-4xl mx-auto overflow-hidden rounded-md ">
               <img
@@ -95,49 +108,66 @@ export default function EventDetails() {
             </div>
           </li>
         </ul>
-        <div>
+        <div className="flex items-center justify-between mb-4">
           <h2 className="font-semibold text-lg">{event_title}</h2>
 
-          <div className="w-fit flex items-center  bg-[#FAD1D2] py-2 rounded-sm px-2">
-            <div className="pt-0.5">
-              <span className="relative flex items-center size-3">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#DD1938] opacity-75"></span>
-                <span className="relative inline-flex size-3 rounded-full bg-[#DD1938] "></span>
+          {ticket_status === "sold_out" && (
+            <div className="w-fit flex items-center  bg-[#FAD1D2] py-px rounded-sm px-2">
+              <div className="pt-0.5">
+                <span className="relative flex items-center size-3">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#DD1938] opacity-75"></span>
+                  <span className="relative inline-flex size-3 rounded-full bg-[#DD1938] "></span>
+                </span>
+              </div>
+              <span className="text-[#DD1938] font-medium ml-2">
+                Almost sold out
               </span>
             </div>
-            <span className="text-[#DD1938] font-semibold text-lg ml-2">
-              Almost sold out
-            </span>
-          </div>
-          <p className="text-muted-foreground">{event_description}</p>
+          )}
         </div>
-
-        <div className="space-y-1 text-sm mt-5">
-          <div className="flex gap-2 items-center text-muted-foreground">
-            <Tag size={20} />
-            <span className="text-base">{price}</span>
+        <p className="text-muted-foreground">{event_description}</p>
+        <div className="space-y-2 text-sm mt-5 *:text-figma-black *:font-medium">
+          {NotOnDemand(
+            <div className="flex gap-2 items-center text-muted-foreground">
+              <Tag className="text-figma-black" size={23} />
+              <span className="text-base text-[#A6A996] font-medium">
+                {price}
+              </span>
+            </div>
+          )}
+          <div className="flex gap-2 items-center  text-muted-foreground">
+            <MapPin className="text-figma-black" size={23} />
+            <span className="text-base font-medium">{`${city}, ${province}, ${region}, ${country}`}</span>
           </div>
-          <div className="flex gap-2 items-center text-muted-foreground">
-            <MapPin size={20} />
-            <span className="text-base">{`${city}, ${province}, ${region}, ${country}`}</span>
-          </div>
-          <div className="flex gap-2 items-center text-muted-foreground">
-            <Clock size={20} />
-            <span className="text-base">9:60 AM</span>
-          </div>
+          {NotOnDemand(elementShow)}
           {NotOnDemand(
             parseInt(available_tickets) > 0 && (
               <div className="flex gap-2 items-center text-muted-foreground">
-                <RectangleEllipsis size={20} />
+                <FavIcon className="size-5" name="user_ticket_sold" />
                 <span className="text-base">
-                  Available: {available_tickets}
+                  Available:{" "}
+                  {
+                    <span className="font-medium text-primary">
+                      {available_tickets}
+                    </span>
+                  }
                 </span>
               </div>
             )
           )}
         </div>
-
-        {user.role == roleKey.user && <EventApply />}
+        {NotOnDemand(
+          ticket_status == "available" && (
+            <EventApply
+              id={id}
+              event_type={event_type}
+              event_time={event_time}
+              event_date={event_date}
+              available_tickets={available_tickets}
+              price={price}
+            />
+          )
+        )}
       </div>
       <AppAlert className="mb-10" />
     </div>

@@ -5,6 +5,15 @@ import { buildResponse } from "@/lib";
 export const userEventsApi = baseApi.injectEndpoints({
   overrideExisting: true,
   endpoints: (build) => ({
+    getPublicEvents: build.query({
+      query: (arg) => ({
+        url: "/public/events",
+        method: "GET",
+        params: arg,
+      }),
+      providesTags: [tagTypes.u_public_events_all],
+
+    }),
     getUserEvents: build.query({
       query: (arg) => ({
         url: "/events",
@@ -35,6 +44,20 @@ export const userEventsApi = baseApi.injectEndpoints({
         return buildResponse(res);
       },
     }),
+    purchaseStore: build.mutation({
+      query: (data: any) => ({
+        url: "/ticket",
+        method: "POST",
+        data,
+      }),
+    }),
+    ticketDetails: build.query({
+      query: (id) => ({
+        url: `/ticket/details/${id}`,
+        method: "GET",
+      }),
+    }),
+
   }),
 });
 
@@ -42,4 +65,7 @@ export const {
   useGetUserEventsQuery,
   useWishEventsMutation,
   useGetMyWishQuery,
+  useGetPublicEventsQuery,
+  usePurchaseStoreMutation,
+  useTicketDetailsQuery
 } = userEventsApi;

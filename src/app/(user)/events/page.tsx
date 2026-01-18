@@ -27,6 +27,7 @@ export default function ExploreAll() {
   const [global, updateGlobal] = useGlobalState(intGlobalState);
   const [value] = useDebounce(global.search, 1000);
   const { data: eventsItem, isLoading } = useGetUserEventsQuery({
+    per_page:9,
     page: global?.page,
     ...(value && { search: value }),
   });

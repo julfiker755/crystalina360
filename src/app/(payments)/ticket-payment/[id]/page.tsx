@@ -1,17 +1,21 @@
 "use client";
 import Avatars from "@/components/reuseable/avater";
-import { authKey, helpers } from "@/lib";
+import { authKey, helpers, roleKey } from "@/lib";
+import { useTicketDetailsQuery } from "@/redux/api/user/userEventsApi";
 import { useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
+import { IdParams } from "@/types";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { redirect, useRouter } from "next/navigation";
+import React, { use, useEffect, useState } from "react";
 
-export default function Payments() {
+export default function Payments({ params }: IdParams) {
+  const { id } = use(params);
   const [isLoading, setIsLoading] = useState(false);
   const token = helpers.hasAuthToken();
   const { user } = useAppSelector((state: AppState) => state.auth);
   const router = useRouter();
+  const { data: ticketData } = useTicketDetailsQuery(id);
 
   const handleSwipe = () => {
     setIsLoading(true);
@@ -21,12 +25,10 @@ export default function Payments() {
   };
 
   useEffect(() => {
-    if (!token) {
-      router.back();
+    if (!token || !id) {
+      redirect("/");
     }
-  }, [token]);
-
-  console.log(user.avatar);
+  }, [token, id]);
 
   return (
     <div className="h-screen w-screen flex flex-col items-center justify-center">
@@ -46,10 +48,10 @@ export default function Payments() {
 
           <div className="p-8 flex flex-col items-center gap-6">
             <p className="text-center text-slate-600 text-sm font-medium">
-              Sending payment to {user?.name}
+              Sending Payment to {user?.name} via PayPal
             </p>
             <Avatars
-              className="size-20"
+              className="size-20 2xl:size-25"
               src={user?.avatar || "/avater.png"}
               fallback={user?.name}
               alt="avater"
@@ -58,7 +60,7 @@ export default function Payments() {
             {/* Amount */}
             <div className="text-center">
               <p className="text-5xl font-black text-slate-900 tracking-tight">
-                £350
+                € {Math.floor(ticketData?.data?.amount) || 0}
               </p>
             </div>
 
