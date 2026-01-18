@@ -23,18 +23,13 @@ export default function EventDetails() {
     event_description,
     event_type,
     delivery_type,
-    status,
     city,
     province,
     region,
     country,
-    ticket_quantity,
     price,
-    revenue,
-    ticket_sold_stats,
     event_date,
     event_time,
-    sold_tickets,
     organizer,
     available_tickets,
     ticket_status,
@@ -133,7 +128,7 @@ export default function EventDetails() {
               <span className="text-base text-[#A6A996] font-medium">
                 {price}
               </span>
-            </div>
+            </div>,
           )}
           <div className="flex gap-2 items-center  text-muted-foreground">
             <MapPin className="text-figma-black" size={23} />
@@ -153,21 +148,22 @@ export default function EventDetails() {
                   }
                 </span>
               </div>
-            )
+            ),
           )}
         </div>
-        {NotOnDemand(
-          ticket_status == "available" && (
-            <EventApply
-              id={id}
-              event_type={event_type}
-              event_time={event_time}
-              event_date={event_date}
-              available_tickets={available_tickets}
-              price={price}
-            />
-          )
-        )}
+        {user.role == roleKey.user &&
+          NotOnDemand(
+            ticket_status == "available" && (
+              <EventApply
+                id={id}
+                event_type={event_type}
+                event_time={event_time}
+                event_date={event_date}
+                available_tickets={available_tickets}
+                price={price}
+              />
+            ),
+          )}
       </div>
       <AppAlert className="mb-10" />
     </div>

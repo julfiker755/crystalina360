@@ -4,8 +4,8 @@ import React from "react";
 
 export default function NotFoundPage() {
   return (
-    <section>
-      <div className="py-8 px-4 mx-auto  lg:py-16 lg:px-6">
+    <section className="h-screen w-screen flex flex-col items-center justify-center">
+      <div>
         <div className="mx-auto max-w-screen-sm text-center">
           <h1 className="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-figma-primary">
             404
@@ -15,9 +15,9 @@ export default function NotFoundPage() {
             Something's missing.
           </p>
 
-          <p className="mb-4 text-lg font-light text-gray-500">
+          <p className="mb-4 text-article">
             Sorry, we can't find that page. You'll find lots to explore on the
-            home page.
+            home page
           </p>
 
           <Link href={"/"}>

@@ -31,13 +31,13 @@ export default function Profile() {
       id: 1,
       icon: "completed",
       title: "Total Events",
-      count: profile?.total_events,
+      count: profile?.data?.total_events,
     },
     {
       id: 2,
       icon: "cost",
       title: "Total revenue",
-      count: profile?.total_revenue,
+      count: profile?.data?.total_revenue,
     },
     {
       id: 3,

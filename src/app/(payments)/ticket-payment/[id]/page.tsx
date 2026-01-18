@@ -1,28 +1,24 @@
 "use client";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import Avatars from "@/components/reuseable/avater";
-import { authKey, helpers, roleKey } from "@/lib";
+import { envs, helpers } from "@/lib";
 import { useTicketDetailsQuery } from "@/redux/api/user/userEventsApi";
 import { useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
 import { IdParams } from "@/types";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { redirect, useRouter } from "next/navigation";
 import React, { use, useEffect, useState } from "react";
+import { Button } from "@/components/ui";
+// import { usePaymentInitQuery } from "@/redux/api/user/paymetsApi";
 
 export default function Payments({ params }: IdParams) {
   const { id } = use(params);
-  const [isLoading, setIsLoading] = useState(false);
   const token = helpers.hasAuthToken();
   const { user } = useAppSelector((state: AppState) => state.auth);
   const router = useRouter();
   const { data: ticketData } = useTicketDetailsQuery(id);
-
-  const handleSwipe = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  };
+  // const { data: paymentInfo } = usePaymentInitQuery(id);
 
   useEffect(() => {
     if (!token || !id) {
@@ -65,20 +61,21 @@ export default function Payments({ params }: IdParams) {
             </div>
 
             {/* Swipe Button */}
-            <button
-              onClick={handleSwipe}
-              disabled={isLoading}
-              className="w-full mt-4 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 active:scale-95 disabled:opacity-50 transition-all duration-200 text-white font-bold py-4 px-6 rounded-full flex items-center justify-center gap-3 shadow-lg hover:shadow-xl group"
-            >
-              <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center group-hover:bg-opacity-30 transition-all">
-                <ChevronRight className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-lg">
-                {isLoading ? "Processing..." : "Swipe to pay"}
-              </span>
-            </button>
+            {/* <a href={paymentInfo?.data?.link}>
+              <Button>PayPal</Button>
+            </a> */}
 
-            {/* Security Info */}
+            {/* <PayPalScriptProvider
+              options={{
+                clientId: envs.paypal_client_id as string,
+              }}
+            >
+              <PayPalButtons
+                style={{ layout: "vertical", shape: "rect" }}
+                fundingSource="paypal"
+              />
+            </PayPalScriptProvider> */}
+
             <p className="text-center text-xs text-gray-400 mt-2">
               Secure transaction • Encrypted
             </p>

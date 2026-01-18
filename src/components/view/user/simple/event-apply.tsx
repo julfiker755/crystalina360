@@ -9,6 +9,8 @@ import { useCouponCheckMutation } from "@/redux/api/user/userCouponApi";
 import { useFormFields } from "@/hooks";
 import { usePurchaseStoreMutation } from "@/redux/api/user/userEventsApi";
 import { useRouter } from "next/navigation";
+import { usePaymentInitMutation } from "@/redux/api/user/paymetsApi";
+import { useOpenPopup } from "@/hooks/useOpenPopup";
 
 export default function EventApply({
   id,
@@ -106,20 +108,32 @@ export default function EventApply({
       };
     });
   };
-  // =======  handlePurchase ========
-  const handlePurchase = async () => {
-    const data = {
-      event_id: id,
-      ...(isDate
-        ? { event_date: isBooking.date }
-        : { event_time: isBooking.date }),
-      coupon_id: isBooking?.coupon_code,
-      quantity: isBooking.quantity,
-    };
 
-    const res = await purchaseStore(data).unwrap();
-    if (res.status) {
-      router.push(`/ticket-payment/${res?.data?.invoice_no}`);
+  const [paymentInit] = usePaymentInitMutation();
+  const [paymentLoading, setIsPaymentLoading] = useState(false);
+  const handlePurchase = async () => {
+    setIsPaymentLoading(true);
+    try {
+      const data = {
+        event_id: id,
+        ...(isDate
+          ? { event_date: isBooking.date }
+          : { event_time: isBooking.date }),
+        coupon_id: isBooking?.coupon_code,
+        quantity: isBooking.quantity,
+      };
+
+      const res = await purchaseStore(data).unwrap();
+      if (res.status) {
+        const res2 = await paymentInit({
+          invoice_no: res?.data.invoice_no,
+        }).unwrap();
+        //  ========= link ========
+        const paypalLink = res2.data?.link;
+        useOpenPopup(paypalLink, "PayPal Payment", 600, 600);
+      }
+    } finally {
+      setIsPaymentLoading(false);
     }
   };
 
@@ -131,7 +145,7 @@ export default function EventApply({
         </Label>
         <div
           className={clsx(
-            "relative bg-figma-input rounded-md p-3 cursor-pointer transition-all duration-200"
+            "relative bg-figma-input rounded-md p-3 cursor-pointer transition-all duration-200",
           )}
         >
           <div
@@ -144,7 +158,7 @@ export default function EventApply({
             <ChevronDown
               className={clsx(
                 "w-5 h-5 text-muted-foreground transition-transform",
-                isOpen && "rotate-180"
+                isOpen && "rotate-180",
               )}
             />
           </div>
@@ -152,7 +166,7 @@ export default function EventApply({
           <div
             className={clsx(
               "overflow-hidden transition-all duration-300",
-              isOpen ? "max-h-60 mt-3 border-t" : "max-h-0"
+              isOpen ? "max-h-60 mt-3 border-t" : "max-h-0",
             )}
           >
             <ul className="space-y-2">
@@ -247,7 +261,7 @@ export default function EventApply({
           onClick={() => handlePurchase()}
           className="w-full"
         >
-          {purchaseLoading ? "Waiting..." : "Purchase Now"}
+          {paymentLoading ? "Waiting for payment..." : "Purchase Now"}
         </Button>
       </div>
     </div>

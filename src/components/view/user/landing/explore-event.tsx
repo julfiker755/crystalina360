@@ -6,8 +6,8 @@ import AuthModalController from "../../common/auth-controller";
 import EventCard, {
   SkeletonEventCard,
 } from "@/components/reuseable/event-card";
-import { Button} from "@/components/ui";
-import { useGetPublicEventsQuery} from "@/redux/api/user/userEventsApi";
+import { Button } from "@/components/ui";
+import { useGetPublicEventsQuery } from "@/redux/api/user/userEventsApi";
 import { Repeat } from "@/components/reuseable/repeat";
 import { AppState } from "@/redux/store";
 import Link from "next/link";
@@ -16,7 +16,7 @@ import { roleKey } from "@/lib";
 export default function ExploreEvents() {
   const dispatch = useAppDispatch();
   const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
-  const {data:eventsItem, isLoading}=useGetPublicEventsQuery({})
+  const { data: eventsItem, isLoading } = useGetPublicEventsQuery({});
 
   return (
     <div id="explore" className="pt-17  container">
@@ -29,7 +29,7 @@ export default function ExploreEvents() {
         ) : (
           eventsItem?.data?.slice(0, 6)?.map((item: any) => (
             <Link key={item.id} href={`/events/${item?.id}`}>
-              <EventCard wish={true} item={item} />
+              <EventCard wish={false} item={item} />
             </Link>
           ))
         )}
