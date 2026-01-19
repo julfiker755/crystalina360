@@ -71,7 +71,9 @@ export default function BookingDetails() {
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-5">
             <Link href="/conversation">
-              <Button className="bg-white border w-full">Send Message</Button>
+              <Button className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]">
+                Send Message
+              </Button>
             </Link>
 
             {/* <Button onClick={() => setIsReview(!isReview)}>

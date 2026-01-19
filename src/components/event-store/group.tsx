@@ -18,12 +18,7 @@ import { useEffect, useState } from "react";
 import { UploadBtn } from "@/components/reuseable/btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  durationItem,
-  getSchema2,
-  getValuesGroup,
-  purposeItem,
-} from "./element/default";
+import { getSchema2, getValuesGroup } from "./element/default";
 import MultiDate from "./element/multi-date";
 import { ErrorInput } from "../reuseable/error";
 import { InputTime } from "../reuseable/timeInput";
@@ -35,7 +30,12 @@ import EmailCollent from "./element/email-collect";
 import { useStoreEventsMutation } from "@/redux/api/operator/opratorApi";
 import sonner from "../reuseable/sonner";
 import { useRouter } from "next/navigation";
-import { disciplineOptions } from "../dummy-data";
+import {
+  delivaryOptions,
+  disciplineOptions,
+  durationOptions,
+  purposeItem,
+} from "../dummy-data";
 
 const initialState = {
   holistic: false,
@@ -147,11 +147,7 @@ export default function GroupStore() {
                 Select Delivery Type
               </label>
               <div className="flex gap-3">
-                {[
-                  { value: "offline", label: "Offline", icon: "offline" },
-                  { value: "online", label: "Online", icon: "online" },
-                  { value: "ondemand", label: "On demand", icon: "ondemand" },
-                ]?.map((item) => (
+                {delivaryOptions?.map((item) => (
                   <Button
                     key={item.value}
                     onClick={() => {
@@ -269,7 +265,7 @@ export default function GroupStore() {
                 <PersonLimit read={true} />
                 <TicketQuantity from={from} read={true} />
                 <FromSelect2
-                  items={durationItem}
+                  items={durationOptions}
                   name="event_duration"
                   placeholder="-Select duration-"
                   className="rounded-md"

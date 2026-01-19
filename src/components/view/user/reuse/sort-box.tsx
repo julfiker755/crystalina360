@@ -4,40 +4,32 @@ import { childrenProps } from "@/types";
 import { useState } from "react";
 
 type FilterOption =
-  | "recommended"
-  | "ascending-price"
-  | "last-spots"
-  | "organized-olistami"
-  | "descending-price"
-  | "best-reviews"
+  | "recommendation"
+  | "olistami"
+  | "ascPrice"
+  | "descPrice"
+  | "seller"
+  | "reviews"
   | "date"
-  | "top-sellers";
+  | "last_spots";
 
 const filterOptions = [
-  { id: "recommended", label: "Recommended" },
-  { id: "ascending-price", label: "Ascending Price" },
-  { id: "last-spots", label: "Last spots" },
-  { id: "organized-olistami", label: "Organized by Olistami" },
-  { id: "descending-price", label: "Descending Price" },
-  { id: "best-reviews", label: "Best reviews" },
+  { id: "recommendation", label: "Recommendation" },
+  { id: "olistami", label: "Olistami" },
+  { id: "ascPrice", label: "Asc Price" },
+  { id: "descPrice", label: "Desc Price" },
+  { id: "seller", label: "Seller" },
+  { id: "reviews", label: "Reviews" },
   { id: "date", label: "Date" },
-  { id: "top-sellers", label: "Top sellers" },
+  { id: "last_spots", label: "Last spots" },
 ];
 
-export function SortBox({ children }: childrenProps) {
-  const [selectedFilters, setSelectedFilters] = useState<FilterOption[]>([]);
+interface sortBoxProps extends childrenProps {
+  handleSubmit: (filters: string) => void;
+}
 
-  const handleFilterChange = (filterId: FilterOption) => {
-    setSelectedFilters((prev) =>
-      prev.includes(filterId)
-        ? prev.filter((id) => id !== filterId)
-        : [...prev, filterId]
-    );
-  };
-
-  const handleSubmit = () => {
-    console.log("[v0] Selected filters submitted:", selectedFilters);
-  };
+export function SortBox({ children, handleSubmit }: sortBoxProps) {
+  const [selectedFilters, setSelectedFilters] = useState("");
 
   return (
     <>
@@ -49,9 +41,7 @@ export function SortBox({ children }: childrenProps) {
             <Checkbox
               id={option.id}
               checked={selectedFilters.includes(option.id as FilterOption)}
-              onCheckedChange={() =>
-                handleFilterChange(option.id as FilterOption)
-              }
+              onCheckedChange={() => setSelectedFilters(option.id)}
             />
             <Label htmlFor={option.id} className="cursor-pointer font-normal">
               {option.label}
@@ -60,7 +50,10 @@ export function SortBox({ children }: childrenProps) {
         ))}
       </div>
       <div className="space-y-3">
-        <Button className="w-full" onClick={handleSubmit}>
+        <Button
+          className="w-full"
+          onClick={() => handleSubmit(selectedFilters)}
+        >
           Search
         </Button>
         {children}

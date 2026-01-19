@@ -276,6 +276,24 @@ export const disciplineOptions = [
   { label: "Other", value: "Other" },
 ];
 
+export const tagsOptions = [
+  "Stress relief",
+  "Emotional healing",
+  "Creativity",
+  "Self Discovery",
+  "Women's wellness",
+  "Spiritual growth",
+  "Sleep improvement",
+  "Inner child healing",
+  "Energy balancing",
+  "Physical recovery",
+  "Detox",
+  "Men's wellness",
+  "Grief support",
+  "Chakra balancing",
+  "Burnout recovery",
+];
+
 export const accessibilityItem = [
   "Wheelchair accessible",
   "Quiet environment",
@@ -306,3 +324,90 @@ export const eventItem = [
     label: "Retreat",
   },
 ];
+
+export const delivaryOptions = [
+  { value: "offline", label: "Offline", icon: "offline" },
+  { value: "online", label: "Online", icon: "online" },
+  { value: "ondemand", label: "On demand", icon: "ondemand" },
+];
+
+export const purposeItem = [
+  { value: "educational", label: "Educational" },
+  { value: "experimental", label: "Experiential" },
+  { value: "mixed", label: "Mixed" },
+];
+
+export const durationOptions = [
+  { value: "less_than_30_minutes", label: "Less than 30 minutes" },
+  { value: "30_60_minutes", label: "30-60 minutes" },
+  { value: "1_2_hours", label: "1-2 hours" },
+  { value: "half_day", label: "Half day" },
+  { value: "one_day", label: "One day" },
+  { value: "two_days", label: "Two days" },
+  { value: "three_days", label: "Three days" },
+  { value: "four_days", label: "Four days" },
+  { value: "five_days", label: "Five days" },
+  { value: "one_week", label: "One week" },
+  { value: "more_than_one_week", label: "More than one week" },
+];
+
+// country options
+export const countryOptions = [
+  { label: "USA", value: "America" },
+  { label: "Canada", value: "Canada" },
+  { label: "Australia", value: "Australia" },
+  { label: "United Kingdom", value: "United Kingdom" },
+  { label: "Germany", value: "Germany" },
+  { label: "France", value: "France" },
+  { label: "India", value: "India" },
+  { label: "Japan", value: "Japan" },
+  { label: "South Korea", value: "South Korea" },
+  { label: "Brazil", value: "Brazil" },
+];
+
+export const regionOptions = [
+  { label: "California", value: "California" },
+  { label: "Texas", value: "Texas" },
+  { label: "Ontario", value: "Ontario" },
+  { label: "Quebec", value: "Quebec" },
+  { label: "New York", value: "New York" },
+  { label: "Florida", value: "Florida" },
+  { label: "London", value: "London" },
+  { label: "Bavaria", value: "Bavaria" },
+  { label: "Tokyo", value: "Tokyo" },
+  { label: "São Paulo", value: "São Paulo" },
+];
+
+export const provinceOptions = [
+  { label: "British Columbia", value: "British Columbia" },
+  { label: "Quebec", value: "Quebec" },
+  { label: "Victoria", value: "Victoria" },
+  { label: "Ontario", value: "Ontario" },
+  { label: "Alberta", value: "Alberta" },
+  { label: "Nova Scotia", value: "Nova Scotia" },
+  { label: "Manitoba", value: "Manitoba" },
+  { label: "Sichuan", value: "Sichuan" },
+  { label: "Fujian", value: "Fujian" },
+  { label: "State of São Paulo", value: "Paulo" },
+];
+
+export const cityOptions = [
+  { label: "Los Angeles", value: "Los Angeles" },
+  { label: "Toronto", value: "Toronto" },
+  { label: "Melbourne", value: "Melbourne" },
+  { label: "Vancouver", value: "Vancouver" },
+  { label: "Paris", value: "Paris" },
+  { label: "Berlin", value: "Berlin" },
+  { label: "New York City", value: "New York" },
+  { label: "Tokyo", value: "Tokyo" },
+  { label: "São Paulo", value: "São Paulo" },
+  { label: "Seoul", value: "Seoul" },
+];
+
+
+export  const dateOption=[
+  {label:'Today',value:"today"},
+  {label:"Tomorrow",value:"tomorrow"},
+  {label:"This Month",value:"this_month"},
+  {label:"Next Month",value:"next_month"}
+]

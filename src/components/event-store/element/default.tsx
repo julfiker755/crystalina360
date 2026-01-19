@@ -72,28 +72,6 @@ export const getSchema = (isDelivery: string) => {
   if (isDelivery === "ondemand") return demand_sc;
 };
 
-export const purposeItem = [
-  { value: "educational", label: "Educational" },
-  { value: "experimental", label: "Experiential" },
-  { value: "mixed", label: "Mixed" },
-];
-
-export const durationItem = [
-  {
-    label: "Less than 30 minutes",
-    value: "less-than-30-minutes",
-  },
-  { label: "30-60 minutes", value: "30-60-minutes" },
-  { label: "Half day", value: "half-day" },
-  { label: "One day", value: "one-day" },
-  { label: "Two days", value: "two-days" },
-  { label: "One week", value: "one-week" },
-  {
-    label: "More than one week",
-    value: "more-than-one-week",
-  },
-];
-
 export const getValuesGroup = (isDelivery: string, ticket: string) => {
   if (isDelivery == "offline") {
     return {

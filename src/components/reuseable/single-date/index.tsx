@@ -24,6 +24,7 @@ export function SingleCalendar({ onChange, className, defaultDate }: any) {
     onChange?.(selectedDate);
   };
 
+
   return (
     <div className="flex flex-col gap-3">
       <Popover open={open} onOpenChange={setOpen}>
@@ -61,6 +62,7 @@ export function SingleCalendar({ onChange, className, defaultDate }: any) {
             //     "cursor-pointer size-8 grid place-items-center rounded-md bg-[#575757]/20 text-white",
             // }}
             onSelect={handleSelectDate}
+            disabled={(date: Date) => date.getTime() < new Date().setHours(0, 0, 0, 0)}
           />
         </PopoverContent>
       </Popover>

@@ -175,7 +175,7 @@ export default function Promotions() {
             </div>
           ))
         )}
-        {}
+        { }
       </div>
       {data?.promo?.meta?.total > 10 && (
         <ul className="flex items-center flex-wrap justify-between py-3">

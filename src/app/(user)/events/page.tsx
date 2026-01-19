@@ -26,11 +26,19 @@ export default function ExploreAll() {
   const [isSort, setIsSort] = useState(false);
   const [global, updateGlobal] = useGlobalState(intGlobalState);
   const [value] = useDebounce(global.search, 1000);
+  const [sortValue, setSortValue] = useState("");
   const { data: eventsItem, isLoading } = useGetUserEventsQuery({
-    per_page:9,
+    per_page: 9,
     page: global?.page,
     ...(value && { search: value }),
+    ...(sortValue && { keyword: sortValue }),
   });
+
+  const handleSubmit = (value: string) => {
+    setIsSort(false);
+    setSortValue(value);
+  };
+
   return (
     <div className="container">
       <ul className="flex justify-between flex-wrap items-center pt-10 pb-5">
@@ -45,7 +53,7 @@ export default function ExploreAll() {
           >
             <FavIcon className="size-10" name="arrowUpDown" />
           </h1>
-          <Link href="/events-filter">
+          <Link href="/events-filter/all">
             <h1 className="bg-figma-input icon">
               <FavIcon className="size-10" name="filter" />
             </h1>
@@ -79,7 +87,7 @@ export default function ExploreAll() {
       <AppAlert />
       {/*  =============  sort hare ========= */}
       <Modal2 open={isSort} setIsOpen={setIsSort}>
-        <SortBox>
+        <SortBox handleSubmit={handleSubmit}>
           <Button
             onClick={() => setIsSort(false)}
             className="w-full text-red-500 border  bg-transparent"

@@ -90,7 +90,7 @@ export default function Profile() {
                     className="w-full"
                     defaultValue="item-1"
                   >
-                    {fqa?.data?.map((item: any, index: any) => (
+                    {fqa?.data?.slice(0, 5)?.map((item: any, index: any) => (
                       <AccordionItem key={index} value={`item-${index + 1}`}>
                         <AccordionTrigger className="text-lg cursor-pointer">
                           {item.question}

@@ -57,7 +57,13 @@ export const userEventsApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
-
+    filterEvents: build.mutation({
+      query: (data: any) => ({
+        url: "/event/search",
+        method: "POST",
+        data,
+      }),
+    }),
   }),
 });
 
@@ -67,5 +73,6 @@ export const {
   useGetMyWishQuery,
   useGetPublicEventsQuery,
   usePurchaseStoreMutation,
-  useTicketDetailsQuery
+  useTicketDetailsQuery,
+  useFilterEventsMutation
 } = userEventsApi;

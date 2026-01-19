@@ -26,19 +26,6 @@ export const useOpenPopup = (
   const left = Math.max(0, (width - w) / 2 + dualScreenLeft);
   const top = Math.max(0, (height - h) / 2 + dualScreenTop);
 
-  // Create an overlay to block interaction with the rest of the page
-  const overlay = document.createElement("div");
-  overlay.id = "popup-overlay";
-  overlay.style.position = "fixed";
-  overlay.style.top = "0";
-  overlay.style.left = "0";
-  overlay.style.width = "100%";
-  overlay.style.height = "100%";
-  overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-  overlay.style.zIndex = "9999"; // Make sure it's on top
-  overlay.style.display = "block";
-  document.body.appendChild(overlay);
-
   // Open the popup window
   const newWindow = window.open(
     url,
@@ -52,10 +39,10 @@ export const useOpenPopup = (
     `,
   );
 
-  // Close the overlay when the popup window is closed
+  // Close the overlay when the popup window is closed (if overlay was previously used)
   if (newWindow) {
     newWindow.onunload = () => {
-      overlay.style.display = "none"; // Hide the overlay when the window is closed
+      // No overlay here, so nothing to hide
     };
 
     // Focus the popup window (if possible)

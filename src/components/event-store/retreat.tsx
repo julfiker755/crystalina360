@@ -18,12 +18,7 @@ import { useEffect, useState } from "react";
 import { UploadBtn } from "@/components/reuseable/btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  durationItem,
-  getSchema,
-  getValuesOne,
-  purposeItem,
-} from "./element/default";
+import { getSchema, getValuesOne } from "./element/default";
 import TimeSelect from "./element/time-select";
 import MultiDate from "./element/multi-date";
 import { ErrorInput } from "../reuseable/error";
@@ -35,7 +30,7 @@ import EmailCollent from "./element/email-collect";
 import { useStoreEventsMutation } from "@/redux/api/operator/opratorApi";
 import { useRouter } from "next/navigation";
 import sonner from "../reuseable/sonner";
-import { disciplineOptions } from "../dummy-data";
+import { disciplineOptions, durationOptions, purposeItem } from "../dummy-data";
 
 const initialState = {
   holistic: false,
@@ -268,7 +263,7 @@ export default function RetreatStore() {
             <PersonLimit read={true} />
             <TicketQuantity from={from} read={true} />
             <FromSelect2
-              items={durationItem}
+              items={durationOptions}
               name="event_duration"
               placeholder="-Select duration-"
               className="rounded-md"

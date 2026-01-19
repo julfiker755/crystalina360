@@ -84,7 +84,7 @@ export function MultiSelectGrid({
                 <ChevronDown
                   className={cn(
                     "h-4 w-4 text-muted-foreground mt-1 ml-5 transition-transform duration-300",
-                    isOpen && "rotate-180"
+                    isOpen && "rotate-180",
                   )}
                 />
               </div>
@@ -96,14 +96,14 @@ export function MultiSelectGrid({
                 "grid transition-all duration-300 ease-in-out",
                 isOpen
                   ? "grid-rows-[1fr] opacity-100 mt-4"
-                  : "grid-rows-[0fr] opacity-0 mt-0"
+                  : "grid-rows-[0fr] opacity-0 mt-0",
               )}
             >
               <div className="overflow-hidden">
                 <div
                   className={cn(
                     "rounded-lg border bg-card p-6 transition-transform duration-300 ease-in-out",
-                    isOpen ? "translate-y-0" : "-translate-y-4"
+                    isOpen ? "translate-y-0" : "-translate-y-4",
                   )}
                 >
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
