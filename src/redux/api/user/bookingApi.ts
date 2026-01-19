@@ -15,7 +15,29 @@ export const bookingsApi = baseApi.injectEndpoints({
                 return buildResponse(res);
             },
         }),
+        bookingsDetails: build.query({
+            query: (id) => ({
+                url: `/booking/details/${id}`,
+                method: "GET",
+            }),
+            providesTags: [tagTypes.u_booking_details],
+        }),
+        getInvoice: build.query({
+            query: (id) => ({
+                url: `/invoice/${id}`,
+                method: "GET",
+            }),
+        }),
+
+        storeRating: build.mutation({
+            query: (data: any) => ({
+                url: "/rating",
+                method: "POST",
+                data,
+            }),
+            invalidatesTags: [tagTypes.u_booking_details],
+        }),
     }),
 });
 
-export const { useGetBookingsQuery } = bookingsApi
+export const { useLazyGetInvoiceQuery, useGetBookingsQuery, useBookingsDetailsQuery, useStoreRatingMutation } = bookingsApi

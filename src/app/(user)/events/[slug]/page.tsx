@@ -9,7 +9,7 @@ import { delivary_t, event_t, helpers, roleKey } from "@/lib";
 import { useSingleEventsQuery } from "@/redux/api/operator/opratorApi";
 import { useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
-import { Calendar, Clock, MapPin, RectangleEllipsis, Tag } from "lucide-react";
+import { Calendar, Clock, MapPin, Tag } from "lucide-react";
 import { useParams } from "next/navigation";
 
 export default function EventDetails() {
