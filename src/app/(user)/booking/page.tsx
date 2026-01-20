@@ -19,6 +19,7 @@ export default function Booking() {
     status: isStatus,
     page: page
   });
+
   return (
     <div className="container">
       <TabBox
@@ -27,7 +28,14 @@ export default function Booking() {
         className="flex justify-start w-fit mt-8"
         tabStyle="border-b border-transparent text-lg data-[state=active]:border-primary! data-[state=active]:border-b! data-[state=active]:text-primary"
         onChange={(v: any) => {
-          setIsStatus(v);
+          if (v == "completed") {
+            console.log("fdf")
+            setIsStatus("complete");
+          } else {
+            setIsStatus(v)
+          }
+
+
         }}
       >
         <TabsContent value="ongoing">

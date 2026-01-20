@@ -17,11 +17,18 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
+const intRathing = {
+  rating: 0,
+  comment: ""
+}
 export default function BookingDetails() {
   const { id } = useParams()
   const { data: bookings } = useBookingsDetailsQuery(id)
   const [isReview, setIsReview] = useState(false);
   const [downlaodLoading, setdownlaodLoading] = useState(false)
+  const [storeRating, { isLoading: rathingLoading }] = useStoreRatingMutation()
+  const [rathingItem, setIsRathingItem] = useState(intRathing)
+
 
   const {
     id: ids,
@@ -38,11 +45,45 @@ export default function BookingDetails() {
     event_time,
     organizer,
     available_tickets,
-    link
+    link,
+    status,
+    ratings,
+    is_rated
   } = bookings?.data?.events || {};
 
-  const invoice_id = bookings?.data?.payment?.invoice_no
+
+
+
+
+
+  const handleSubmitRating = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const value = {
+      ...rathingItem,
+      event_id: ids,
+    }
+    const data = helpers.fromData(value)
+    const res = await storeRating(data).unwrap()
+    if (res.status) {
+      setIsRathingItem((prev) => ({
+        ...prev,
+        rating: 0,
+        comment: ""
+      }))
+      setIsReview(false)
+      sonner.success(
+        "Rating Successfully Added",
+        "Thank you! Your rating has been successfully recorded.",
+        "bottom-right"
+      )
+    }
+
+  };
+
+
+
   // ===== handleDownload  invoice ============
+  const invoice_id = bookings?.data?.payment?.invoice_no
   const handleDownload = async () => {
     const url = `${envs.api_url}/invoice/${invoice_id}`;
     try {
@@ -71,8 +112,6 @@ export default function BookingDetails() {
   };
 
 
-
-  const [storeRating] = useStoreRatingMutation()
 
   const NotOnDemand = (item: any) => {
     return delivery_type === delivary_t.ondemand ? null : item;
@@ -112,7 +151,7 @@ export default function BookingDetails() {
   return (
     <div className="container">
       <BackBtn2 className="my-6" />
-      <div className="bg-[#FBFBFB] p-3 rounded-xs overflow-clip">
+      <div className="bg-[#FBFBFB] p-3 rounded-xs">
         <div>
           {delivery_type == delivary_t.ondemand ? (
             <VideoPlayer
@@ -201,25 +240,70 @@ export default function BookingDetails() {
           )}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-10">
-          <Link href="/conversation">
-            <Button className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]">
-              Send Message
+        {status === "complete" ? (
+          <div className="mt-20 mb-10">
+            <ul className="flex items-center flex-wrap w-full justify-between mb-2">
+              <li className="text-xl font-medium">Rating</li>
+              <li>
+                <div className="flex items-center space-x-2">
+                  <Link href="/conversation">
+                    <Button className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]">
+                      Send Message
+                    </Button>
+                  </Link>
+                  {!is_rated && (
+                    <Button
+                      className="w-fit"
+                      onClick={() => setIsReview(!isReview)}
+                    >
+                      Review & Rating
+                    </Button>
+                  )}
+
+                </div>
+              </li>
+            </ul>
+            {ratings?.length > 0 ? (
+              <div className="space-y-3">
+                {ratings?.map((item: any, idx: any) => (
+                  <div key={idx}>
+                    <RatingScore
+                      width={100}
+                      readOnly={true}
+                    />
+                    <div className="text-article mt-1">{item.comment}</div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-figma-a_gray">
+                No rating found for this event
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-10">
+            <Link href="/conversation">
+              <Button className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]">
+                Send Message
+              </Button>
+            </Link>
+            <Button
+              className="w-full"
+              onClick={() => handleDownload()}
+              disabled={downlaodLoading}
+            >
+              Download Invoice
             </Button>
-          </Link>
+          </div >
+        )
+        }
 
-          <Button
-            className="w-full"
-            onClick={() => handleDownload()}
-            disabled={downlaodLoading}
-          >
-            Download Invoice
-          </Button>
-        </div>
 
-      </div>
+
+      </div >
       {/* modal box */}
-      <Modal2 open={isReview} setIsOpen={setIsReview}>
+      < Modal2 open={isReview} setIsOpen={setIsReview} >
         <CloseIcon
           className="top-4 right-4"
           onClose={() => setIsReview(false)}
@@ -230,34 +314,47 @@ export default function BookingDetails() {
           </h2>
           <p className="text-center">Please share your experience</p>
         </div>
-        <div className="space-y-5">
+        <form onSubmit={handleSubmitRating} className="space-y-5">
           <div>
             <h4 className="text-lg font-medium mb-1">Rating</h4>
             <RatingScore
               width={160}
-              onChange={(v: any) => console.log(v)}
+              onChange={(v: any) =>
+                setIsRathingItem((prev) => ({
+                  ...prev,
+                  rating: v,
+                }))
+              }
               readOnly={false}
             />
           </div>
           <div>
-            <h4 className="text-lg font-medium mb-1">Additional Review</h4>
+            <h4 className="text-lg font-medium mb-1 text-figma-black">Additional Review</h4>
             <Textarea
               placeholder="Any additional sentence for the event...."
               className="border-none bg-figma-input resize-none rounded-md min-h-30"
+              onChange={(e) =>
+                setIsRathingItem((prev) => ({
+                  ...prev,
+                  comment: e.target.value,
+                }))
+              }
+              required={true}
             />
           </div>
           <div className="space-y-2">
-            <Button className="w-full">Submit</Button>
+            <Button disabled={rathingLoading} className="w-full">Submit</Button>
             <Button
               onClick={() => setIsReview(false)}
               className="w-full bg-transparent border"
+              type="button"
             >
               Cancel
             </Button>
           </div>
-        </div>
-      </Modal2>
+        </form>
+      </Modal2 >
       <AppAlert />
-    </div>
+    </div >
   );
 }

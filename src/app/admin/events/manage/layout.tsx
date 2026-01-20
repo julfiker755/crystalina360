@@ -126,7 +126,7 @@ function PricingCloneLayout({ children }: childrenProps) {
                 />
                 <div className="h-11 flex rounded-full items-center justify-between border px-3">
                   <span>Total event:</span>
-                  <span>{totalEvents}</span>
+                  <span>{totalEvents || 0}</span>
                 </div>
                 <EventButton
                   selectEvent={selectEvent}
@@ -147,7 +147,7 @@ function PricingCloneLayout({ children }: childrenProps) {
                 />
                 <div className="h-11 flex rounded-full items-center justify-between border px-3">
                   <span>Total event:</span>
-                  <span>{totalOperatorEvents}</span>
+                  <span>{totalOperatorEvents || 0}</span>
                 </div>
                 <Link href="/admin/events/requests">
                   <Button
@@ -158,7 +158,7 @@ function PricingCloneLayout({ children }: childrenProps) {
                       <FavIcon className="size-3" name="question" />
                       <span className="ml-1">Requests</span>
                     </span>
-                    <span>{totalRequestedEvents}</span>
+                    <span>{totalRequestedEvents || 0}</span>
                   </Button>
                 </Link>
               </div>

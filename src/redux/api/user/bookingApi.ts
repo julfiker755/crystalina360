@@ -28,10 +28,9 @@ export const bookingsApi = baseApi.injectEndpoints({
                 method: "GET",
             }),
         }),
-
         storeRating: build.mutation({
             query: (data: any) => ({
-                url: "/rating",
+                url: "/ratings",
                 method: "POST",
                 data,
             }),
