@@ -60,7 +60,7 @@ export function TextAreaShow({ stylelabel, label, value }: InputShowProps) {
 export function BadgeShow({ stylelabel, label, items }: InputShowProps) {
   return (
     <div className="relative">
-      <div className="h-12 text-figma-a_gray space-x-3 py-2 flex items-center px-4 w-full  border rounded-md">
+      <div className="h-12 text-figma-a_gray space-x-3 py-2 flex  items-center px-4 w-full  border rounded-md">
         {items?.length > 0 ? (
           items?.map((item: any, idx: any) => (
             <div

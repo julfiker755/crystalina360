@@ -40,6 +40,12 @@ export const opratorsApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.o_single_events],
     }),
+    connectPaypal: build.mutation({
+      query: () => ({
+        url: "/paypal/connect/account",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -47,4 +53,5 @@ export const {
   useGetEventsQuery,
   useStoreEventsMutation,
   useSingleEventsQuery,
+  useConnectPaypalMutation
 } = opratorsApi;

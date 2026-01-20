@@ -15,6 +15,9 @@ import ProfileEdit2 from "@/components/view/oparator/simple/edit-profile";
 import { useLogout, useModalState } from "@/hooks";
 import { useGetProfileQuery } from "@/redux/api/authApi";
 import FavIcon from "@/icon/favIcon";
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { useConnectPaypalMutation } from "@/redux/api/operator/opratorApi";
 
 const initState = {
   isProfile: false,
@@ -25,6 +28,8 @@ export default function Profile() {
   const { data: profile } = useGetProfileQuery({});
   const { img, name, email, bio, skills } = profile?.data?.user || {};
   const { logout, isLoading: logoutLoading } = useLogout();
+  const [connectPaypal, { isLoading: paypalLoading }] = useConnectPaypalMutation()
+
 
   const stashItem = [
     {
@@ -38,19 +43,20 @@ export default function Profile() {
       icon: "cost",
       title: "Total revenue",
       count: profile?.data?.total_revenue,
-    },
-    {
-      id: 3,
-      icon: "ongoing_events",
-      title: "Joined since",
-      count: profile?.data?.user?.joined_date,
-    },
+    }
   ];
+
+  const collectPaypal = async () => {
+    const res = await connectPaypal({}).unwrap()
+    if (res.status) {
+      window.location.href = res?.data
+    }
+  }
 
   return (
     <div className="container py-10">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        <div className="bg-figma-delete px-6 py-8 rounded-md space-y-6 *:text-figma-black">
+        <div className="bg-figma-delete px-2 lg:px-6 py-8 rounded-md space-y-6 *:text-figma-black">
           <div>
             <ImgBox
               src={img || "/avater.png"}
@@ -68,8 +74,8 @@ export default function Profile() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {stashItem?.map((item) => (
               <div
+                className="p-3 flex  items-center bg-white rounded-md space-y-0.5"
                 key={item.id}
-                className="p-3 flex last:col-span-2 items-center bg-white rounded-md space-y-0.5"
               >
                 <div className="grid size-10 rounded-md place-items-center">
                   <FavIcon className="size-6" name={item.icon as any} />
@@ -82,6 +88,19 @@ export default function Profile() {
             ))}
           </div>
           <h1 className="w-full h-px bg-[#C4ACA4]/15"></h1>
+          <div
+            className="p-3 flex last:col-span-2 items-center bg-white rounded-md space-y-0.5"
+          >
+            <div className="grid size-10 rounded-md place-items-center">
+              <FavIcon className="size-6" name="ongoing_events" />
+            </div>
+            <div>
+              <p className="text-figma-black">Joined since</p>
+              <h2>{profile?.data?.user?.joined_date}</h2>
+            </div>
+          </div>
+
+
           <div className="flex justify-center mt-5">
             <Button
               disabled={logoutLoading}
@@ -122,6 +141,22 @@ export default function Profile() {
                     <FavIcon color="#fff" name="edit2" />
                     Edit profile
                   </Button>
+                  <div className="border p-3 rounded-md flex-col lg:flex-row lg:flex items-center justify-center gap-10">
+                    <div>
+                      To collect and receive revenue generated from events, you will need to connect your PayPal account to the system. This will allow payments to be processed and transferred to you smoothly and securely
+                    </div>
+                    {/* PayPal connected */}
+                    {profile?.data?.user?.paypal_merchant_id?.length > 0 ? (
+                      <Button disabled className="bg-white border disabled:opacity-80 border-primary/20 text-black font-medium mt-5 lg:mt-0"><Image src={"/paypal.svg"} width={20} height={20} alt="img" />
+                        PayPal Connected
+                      </Button>
+                    ) : (
+                      <Button disabled={paypalLoading} onClick={() => collectPaypal()} className="bg-white border border-primary/20 text-black font-medium mt-5 lg:mt-0"><Image src={"/paypal.svg"} width={20} height={20} alt="img" />
+                        {paypalLoading ? "Connecting your Paypal" : "Connect your Paypal account"}
+                        <ArrowRight className="text-[#2790C3]" /></Button>
+                    )}
+
+                  </div>
                 </div>
               </TabsContent>
 

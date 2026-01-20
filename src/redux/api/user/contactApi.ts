@@ -11,7 +11,14 @@ export const contactUserApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.u_contact_us],
     }),
+    questionSend: build.mutation({
+      query: (data: any) => ({
+        url: "/answer-question",
+        method: "POST",
+        data,
+      }),
+    }),
   }),
 });
 
-export const { useSendContactMutation } = contactUserApi;
+export const { useSendContactMutation, useQuestionSendMutation } = contactUserApi;

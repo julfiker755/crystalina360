@@ -1,25 +1,43 @@
 "use client";
-
 import { Button, Input, Label } from "@/components/ui";
 import { useState } from "react";
 import { AppAlert } from "../../reuse";
+import { helpers } from "@/lib";
+import sonner from "@/components/reuseable/sonner";
+import { useQuestionSendMutation } from "@/redux/api/user/contactApi";
+
 
 
 
 const intQuestion = [
-  { question: "Question 1", answer: "" },
-  { question: "Question 2", answer: "" },
-  { question: "Question 3", answer: "" },
-  { question: "Question 4", answer: "" },
+  { question: "What do you do?", answer: "" },
+  { question: "What kind of partnership do you want?", answer: "" },
+  { question: "How can we work together?", answer: "" },
+  { question: "Your website or social link?", answer: "" },
 ]
 
 export function Partnership() {
   const [isShow, setIsShow] = useState(false);
   const [question, setQuestion] = useState(intQuestion);
+  const [questionSend, { isLoading }] = useQuestionSendMutation()
 
-  const handleQuestion = (e: React.FormEvent) => {
+  const handleQuestion = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(question);
+    const data = helpers.fromData({
+      answer: question
+    })
+    try {
+      await questionSend(data).unwrap()
+      setQuestion(intQuestion)
+      sonner.success(
+        "Question sent successfully",
+        "Check your email, reply to the admin, and review it here",
+        "bottom-right"
+      )
+
+    } catch (err) {
+      console.log(err)
+    }
     // setQuestion(intQuestion)
   };
 
@@ -63,7 +81,7 @@ export function Partnership() {
         </div>
       </div>
       {isShow && (
-        <form onSubmit={handleQuestion} className="space-y-3 py-10">
+        <form onSubmit={handleQuestion} className="space-y-6 py-10">
           {question.map((item, index) => (
             <div className="space-y-2" key={index}>
               <Label className="text-lg">{item.question}</Label>
@@ -79,7 +97,7 @@ export function Partnership() {
             </div>
           ))}
           <div className="flex justify-center mt-10">
-            <Button className="min-w-md">Submit Answer</Button>
+            <Button disabled={isLoading} className="min-w-md">Submit Answer</Button>
           </div>
         </form>
       )}
