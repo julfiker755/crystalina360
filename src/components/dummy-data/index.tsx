@@ -353,56 +353,35 @@ export const durationOptions = [
 
 // country options
 export const countryOptions = [
+  { label: "Italy", value: "Italy" },
   { label: "USA", value: "America" },
-  { label: "Canada", value: "Canada" },
-  { label: "Australia", value: "Australia" },
-  { label: "United Kingdom", value: "United Kingdom" },
-  { label: "Germany", value: "Germany" },
-  { label: "France", value: "France" },
-  { label: "India", value: "India" },
-  { label: "Japan", value: "Japan" },
-  { label: "South Korea", value: "South Korea" },
-  { label: "Brazil", value: "Brazil" },
 ];
 
 export const regionOptions = [
+  { label: "Lazio", value: "Lazio" },
+  { label: "Tuscany", value: "Tuscany" },
   { label: "California", value: "California" },
   { label: "Texas", value: "Texas" },
-  { label: "Ontario", value: "Ontario" },
-  { label: "Quebec", value: "Quebec" },
-  { label: "New York", value: "New York" },
-  { label: "Florida", value: "Florida" },
-  { label: "London", value: "London" },
-  { label: "Bavaria", value: "Bavaria" },
-  { label: "Tokyo", value: "Tokyo" },
-  { label: "São Paulo", value: "São Paulo" },
 ];
 
 export const provinceOptions = [
-  { label: "British Columbia", value: "British Columbia" },
-  { label: "Quebec", value: "Quebec" },
-  { label: "Victoria", value: "Victoria" },
-  { label: "Ontario", value: "Ontario" },
-  { label: "Alberta", value: "Alberta" },
-  { label: "Nova Scotia", value: "Nova Scotia" },
-  { label: "Manitoba", value: "Manitoba" },
-  { label: "Sichuan", value: "Sichuan" },
-  { label: "Fujian", value: "Fujian" },
-  { label: "State of São Paulo", value: "Paulo" },
+  { label: "Lazio", value: "Lazio" },
+  { label: "Tuscany", value: "Tuscany" },
+  { label: "New York", value: "New York" },
+  { label: "Florida", value: "Florida" },
 ];
 
 export const cityOptions = [
+  { label: "Rome", value: "Rome" },
+  { label: "Milan", value: "Milan" },
+  { label: "Florence", value: "Florence" },
+  { label: "Venice", value: "Venice" },
   { label: "Los Angeles", value: "Los Angeles" },
-  { label: "Toronto", value: "Toronto" },
-  { label: "Melbourne", value: "Melbourne" },
-  { label: "Vancouver", value: "Vancouver" },
-  { label: "Paris", value: "Paris" },
-  { label: "Berlin", value: "Berlin" },
   { label: "New York City", value: "New York" },
-  { label: "Tokyo", value: "Tokyo" },
-  { label: "São Paulo", value: "São Paulo" },
-  { label: "Seoul", value: "Seoul" },
+  { label: "Chicago", value: "Chicago" },
+  { label: "San Francisco", value: "San Francisco" },
 ];
+
 
 export const dateOption = [
   { label: "Today", value: "today" },

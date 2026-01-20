@@ -75,7 +75,7 @@ export default function EventAll() {
     <div className="container pb-10">
       <SvgBox className="mt-6">
         <div className="flex items-center flex-wrap justify-between">
-          <div className="flex items-center  gap-4 flex-wrap  space-x-5">
+          <div className="flex items-center  gap-4 flex-wrap  space-x-5 z-10">
             {overviewItem?.map((item, idx) => (
               <div key={idx} className="flex items-center space-x-2">
                 <h1 className="size-13 grid place-items-center rounded-md bg-white">
@@ -88,7 +88,7 @@ export default function EventAll() {
               </div>
             ))}
             <Link href={`/operator/events/pending`}>
-              <div className="bg-white rounded-md flex items-center space-x-2 py-2 px-6">
+              <div className="bg-white z-50! rounded-md flex items-center space-x-2 py-2 px-4 xl:px-6">
                 <FavIcon name="pending_events" />
                 <span>Pending events</span>
                 <ArrowRight className="size-5" />

@@ -32,7 +32,7 @@ export default function Pricing() {
   const [state, setState] = useModalState(initState);
   const [details, setDetails] = useState<any>(null);
   const { data: pricing, isLoading } = useGetPricingQuery({
-    pricing_for: "user",
+    pricing_for: "oprator",
   });
 
   return (
