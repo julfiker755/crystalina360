@@ -404,10 +404,9 @@ export const cityOptions = [
   { label: "Seoul", value: "Seoul" },
 ];
 
-
-export  const dateOption=[
-  {label:'Today',value:"today"},
-  {label:"Tomorrow",value:"tomorrow"},
-  {label:"This Month",value:"this_month"},
-  {label:"Next Month",value:"next_month"}
-]
+export const dateOption = [
+  { label: "Today", value: "today" },
+  { label: "Tomorrow", value: "tomorrow" },
+  { label: "This Month", value: "this_month" },
+  { label: "Next Month", value: "next_month" },
+];

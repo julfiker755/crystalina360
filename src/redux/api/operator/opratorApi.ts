@@ -46,6 +46,17 @@ export const opratorsApi = baseApi.injectEndpoints({
         method: "POST",
       }),
     }),
+    pendingEventOpertor: build.query({
+      query: (arg) => ({
+        url: "/my/pending/events",
+        method: "GET",
+        params: arg,
+      }),
+      providesTags: [tagTypes.o_panding_events],
+      transformResponse: (res: any) => {
+        return buildResponse(res);
+      },
+    }),
   }),
 });
 
@@ -53,5 +64,6 @@ export const {
   useGetEventsQuery,
   useStoreEventsMutation,
   useSingleEventsQuery,
-  useConnectPaypalMutation
+  useConnectPaypalMutation,
+  usePendingEventOpertorQuery,
 } = opratorsApi;

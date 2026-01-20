@@ -26,7 +26,7 @@ export default function MusicCard({ id, title, audio_file }: MusicCardProps) {
     } else {
       // Pause other music cards
       window.dispatchEvent(
-        new CustomEvent("pauseAllMusicCards", { detail: id })
+        new CustomEvent("pauseAllMusicCards", { detail: id }),
       );
       audio.play();
       setIsPlaying(true);
@@ -46,13 +46,13 @@ export default function MusicCard({ id, title, audio_file }: MusicCardProps) {
 
     window.addEventListener(
       "pauseAllMusicCards",
-      handlePauseAll as EventListener
+      handlePauseAll as EventListener,
     );
 
     return () => {
       window.removeEventListener(
         "pauseAllMusicCards",
-        handlePauseAll as EventListener
+        handlePauseAll as EventListener,
       );
     };
   }, [id]);
@@ -103,7 +103,7 @@ export default function MusicCard({ id, title, audio_file }: MusicCardProps) {
         setCurrentTime(seekTime);
       }
     },
-    [isPlaying, duration]
+    [isPlaying, duration],
   );
 
   // ================= REWIND AND FAST-FORWARD =================
@@ -111,7 +111,7 @@ export default function MusicCard({ id, title, audio_file }: MusicCardProps) {
     if (audioRef.current) {
       audioRef.current.currentTime = Math.max(
         0,
-        audioRef.current.currentTime - 10
+        audioRef.current.currentTime - 10,
       );
     }
   }, []);
@@ -120,7 +120,7 @@ export default function MusicCard({ id, title, audio_file }: MusicCardProps) {
     if (audioRef.current) {
       audioRef.current.currentTime = Math.min(
         duration,
-        audioRef.current.currentTime + 30
+        audioRef.current.currentTime + 30,
       );
     }
   }, [duration]);

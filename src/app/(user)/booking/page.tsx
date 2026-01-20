@@ -14,10 +14,10 @@ import { useState } from "react";
 
 export default function Booking() {
   const [isStatus, setIsStatus] = useState("ongoing");
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
   const { data: booking, isLoading } = useGetBookingsQuery({
     status: isStatus,
-    page: page
+    page: page,
   });
 
   return (
@@ -29,13 +29,11 @@ export default function Booking() {
         tabStyle="border-b border-transparent text-lg data-[state=active]:border-primary! data-[state=active]:border-b! data-[state=active]:text-primary"
         onChange={(v: any) => {
           if (v == "completed") {
-            console.log("fdf")
+            console.log("fdf");
             setIsStatus("complete");
           } else {
-            setIsStatus(v)
+            setIsStatus(v);
           }
-
-
         }}
       >
         <TabsContent value="ongoing">
@@ -104,10 +102,7 @@ export default function Booking() {
         </TabsContent>
       </TabBox>
       <div className="flex justify-end w-full my-10">
-        <Pagination
-          onPageChange={(v: any) => setPage(v)}
-          {...booking?.meta}
-        />
+        <Pagination onPageChange={(v: any) => setPage(v)} {...booking?.meta} />
       </div>
       <AppAlert />
     </div>

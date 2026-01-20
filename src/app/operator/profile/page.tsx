@@ -28,8 +28,8 @@ export default function Profile() {
   const { data: profile } = useGetProfileQuery({});
   const { img, name, email, bio, skills } = profile?.data?.user || {};
   const { logout, isLoading: logoutLoading } = useLogout();
-  const [connectPaypal, { isLoading: paypalLoading }] = useConnectPaypalMutation()
-
+  const [connectPaypal, { isLoading: paypalLoading }] =
+    useConnectPaypalMutation();
 
   const stashItem = [
     {
@@ -43,15 +43,15 @@ export default function Profile() {
       icon: "cost",
       title: "Total revenue",
       count: profile?.data?.total_revenue,
-    }
+    },
   ];
 
   const collectPaypal = async () => {
-    const res = await connectPaypal({}).unwrap()
+    const res = await connectPaypal({}).unwrap();
     if (res.status) {
-      window.location.href = res?.data
+      window.location.href = res?.data;
     }
-  }
+  };
 
   return (
     <div className="container py-10">
@@ -88,9 +88,7 @@ export default function Profile() {
             ))}
           </div>
           <h1 className="w-full h-px bg-[#C4ACA4]/15"></h1>
-          <div
-            className="p-3 flex last:col-span-2 items-center bg-white rounded-md space-y-0.5"
-          >
+          <div className="p-3 flex last:col-span-2 items-center bg-white rounded-md space-y-0.5">
             <div className="grid size-10 rounded-md place-items-center">
               <FavIcon className="size-6" name="ongoing_events" />
             </div>
@@ -99,7 +97,6 @@ export default function Profile() {
               <h2>{profile?.data?.user?.joined_date}</h2>
             </div>
           </div>
-
 
           <div className="flex justify-center mt-5">
             <Button
@@ -143,19 +140,43 @@ export default function Profile() {
                   </Button>
                   <div className="border p-3 rounded-md flex-col lg:flex-row lg:flex items-center justify-center gap-10">
                     <div>
-                      To collect and receive revenue generated from events, you will need to connect your PayPal account to the system. This will allow payments to be processed and transferred to you smoothly and securely
+                      To collect and receive revenue generated from events, you
+                      will need to connect your PayPal account to the system.
+                      This will allow payments to be processed and transferred
+                      to you smoothly and securely
                     </div>
                     {/* PayPal connected */}
                     {profile?.data?.user?.paypal_merchant_id?.length > 0 ? (
-                      <Button disabled className="bg-white border disabled:opacity-80 border-primary/20 text-black font-medium mt-5 lg:mt-0"><Image src={"/paypal.svg"} width={20} height={20} alt="img" />
+                      <Button
+                        disabled
+                        className="bg-white border disabled:opacity-80 border-primary/20 text-black font-medium mt-5 lg:mt-0"
+                      >
+                        <Image
+                          src={"/paypal.svg"}
+                          width={20}
+                          height={20}
+                          alt="img"
+                        />
                         PayPal Connected
                       </Button>
                     ) : (
-                      <Button disabled={paypalLoading} onClick={() => collectPaypal()} className="bg-white border border-primary/20 text-black font-medium mt-5 lg:mt-0"><Image src={"/paypal.svg"} width={20} height={20} alt="img" />
-                        {paypalLoading ? "Connecting your Paypal" : "Connect your Paypal account"}
-                        <ArrowRight className="text-[#2790C3]" /></Button>
+                      <Button
+                        disabled={paypalLoading}
+                        onClick={() => collectPaypal()}
+                        className="bg-white border border-primary/20 text-black font-medium mt-5 lg:mt-0"
+                      >
+                        <Image
+                          src={"/paypal.svg"}
+                          width={20}
+                          height={20}
+                          alt="img"
+                        />
+                        {paypalLoading
+                          ? "Connecting your Paypal"
+                          : "Connect your Paypal account"}
+                        <ArrowRight className="text-[#2790C3]" />
+                      </Button>
                     )}
-
                   </div>
                 </div>
               </TabsContent>

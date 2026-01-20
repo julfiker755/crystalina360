@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export function useFormFields<T extends Record<string, any>>(
   initialState: T,
-  initialErrors: Record<keyof T, string> = {} as Record<keyof T, string>
+  initialErrors: Record<keyof T, string> = {} as Record<keyof T, string>,
 ) {
   const [formData, setFormData] = useState<T>(initialState);
   const [errors, setErrors] = useState<Record<keyof T, string>>(initialErrors);

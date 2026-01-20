@@ -67,7 +67,7 @@ export default function Newsletter() {
       sonner.success(
         "Reply Successful",
         "The newsletter reply email has been sent",
-        "bottom-right"
+        "bottom-right",
       );
       updateGlobal("isPreview", false);
       updateGlobal("details", {});

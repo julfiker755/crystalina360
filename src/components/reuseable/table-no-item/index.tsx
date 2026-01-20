@@ -37,7 +37,7 @@ export function NoItemData({ title = "No Data Found", className }: any) {
     <div
       className={cn(
         "py-24 2xl:py-40 text-center flex flex-col justify-center",
-        className
+        className,
       )}
     >
       <div className="flex bg-figma-sidebar w-fit mx-auto p-3 rounded-md justify-center">

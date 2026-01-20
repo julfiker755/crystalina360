@@ -59,7 +59,7 @@ export default function ProfileEdit2() {
       form.reset();
       sonner.success(
         "Update Successful",
-        "Your profile has been updated successfully"
+        "Your profile has been updated successfully",
       );
     }
     try {

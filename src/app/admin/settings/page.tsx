@@ -54,7 +54,7 @@ export default function Settings() {
         sonner.success(
           "Update Successfull",
           "Your profile has been updated successfully",
-          "bottom-right"
+          "bottom-right",
         );
       }
     } catch (err: any) {

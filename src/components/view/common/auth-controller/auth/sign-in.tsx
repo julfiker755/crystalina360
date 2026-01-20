@@ -73,7 +73,7 @@ export default function SignIn() {
           dispatch(
             authApi.endpoints.getProfile.initiate(undefined, {
               forceRefetch: true,
-            })
+            }),
           );
         }
         if (resRole == roleKey.admin) {
@@ -99,11 +99,11 @@ export default function SignIn() {
           setOtpInfo({
             email: res?.data?.email,
             otp: "",
-          })
+          }),
         );
         sonner.success(
           "OTP sent successfully",
-          "Please check your email for the otp Apply"
+          "Please check your email for the otp Apply",
         );
       }
     } finally {

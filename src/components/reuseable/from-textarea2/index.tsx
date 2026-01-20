@@ -50,7 +50,7 @@ export function FromTextarea2({
               id={inputId}
               className={cn(
                 "w-full rounded-md py-3 min-h-16 text-blacks text-sm",
-                className
+                className,
               )}
               placeholder={placeholder}
               {...field}
@@ -61,7 +61,7 @@ export function FromTextarea2({
               htmlFor={inputId}
               className={cn(
                 "text-blacks text-base font-medium bg-background absolute -top-3 left-5  px-3",
-                stylelabel
+                stylelabel,
               )}
             >
               {label}

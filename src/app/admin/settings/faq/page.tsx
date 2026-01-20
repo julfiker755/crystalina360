@@ -63,7 +63,7 @@ export default function FQA() {
         sonner.success(
           "FAQ Updated",
           "FAQ has been updated successfully",
-          "bottom-right"
+          "bottom-right",
         );
       }
     } finally {
@@ -96,7 +96,7 @@ export default function FQA() {
         sonner.success(
           "FAQ Added",
           "FAQ has been added successfully",
-          "bottom-right"
+          "bottom-right",
         );
       }
     } finally {

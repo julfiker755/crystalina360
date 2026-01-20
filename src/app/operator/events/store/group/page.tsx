@@ -24,7 +24,6 @@ export default function GroupStoreBox() {
           </AlertDiscard>
         </div>
       </SvgBox>
-
       <GroupStore />
     </div>
   );

@@ -35,7 +35,7 @@ const authSlice = createSlice({
     },
     setOtpInfo: (
       state,
-      action: PayloadAction<{ email: string; otp?: string }>
+      action: PayloadAction<{ email: string; otp?: string }>,
     ) => {
       state.otpInfo = { ...state.otpInfo, ...action.payload };
     },
@@ -79,7 +79,7 @@ const authSlice = createSlice({
           };
           state.isLogged = !!state.user.token;
           state.isProfileLoading = false;
-        }
+        },
       )
       .addMatcher(authApi.endpoints.getProfile.matchRejected, (state) => {
         state.isLogged = false;
@@ -102,7 +102,7 @@ export default authSlice.reducer;
 // smart client-side init for App Router
 export const initAuth = (
   dispatch: AppDispatch,
-  getState: () => { auth: AuthState }
+  getState: () => { auth: AuthState },
 ) => {
   const { auth } = getState();
   if (auth.user.token && !auth.user.name && !auth.user.email) {

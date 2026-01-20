@@ -33,7 +33,7 @@ export class helpers {
   // ===== Dates =====
   static formatDate(
     date: string | Date,
-    type: dateFormat = "DD MMM YYYY"
+    type: dateFormat = "DD MMM YYYY",
   ): string {
     return dayjs(date).format(type);
   }

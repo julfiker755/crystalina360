@@ -117,7 +117,7 @@ export default function CouponBox() {
                   }`}
                   onClick={() => handlePageChange(index + 1)}
                 />
-              )
+              ),
             )}
           </div>
         </div>

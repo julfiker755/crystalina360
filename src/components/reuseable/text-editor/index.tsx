@@ -100,7 +100,7 @@ const TextEditor: React.FC<TextEditorProps> = ({
         formats={formats}
         className={cn(
           `min-h-[280px] prose text-black! rounded-b-xl`,
-          className
+          className,
         )}
         style={{ color: "#000" }}
       />

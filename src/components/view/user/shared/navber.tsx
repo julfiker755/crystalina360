@@ -66,7 +66,7 @@ export default function Navber({ className }: any) {
           `w-[95%] absolute top-5 md:w-full h-14 container rounded-full px-3 content-center bg-[#000000]/10 backdrop-blur-xl z-50 ${
             scrolled && "fixed! top-4 left-1/2 -translate-x-1/2"
           }`,
-          className
+          className,
         )}
       >
         <div className="flex justify-between items-center">

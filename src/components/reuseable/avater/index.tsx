@@ -25,7 +25,7 @@ export default function Avatars({
       <AvatarFallback
         className={cn(
           "bg-primary/10  text-figma-black font-medium",
-          fallbackStyle
+          fallbackStyle,
         )}
       >
         {fallback?.charAt(0)?.toUpperCase()}

@@ -63,8 +63,8 @@ function ColorArea({ className, ...props }: AriaColorAreaProps) {
       className={composeRenderProps(className, (className) =>
         cn(
           "size-48 shrink-0 rounded-md border border-border shadow-md",
-          className
-        )
+          className,
+        ),
       )}
       {...props}
     />
@@ -75,7 +75,7 @@ function SliderTrack({ className, ...props }: AriaSliderTrackProps) {
   return (
     <AriaSliderTrack
       className={composeRenderProps(className, (className) =>
-        cn("h-7 w-48 rounded-md border border-border ", className)
+        cn("h-7 w-48 rounded-md border border-border ", className),
       )}
       {...props}
     />
@@ -90,8 +90,8 @@ function ColorThumb({ className, ...props }: AriaColorThumbProps) {
           "z-10 box-border size-5 rounded-[50%] border-2 border-white shadow-md",
           /* Focus Visible */
           "data-focus-visible:size-6",
-          className
-        )
+          className,
+        ),
       )}
       {...props}
     />
@@ -105,7 +105,7 @@ function ColorSwatchPicker({
   return (
     <AriaColorSwatchPicker
       className={composeRenderProps(className, (className) =>
-        cn("flex flex-wrap gap-2", className)
+        cn("flex flex-wrap gap-2", className),
       )}
       {...props}
     />
@@ -127,8 +127,8 @@ function ColorSwatchPickerItem({
           "data-disabled:pointer-events-none data-disabled:opacity-50",
           /* Focus Visible */
           "data-focus-visible:outline-none data-focus-visible:ring-2 data-focus-visible:ring-ring",
-          className
-        )
+          className,
+        ),
       )}
       {...props}
     />
@@ -139,7 +139,7 @@ function ColorSwatch({ className, ...props }: AriaColorSwatchProps) {
   return (
     <AriaColorSwatch
       className={composeRenderProps(className, (className) =>
-        cn("size-8", className)
+        cn("size-8", className),
       )}
       {...props}
     />

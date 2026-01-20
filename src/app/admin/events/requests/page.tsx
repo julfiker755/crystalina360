@@ -75,7 +75,7 @@ export default function EventRequests() {
         sonner.warning(
           "Event Rejected Successfully",
           "The operator has been notified via email",
-          "bottom-right"
+          "bottom-right",
         );
         from.reset();
         updateGlobal("isReject", false);
@@ -178,7 +178,7 @@ export default function EventRequests() {
                             sonner.success(
                               "Approved successfully",
                               "The event has been approved successfully",
-                              "bottom-right"
+                              "bottom-right",
                             );
                           }
                         }}

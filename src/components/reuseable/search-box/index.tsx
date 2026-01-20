@@ -26,7 +26,7 @@ export default function SearchBox({
     <div
       className={cn(
         "relative w-11/12 lg:max-w-md 2xl:max-w-xl rounded-full py-1",
-        className
+        className,
       )}
     >
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-primary" />

@@ -21,7 +21,7 @@ export default function ModalHeading({
       <div
         className={cn(
           "bg-primary absolute flex flex-col items-center justify-center top-0 h-12 w-full left-0  text-white",
-          className
+          className,
         )}
       >
         <h5 className="text-lg font-medium leading-0 text-center">{title}</h5>

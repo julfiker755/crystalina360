@@ -25,7 +25,11 @@ export default function Footer() {
       const res = await storeNewslet(data).unwrap();
       if (res.status) {
         setIsEmail("");
-        sonner.success("Subscribed!", "Your subscription was successfull", "bottom-right");
+        sonner.success(
+          "Subscribed!",
+          "Your subscription was successfull",
+          "bottom-right",
+        );
       }
     } catch (err: any) {
       sonner.error("Oops!", err?.data?.message, "bottom-right");

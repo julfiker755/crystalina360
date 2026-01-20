@@ -40,7 +40,7 @@ export default function Modal({
         className={cn(
           "sm:max-w-md p-0 gap-0 bg-background rounded-2xl overflow-y-auto  max-h-[95vh] h-fit scrollbar-hide border-none",
           className,
-          style
+          style,
         )}
       >
         <DialogHeader className="bg-primary text-white p-4">

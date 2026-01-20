@@ -62,7 +62,7 @@ export function FromSelect2({
             <SelectTrigger
               className={cn(
                 "w-full  items-center rounded-xl  py-5 cursor-pointer shadow-none",
-                className
+                className,
               )}
             >
               <SelectValue placeholder={placeholder} />
@@ -73,7 +73,7 @@ export function FromSelect2({
                   <SelectItem
                     className={cn(
                       "border-b last:border-b-0 cursor-pointer py-2 pl-4  rounded-none",
-                      itemStyle
+                      itemStyle,
                     )}
                     key={index}
                     value={item.value}
@@ -96,7 +96,7 @@ export function FromSelect2({
             <Label
               className={cn(
                 "text-blacks text-base font-medium bg-background absolute -top-3 left-5  px-3",
-                stylelabel
+                stylelabel,
               )}
             >
               {label}

@@ -6,46 +6,40 @@ import { helpers } from "@/lib";
 import sonner from "@/components/reuseable/sonner";
 import { useQuestionSendMutation } from "@/redux/api/user/contactApi";
 
-
-
-
 const intQuestion = [
   { question: "What do you do?", answer: "" },
   { question: "What kind of partnership do you want?", answer: "" },
   { question: "How can we work together?", answer: "" },
   { question: "Your website or social link?", answer: "" },
-]
+];
 
 export function Partnership() {
   const [isShow, setIsShow] = useState(false);
   const [question, setQuestion] = useState(intQuestion);
-  const [questionSend, { isLoading }] = useQuestionSendMutation()
+  const [questionSend, { isLoading }] = useQuestionSendMutation();
 
   const handleQuestion = async (e: React.FormEvent) => {
     e.preventDefault();
     const data = helpers.fromData({
-      answer: question
-    })
+      answer: question,
+    });
     try {
-      await questionSend(data).unwrap()
-      setQuestion(intQuestion)
+      await questionSend(data).unwrap();
+      setQuestion(intQuestion);
       sonner.success(
         "Question sent successfully",
         "Check your email, reply to the admin, and review it here",
-        "bottom-right"
-      )
-
+        "bottom-right",
+      );
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
     // setQuestion(intQuestion)
   };
 
   const handleAnswerChange = (index: number, value: string) => {
     setQuestion((prev) =>
-      prev.map((item, i) =>
-        i === index ? { ...item, answer: value } : item
-      )
+      prev.map((item, i) => (i === index ? { ...item, answer: value } : item)),
     );
   };
 
@@ -89,15 +83,15 @@ export function Partnership() {
                 placeholder="Enter your answer"
                 className="border-none bg-[#F4F4F4]"
                 value={item.answer}
-                onChange={(e) =>
-                  handleAnswerChange(index, e.target.value)
-                }
+                onChange={(e) => handleAnswerChange(index, e.target.value)}
                 required={true}
               />
             </div>
           ))}
           <div className="flex justify-center mt-10">
-            <Button disabled={isLoading} className="min-w-md">Submit Answer</Button>
+            <Button disabled={isLoading} className="min-w-md">
+              Submit Answer
+            </Button>
           </div>
         </form>
       )}

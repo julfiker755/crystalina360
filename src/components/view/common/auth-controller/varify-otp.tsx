@@ -70,7 +70,7 @@ export default function VarifyOtp() {
             setOtpInfo({
               email: res?.data?.email,
               otp: joinedCode,
-            })
+            }),
           );
           setCode([]);
         }

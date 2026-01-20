@@ -175,7 +175,7 @@ export default function Promotions() {
             </div>
           ))
         )}
-        { }
+        {}
       </div>
       {data?.promo?.meta?.total > 10 && (
         <ul className="flex items-center flex-wrap justify-between py-3">
@@ -303,7 +303,7 @@ const StoreBanner = ({ setState }: any) => {
         sonner.success(
           "Promotion created successfully",
           "New promotion has been added to your system",
-          "bottom-right"
+          "bottom-right",
         );
       }
     } catch (err: any) {
@@ -443,7 +443,7 @@ const UpdateBanner = ({ setState, details }: any) => {
         sonner.success(
           "Promotion updated successfully",
           "Promotion has been updated",
-          "bottom-right"
+          "bottom-right",
         );
       }
     } catch (err) {

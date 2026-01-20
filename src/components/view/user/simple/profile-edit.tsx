@@ -49,7 +49,7 @@ export default function ProfileEdit({ children }: childrenProps) {
         form.reset();
         sonner.success(
           "Update Successfull",
-          "Your profile has been updated successfully"
+          "Your profile has been updated successfully",
         );
       }
     } catch (err: any) {

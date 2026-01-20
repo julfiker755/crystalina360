@@ -61,7 +61,7 @@ export function MultipleCalendar({ onChange, className }: any) {
             id="date"
             className={cn(
               "bg-white justify-between text-primary px-2! font-normal border",
-              className
+              className,
             )}
           >
             {startDate ? `${helpers.formatDate(startDate)}` : "Start Date"} -{" "}

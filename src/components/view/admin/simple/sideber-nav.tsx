@@ -78,7 +78,7 @@ export default function SidebarNav({
         <nav
           className={cn(
             "flex space-x-2 border px-2 py-4 rounded-xl lg:flex-col lg:space-y-2 lg:space-x-0",
-            className
+            className,
           )}
           {...props}
         >

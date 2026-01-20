@@ -7,7 +7,7 @@ export function AEditbtn({ onClick, className, color = "#303030" }: any) {
       onClick={onClick}
       className={cn(
         "rounded-full cursor-pointer  size-10 grid place-items-center border",
-        className
+        className,
       )}
     >
       <FavIcon color={color} name="pencil00" />
@@ -21,7 +21,7 @@ export function ADeletebtn({ onClick, className }: any) {
       onClick={onClick}
       className={cn(
         "rounded-full cursor-pointer size-10 grid place-items-center bg-figma-danger",
-        className
+        className,
       )}
     >
       {" "}

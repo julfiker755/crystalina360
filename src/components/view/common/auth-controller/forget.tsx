@@ -42,11 +42,11 @@ export default function ForgetPassword() {
           setOtpInfo({
             email: res?.data?.email,
             otp: "",
-          })
+          }),
         );
         sonner.success(
           "OTP sent successfully",
-          "Please check your email for the otp"
+          "Please check your email for the otp",
         );
       }
     } catch (err: any) {

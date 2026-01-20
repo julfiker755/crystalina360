@@ -123,7 +123,7 @@ function PlanStoreForm({ setState }: { setState: any }) {
         sonner.success(
           "Plan added",
           "Plan has been added successfully",
-          "bottom-right"
+          "bottom-right",
         );
       }
     } catch (err: any) {
@@ -235,7 +235,7 @@ function PlanUpdateForm({ setState, details }: planUpateProps) {
         sonner.success(
           "Plan updated",
           "Plan has been updated successfully",
-          "bottom-right"
+          "bottom-right",
         );
       }
     } catch (err: any) {

@@ -396,7 +396,7 @@ function MessageBubble({
 export default function MessagingApp() {
   const [isResponsive, setIsResponsive] = useState(false);
   const [selectedContact, setSelectedContact] = useState<Contact | null>(
-    contacts[0]
+    contacts[0],
   );
 
   const [messages, setMessages] = useState<Message[]>([

@@ -32,7 +32,7 @@ export default function FavIcon({
   if (!React.isValidElement<SVGSVGElement>(iconTemplate)) return null;
 
   const applyColors = (
-    el: React.ReactElement<React.SVGProps<SVGSVGElement>>
+    el: React.ReactElement<React.SVGProps<SVGSVGElement>>,
   ): React.ReactElement<React.SVGProps<SVGSVGElement>> => {
     const { fill, stroke: elStroke, children, ...props } = el.props;
 
@@ -40,8 +40,8 @@ export default function FavIcon({
       isHovered && hoverColor
         ? hoverColor
         : activeColor
-        ? activeColor
-        : color || fill;
+          ? activeColor
+          : color || fill;
 
     const resolvedStroke = stroke || elStroke;
 
@@ -52,9 +52,9 @@ export default function FavIcon({
       children: React.Children.map(children, (child) =>
         React.isValidElement(child)
           ? applyColors(
-              child as React.ReactElement<React.SVGProps<SVGSVGElement>>
+              child as React.ReactElement<React.SVGProps<SVGSVGElement>>,
             )
-          : child
+          : child,
       ),
     });
   };

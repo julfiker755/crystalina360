@@ -12,7 +12,7 @@ export function ErrorText({ error, className }: ErrorTextProps) {
       <h5
         className={cn(
           "text-red-500 font-medium text-sm  flex justify-center",
-          className
+          className,
         )}
       >
         {error}
@@ -35,7 +35,7 @@ export function ErrorInput({ error, className }: ErrorInputProps) {
         <p
           className={cn(
             "text-red-500 flex justify-end items-center text-right",
-            className
+            className,
           )}
         >
           <span className="mr-1"> {error}</span> <CircleAlert size={14} />

@@ -45,7 +45,7 @@ export default function Modal2({
         className={clsx(
           `sm:max-w-md p-0 gap-0 bg-background rounded-2xl overflow-y-auto  max-h-[95vh] h-fit scrollbar-hide border-none`,
           className,
-          style
+          style,
         )}
       >
         <DialogHeader className="bg-modal-figma hidden text-white p-4">

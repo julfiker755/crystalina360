@@ -34,7 +34,7 @@ export function InputTime({
             <h5
               className={cn(
                 "text-blacks text-base font-medium mb-1",
-                stylelabel
+                stylelabel,
               )}
             >
               {label}

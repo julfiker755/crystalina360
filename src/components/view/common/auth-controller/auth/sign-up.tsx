@@ -50,14 +50,14 @@ export default function SignUp() {
       if (res.status) {
         sonner.success(
           "Sign up Successful",
-          "Please check your email for the otp verify"
+          "Please check your email for the otp verify",
         );
         dispatch(setActiveModal(controlkey.emailVafi));
         dispatch(
           setOtpInfo({
             email: res?.data?.email,
             otp: "",
-          })
+          }),
         );
         from.reset();
       }

@@ -130,7 +130,7 @@ export default function EventInfo({
                   name="Ticket price"
                   text={details?.price || 0}
                 />
-              </div>
+              </div>,
             )}
             {elementShow}
             {NotOnDemand(
@@ -139,7 +139,7 @@ export default function EventInfo({
                 name="Total earned from this event"
                 text={details?.revenue || 0}
                 className="bg-figma-delete px-2 py-2 rounded-md"
-              />
+              />,
             )}
           </div>
         ) : (
@@ -168,7 +168,7 @@ export default function EventInfo({
                   icon="tiket"
                   name="Ticket sold"
                   text={details?.ticket_quantity}
-                />
+                />,
               )}
             </div>
             {elementShow}

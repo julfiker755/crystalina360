@@ -12,7 +12,6 @@ export const userEventsApi = baseApi.injectEndpoints({
         params: arg,
       }),
       providesTags: [tagTypes.u_public_events_all],
-
     }),
     getUserEvents: build.query({
       query: (arg) => ({
@@ -74,5 +73,5 @@ export const {
   useGetPublicEventsQuery,
   usePurchaseStoreMutation,
   useTicketDetailsQuery,
-  useFilterEventsMutation
+  useFilterEventsMutation,
 } = userEventsApi;

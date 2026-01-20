@@ -24,12 +24,12 @@ export function Pagination({
         className="flex flex-row gap-1 w-fit"
         pageItemClassName={cn(
           "h-10 border rounded-full w-10 flex items-center text-article justify-center whitespace-nowrap text-sm font-medium hover:bg-transparent hover:text-article",
-          itemStyle
+          itemStyle,
         )}
         pageLinkClassName="h-10 w-10 flex items-center justify-center rounded-full"
         activeItemClassName={cn(
           `bg-transparent border-none text-white bg-primary hover:!text-white  hover:!bg-primary rounded-full`,
-          activeStyle
+          activeStyle,
         )}
         disabledItemClassName="hover:!bg-transparent"
         current={current_page}

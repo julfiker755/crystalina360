@@ -16,7 +16,7 @@ export const AccessibilityBox = ({
     setSelAccbility((prev) =>
       prev.includes(option)
         ? prev.filter((item) => item !== option)
-        : [...prev, option]
+        : [...prev, option],
     );
   };
 

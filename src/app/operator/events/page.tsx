@@ -9,6 +9,7 @@ import EventCard from "@/components/view/oparator/reuse/event-card";
 import SvgBox from "@/components/view/oparator/reuse/svg-box";
 import FavIcon from "@/icon/favIcon";
 import { useGetEventsQuery } from "@/redux/api/operator/opratorApi";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -64,10 +65,10 @@ export default function EventAll() {
   ];
 
   const ongoingItem = events?.data?.data?.filter(
-    (item: any) => item.status == "ongoing"
+    (item: any) => item.status == "ongoing",
   );
   const upcommingItem = events?.data?.data?.filter(
-    (item: any) => item.status === "upcoming"
+    (item: any) => item.status === "upcoming",
   );
 
   return (
@@ -86,6 +87,13 @@ export default function EventAll() {
                 </div>
               </div>
             ))}
+            <Link href={`/operator/events/pending`}>
+              <div className="bg-white rounded-md flex items-center space-x-2 py-2 px-6">
+                <FavIcon name="pending_events" />
+                <span>Pending events</span>
+                <ArrowRight className="size-5" />
+              </div>
+            </Link>
           </div>
           <EventButton
             eventOptions={eventOptions}

@@ -1,6 +1,5 @@
 import { baseApi } from "../baseApi";
 
-
 export const userCouponApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     couponCheck: build.mutation({
@@ -10,10 +9,7 @@ export const userCouponApi = baseApi.injectEndpoints({
         data,
       }),
     }),
-
   }),
 });
 
-export const {
-  useCouponCheckMutation
-} = userCouponApi
+export const { useCouponCheckMutation } = userCouponApi;

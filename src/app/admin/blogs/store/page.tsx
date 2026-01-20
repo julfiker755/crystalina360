@@ -48,7 +48,7 @@ export default function BlogStore() {
       sonner.success(
         "Blog created",
         "Blog has been created successfully",
-        "bottom-right"
+        "bottom-right",
       );
     }
   };

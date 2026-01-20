@@ -53,12 +53,12 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         data-slot="textarea"
         className={cn(
           "flex w-full min-h-16 rounded-md overflow-hidden border border-input bg-transparent px-3 py-2 text-base md:text-sm outline-none transition-[color,box-shadow] placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive  resize-none",
-          className
+          className,
         )}
         {...props}
       />
     );
-  }
+  },
 );
 
 Textarea.displayName = "Textarea";

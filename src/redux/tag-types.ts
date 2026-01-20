@@ -29,7 +29,7 @@ export enum tagTypes {
   u_public_events_all = "u_public_events_all",
   u_bookings_all = "u_bookings_all",
   u_booking_details = "u_booking_details",
-
+  o_panding_events = "o_panding_events",
 }
 
 export const tagTypesList = [
@@ -63,4 +63,5 @@ export const tagTypesList = [
   tagTypes.u_public_events_all,
   tagTypes.u_bookings_all,
   tagTypes.u_booking_details,
+  tagTypes.o_panding_events,
 ];

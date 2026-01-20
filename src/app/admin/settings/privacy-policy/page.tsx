@@ -58,7 +58,7 @@ export default function DataPolicyPage() {
       sonner.success(
         "Privacy Policy",
         "Privacy Policy updated successfully",
-        "bottom-right"
+        "bottom-right",
       );
     }
   };

@@ -49,7 +49,7 @@ export default function Navber({ className }: any) {
       <div className={`sticky top-0 left-0 bg-background z-50`}>
         <div
           className={cn(
-            `w-[95%]  md:w-full container rounded-full   h-20 content-center`
+            `w-[95%]  md:w-full container rounded-full   h-20 content-center`,
           )}
         >
           <div className="flex justify-between items-center">

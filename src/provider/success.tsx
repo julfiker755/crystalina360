@@ -91,7 +91,7 @@ export const SuccessDialogProvider = ({
           onInteractOutside={(e) => e.preventDefault()}
           className={cn(
             "sm:max-w-xs p-4 gap-0 pb-5 bg-background modal-shadow1 rounded-2xl overflow-hidden border-none",
-            modalState.className
+            modalState.className,
           )}
         >
           <DialogHeader className="hidden">
@@ -112,7 +112,7 @@ export const SuccessDialogProvider = ({
             <h1
               className={cn(
                 "text-xl font-semibold text-center",
-                modalState.titleStyle
+                modalState.titleStyle,
               )}
             >
               {modalState.title}
@@ -121,7 +121,7 @@ export const SuccessDialogProvider = ({
             <h2
               className={cn(
                 "text-center text-sm font-normal px-10",
-                modalState.descriptionStyle
+                modalState.descriptionStyle,
               )}
             >
               {modalState.description}
@@ -144,7 +144,7 @@ export default function useSuccessDialog(): SuccessDialogContextType {
   const context = useContext(SuccessDialogContext);
   if (!context) {
     throw new Error(
-      "useSuccessDialog must be used within a SuccessDialogProvider"
+      "useSuccessDialog must be used within a SuccessDialogProvider",
     );
   }
   return context;

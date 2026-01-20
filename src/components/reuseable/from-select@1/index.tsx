@@ -85,7 +85,7 @@ export const FormSelDropdown: React.FC<FormSelect2Props> = ({
                   aria-expanded={selectOpen}
                   className={cn(
                     `w-full h-10 hover:bg-transparent font-normal shadow-none justify-between`,
-                    className
+                    className,
                   )}
                   onClick={() => setSelectOpen(!selectOpen)}
                 >
@@ -117,7 +117,7 @@ export const FormSelDropdown: React.FC<FormSelect2Props> = ({
                                 "mr-2 h-4 w-4",
                                 selectedValue === item.value
                                   ? "opacity-100"
-                                  : "opacity-0"
+                                  : "opacity-0",
                               )}
                             />
                             {item.label}

@@ -23,7 +23,7 @@ export function TableSkeleton({
               key={index}
               className={cn(
                 "h-[53px] w-full rounded-md bg-[#F2F2F2]",
-                className
+                className,
               )}
             />
           ))}

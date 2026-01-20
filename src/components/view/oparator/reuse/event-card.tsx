@@ -100,7 +100,7 @@ export default function EventCard({ item }: any) {
                 <span className="text-base text-primary">
                   {ticket_quantity}
                 </span>
-              </div>
+              </div>,
             )}
           </div>
           <div className="[&_div]:flex  [&_div]:gap-2  [&_div]:items-center [&_div]:text-muted-foreground flex flex-col lg:flex-row lg:justify-between">
@@ -109,7 +109,7 @@ export default function EventCard({ item }: any) {
               <div className="flex  gap-2  items-center text-muted-foreground">
                 <FavIcon className="size-5" name="price22" />
                 <span className="text-base text-primary">{price}</span>
-              </div>
+              </div>,
             )}
           </div>
         </div>

@@ -39,7 +39,7 @@ export function FromTextArea({
             <Textarea
               className={cn(
                 "min-h-16 w-full border-none resize-none rounded-sm! bg-[#F4F4F4]  pl-4 pr-3  text-blacks placeholder:text-blacks text-sm",
-                className
+                className,
               )}
               placeholder={placeholder}
               {...field}

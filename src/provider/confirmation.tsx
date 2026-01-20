@@ -124,7 +124,7 @@ export const ConfirmDialogProvider = ({
         <AlertDialogContent
           className={cn(
             "rounded-xl w-[420px] px-5 lg:px-10 border-none py-6",
-            dialogState?.className
+            dialogState?.className,
           )}
         >
           <AlertDialogHeader>
@@ -154,7 +154,7 @@ export const ConfirmDialogProvider = ({
                 <li
                   className={cn(
                     "text-center text-reds text-2xl mb-2",
-                    dialogState.titleStyle
+                    dialogState.titleStyle,
                   )}
                 >
                   {dialogState.title}
@@ -174,7 +174,7 @@ export const ConfirmDialogProvider = ({
               onClick={handleCancel}
               className={cn(
                 "cursor-pointer bg-[#EDEDED] h-10 lg:h-11 hover:bg-[#EDEDED] border-none  rounded-xl py-5 px-10",
-                dialogState?.btnStyle
+                dialogState?.btnStyle,
               )}
             >
               {dialogState.cancelText}
@@ -184,7 +184,7 @@ export const ConfirmDialogProvider = ({
               onClick={handleConfirm}
               className={cn(
                 "cursor-pointer bg-figma-danger h-10 lg:h-11 hover:bg-reds-figma border-none hover:text-white rounded-xl py-5 px-10",
-                dialogState?.btnStyle
+                dialogState?.btnStyle,
               )}
             >
               {dialogState.confirmText}
@@ -203,7 +203,7 @@ export default function useConfirmation(): ConfirmDialogContextType {
   const context = useContext(ConfirmDialogContext);
   if (!context) {
     throw new Error(
-      "useConfirmation must be used within a ConfirmDialogProvider"
+      "useConfirmation must be used within a ConfirmDialogProvider",
     );
   }
   return context;

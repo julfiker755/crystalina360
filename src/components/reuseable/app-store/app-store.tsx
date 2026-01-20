@@ -12,7 +12,7 @@ const AppStore = ({ className, titleStyle, mainStyle }: AppStoreProps) => {
       <h3
         className={cn(
           "font-semibold text-white text-lg md:text-xl mb-3",
-          titleStyle
+          titleStyle,
         )}
       >
         Download Our App
@@ -22,7 +22,7 @@ const AppStore = ({ className, titleStyle, mainStyle }: AppStoreProps) => {
       <div
         className={cn(
           "flex flex-col sm:flex-row gap-3 items-stretch sm:items-center",
-          mainStyle
+          mainStyle,
         )}
       >
         {/* Google Play */}

@@ -10,7 +10,7 @@ export default function SvgBox({ children, className }: svgProps) {
     <div
       className={cn(
         "bg-[#EDEDED] relative rounded-md p-6 overflow-hidden",
-        className
+        className,
       )}
     >
       {children}

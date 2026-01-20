@@ -193,7 +193,7 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
                   text={revenue || "0"}
                   className="bg-figma-delete px-2 py-2 rounded-md"
                 />
-              </>
+              </>,
             )}
           </div>
         </div>

@@ -3,11 +3,11 @@ import { useState } from "react";
 type BooleanState = Record<string, boolean>;
 type BooleanStateUpdater<T extends BooleanState> = <K extends keyof T>(
   key: K,
-  value: boolean
+  value: boolean,
 ) => void;
 
 export function useModalState<T extends BooleanState>(
-  initialState: T
+  initialState: T,
 ): [T, BooleanStateUpdater<T>] {
   const [state, set_State] = useState<T>(initialState);
 

@@ -1,8 +1,8 @@
-'use client';
-import { cn } from '@/lib';
-import { Files } from 'lucide-react';
-import React, { useState } from 'react';
-import { Link as LinkIcon } from 'lucide-react';
+"use client";
+import { cn } from "@/lib";
+import { Files } from "lucide-react";
+import React, { useState } from "react";
+import { Link as LinkIcon } from "lucide-react";
 
 interface CopyProps {
   value: string;
@@ -20,20 +20,15 @@ export default function CopyBox({ value, className, iconStyle }: CopyProps) {
   };
 
   return (
-    <div
-      className={cn(
-        `flex space-x-2 items-center`,
-        className
-      )}
-    >
-      <LinkIcon className='size-5' />
+    <div className={cn(`flex space-x-2 items-center`, className)}>
+      <LinkIcon className="size-5" />
       <span className="w-[100px] truncate text-sm">{value}</span>
 
       <Files
         onClick={handleCopy}
         className={cn(
-          `text-[#575757]/60 ${copied && 'text-green-400'} cursor-pointer ml-3 size-4 transition`,
-          iconStyle
+          `text-[#575757]/60 ${copied && "text-green-400"} cursor-pointer ml-3 size-4 transition`,
+          iconStyle,
         )}
       />
     </div>

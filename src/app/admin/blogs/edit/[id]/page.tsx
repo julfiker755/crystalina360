@@ -63,7 +63,7 @@ export default function BlogStore() {
         sonner.success(
           "Blog updated",
           "Blog has been updated successfully",
-          "bottom-right"
+          "bottom-right",
         );
       }
     } catch (err: any) {

@@ -57,7 +57,7 @@ export function MusicPlayer({
     return () => {
       window.removeEventListener(
         "pauseAllAudios",
-        handlePauseAll as EventListener
+        handlePauseAll as EventListener,
       );
     };
   }, [idx]);
@@ -128,7 +128,7 @@ export function MusicPlayer({
         ref={progressBarRef}
         className={cn(
           "relative w-full rounded-full bg-white px-4 py-3 overflow-hidden cursor-pointer",
-          className
+          className,
         )}
         onClick={handleProgressBarClick}
       >

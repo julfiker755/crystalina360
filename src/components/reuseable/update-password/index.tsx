@@ -45,7 +45,7 @@ export default function UpdatePassword({
       if (res.status) {
         sonner.success(
           "Password Updated",
-          "Your password has been updated successfully"
+          "Your password has been updated successfully",
         );
         from2.reset();
         setState("isPassword", false);

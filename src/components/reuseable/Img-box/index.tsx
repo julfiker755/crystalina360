@@ -15,7 +15,7 @@ export function ImgBox({ src, alt, className, imgStyle, children }: ImgProps) {
     <div
       className={cn(
         `w-[500px] h-[330px] relative overflow-hidden rounded-md`,
-        className
+        className,
       )}
     >
       <Image

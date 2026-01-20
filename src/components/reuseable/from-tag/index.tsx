@@ -37,7 +37,7 @@ export function FromTagInput({
   const handleInputKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
     tags: string[],
-    onChange: (value: string[]) => void
+    onChange: (value: string[]) => void,
   ) => {
     if (e.key === "Enter" && inputValue.trim() !== "") {
       e.preventDefault();
@@ -50,7 +50,7 @@ export function FromTagInput({
   const handleRemoveTag = (
     tagToRemove: string,
     tags: string[],
-    onChange: (value: string[]) => void
+    onChange: (value: string[]) => void,
   ) => {
     const newTags = tags.filter((tag) => tag !== tagToRemove);
     onChange(newTags);
@@ -76,7 +76,7 @@ export function FromTagInput({
               <div
                 className={cn(
                   "relative rounded-md border border-input bg-background px-3 py-3",
-                  className
+                  className,
                 )}
               >
                 {tags?.length > 0 && (
@@ -118,7 +118,7 @@ export function FromTagInput({
                 <Label
                   className={cn(
                     "text-blacks text-base font-medium absolute -top-3 left-5 bg-background px-3",
-                    stylelabel
+                    stylelabel,
                   )}
                 >
                   {label}

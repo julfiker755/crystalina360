@@ -28,7 +28,7 @@ export function DropdownBox({
         <Button
           className={cn(
             "bg-white font-medium text-figma-black border rounded-full",
-            btnStyle
+            btnStyle,
           )}
         >
           {label}

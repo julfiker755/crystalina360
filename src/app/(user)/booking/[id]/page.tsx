@@ -10,8 +10,11 @@ import { Button, Textarea } from "@/components/ui";
 import { CloseIcon } from "@/components/view/common/btn-modal";
 import { AppAlert } from "@/components/view/user/reuse";
 import FavIcon from "@/icon/favIcon";
-import { delivary_t, envs, event_t, helpers, } from "@/lib";
-import { useBookingsDetailsQuery, useStoreRatingMutation } from "@/redux/api/user/bookingApi";
+import { delivary_t, envs, event_t, helpers } from "@/lib";
+import {
+  useBookingsDetailsQuery,
+  useStoreRatingMutation,
+} from "@/redux/api/user/bookingApi";
 import { Calendar, Clock, MapPin, Tag } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -19,16 +22,15 @@ import { useState } from "react";
 
 const intRathing = {
   rating: 0,
-  comment: ""
-}
+  comment: "",
+};
 export default function BookingDetails() {
-  const { id } = useParams()
-  const { data: bookings } = useBookingsDetailsQuery(id)
+  const { id } = useParams();
+  const { data: bookings } = useBookingsDetailsQuery(id);
   const [isReview, setIsReview] = useState(false);
-  const [downlaodLoading, setdownlaodLoading] = useState(false)
-  const [storeRating, { isLoading: rathingLoading }] = useStoreRatingMutation()
-  const [rathingItem, setIsRathingItem] = useState(intRathing)
-
+  const [downlaodLoading, setdownlaodLoading] = useState(false);
+  const [storeRating, { isLoading: rathingLoading }] = useStoreRatingMutation();
+  const [rathingItem, setIsRathingItem] = useState(intRathing);
 
   const {
     id: ids,
@@ -48,70 +50,61 @@ export default function BookingDetails() {
     link,
     status,
     ratings,
-    is_rated
+    is_rated,
   } = bookings?.data?.events || {};
-
-
-
-
-
 
   const handleSubmitRating = async (e: React.FormEvent) => {
     e.preventDefault();
     const value = {
       ...rathingItem,
       event_id: ids,
-    }
-    const data = helpers.fromData(value)
-    const res = await storeRating(data).unwrap()
+    };
+    const data = helpers.fromData(value);
+    const res = await storeRating(data).unwrap();
     if (res.status) {
       setIsRathingItem((prev) => ({
         ...prev,
         rating: 0,
-        comment: ""
-      }))
-      setIsReview(false)
+        comment: "",
+      }));
+      setIsReview(false);
       sonner.success(
         "Rating Successfully Added",
         "Thank you! Your rating has been successfully recorded.",
-        "bottom-right"
-      )
+        "bottom-right",
+      );
     }
-
   };
 
-
-
   // ===== handleDownload  invoice ============
-  const invoice_id = bookings?.data?.payment?.invoice_no
+  const invoice_id = bookings?.data?.payment?.invoice_no;
   const handleDownload = async () => {
     const url = `${envs.api_url}/invoice/${invoice_id}`;
     try {
-      setdownlaodLoading(true)
+      setdownlaodLoading(true);
       const response = await fetch(url, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/pdf',
-        }
+          "Content-Type": "application/pdf",
+        },
       });
 
       if (!response.ok) {
-        sonner.error("Invoice download failed", "Please try clicking the download button again", "bottom-right")
+        sonner.error(
+          "Invoice download failed",
+          "Please try clicking the download button again",
+          "bottom-right",
+        );
       }
       const blob = await response.blob();
 
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = `${invoice_id}.pdf`;
       link.click();
-      setdownlaodLoading(false)
-
-    } catch (error) {
-
-    }
+      setdownlaodLoading(false);
+    } catch (error) {}
   };
-
-
 
   const NotOnDemand = (item: any) => {
     return delivery_type === delivary_t.ondemand ? null : item;
@@ -145,8 +138,6 @@ export default function BookingDetails() {
       </>
     );
   }
-
-
 
   return (
     <div className="container">
@@ -228,15 +219,15 @@ export default function BookingDetails() {
               </div>
             ),
           )}
-          {delivery_type === delivary_t.ondemand && (
-            <CopyBox value={link} />
-          )}
+          {delivery_type === delivary_t.ondemand && <CopyBox value={link} />}
 
           {NotOnDemand(
             <div>
               <h5 className="text-xl font-medium">Quantity of tickets</h5>
-              <h5 className="text-[#A6A996] text-xl ml-2">{bookings?.data?.ticket_quantity}</h5>
-            </div>
+              <h5 className="text-[#A6A996] text-xl ml-2">
+                {bookings?.data?.ticket_quantity}
+              </h5>
+            </div>,
           )}
         </div>
 
@@ -259,7 +250,6 @@ export default function BookingDetails() {
                       Review & Rating
                     </Button>
                   )}
-
                 </div>
               </li>
             </ul>
@@ -267,10 +257,7 @@ export default function BookingDetails() {
               <div className="space-y-3">
                 {ratings?.map((item: any, idx: any) => (
                   <div key={idx}>
-                    <RatingScore
-                      width={100}
-                      readOnly={true}
-                    />
+                    <RatingScore width={100} readOnly={true} />
                     <div className="text-article mt-1">{item.comment}</div>
                   </div>
                 ))}
@@ -295,15 +282,11 @@ export default function BookingDetails() {
             >
               Download Invoice
             </Button>
-          </div >
-        )
-        }
-
-
-
-      </div >
+          </div>
+        )}
+      </div>
       {/* modal box */}
-      < Modal2 open={isReview} setIsOpen={setIsReview} >
+      <Modal2 open={isReview} setIsOpen={setIsReview}>
         <CloseIcon
           className="top-4 right-4"
           onClose={() => setIsReview(false)}
@@ -329,7 +312,9 @@ export default function BookingDetails() {
             />
           </div>
           <div>
-            <h4 className="text-lg font-medium mb-1 text-figma-black">Additional Review</h4>
+            <h4 className="text-lg font-medium mb-1 text-figma-black">
+              Additional Review
+            </h4>
             <Textarea
               placeholder="Any additional sentence for the event...."
               className="border-none bg-figma-input resize-none rounded-md min-h-30"
@@ -343,7 +328,9 @@ export default function BookingDetails() {
             />
           </div>
           <div className="space-y-2">
-            <Button disabled={rathingLoading} className="w-full">Submit</Button>
+            <Button disabled={rathingLoading} className="w-full">
+              Submit
+            </Button>
             <Button
               onClick={() => setIsReview(false)}
               className="w-full bg-transparent border"
@@ -353,8 +340,8 @@ export default function BookingDetails() {
             </Button>
           </div>
         </form>
-      </Modal2 >
+      </Modal2>
       <AppAlert />
-    </div >
+    </div>
   );
 }

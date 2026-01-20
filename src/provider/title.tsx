@@ -13,7 +13,7 @@ const TitleContext = createContext<TitleContextType | null>(null);
 export const TitleProvider = ({ children }: { children: ReactNode }) => {
   const [title, setTitle] = useState("Dashboard Overview");
   const [subtitle, setSubtitle] = useState(
-    "Your overall dashboard overview. See the statistics, analytics and manage them."
+    "Your overall dashboard overview. See the statistics, analytics and manage them.",
   );
 
   return (

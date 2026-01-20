@@ -197,7 +197,7 @@ const PadcastStore = ({ setState }: any) => {
         onUploadProgress: (progressEvent: ProgressEvent) => {
           if (progressEvent.total) {
             const progress = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
+              (progressEvent.loaded * 100) / progressEvent.total,
             );
             setProgress(progress);
           }
@@ -207,7 +207,7 @@ const PadcastStore = ({ setState }: any) => {
         sonner.success(
           "Upload Complete",
           "Music uploaded successfully.",
-          "bottom-right"
+          "bottom-right",
         );
         setState("isStore", false);
         from.reset();
@@ -340,7 +340,7 @@ const PadcastUpdate = ({ setState, details }: any) => {
         onUploadProgress: (progressEvent: ProgressEvent) => {
           if (progressEvent.total) {
             const progress = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
+              (progressEvent.loaded * 100) / progressEvent.total,
             );
             setProgress(progress);
           }
@@ -350,7 +350,7 @@ const PadcastUpdate = ({ setState, details }: any) => {
         sonner.success(
           "Update Complete",
           "Music update successfully.",
-          "bottom-right"
+          "bottom-right",
         );
         setState("isUpdate", false);
         from.reset();

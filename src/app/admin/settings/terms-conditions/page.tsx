@@ -30,7 +30,7 @@ export default function TermsConditions() {
       sonner.success(
         "Terms & Conditions",
         "Terms & Conditions updated successfully",
-        "bottom-right"
+        "bottom-right",
       );
     }
   };

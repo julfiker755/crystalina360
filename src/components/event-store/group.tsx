@@ -97,7 +97,7 @@ export default function GroupStore() {
         sonner.success(
           "Event Added Successfully",
           "Your event has been added successfully.",
-          "bottom-right"
+          "bottom-right",
         );
       }
     } catch (err: any) {
@@ -110,7 +110,7 @@ export default function GroupStore() {
     if (current.includes(value as never)) {
       from.setValue(
         "holistic_discipline",
-        current.filter((v: any) => v !== value)
+        current.filter((v: any) => v !== value),
       );
     } else {
       from.setValue("holistic_discipline", [...current, value] as any);
@@ -211,7 +211,7 @@ export default function GroupStore() {
                     <label key={idx} className="flex items-center gap-3">
                       <Checkbox
                         checked={get("holistic_discipline")?.includes(
-                          item.value as never
+                          item.value as never,
                         )}
                         onCheckedChange={() => toggleHolistic(item.value)}
                       />
@@ -325,7 +325,7 @@ export default function GroupStore() {
             ?.filter((item) =>
               helpers
                 .lowerCase(item?.label)
-                .includes(helpers.lowerCase(searchText))
+                .includes(helpers.lowerCase(searchText)),
             )
             ?.map((item, idx) => (
               <label key={idx} className="flex items-center gap-3">

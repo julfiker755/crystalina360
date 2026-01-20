@@ -21,7 +21,7 @@ export function InputShow({
       <div
         className={cn(
           "h-12 flex text-figma-a_gray items-center px-4 w-full  border rounded-md",
-          className
+          className,
         )}
       >
         {value}
@@ -29,7 +29,7 @@ export function InputShow({
       <Label
         className={cn(
           "text-blacks text-base font-medium bg-background absolute -top-3 left-5 px-3",
-          stylelabel
+          stylelabel,
         )}
       >
         {label}
@@ -48,7 +48,7 @@ export function TextAreaShow({ stylelabel, label, value }: InputShowProps) {
       <Label
         className={cn(
           "text-blacks text-base font-medium bg-background absolute -top-3 left-5 px-3",
-          stylelabel
+          stylelabel,
         )}
       >
         {label}
@@ -78,7 +78,7 @@ export function BadgeShow({ stylelabel, label, items }: InputShowProps) {
       <Label
         className={cn(
           "text-blacks text-base font-medium bg-background absolute -top-3 left-5 px-3",
-          stylelabel
+          stylelabel,
         )}
       >
         {label}
