@@ -30,7 +30,7 @@ export default function GroupStoreBox() {
         </div>
       </SvgBox>
 
-      <GroupStore />
+      <GroupStore msg="Your event has been added successfully" />
     </div>
   );
 }

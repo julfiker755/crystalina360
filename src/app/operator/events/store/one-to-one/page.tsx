@@ -25,7 +25,7 @@ export default function OnetoOne() {
         </div>
       </SvgBox>
 
-      <OnetoOneStore />
+      <OnetoOneStore msg="Your event is pending admin approval. Please wait" />
     </div>
   );
 }

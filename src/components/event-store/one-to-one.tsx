@@ -44,13 +44,13 @@ const initialState = {
   isDate: false,
 };
 
-export default function OnetoOneStore() {
+export default function OnetoOneStore({ msg }: { msg: string }) {
   const [searchText, setSearchText] = useState("");
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
   const [state, setState] = useModalState(initialState);
   const [selAccbility, setSelAccbility] = useState<string[]>([]);
   const [isDelivery, setIsDelivery] = useState<any>("offline");
-  const [selectDate, setSelectDate] = useState<any>([]);
+
 
   const defaultValues = getValuesOne(isDelivery, "2") as any;
   const defaultSchema = getSchema(isDelivery) as any;
@@ -77,7 +77,6 @@ export default function OnetoOneStore() {
     const values = getValuesOne(deliveryType, "2") as any;
     from.reset(values);
     setSelAccbility([]);
-    setSelectDate([]);
     setIsDelivery(deliveryType);
     setSelectedTimes([]);
     clearFiles();
@@ -100,7 +99,7 @@ export default function OnetoOneStore() {
         router.back();
         sonner.success(
           "Event Added Successfully",
-          "Your event has been added successfully.",
+          msg,
           "bottom-right",
         );
       }
@@ -159,10 +158,9 @@ export default function OnetoOneStore() {
                       from.setValue("delivery_type", item.value);
                     }}
                     type="button"
-                    className={`font-normal transition-colors border bg-transparent text-figma-black ${
-                      item.value === get("delivery_type") &&
+                    className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                   >
                     <FavIcon
                       color={
@@ -187,10 +185,9 @@ export default function OnetoOneStore() {
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                     type="button"
                   >
                     {item.label}
@@ -357,21 +354,6 @@ export default function OnetoOneStore() {
           setSelectedTimes={setSelectedTimes}
           setState={setState}
           from={from}
-        />
-      </Modal>
-      {/*  === date === */}
-      <Modal
-        open={state.isDate}
-        setIsOpen={(v) => setState("isDate", v)}
-        title="Create Date Slot"
-        className="sm:max-w-xl"
-        titleStyle="text-center"
-      >
-        <MultiDate
-          selectDate={selectDate}
-          setSelectDate={setSelectDate}
-          from={from}
-          setState={setState}
         />
       </Modal>
     </div>

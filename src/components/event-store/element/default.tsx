@@ -1,10 +1,13 @@
 import {
   demand_sc,
   demand_sc2,
+  demand_sc_edit,
   offline_sc,
   offline_sc2,
+  offline_sc_edit,
   online_sc,
   online_sc2,
+  online_sc_edit,
 } from "@/schema";
 
 export const getValuesOne = (isDelivery: string, ticket: string) => {
@@ -70,6 +73,11 @@ export const getSchema = (isDelivery: string) => {
   if (isDelivery === "offline") return offline_sc;
   if (isDelivery === "online") return online_sc;
   if (isDelivery === "ondemand") return demand_sc;
+};
+export const getSchemaEdit = (isDelivery: string) => {
+  if (isDelivery === "offline") return offline_sc_edit;
+  if (isDelivery === "online") return online_sc_edit;
+  if (isDelivery === "ondemand") return demand_sc_edit;
 };
 
 export const getValuesGroup = (isDelivery: string, ticket: string) => {

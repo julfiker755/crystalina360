@@ -58,7 +58,7 @@ function EventsBox() {
                     </button>
                   </Link>
                   {params === "my-events" && (
-                    <Link href={`/admin/events/edit/${item.id}`}>
+                    <Link href={`/admin/events/edit/one-to-one/${item.id}`}>
                       <button aria-label="Edit">
                         <FavIcon color="#fff" name="edit2" />
                       </button>

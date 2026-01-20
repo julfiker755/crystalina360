@@ -1,14 +1,15 @@
 "use client";
-import EventFrom from "@/components/reuseable/event-from";
 import SvgBox from "@/components/view/oparator/reuse/svg-box";
-import AlertDiscard from "@/components/view/oparator/simple/alert-discard";
 import NavTitle from "@/components/reuseable/nav-title";
-import { Button } from "@/components/ui";
-import { X } from "lucide-react";
 import { BackBtn } from "@/components/reuseable/back-btn";
+import OnetoOneEdit from "@/components/event-store/edit/one-to-one";
+import { useSingleEventsQuery } from "@/redux/api/operator/opratorApi";
+import { useParams } from "next/navigation";
 
 export default function EventEdit() {
-  const handleFormSubmit = () => {};
+  const { slug } = useParams()
+  const { data: events_all, isLoading } = useSingleEventsQuery(slug);
+
 
   return (
     <div>
@@ -24,8 +25,7 @@ export default function EventEdit() {
           </div>
         </div>
       </SvgBox>
-
-      <EventFrom handleFormSubmit={handleFormSubmit} />
+      <OnetoOneEdit events_all={events_all} msg="" />
     </div>
   );
 }

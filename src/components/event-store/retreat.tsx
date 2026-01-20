@@ -38,7 +38,7 @@ const initialState = {
   isDate: false,
 };
 
-export default function RetreatStore() {
+export default function RetreatStore({ msg }: { msg: string }) {
   const [searchText, setSearchText] = useState("");
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
   const [state, setState] = useModalState(initialState);
@@ -95,7 +95,7 @@ export default function RetreatStore() {
         router.back();
         sonner.success(
           "Event Added Successfully",
-          "Your event has been added successfully.",
+          msg,
           "bottom-right",
         );
       }
@@ -154,10 +154,9 @@ export default function RetreatStore() {
                         from.setValue("delivery_type", item.value);
                       }}
                       type="button"
-                      className={`font-normal transition-colors border bg-transparent text-figma-black ${
-                        item.value === get("delivery_type") &&
+                      className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
                         "bg-primary text-white"
-                      }`}
+                        }`}
                     >
                       <FavIcon
                         color={
@@ -185,10 +184,9 @@ export default function RetreatStore() {
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                     type="button"
                   >
                     {item.label}

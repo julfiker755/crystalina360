@@ -26,7 +26,7 @@ export default function Retreat() {
         </div>
       </SvgBox>
 
-      <RetreatStore />
+      <RetreatStore msg="Your event is pending admin approval. Please wait" />
     </div>
   );
 }

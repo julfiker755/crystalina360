@@ -30,7 +30,7 @@ export default function Retreat() {
         </div>
       </SvgBox>
 
-      <RetreatStore />
+      <RetreatStore msg="Your event has been added successfully" />
     </div>
   );
 }
