@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui";
 import { cn } from "@/lib";
@@ -13,94 +14,103 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function FromBenefits({
+type Benefit = {
+  id: number;
+  title: string;
+};
+
+export default function FormBenefits({
   onChange,
   scroll = true,
   className,
   label,
 }: {
-  onChange: (newService: string[]) => void;
+  onChange: (ids: number[]) => void;
   scroll?: boolean;
   className?: string;
   label: string;
 }) {
-  const { data: benefits } = useAllBenefitsQuery({});
-  const options = benefits?.data || [];
+  const { data } = useAllBenefitsQuery({});
+  const options: Benefit[] = data?.data || [];
 
-  const [selectedBenefits, setSelectedBenefits] = useState<string[]>([]);
+  const [selectedBenefits, setSelectedBenefits] = useState<number[]>([]);
 
-  const handleSelectBenefit = (benefit: string) => {
-    if (selectedBenefits.includes(benefit)) {
-      setSelectedBenefits(selectedBenefits.filter((item) => item !== benefit));
-    } else {
-      setSelectedBenefits([...selectedBenefits, benefit]);
-    }
-    onChange(selectedBenefits);
+  // ✅ MAIN LOGIC
+  const handleSelect = (value: string) => {
+    const id = Number(value);
+
+    setSelectedBenefits((prev) => {
+      const updated = prev.includes(id)
+        ? prev.filter((item) => item !== id)
+        : [...prev, id];
+
+      onChange(updated); // ✅ correct value
+      return updated;
+    });
   };
 
-  const handleDeleteOptions = (index: number) => {
-    const updated = selectedBenefits.filter((_, i) => i !== index);
+  const handleDelete = (id: number) => {
+    const updated = selectedBenefits.filter((item) => item !== id);
     setSelectedBenefits(updated);
     onChange(updated);
   };
 
-  console.log(selectedBenefits);
-
   return (
-    <div className={`${className}`}>
-      <div className="flex space-x-2 relative">
-        <div className="text-blacks text-base font-medium bg-background absolute -top-3 left-5 px-3">
+    <div className={className}>
+      <div className="relative mb-2">
+        <span className="absolute -top-3 left-4 bg-background px-2 text-sm font-medium">
           {label}
-        </div>
+        </span>
       </div>
 
-      <ScrollArea className={scroll && selectedBenefits.length > 2 ? "h-[100px] mt-3" : ""}>
-        <div className={`mt-3 ${scroll && selectedBenefits.length > 2 ? "space-y-2 mr-4" : "space-y-2"}`}>
-          {/* Select Dropdown instead of checkboxes */}
-          <Select
-            value={selectedBenefits}
-            onValueChange={(value) => {
-              setSelectedBenefits(value);
-              onChange(value); // Make sure to update the parent component
-            }}
-            multiple // Allow multiple selection
-          >
-            <SelectTrigger className="w-full items-center rounded-xl py-5 cursor-pointer shadow-none">
-              <SelectValue placeholder="Select Benefits" />
-            </SelectTrigger>
-            <SelectContent className="rounded-md p-0">
-              <SelectGroup className="p-0 m-0">
-                {options?.map((benefit: any, index: any) => (
-                  <SelectItem
-                    className={cn("border-b last:border-b-0 cursor-pointer py-2 pl-4 rounded-none")}
-                    key={index}
-                    value={benefit.id}
-                  >
-                    <span className="flex justify-center items-center">
-                      {benefit.title}
-                    </span>
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-      </ScrollArea>
+      {/* ✅ Select MUST */}
+      <Select onValueChange={handleSelect}>
+        <SelectTrigger className="w-full rounded-xl py-5">
+          <SelectValue placeholder="Select benefits" />
+        </SelectTrigger>
 
-      {/* Display selected benefits below the dropdown */}
-      {selectedBenefits?.length > 0 && (
-        <div className="mt-4 space-y-2">
-          {selectedBenefits?.map((benefit, index) => {
-            const selectedBenefit = options?.find(option => option.id === benefit);
-            return selectedBenefit ? (
-              <div key={index} className="flex justify-between items-center border-b pb-2">
-                <span>{selectedBenefit.title}</span>
-                <DeleteBtn onClick={() => handleDeleteOptions(index)} />
-              </div>
-            ) : null;
-          })}
-        </div>
-      )}
+        <SelectContent>
+          <SelectGroup>
+            {options.map((benefit) => (
+              <SelectItem
+                key={benefit.id}
+                value={String(benefit.id)}
+                className={cn(
+                  "cursor-pointer",
+                  selectedBenefits.includes(benefit.id) &&
+                  "bg-muted font-medium"
+                )}
+              >
+                {benefit.title}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+
+      {/* ✅ Selected Output */}
+      <ScrollArea
+        className={scroll && selectedBenefits.length > 2 ? "h-[120px] mt-3" : ""}
+      >
+        {selectedBenefits.length > 0 && (
+          <div className="mt-4 space-y-2">
+            {selectedBenefits.map((id) => {
+              const item = options.find((o) => o.id === id);
+              if (!item) return null;
+
+              return (
+                <div
+                  key={id}
+                  className="flex justify-between items-center border-b pb-2"
+                >
+                  <span>{item.title}</span>
+                  <DeleteBtn onClick={() => handleDelete(id)} />
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </ScrollArea>
     </div>
   );
 }
