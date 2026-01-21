@@ -16,10 +16,16 @@ import {
   ColorPickerSelection,
 } from "@/components/ui";
 
-export default function FromColorPicker({ label, defaultColor = "" }: any) {
+export default function FromColorPicker({
+  label,
+  color,
+  setColor
+}: any) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [width, setWidth] = useState<number>(0);
-  const [color, setColor] = useState<string>(defaultColor);
+
+
+
 
   // Dynamically get button width
   useEffect(() => {
@@ -53,9 +59,11 @@ export default function FromColorPicker({ label, defaultColor = "" }: any) {
         </PopoverTrigger>
         <PopoverContent className="overflow-hidden" style={{ width }}>
           <ColorPicker
-            onChange={(color) => setColor(color as any)}
+            onChange={(color) => {
+              setColor(color as any)
+            }}
             className="h-[300px] w-full"
-            defaultValue="#6366F1"
+            defaultValue={color}
           >
             <ColorPickerSelection />
             <div className="flex items-center gap-4">

@@ -102,7 +102,7 @@ export const ColorPicker = ({
       const hex = color.hex();
       const hexa = color.hexa(); // includes alpha
 
-      onChange(hexa); // ← return HEX with opacity ALWAYS
+      onChange(hex); // ← return HEX with opacity ALWAYS
     }
   }, [hue, saturation, lightness, alpha, onChange]);
 

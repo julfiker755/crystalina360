@@ -20,7 +20,6 @@ import { ImgBox } from "@/components/reuseable/Img-box";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getSchema, getValuesOne } from "./element/default";
 import TimeSelect from "./element/time-select";
-import MultiDate from "./element/multi-date";
 import { ErrorInput } from "../reuseable/error";
 import { InputTime } from "../reuseable/timeInput";
 import PersonLimit from "./element/person-limit";
@@ -30,13 +29,13 @@ import TicketQuantity from "./element/ticket-quantity";
 import EmailCollent from "./element/email-collect";
 import { useStoreEventsMutation } from "@/redux/api/operator/opratorApi";
 import { useRouter } from "next/navigation";
-import sonner from "../reuseable/sonner";
 import {
   delivaryOptions,
   disciplineOptions,
   durationOptions,
   purposeItem,
 } from "../dummy-data";
+import sonner from "../reuseable/sonner";
 
 const initialState = {
   holistic: false,
@@ -50,7 +49,7 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
   const [state, setState] = useModalState(initialState);
   const [selAccbility, setSelAccbility] = useState<string[]>([]);
   const [isDelivery, setIsDelivery] = useState<any>("offline");
-
+  const [progress, setProgress] = useState(0);
 
   const defaultValues = getValuesOne(isDelivery, "2") as any;
   const defaultSchema = getSchema(isDelivery) as any;
@@ -92,16 +91,23 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
       max_person: "2",
       ...rest,
     });
+
     try {
-      const res = await storeEvents(data).unwrap();
+      const res = await storeEvents({
+        data,
+        onUploadProgress: (progressEvent: ProgressEvent) => {
+          if (progressEvent.total) {
+            const progress = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total,
+            );
+            setProgress(progress);
+          }
+        },
+      }).unwrap();
       if (res.status) {
         resetFrom(get("delivery_type"));
         router.back();
-        sonner.success(
-          "Event Added Successfully",
-          msg,
-          "bottom-right",
-        );
+        sonner.success("Event Added Successfully", msg, "bottom-right");
       }
     } catch (err: any) {
       sonner.error("Error", err.message, "bottom-right");
@@ -158,9 +164,10 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
                       from.setValue("delivery_type", item.value);
                     }}
                     type="button"
-                    className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
+                    className={`font-normal transition-colors border bg-transparent text-figma-black ${
+                      item.value === get("delivery_type") &&
                       "bg-primary text-white"
-                      }`}
+                    }`}
                   >
                     <FavIcon
                       color={
@@ -185,9 +192,10 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
+                      item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                      }`}
+                    }`}
                     type="button"
                   >
                     {item.label}
@@ -303,8 +311,16 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
             )}
 
             {/* Submit Button */}
-            <Button disabled={isLoading} className="w-full">
-              Submit
+            <Button disabled={isLoading} className="w-full relative">
+              <div
+                className={`absolute top-0 z-0 left-0  h-full rounded-md bg-[#3990dceb]`}
+                style={{
+                  width: `${progress}%`,
+                }}
+              ></div>
+              <span className="relative z-10">
+                {isLoading ? "Waiting..." : "Submit"}
+              </span>
             </Button>
           </div>
         </div>

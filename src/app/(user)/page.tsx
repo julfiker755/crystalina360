@@ -23,7 +23,6 @@ export default function UserHome() {
         <>
           <Advertise />
           <Subscription />
-          {/* <AddOn /> */}
         </>
       ) : (
         <>

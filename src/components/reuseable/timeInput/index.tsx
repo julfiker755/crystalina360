@@ -1,5 +1,4 @@
 "use client";
-import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { CircleAlert } from "lucide-react";
 import { Controller, useFormContext } from "react-hook-form";
@@ -9,7 +8,6 @@ import { Input } from "@/components/ui";
 interface TimeInputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label?: string;
-  placeholder?: string;
   className?: string;
   stylelabel?: string;
 }
@@ -17,7 +15,6 @@ interface TimeInputProps extends InputHTMLAttributes<HTMLInputElement> {
 export function InputTime({
   name,
   label,
-  placeholder,
   className,
   stylelabel,
   ...rest
@@ -26,30 +23,23 @@ export function InputTime({
 
   return (
     <Controller
-      control={control}
       name={name}
+      control={control}
       render={({ field, fieldState: { error } }) => (
         <div>
           {label && (
-            <h5
-              className={cn(
-                "text-blacks text-base font-medium mb-1",
-                stylelabel,
-              )}
-            >
+            <h5 className={cn("text-base font-medium mb-1", stylelabel)}>
               {label}
             </h5>
           )}
-          <div className="relative">
-            <Input
-              className={cn("block h-10 w-full", className)}
-              {...field}
-              {...rest}
-              placeholder={placeholder}
-              type="time"
-              id={`time-${name}`}
-            />
-          </div>
+
+          <Input
+            type="time"
+            className={cn("h-10 w-full", className)}
+            {...field}
+            {...rest}
+          />
+
           {error?.message && (
             <p className="text-sm pt-1 text-red-400 flex gap-1 items-center justify-end">
               {error.message}

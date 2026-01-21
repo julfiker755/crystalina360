@@ -1,9 +1,19 @@
+"use client";
 import assets from "@/assets";
 import AppStore from "@/components/reuseable/app-store/app-store";
-import { Button, Input } from "@/components/ui";
 import FavIcon from "@/icon/favIcon";
+import { helpers } from "@/lib";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Footer() {
+  const [token, setToken] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const auth = helpers.hasAuthToken();
+    setToken(auth);
+  }, []);
+
   const socialMedia = [
     { name: "facebook", icon: "facebook" },
     { name: "youtube", icon: "youtube" },
@@ -35,13 +45,44 @@ export default function Footer() {
             <h3 className="text-xl font-semibold mb-3 text-white">
               Quick links
             </h3>
-            <ul className="space-y-1">
-              <li>Home</li>
-              <li>Explore</li>
-              <li>Booking</li>
-              <li>Contact Us</li>
-              <li>Profile</li>
-            </ul>
+            {}
+            {token ? (
+              <ul className="space-y-1">
+                <li>
+                  <Link href={"/operator/add-on"}>Add On</Link>
+                </li>
+                <li>
+                  <Link href={"/operator/pricing"}>Pricing</Link>
+                </li>
+                <li>
+                  <Link href={"/operator/events"}>Events</Link>
+                </li>
+                <li>
+                  <Link href={"/operator/privacy-policy"}>Privacy Policy</Link>
+                </li>
+                <li>
+                  <Link href={"/operator/faq"}>FQA</Link>
+                </li>
+              </ul>
+            ) : (
+              <ul className="space-y-1">
+                <li>
+                  <Link href="operator">Home</Link>
+                </li>
+                <li>
+                  <Link href="/operator#pricing">Pricing</Link>
+                </li>
+                <li>
+                  <Link href="/operator#add-on">Add On</Link>
+                </li>
+                <li>
+                  <Link href="/operator#privacy-Policy">Privacy Policy</Link>
+                </li>
+                <li>
+                  <Link href="/operator#faq">FQA</Link>
+                </li>
+              </ul>
+            )}
           </div>
           <div>
             <h3 className="text-xl font-semibold text-white mb-3">

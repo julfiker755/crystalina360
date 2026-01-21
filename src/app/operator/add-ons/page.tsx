@@ -2,7 +2,7 @@
 import { Alert, AlertTitle } from "@/components/ui";
 import { addOns } from "@/components/view/user/dummy-json";
 import { AppAlert } from "@/components/view/user/reuse";
-import AddOnCard from "@/components/view/user/reuse/addon-card";
+import AddOnCard from "@/components/view/oparator/reuse/addon-card";
 import { BadgePercent, X } from "lucide-react";
 import { useState } from "react";
 

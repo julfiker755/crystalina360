@@ -382,7 +382,6 @@ export const cityOptions = [
   { label: "San Francisco", value: "San Francisco" },
 ];
 
-
 export const dateOption = [
   { label: "Today", value: "today" },
   { label: "Tomorrow", value: "tomorrow" },

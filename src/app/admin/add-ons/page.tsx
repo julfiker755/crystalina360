@@ -19,6 +19,10 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { add_on, sign_In } from "@/schema";
 import FromColorPicker from "@/components/reuseable/from-color";
+import { useStoreAddOnMutation } from "@/redux/api/admin/addonApi";
+import FromBenefits from "@/components/reuseable/from-benefits";
+
+
 
 const initState = {
   isStore: false,
@@ -90,7 +94,10 @@ export default function Addons() {
 
 //  ===================== AddonStoreForm ==================
 const AddonStoreForm = ({ setState }: any) => {
+  const [storeAddOn, { isLoading }] = useStoreAddOnMutation();
   const [isItem, setIsItem] = useState<any>([]);
+  const [primarycolor, setPrimaryColor] = useState<string>("#6366F1");
+  const [secondarycolor, setSecondaryColor] = useState<string>("#C6C3F6");
   const from = useForm({
     resolver: zodResolver(add_on),
     defaultValues: {
@@ -99,12 +106,22 @@ const AddonStoreForm = ({ setState }: any) => {
       bio: "",
       benefits: [],
       primary_color: "",
-      secondery_color: "",
+      secondary_color: "",
     },
   });
 
   const handleSubmit = async (values: FieldValues) => {
-    console.log(values);
+    const { primary_color, secondary_color, ...rest } = values
+    const data = {
+      ...rest,
+      primary_color: primarycolor,
+      secondary_color: secondarycolor
+
+    }
+    console.log(values)
+    // const data1 = helpers.fromData(data)
+    // const res = await storeAddOn(data)
+
   };
 
   return (
@@ -133,14 +150,13 @@ const AddonStoreForm = ({ setState }: any) => {
           className="rounded-xl sm:min-h-30"
         />
         <div>
-          <FromDropdown
-            options={isItem}
+          <FromBenefits
             className="border-b  pb-2 px-1"
             label="Key benefits"
             onChange={(values) => {
-              setIsItem(values);
-              console.log(values);
-              from.setValue("benefits", isItem);
+              console.log(values)
+              // setIsItem(values);
+              // from.setValue("benefits", isItem);
             }}
           />
           {from.watch("benefits")?.length == 0 &&
@@ -152,10 +168,23 @@ const AddonStoreForm = ({ setState }: any) => {
             )}
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-10">
-          <FromColorPicker defaultColor="#6366F1" label="Primary Color" />
-          <FromColorPicker defaultColor="#C6C3F6" label="Secondery Color" />
+          <FromColorPicker
+            defaultColor={"#6366F1"}
+            name="primary_color"
+            label="Primary Color"
+            color={primarycolor}
+            setColor={setPrimaryColor}
+          />
+
+          <FromColorPicker
+            name="secondary_color"
+            defaultColor={"#C6C3F6"}
+            label="Secondery Color"
+            color={secondarycolor}
+            setColor={setSecondaryColor}
+          />
         </div>
-        <Button size="lg" className="w-full rounded-xl">
+        <Button disabled={isLoading} size="lg" className="w-full rounded-xl">
           Create
         </Button>
       </Form>
@@ -173,7 +202,7 @@ const AddonEditForm = ({ setState }: any) => {
       bio: "",
       benefits: [],
       primary_color: "",
-      secondery_color: "",
+      // secondery_color: ""
     },
   });
 

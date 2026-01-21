@@ -20,6 +20,23 @@ export default function TimeSelect({
     return `${displayHour.toString().padStart(2, "0")}:${minutes} ${ampm}`;
   };
 
+  const convertToRomeTime = (time: string) => {
+    const date = new Date();
+    const [hours, minutes] = time.split(":");
+    date.setHours(parseInt(hours), parseInt(minutes));
+
+    // Fixed: Added hour12: true to explicitly show AM/PM
+    const options: any = {
+      timeZone: "Europe/Rome",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true, // This ensures AM/PM is displayed
+    };
+    const romeTime = new Intl.DateTimeFormat("en-US", options).format(date);
+
+    return romeTime;
+  };
+
   const handleAddTime = () => {
     if (!newTime) {
       setError("Please select a time");
@@ -41,8 +58,7 @@ export default function TimeSelect({
   };
 
   const handleSave = () => {
-    from.setValue("event_time", selectedTimes);
-    selectedTimes.map(formatTime);
+    from.setValue("event_time", selectedTimes.map(convertToRomeTime));
     setState("istime", false);
   };
 

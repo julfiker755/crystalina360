@@ -12,12 +12,18 @@ import UpdatePassword from "@/components/reuseable/update-password";
 import { Button, TabsContent } from "@/components/ui";
 import { CloseIcon } from "@/components/view/common/btn-modal";
 import ProfileEdit2 from "@/components/view/oparator/simple/edit-profile";
-import { useLogout, useModalState } from "@/hooks";
+import { useModalState } from "@/hooks";
 import { useGetProfileQuery } from "@/redux/api/authApi";
 import FavIcon from "@/icon/favIcon";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { useConnectPaypalMutation } from "@/redux/api/operator/opratorApi";
+import { authKey, helpers } from "@/lib";
+import { useAppDispatch } from "@/redux/hooks";
+import { clearAuth } from "@/redux/features/authSlice";
+import { useRouter } from "next/navigation";
+import { getInterval } from "@/lib/function-utils";
+import { baseApi } from "@/redux/api/baseApi";
 
 const initState = {
   isProfile: false,
@@ -26,10 +32,12 @@ const initState = {
 export default function Profile() {
   const [state, setState] = useModalState(initState);
   const { data: profile } = useGetProfileQuery({});
-  const { img, name, email, bio, skills } = profile?.data?.user || {};
-  const { logout, isLoading: logoutLoading } = useLogout();
+  const { img, name, email, bio, skills, subscribed_plans } =
+    profile?.data?.user || {};
   const [connectPaypal, { isLoading: paypalLoading }] =
     useConnectPaypalMutation();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const stashItem = [
     {
@@ -69,6 +77,19 @@ export default function Profile() {
             <div className="flex items-center justify-center space-x-2">
               <span>{email}</span>
             </div>
+            <div className="bg-figma-delete w-full py-1 px-3 rounded-md">
+              <div className="flex justify-between space-x-10 bg-white px-2 py-1 mx-auto rounded-md max-w-xs mt-3">
+                <div className="flex items-center">
+                  <FavIcon name="a_plans" />{" "}
+                  <span className="ml-2 text-base font-normal">
+                    Active plan:
+                  </span>
+                </div>
+                <div className="font-medium text-lg">
+                  {getInterval[subscribed_plans?.interval]}
+                </div>
+              </div>
+            </div>
           </div>
           <h1 className="w-full h-px bg-[#C4ACA4]/15"></h1>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -100,8 +121,12 @@ export default function Profile() {
 
           <div className="flex justify-center mt-5">
             <Button
-              disabled={logoutLoading}
-              onClick={() => logout()}
+              onClick={() => {
+                router.push("/operator");
+                helpers.removeAuthCookie(authKey);
+                dispatch(clearAuth());
+                dispatch(baseApi.util.resetApiState());
+              }}
               variant="destructive"
               size="lg"
               className="w-fit"

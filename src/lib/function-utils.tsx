@@ -14,3 +14,10 @@ export function getDeliveryIcon(type: DeliveryType, color?: string) {
     <FavIcon name={deliveryTypeConfig[type]} color={color} className="size-4" />
   );
 }
+
+export type BillingInterval = "MONTH" | "YEAR";
+
+export const getInterval: Record<any, string> = {
+  MONTH: "Month",
+  YEAR: "Year",
+};

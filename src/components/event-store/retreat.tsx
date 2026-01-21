@@ -45,6 +45,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
   const [selAccbility, setSelAccbility] = useState<string[]>([]);
   const [isDelivery, setIsDelivery] = useState<any>("offline");
   const [selectDate, setSelectDate] = useState<any>([]);
+  const [progress, setProgress] = useState(0);
   const router = useRouter();
   const defaultValues = getValuesOne(isDelivery, "200") as any;
   const defaultSchema = getSchema(isDelivery) as any;
@@ -89,15 +90,21 @@ export default function RetreatStore({ msg }: { msg: string }) {
       ...rest,
     });
     try {
-      const res = await storeEvents(data).unwrap();
+      const res = await storeEvents({
+        data,
+        onUploadProgress: (progressEvent: ProgressEvent) => {
+          if (progressEvent.total) {
+            const progress = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total,
+            );
+            setProgress(progress);
+          }
+        },
+      }).unwrap();
       if (res.status) {
         resetFrom(get("delivery_type"));
         router.back();
-        sonner.success(
-          "Event Added Successfully",
-          msg,
-          "bottom-right",
-        );
+        sonner.success("Event Added Successfully", msg, "bottom-right");
       }
     } catch (err: any) {
       sonner.error("Error", err.message, "bottom-right");
@@ -154,9 +161,10 @@ export default function RetreatStore({ msg }: { msg: string }) {
                         from.setValue("delivery_type", item.value);
                       }}
                       type="button"
-                      className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
+                      className={`font-normal transition-colors border bg-transparent text-figma-black ${
+                        item.value === get("delivery_type") &&
                         "bg-primary text-white"
-                        }`}
+                      }`}
                     >
                       <FavIcon
                         color={
@@ -184,9 +192,10 @@ export default function RetreatStore({ msg }: { msg: string }) {
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
+                      item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                      }`}
+                    }`}
                     type="button"
                   >
                     {item.label}
@@ -272,8 +281,16 @@ export default function RetreatStore({ msg }: { msg: string }) {
             />
             <FromTagInput name="tags" label="Tags" className="py-2" />
             <EmailCollent />
-            <Button disabled={isLoading} className="w-full">
-              Submit
+            <Button disabled={isLoading} className="w-full relative">
+              <div
+                className={`absolute top-0 z-0 left-0  h-full rounded-md bg-[#3990dceb]`}
+                style={{
+                  width: `${progress}%`,
+                }}
+              ></div>
+              <span className="relative z-10">
+                {isLoading ? "Waiting..." : "Submit"}
+              </span>
             </Button>
           </div>
         </div>

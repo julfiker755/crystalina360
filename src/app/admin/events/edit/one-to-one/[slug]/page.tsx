@@ -7,9 +7,8 @@ import { useSingleEventsQuery } from "@/redux/api/operator/opratorApi";
 import { useParams } from "next/navigation";
 
 export default function EventEdit() {
-  const { slug } = useParams()
+  const { slug } = useParams();
   const { data: events_all, isLoading } = useSingleEventsQuery(slug);
-
 
   return (
     <div>

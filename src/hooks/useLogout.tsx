@@ -4,7 +4,7 @@ import { baseApi } from "@/redux/api/baseApi";
 import { clearAuth } from "@/redux/features/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export const useLogout = () => {
   const [logout, { isLoading }] = useLogoutMutation();
@@ -18,12 +18,12 @@ export const useLogout = () => {
     try {
       // await logout({}).unwrap();
       if (role === roleKey.operator) {
-        router.push("/operator");
+        redirect("/operator");
       } else {
-        router.push("/");
+        redirect("/");
       }
-      helpers.removeAuthCookie(authKey);
     } finally {
+      helpers.removeAuthCookie(authKey);
       dispatch(clearAuth());
       dispatch(baseApi.util.resetApiState());
     }

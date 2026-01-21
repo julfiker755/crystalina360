@@ -25,11 +25,12 @@ export const opratorsApi = baseApi.injectEndpoints({
       },
     }),
     storeEvents: build.mutation({
-      query: (data: any) => ({
+      query: ({ data, onUploadProgress }) => ({
         url: "/events",
         method: "POST",
         ContentType: "multipart/form-data",
         data,
+        onUploadProgress,
       }),
       invalidatesTags: [tagTypes.o_events, tagTypes.a_admin_events],
     }),
@@ -57,6 +58,14 @@ export const opratorsApi = baseApi.injectEndpoints({
         return buildResponse(res);
       },
     }),
+    buyPlan: build.mutation({
+      query: (data) => ({
+        url: "/buy-plans",
+        method: "POST",
+        data,
+      }),
+      invalidatesTags: [tagTypes.profile],
+    }),
   }),
 });
 
@@ -66,4 +75,5 @@ export const {
   useSingleEventsQuery,
   useConnectPaypalMutation,
   usePendingEventOpertorQuery,
+  useBuyPlanMutation,
 } = opratorsApi;

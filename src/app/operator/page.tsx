@@ -1,3 +1,4 @@
+import AddOn from "@/components/view/oparator/landing/add-on";
 import FlowStep from "@/components/view/oparator/landing/flow-step";
 import Fqa from "@/components/view/oparator/landing/fqa";
 import HomeSec from "@/components/view/oparator/landing/homeSec";
@@ -11,6 +12,7 @@ export default function RootOperator() {
       <HomeSec />
       <FlowStep />
       <Pricing />
+      <AddOn />
       <PrivacyPolicy />
       <Fqa />
       <Manage />

@@ -10,56 +10,56 @@ import { Repeat } from "@/components/reuseable/repeat";
 import React, { useState } from "react";
 
 export default function PendingEvents() {
-    const [activeButton, setActiveButton] = useState<string>("");
-    const { data: pendingEvent, isLoading } = usePendingEventOpertorQuery({
-        search: activeButton,
-    });
+  const [activeButton, setActiveButton] = useState<string>("");
+  const { data: pendingEvent, isLoading } = usePendingEventOpertorQuery({
+    search: activeButton,
+  });
 
-    return (
-        <div className="container mx-auto mb-20">
-            <SvgBox className="mt-6">
-                <div className="flex items-center space-x-2">
-                    <BackBtn className="bg-white rounded-md" />
-                    <h2>Event Requests</h2>
-                </div>
-            </SvgBox>
-            <div className="my-4 flex justify-end">
-                <ButtonGroup>
-                    {eventItem?.map((btn) => (
-                        <Button
-                            key={btn.value}
-                            size="sm"
-                            variant="outline"
-                            className={
-                                activeButton === btn.value
-                                    ? "bg-primary text-white hover:bg-primary hover:text-white"
-                                    : ""
-                            }
-                            onClick={() => setActiveButton(btn.value)}
-                        >
-                            {btn.label}
-                        </Button>
-                    ))}
-                </ButtonGroup>
-            </div>
-            <div className="mt-10">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {isLoading ? (
-                        <Repeat count={10}>
-                            <Skeleton className="w-full h-[420px]" />
-                        </Repeat>
-                    ) : pendingEvent?.data?.length > 0 ? (
-                        pendingEvent?.data?.map((item: any, idx: any) => (
-                            <EventCard key={idx} item={item} />
-                        ))
-                    ) : (
-                        <NoItemData
-                            className="col-span-1 lg:col-span-3"
-                            title="No Events Items Available at the Moment"
-                        />
-                    )}
-                </div>
-            </div>
+  return (
+    <div className="container mx-auto mb-20">
+      <SvgBox className="mt-6">
+        <div className="flex items-center space-x-2">
+          <BackBtn className="bg-white rounded-md" />
+          <h2>Event Requests</h2>
         </div>
-    );
+      </SvgBox>
+      <div className="my-4 flex justify-end">
+        <ButtonGroup>
+          {eventItem?.map((btn) => (
+            <Button
+              key={btn.value}
+              size="sm"
+              variant="outline"
+              className={
+                activeButton === btn.value
+                  ? "bg-primary text-white hover:bg-primary hover:text-white"
+                  : ""
+              }
+              onClick={() => setActiveButton(btn.value)}
+            >
+              {btn.label}
+            </Button>
+          ))}
+        </ButtonGroup>
+      </div>
+      <div className="mt-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {isLoading ? (
+            <Repeat count={10}>
+              <Skeleton className="w-full h-[420px]" />
+            </Repeat>
+          ) : pendingEvent?.data?.length > 0 ? (
+            pendingEvent?.data?.map((item: any, idx: any) => (
+              <EventCard key={idx} item={item} />
+            ))
+          ) : (
+            <NoItemData
+              className="col-span-1 lg:col-span-3"
+              title="No Events Items Available at the Moment"
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }

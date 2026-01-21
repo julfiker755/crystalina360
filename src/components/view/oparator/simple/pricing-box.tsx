@@ -1,66 +1,55 @@
 "use client";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useGetPricingQuery } from "@/redux/api/admin/pricingApi";
+import { useGetProfileQuery } from "@/redux/api/authApi";
+import { useBuyPlanMutation } from "@/redux/api/operator/opratorApi";
+import { helpers } from "@/lib";
 
-const pricingPlans = [
-  {
-    id: "basic",
-    name: "Basic Plan",
-    price: 0,
-    description: "Benefits you will get",
-    benefits: [
-      "Benefit 1 goes here",
-      "Benefit 2 goes here",
-      "Benefit 3 goes here",
-      "Benefit 4 goes here",
-      "Benefit 5 goes here",
-      "Benefit 6 goes here",
-    ],
-    featured: false,
-    bg: "#EDEDED",
-    color: "#303030",
-  },
-  {
-    id: "pro",
-    name: "Pro Plan",
-    price: 100,
-    description: "Benefits you will get",
-    benefits: [
-      "Benefit 1 goes here",
-      "Benefit 2 goes here",
-      "Benefit 3 goes here",
-      "Benefit 4 goes here",
-      "Benefit 5 goes here",
-      "Benefit 6 goes here",
-    ],
-    featured: true,
-    bg: "#303030",
-    color: "#FFF",
-  },
-];
+const freePlan = {
+  id: "basic",
+  title: "Free Plan",
+  price: "0.00",
+  description: "Benefits you will get",
+  service: ["limited visibility", "no monthly costs"],
+};
 
 export default function PricingBox() {
-  const [isTab, setIsTab] = useState("monthly");
+  const [isTab, setIsTab] = useState("MONTH");
+  const { data: pricing } = useGetPricingQuery({
+    pricing_for: "operator",
+  });
+  const [buyPlan, { isLoading }] = useBuyPlanMutation();
+  const pro_item = pricing?.data?.find((item: any) => item.interval === isTab);
+  const { data: profile } = useGetProfileQuery({});
+
+  const bugPlanSubmit = async (id: string) => {
+    const data = helpers.fromData({
+      plan_id: id,
+    });
+    await buyPlan(data).unwrap();
+  };
+
+  const Ids = profile?.data?.user?.subscribed_plans?.id;
 
   return (
     <div className="pb-16">
       <div className="text-center container mb-12">
         <h1>Pricing</h1>
 
-        {/* Toggle Buttons */}
         <div className="flex justify-center mt-5 mx-auto space-x-3 bg-figma-gray1 w-fit rounded-full">
           <button
-            onClick={() => setIsTab("monthly")}
+            onClick={() => setIsTab("MONTH")}
             className={`py-2 px-7 ${
-              isTab == "monthly" && "bg-figma-primary  text-white!"
+              isTab == "MONTH" && "bg-figma-primary  text-white!"
             } rounded-full text-figma-black cursor-pointer`}
           >
             Monthly
           </button>
           <button
-            onClick={() => setIsTab("annual")}
+            onClick={() => setIsTab("YEAR")}
             className={`py-2 px-7 ${
-              isTab === "annual" && "bg-figma-primary  text-white!"
+              isTab === "YEAR" && "bg-figma-primary  text-white!"
             } rounded-full text-figma-black cursor-pointer`}
           >
             Annual
@@ -68,61 +57,188 @@ export default function PricingBox() {
         </div>
       </div>
       <div className="relative">
-        {/* <div className="absolute lg-hidden right-0  top-0 w-[600px] h-[800px] bg-[url('/img/p-r.png')] bg-cover bg-no-repeat z-0" />
-        <div className="absolute lg-hidden -left-40  top-10   w-[900px]  h-[800px] bg-[url('/img/p-l.png')] bg-cover bg-no-repeat" /> */}
-        <div className="grid md:grid-cols-2 gap-6 mb-12 w-11/12 lg:max-w-4xl mx-auto">
-          {pricingPlans.map((plan) => (
+        {isTab === "MONTH" ? (
+          <div className="grid md:grid-cols-2 gap-6 mb-12 w-11/12 lg:max-w-4xl mx-auto">
+            {/*  === free plan == */}
             <div
-              key={plan.id}
-              style={{
-                backgroundColor: plan.bg,
-                color: plan.color,
-              }}
-              className={`rounded-2xl p-8  flex flex-col relative`}
+              className={`rounded-2xl p-8  flex flex-col relative bg-[#EDEDED]`}
             >
-              <h2
-                style={{
-                  color: plan.color,
-                }}
-                className="text-2xl font-bold mb-6 text-center"
-              >
-                {plan.name}
+              <h2 className="text-2xl text-figma-black font-bold mb-4 text-center">
+                {freePlan.title}
               </h2>
               <div className="text-center mb-8">
                 <span className="text-3xl lg:text-4xl font-bold">
-                  ${plan.price.toFixed(2)}
+                  {freePlan?.price}
                 </span>
               </div>
               <div>
-                <p
-                  style={{
-                    color: plan.color,
-                  }}
-                  className={`text-xl mb-2 font-semibold`}
-                >
-                  {plan.description}
+                <p className={`text-xl mb-2 font-semibold text-figma-black`}>
+                  Benefits you will get
                 </p>
                 <ul className="space-y-2 mb-7">
-                  {plan.benefits.map((benefit, index) => (
-                    <li key={index} className="flex items-start gap-3">
+                  {freePlan?.service?.map((item: any) => (
+                    <li key={item} className="flex items-start gap-3">
                       <span>•</span>
-                      <span className={`text-sm`}>{benefit}</span>
+                      <span>{item}</span>
                     </li>
                   ))}
                 </ul>
               </div>
-              <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
-                <Button
-                  variant="primary"
-                  className="w-fit px-10! border-5 pricingShadow border-white py-6! rounded-full"
-                >
-                  Purchase plan
-                </Button>
+              <FreeButton status={profile?.status} Ids={Ids} />
+            </div>
+            {/* == paid plan == */}
+            <div
+              className={`rounded-2xl p-8  flex flex-col relative bg-[#EDEDED]`}
+            >
+              <h2 className="text-2xl text-figma-black font-bold mb-4 text-center">
+                {pro_item?.title}
+              </h2>
+              <div className="text-center mb-8">
+                <span className="text-3xl lg:text-4xl font-bold">
+                  {pro_item?.price + ".00"}
+                </span>
+              </div>
+              <div>
+                <p className={`text-xl mb-2 font-semibold text-figma-black`}>
+                  Benefits you will get
+                </p>
+                <ul className="space-y-2 mb-7">
+                  {pro_item?.service?.map((item: any) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <span>•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <PaidButton
+                isLoading={isLoading}
+                status={profile?.status}
+                Ids={Ids}
+                onClick={() => bugPlanSubmit(pro_item.id)}
+              />
+            </div>
+          </div>
+        ) : (
+          isTab === "YEAR" && (
+            <div className="grid md:grid-cols-2 gap-6 mb-12 w-11/12 lg:max-w-4xl mx-auto">
+              {/*  === free plan == */}
+              <div
+                className={`rounded-2xl p-8  flex flex-col relative bg-[#EDEDED]`}
+              >
+                <h2 className="text-2xl text-figma-black font-bold mb-4 text-center">
+                  {freePlan.title}
+                </h2>
+                <div className="text-center mb-8">
+                  <span className="text-3xl lg:text-4xl font-bold">
+                    {freePlan?.price}
+                  </span>
+                </div>
+                <div>
+                  <p className={`text-xl mb-2 font-semibold text-figma-black`}>
+                    Benefits you will get
+                  </p>
+                  <ul className="space-y-2 mb-7">
+                    {freePlan?.service?.map((item: any) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <span>•</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <FreeButton status={profile?.status} Ids={Ids} />
+              </div>
+              {/* == paid plan == */}
+              <div
+                className={`rounded-2xl p-8  flex flex-col relative bg-[#EDEDED]`}
+              >
+                <h2 className="text-2xl text-figma-black font-bold mb-4 text-center">
+                  {pro_item?.title}
+                </h2>
+                <div className="text-center mb-8">
+                  <span className="text-3xl lg:text-4xl font-bold">
+                    {pro_item?.price + ".00"}
+                  </span>
+                </div>
+                <div>
+                  <p className={`text-xl mb-2 font-semibold text-figma-black`}>
+                    Benefits you will get
+                  </p>
+                  <ul className="space-y-2 mb-7">
+                    {pro_item?.service?.map((item: any) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <span>•</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <PaidButton
+                  isLoading={isLoading}
+                  status={profile?.status}
+                  Ids={Ids}
+                  onClick={() => bugPlanSubmit(pro_item.id)}
+                />
               </div>
             </div>
-          ))}
-        </div>
+          )
+        )}
       </div>
     </div>
   );
 }
+
+const FreeButton = ({ status, Ids }: any) => {
+  return (
+    status &&
+    (Ids ? (
+      <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
+        <Button
+          variant="primary"
+          disabled={true}
+          className="w-fit px-10! disabled:opacity-100 cursor-default border-5 pricingShadow bg-[#D9D9D9] text-white border-white py-6! rounded-full"
+        >
+          Purchase plan
+        </Button>
+      </div>
+    ) : (
+      <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
+        <Button
+          variant="primary"
+          className="w-fit px-10! cursor-default border-5 pricingShadow border-white py-6! rounded-full"
+        >
+          Purchase plan
+        </Button>
+      </div>
+    ))
+  );
+};
+const PaidButton = ({ status, Ids, isLoading, onClick }: any) => {
+  return (
+    status &&
+    (Ids ? (
+      <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
+        <Button
+          variant="primary"
+          disabled={true}
+          className="w-fit px-10! disabled:opacity-100 cursor-default border-5 pricingShadow bg-[#D9D9D9] text-white border-white py-6! rounded-full"
+        >
+          Purchase plan
+        </Button>
+      </div>
+    ) : (
+      <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
+        <Button
+          disabled={isLoading}
+          onClick={onClick}
+          variant="primary"
+          className="w-fit px-10! cursor-default border-5 pricingShadow border-white py-6! rounded-full"
+        >
+          Purchase plan
+        </Button>
+      </div>
+    ))
+  );
+};

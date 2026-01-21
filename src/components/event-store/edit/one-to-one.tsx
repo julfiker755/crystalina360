@@ -42,7 +42,13 @@ const initialState = {
   isDate: false,
 };
 
-export default function OnetoOneEdit({ msg, events_all }: { msg: string, events_all: any }) {
+export default function OnetoOneEdit({
+  msg,
+  events_all,
+}: {
+  msg: string;
+  events_all: any;
+}) {
   const [searchText, setSearchText] = useState("");
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
   const [state, setState] = useModalState(initialState);
@@ -58,8 +64,7 @@ export default function OnetoOneEdit({ msg, events_all }: { msg: string, events_
     mode: "onChange",
   });
 
-
-  console.log(from.formState.errors)
+  console.log(from.formState.errors);
 
   useEffect(() => {
     if (!events_all?.data?.event) return;
@@ -88,8 +93,6 @@ export default function OnetoOneEdit({ msg, events_all }: { msg: string, events_
     setSelectedTimes(event.event_time || []);
   }, [events_all]);
 
-
-
   const get = (v: any) => from.watch(v);
   const delivaryType = get("delivery_type") == delivary_t.ondemand;
   const [{ files }, { getInputProps }] = useFileUpload({
@@ -111,7 +114,6 @@ export default function OnetoOneEdit({ msg, events_all }: { msg: string, events_
   //   clearFiles();
   // };
 
-
   const [storeEvents, { isLoading }] = useStoreEventsMutation();
 
   const handleSubmit = async (values: FieldValues) => {
@@ -124,8 +126,7 @@ export default function OnetoOneEdit({ msg, events_all }: { msg: string, events_
       ...rest,
     });
 
-
-    console.log(values)
+    console.log(values);
 
     // try {
     //   const res = await storeEvents(data).unwrap();
@@ -162,7 +163,11 @@ export default function OnetoOneEdit({ msg, events_all }: { msg: string, events_
           <div className="space-y-8">
             {delivaryType ? (
               <div>
-                <VideoBannerBox files={files} getInputProps={getInputProps} img={events_all?.data?.event?.img} />
+                <VideoBannerBox
+                  files={files}
+                  getInputProps={getInputProps}
+                  img={events_all?.data?.event?.img}
+                />
                 {!get("img") && (
                   <ErrorInput
                     error={from?.formState?.errors?.img?.message as string}
@@ -171,7 +176,11 @@ export default function OnetoOneEdit({ msg, events_all }: { msg: string, events_
               </div>
             ) : (
               <div>
-                <ImageBannerBox files={files} getInputProps={getInputProps} img={events_all?.data?.event?.img} />
+                <ImageBannerBox
+                  files={files}
+                  getInputProps={getInputProps}
+                  img={events_all?.data?.event?.img}
+                />
                 {!get("img") && (
                   <ErrorInput
                     error={from?.formState?.errors?.img?.message as string}
@@ -220,9 +229,10 @@ export default function OnetoOneEdit({ msg, events_all }: { msg: string, events_
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
+                      item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                      }`}
+                    }`}
                     type="button"
                   >
                     {item.label}
@@ -508,6 +518,3 @@ const MultipleTime = ({ from, setState }: any) => {
     </div>
   );
 };
-
-
-

@@ -8,7 +8,6 @@ import NavTitle from "@/components/reuseable/nav-title";
 import { Button, Skeleton } from "@/components/ui";
 import { AEditbtn } from "@/components/view/admin/reuse/btn";
 import PricingCd from "@/components/view/admin/reuse/pricing-cd";
-import { useModalState } from "@/hooks";
 import {
   useGetPricingQuery,
   useStorePricingMutation,
@@ -18,10 +17,11 @@ import { add_plan } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert, Plus } from "lucide-react";
 import { FieldValues, useForm } from "react-hook-form";
+import { useModalState } from "@/hooks";
 import { useEffect, useState } from "react";
+import sonner from "@/components/reuseable/sonner";
 import { helpers } from "@/lib";
 import { FromSelect2 } from "@/components/reuseable/from-select2";
-import sonner from "@/components/reuseable/sonner";
 import { Repeat } from "@/components/reuseable/repeat";
 
 const initState = {
@@ -32,16 +32,16 @@ export default function Pricing() {
   const [state, setState] = useModalState(initState);
   const [details, setDetails] = useState<any>(null);
   const { data: pricing, isLoading } = useGetPricingQuery({
-    pricing_for: "oprator",
+    pricing_for: "operator",
   });
 
   return (
     <div>
       <NavTitle
-        title="Subscription"
+        title="Pricing"
         subTitle="Manage pricing of subscription system os your app from this section"
       />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {isLoading ? (
           <Repeat count={4}>
             <Skeleton className="w-full h-60" />
@@ -63,126 +63,106 @@ export default function Pricing() {
           ))
         )}
       </div>
-      <div className="flex-between justify-end mt-10">
-        <Button
-          onClick={() => setState("isStore", true)}
-          type="button"
-          size="lg"
-          className="rounded-xl"
-        >
-          <Plus />
-          Add More
-        </Button>
-      </div>
-      {/* == Plan Store ===  */}
-      <Modal2
-        open={state.isStore}
-        setIsOpen={(v) => setState("isStore", v)}
-        className="sm:max-w-xl"
-      >
-        <PlanStoreForm setState={setState} />
-      </Modal2>
       {/* ========= Plan Update ======== */}
       <Modal2
         open={state.isUpdate}
         setIsOpen={(v) => setState("isUpdate", v)}
         className="sm:max-w-xl"
       >
-        <PlanUpdateForm details={details} setState={setState} />
+        <PlanUpdateForm setState={setState} details={details} />
       </Modal2>
     </div>
   );
 }
 
 //  ===============  Plan Store From ===============
-function PlanStoreForm({ setState }: { setState: any }) {
-  const [isItem, setIsItem] = useState<any>([]);
-  const [storePricing, { isLoading }] = useStorePricingMutation();
-  const from = useForm({
-    resolver: zodResolver(add_plan),
-    defaultValues: {
-      title: "",
-      price: "",
-      interval: "",
-      services: [],
-    },
-  });
+// function PlanStoreForm({ setState }: { setState: any }) {
+//   const [isItem, setIsItem] = useState<any>([]);
+//   const [storePricing, { isLoading }] = useStorePricingMutation();
+//   const from = useForm({
+//     resolver: zodResolver(add_plan),
+//     defaultValues: {
+//       title: "",
+//       price: "",
+//       interval: "",
+//       services: [],
+//     },
+//   });
 
-  const handleSubmit = async (values: FieldValues) => {
-    const data = helpers.fromData({
-      pricing_for: "user",
-      title: values.title,
-      price: values.price,
-      interval: values.interval,
-      service: isItem,
-    });
-    try {
-      const res = await storePricing(data).unwrap();
-      if (res.status) {
-        setState("isStore", false);
-        sonner.success(
-          "Plan added",
-          "Plan has been added successfully",
-          "bottom-right",
-        );
-      }
-    } catch (err: any) {
-      console.log(err);
-    }
-  };
+//   const handleSubmit = async (values: FieldValues) => {
+//     const data = helpers.fromData({
+//       pricing_for: "operator",
+//       title: values.title,
+//       price: values.price,
+//       interval: values.interval,
+//       service: isItem,
+//     });
+//     try {
+//       const res = await storePricing(data).unwrap();
+//       if (res.status) {
+//         setState("isStore", false);
+//         sonner.success(
+//           "Plan added",
+//           "Plan has been added successfully",
+//           "bottom-right",
+//         );
+//       }
+//     } catch (err: any) {
+//       console.log(err);
+//     }
+//   };
 
-  return (
-    <div>
-      <ModalHeading
-        title="Add plan for users"
-        onClose={() => setState("isStore", false)}
-      />
-      <Form className="space-y-5 pt-5" from={from} onSubmit={handleSubmit}>
-        <FromInput2
-          label="Title"
-          name="title"
-          placeholder="Enter your  title"
-          className="h-10 rounded-xl"
-        />
-        <FromInput2
-          name="price"
-          label="Price"
-          placeholder="Enter your price"
-          className="h-10 rounded-xl"
-          type="number"
-        />
-        <FromSelect2
-          name="interval"
-          label="Interval"
-          placeholder="Select interval"
-          items={intervalItem}
-        />
-        <div>
-          <FromDropdown
-            options={isItem}
-            className="border-b  pb-2 px-1"
-            label="Key benefits"
-            onChange={(values) => {
-              setIsItem(values);
-              console.log(values);
-              from.setValue("services", isItem);
-            }}
-          />
-          {from.watch("services")?.length == 0 &&
-            from?.formState?.errors?.services && (
-              <p className="text-reds justify-end flex items-center text-red-400 gap-1 text-sm">
-                {from?.formState?.errors?.services?.message as string}
-                <CircleAlert size={14} />
-              </p>
-            )}
-        </div>
-        <Button disabled={isLoading} size="lg" className="w-full rounded-xl">
-          Add
-        </Button>
-      </Form>
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <ModalHeading
+//         title="Add plan for operators"
+//         onClose={() => setState("isStore", false)}
+//       />
+//       <Form className="space-y-5 pt-5" from={from} onSubmit={handleSubmit}>
+//         <FromInput2
+//           label="Title"
+//           name="title"
+//           placeholder="Enter your  title"
+//           className="h-10 rounded-xl"
+//         />
+//         <FromInput2
+//           name="price"
+//           label="Price"
+//           placeholder="Enter your price"
+//           className="h-10 rounded-xl"
+//           type="number"
+//         />
+//         <FromSelect2
+//           name="interval"
+//           label="Interval"
+//           placeholder="Select interval"
+//           items={intervalItem}
+//         />
+//         <div>
+//           <FromDropdown
+//             options={isItem}
+//             className="border-b  pb-2 px-1"
+//             label="Key benefits"
+//             onChange={(values) => {
+//               setIsItem(values);
+//               from.setValue("services", isItem);
+//             }}
+//           />
+//           {from.watch("services")?.length == 0 &&
+//             from?.formState?.errors?.services && (
+//               <p className="text-reds justify-end flex items-center text-red-400 gap-1 text-sm">
+//                 {from?.formState?.errors?.services?.message as string}
+//                 <CircleAlert size={14} />
+//               </p>
+//             )}
+//         </div>
+//         <Button disabled={isLoading} size="lg" className="w-full rounded-xl">
+//           Add
+//         </Button>
+//       </Form>
+//     </div>
+//   );
+// }
 
 //  ===============  Plan Update From ===============
 interface planUpateProps {
@@ -191,7 +171,6 @@ interface planUpateProps {
 }
 
 function PlanUpdateForm({ setState, details }: planUpateProps) {
-  const [isItem, setIsItem] = useState<any>([]);
   const [updatePricing, { isLoading }] = useUpdatePricingMutation();
   const from = useForm({
     resolver: zodResolver(add_plan),
@@ -199,34 +178,25 @@ function PlanUpdateForm({ setState, details }: planUpateProps) {
       title: details.title,
       price: details.price,
       interval: details.interval,
-      services: [],
     },
   });
-
-  useEffect(() => {
-    from.setValue("services", isItem);
-  }, [isItem, from]);
 
   // == set default value ==
   useEffect(() => {
     if (details) {
       from.reset({
-        title: details.title,
-        price: details.price,
-        services: isItem,
-        interval: details.interval,
+        title: details?.title,
+        price: details?.price?.toString(),
+        interval: details?.interval,
       });
-      setIsItem(details.service);
     }
   }, [details]);
 
   const handleSubmit = async (values: FieldValues) => {
     const data = helpers.fromData({
-      pricing_for: "user",
+      pricing_for: "operator",
       title: values.title,
       price: values.price,
-      interval: values.interval,
-      service: isItem,
     });
 
     try {
@@ -247,7 +217,7 @@ function PlanUpdateForm({ setState, details }: planUpateProps) {
   return (
     <div>
       <ModalHeading
-        title="Edit basic plan"
+        title="Edit Paid Plan"
         onClose={() => setState("isUpdate", false)}
       />
       <Form className="space-y-5 pt-5" from={from} onSubmit={handleSubmit}>
@@ -269,21 +239,21 @@ function PlanUpdateForm({ setState, details }: planUpateProps) {
           label="Interval"
           placeholder="Select interval"
           items={intervalItem}
+          disabled={true}
         />
-        <div>
-          <FromDropdown
-            options={isItem}
-            className="border-b  pb-2 px-1"
-            label="Key benefits"
-            onChange={(values) => setIsItem(values)}
-          />
-          {from.watch("services")?.length == 0 &&
-            from?.formState?.errors?.services && (
-              <p className="text-reds justify-end flex items-center text-red-400 gap-1 text-sm">
-                {from?.formState?.errors?.services?.message as string}
-                <CircleAlert size={14} />
-              </p>
-            )}
+        <div className="border py-1 px-2 rounded-xl relative">
+          <div
+            className={
+              "text-blacks text-base font-medium bg-background absolute -top-3 left-5  px-3"
+            }
+          >
+            Benefits
+          </div>
+          {details?.service?.map((item: any) => (
+            <div key={item} className="mt-1 opacity-50">
+              {item}
+            </div>
+          ))}
         </div>
         <Button disabled={isLoading} size="lg" className="w-full rounded-xl">
           Save Changes

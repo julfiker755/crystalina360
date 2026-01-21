@@ -76,7 +76,7 @@ export const add_on = z.object({
   bio: z.string().nonempty("bio is required"),
   benefits: z.array(z.string()).nonempty("benefits is required"),
   primary_color: z.string().optional(),
-  secondery_color: z.string().optional(),
+  secondary_color: z.string().optional(),
 });
 export const rejection_sc = z.object({
   message: z.string().nonempty("Message is required"),
@@ -133,7 +133,6 @@ export const add_plan = z.object({
   title: z.string().nonempty("title is required"),
   price: z.string().nonempty("price is required"),
   interval: z.string().nonempty("interval is required"),
-  services: z.array(z.string()).nonempty("benefits is required"),
 });
 
 export const audio_sc = z.object({
@@ -160,7 +159,6 @@ export const event = z.object({
   ticket_quantity: z.string().nonempty("tiket is required"),
   accessibility: z.array(z.string()).optional(),
 });
-
 
 //  one to one
 export const online_sc = event.extend({
@@ -241,7 +239,6 @@ export const event_edit = z.object({
   ticket_quantity: z.string().nonempty("tiket is required"),
   accessibility: z.array(z.string()).optional(),
 });
-
 
 //  one to one
 export const online_sc_edit = event_edit.extend({

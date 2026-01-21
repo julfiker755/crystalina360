@@ -10,6 +10,7 @@ import { toggleIsOpen } from "@/redux/features/authSlice";
 export default function Pricing() {
   const dispatch = useAppDispatch();
   const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
+
   return (
     <div id="pricing" className="pt-20">
       <PricingBox />
@@ -18,14 +19,16 @@ export default function Pricing() {
           Purchase a plan and enjoy the freedom of managing events of whatever
           it's offline or online
         </p>
-        <Button
-          onClick={() => dispatch(toggleIsOpen())}
-          size="lg"
-          className="text-white rounded-full"
-        >
-          {" "}
-          Sign in as operator
-        </Button>
+        {user.email ? null : (
+          <Button
+            onClick={() => dispatch(toggleIsOpen())}
+            size="lg"
+            className="text-white rounded-full"
+          >
+            {" "}
+            Sign in as operator
+          </Button>
+        )}
       </div>
 
       <Modal2
