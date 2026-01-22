@@ -3,14 +3,15 @@ import { baseApi } from "../baseApi";
 import { buildResponse } from "@/lib";
 
 export const addonApi = baseApi.injectEndpoints({
+  overrideExisting: true,
   endpoints: (build) => ({
-    getBlog: build.query({
+    getAddon: build.query({
       query: (arg) => ({
-        url: "/blogs",
+        url: "/adds-on",
         method: "GET",
         params: arg,
       }),
-      providesTags: [tagTypes.a_blog],
+      providesTags: [tagTypes.a_add_on_get],
       transformResponse: (res: any) => {
         return buildResponse(res);
       },
@@ -30,25 +31,23 @@ export const addonApi = baseApi.injectEndpoints({
         ContentType: "multipart/form-data",
         data,
       }),
-      invalidatesTags: [tagTypes.a_blog],
+      invalidatesTags: [tagTypes.a_add_on_get],
     }),
-    updateBlog: build.mutation({
+    updateAddon: build.mutation({
       query: ({ id, data }) => ({
-        url: `/blogs/${id}`,
+        url: `/adds-on/${id}`,
         method: "POST",
         ContentType: "multipart/form-data",
         data,
       }),
-      invalidatesTags: [tagTypes.a_single_blog],
-    }),
-    deleteBlog: build.mutation({
-      query: (id) => ({
-        url: `/blogs/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: [tagTypes.a_blog],
+      invalidatesTags: [tagTypes.a_add_on_get],
     }),
   }),
 });
 
-export const { useAllBenefitsQuery, useStoreAddOnMutation } = addonApi;
+export const {
+  useGetAddonQuery,
+  useAllBenefitsQuery,
+  useStoreAddOnMutation,
+  useUpdateAddonMutation,
+} = addonApi;

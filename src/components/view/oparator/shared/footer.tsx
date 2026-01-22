@@ -2,17 +2,14 @@
 import assets from "@/assets";
 import AppStore from "@/components/reuseable/app-store/app-store";
 import FavIcon from "@/icon/favIcon";
-import { helpers } from "@/lib";
+import { useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export default function Footer() {
-  const [token, setToken] = useState<boolean | null>(null);
+  // const [token, setToken] = useState<boolean | null>(null);
+  const user = useAppSelector(state => state.auth.user)
 
-  useEffect(() => {
-    const auth = helpers.hasAuthToken();
-    setToken(auth);
-  }, []);
+
 
   const socialMedia = [
     { name: "facebook", icon: "facebook" },
@@ -45,11 +42,11 @@ export default function Footer() {
             <h3 className="text-xl font-semibold mb-3 text-white">
               Quick links
             </h3>
-            {}
-            {token ? (
+            { }
+            {user?.email ? (
               <ul className="space-y-1">
                 <li>
-                  <Link href={"/operator/add-on"}>Add On</Link>
+                  <Link href={"/operator/add-ons"}>Add On</Link>
                 </li>
                 <li>
                   <Link href={"/operator/pricing"}>Pricing</Link>

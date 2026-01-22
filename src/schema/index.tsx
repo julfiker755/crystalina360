@@ -74,7 +74,7 @@ export const add_on = z.object({
   title: z.string().nonempty("title is required"),
   price: z.string().nonempty("price is required"),
   bio: z.string().nonempty("bio is required"),
-  benefits: z.array(z.string()).nonempty("benefits is required"),
+  benefits: z.array(z.any()).nonempty("benefits is required"),
   primary_color: z.string().optional(),
   secondary_color: z.string().optional(),
 });

@@ -5,77 +5,118 @@ import { CalendarDays, Lock } from "lucide-react";
 import Link from "next/link";
 import { CloseIcon } from "../../common/btn-modal";
 import { useGlobalState } from "@/hooks";
+import { helpers } from "@/lib";
+import { useBuyPlanMutation } from "@/redux/api/operator/opratorApi";
+import sonner from "@/components/reuseable/sonner";
+import FavIcon from "@/icon/favIcon";
 
 interface AddOnCardProps<T> {
   item: T;
+  buy?: boolean
 }
 
 export default function AddOnCard<T extends Record<string, any>>({
   item,
+  buy = true
 }: AddOnCardProps<T>) {
-  const { keyBenefits, title, price, bio, primaryColor, secondaryColor } =
+  const {
+    id,
+    benefits,
+    title,
+    price,
+    bio,
+    primary_color,
+    secondary_color, } =
     item || {};
   const [global, updateGlobal] = useGlobalState({
     show: false,
     data: {} as any,
   });
+  const [buyPlan, { isLoading: bugIsLoading }] = useBuyPlanMutation();
+  const token = helpers.hasAuthToken()
+
+
+  const handlePayment = async (buy_id: string) => {
+    const data = helpers.fromData({
+      addson_id: buy_id
+    })
+    const res = await buyPlan(data).unwrap()
+    if (res.status) {
+      sonner.success("Payment Successful", "Your add-on is ready. Time to enJay!", "bottom-right");
+    }
+  }
 
   return (
     <>
       <div
-        className="rounded-xl border-t-4  bg-white p-8 shadow-md"
+        className="rounded-xl flex flex-col justify-between border-t-4  bg-white p-8 shadow-md"
         style={{
-          borderColor: primaryColor,
+          borderColor: primary_color,
         }}
-      >
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div
-              style={{
-                backgroundColor: secondaryColor,
-              }}
-              className="icon rounded-full"
-            >
-              <CalendarDays
+      ><div>
+
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div
                 style={{
-                  color: primaryColor,
+                  backgroundColor: secondary_color,
                 }}
-                size={20}
-              />
-            </div>
-            <div>
-              <p className="text-sm font-medium text-foreground">{title}</p>
-              <p className="text-lg font-bold text-[#E07856]">${price}</p>
-            </div>
-          </div>
-          <Link href="/payment">
-            <Button
-              style={{
-                backgroundColor: primaryColor,
-              }}
-              className="rounded-full text-white"
-            >
-              <Lock className="w-4 h-4 mr-2" />
-              Buy now
-            </Button>
-          </Link>
-        </div>
-        <p className="text-sm text-muted-foreground mb-6">{bio}</p>
-        <div className="mb-6">
-          <h3 className="text-sm font-semibold text-[#E07856] mb-3">
-            Key benefits
-          </h3>
-          <ul className="space-y-2">
-            {keyBenefits?.map((item: any, index: any) => (
-              <li
-                key={item + index}
-                className="flex gap-2 text-sm text-muted-foreground"
+                className="icon rounded-full"
               >
-                <span className="font-bold">•</span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
+                <CalendarDays
+                  style={{
+                    color: primary_color,
+                  }}
+                  size={20}
+                />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-foreground">{title}</p>
+                <p className="text-lg font-bold text-[#E07856]">${price}</p>
+              </div>
+            </div>
+            {token && (
+              buy ? (
+                <Button
+                  style={{
+                    backgroundColor: primary_color,
+                  }}
+                  onClick={() => handlePayment(id)}
+                  disabled={bugIsLoading}
+                  className="rounded-full text-white"
+                >
+                  <Lock className="w-4 h-4 mr-2" />
+                  Buy now
+                </Button>
+              ) : (
+                <Button
+                  disabled={true}
+                  className="rounded-full disabled:opacity-100 bg-[#009F05] text-white"
+                >
+                  <FavIcon className="size-5" name="check_circle" />
+                  Purchased
+                </Button>
+              )
+            )}
+
+          </div>
+          <p className="text-sm text-muted-foreground mb-6">{bio}</p>
+          <div className="mb-6">
+            <h3 className="text-sm font-semibold text-[#E07856] mb-3">
+              Key benefits
+            </h3>
+            <ul className="space-y-2">
+              {benefits?.map((item: any, index: any) => (
+                <li
+                  key={item.id + index}
+                  className="flex gap-2 text-sm text-muted-foreground"
+                >
+                  <span className="font-bold">•</span>
+                  <span>{item.title}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         {/* More details link */}
@@ -86,8 +127,8 @@ export default function AddOnCard<T extends Record<string, any>>({
               updateGlobal("data", item as any);
             }}
             style={{
-              backgroundColor: secondaryColor,
-              color: primaryColor,
+              backgroundColor: secondary_color,
+              color: primary_color,
             }}
             className="rounded-full"
           >
@@ -110,13 +151,13 @@ export default function AddOnCard<T extends Record<string, any>>({
           <div className="flex items-center space-x-1">
             <div
               style={{
-                backgroundColor: global?.data?.secondaryColor,
+                backgroundColor: global?.data?.secondary_color,
               }}
               className="icon rounded-full"
             >
               <CalendarDays
                 style={{
-                  color: global?.data?.primaryColor,
+                  color: global?.data?.primary_color,
                 }}
                 size={20}
               />
@@ -138,35 +179,36 @@ export default function AddOnCard<T extends Record<string, any>>({
         <div className="my-6">
           <h3
             style={{
-              color: global?.data?.primaryColor,
+              color: global?.data?.primary_color,
             }}
             className="text-sm font-semibold text-[#E07856] mb-3"
           >
             Key benefits
           </h3>
           <ul className="space-y-2">
-            {global?.data?.keyBenefits?.map((item: any, index: any) => (
+            {benefits?.map((item: any, index: any) => (
               <li
-                key={item + index}
+                key={item.id + index}
                 className="flex gap-2 text-sm text-muted-foreground"
               >
                 <span className="font-bold">•</span>
-                <span>{item}</span>
+                <span>{item.title}</span>
               </li>
             ))}
           </ul>
         </div>
-        <Link href="/payment">
+        {token && buy && (
           <Button
             style={{
               backgroundColor: global?.data?.primaryColor,
             }}
+            onClick={() => handlePayment(global?.data?.id)}
             className="rounded-full w-full text-white"
           >
             <Lock className="w-4 h-4 mr-2" />
             Buy now
           </Button>
-        </Link>
+        )}
       </Modal2>
     </>
   );

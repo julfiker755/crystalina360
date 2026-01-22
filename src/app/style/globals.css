@@ -195,6 +195,15 @@
   .lg-hidden {
     @apply hidden lg:block;
   }
+  .h1{
+    @apply text-2xl lg:text-3xl  font-bold text-center text-figma-black
+  }
+  .h2{
+    @apply text-xl font-medium text-figma-black
+  }
+  .h3{
+    @apply text-lg font-normal text-figma-black
+  }
 }
 
 .btn-shadow1 {

@@ -1,17 +1,29 @@
 "use client";
-import { Alert, AlertTitle } from "@/components/ui";
-import { addOns } from "@/components/view/user/dummy-json";
+import { Alert, AlertTitle, Skeleton } from "@/components/ui";
 import { AppAlert } from "@/components/view/user/reuse";
 import AddOnCard from "@/components/view/oparator/reuse/addon-card";
 import { BadgePercent, X } from "lucide-react";
 import { useState } from "react";
+import { useGetAddonQuery } from "@/redux/api/admin/addonApi";
+import { Pagination } from "@/components/reuseable/pagination";
+import { Repeat } from "@/components/reuseable/repeat";
+import { useAddsonCartQuery } from "@/redux/api/operator/opratorApi";
+
 
 export default function AddOnsAll() {
   const [isAlert, setIsAlert] = useState(true);
+  const [page, setPage] = useState(1)
+  const { data: addon, isLoading } = useGetAddonQuery({
+    page: page
+  });
+  const { data: myAddOn, isLoading: addOnLoading } = useAddsonCartQuery({})
+
+  console.log(myAddOn?.data)
+
+
   return (
     <div className="py-10 container">
-      <h1 className="text-center pb-8">Add on services</h1>
-
+      <h5 className="text-center h1 pb-8">Add-ons</h5>
       {isAlert && (
         <div className="pb-8">
           <Alert
@@ -39,10 +51,42 @@ export default function AddOnsAll() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 2xl:gap-20">
-        {addOns.map((item, index) => (
-          <AddOnCard item={item} key={index} />
-        ))}
+      {myAddOn?.data?.length > 0 && (
+        <div className="mb-20">
+          <h5 className="text-lg font-medium mb-5">Purchased add-ons</h5>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 2xl:gap-20">
+            {addOnLoading ? (
+              <Repeat count={10}>
+                <Skeleton className="w-full h-[400px]" />
+              </Repeat>
+            ) : (
+              myAddOn?.data?.map((item: any, index: any) => (
+                <AddOnCard buy={false} item={item?.addson} key={index} />
+              ))
+            )}
+          </div>
+        </div>
+      )}
+
+
+
+      <div>
+        <h5 className="text-lg font-medium mb-5">More add-ons</h5>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 2xl:gap-20">
+          {isLoading ? (
+            <Repeat count={10}>
+              <Skeleton className="w-full h-[400px]" />
+            </Repeat>
+          ) : (
+            addon?.data?.map((item: any, index: any) => (
+              <AddOnCard item={item} key={index} />
+            ))
+          )}
+
+        </div>
+      </div>
+      <div className="flex justify-center my-10">
+        <Pagination onPageChange={(v: any) => setPage(v)} {...addon?.meta} />
       </div>
       <AppAlert />
     </div>

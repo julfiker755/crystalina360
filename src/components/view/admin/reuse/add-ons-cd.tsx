@@ -2,68 +2,82 @@ import { childrenProps } from "@/types";
 import { CalendarDays } from "lucide-react";
 
 interface addOnCdProps extends childrenProps {
-  keyBenefits: any[];
+  benefits: any[];
   title: any;
   price: any;
   bio: any;
-  primaryColor: any;
-  secondaryColor: any;
+  primary_color: any;
+  secondary_color: any;
 }
 
 export default function AddOnCd({
-  keyBenefits,
+  benefits,
   title,
   price,
   bio,
-  primaryColor,
-  secondaryColor,
+  primary_color,
+  secondary_color,
   children,
 }: addOnCdProps) {
   return (
     <>
       <div
-        className="rounded-xl border-t-4  bg-white p-8 shadow-md"
+        className="rounded-xl border-t-4 flex flex-col justify-between  bg-white px-8 pt-8 pb-6 shadow-md"
         style={{
-          borderColor: primaryColor,
+          borderColor: primary_color,
         }}
       >
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div
-              style={{
-                backgroundColor: secondaryColor,
-              }}
-              className="icon rounded-full"
-            >
-              <CalendarDays
+        <div>
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div
                 style={{
-                  color: primaryColor,
+                  backgroundColor: secondary_color,
                 }}
-                size={20}
-              />
-            </div>
-            <div>
-              <p className="text-sm font-medium text-foreground">{title}</p>
-              <p className="text-lg font-bold text-[#E07856]">${price}</p>
+                className="icon rounded-full"
+              >
+                <CalendarDays
+                  style={{
+                    color: primary_color,
+                  }}
+                  size={20}
+                />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-foreground">{title}</p>
+                <p
+                  style={{
+                    color: primary_color,
+                  }}
+                  className="text-lg font-bold"
+                >
+                  ${price}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-        <p className="text-sm text-muted-foreground mb-6">{bio}</p>
-        <div className="mb-6">
-          <h3 className="text-sm font-semibold text-[#E07856] mb-3">
-            Key benefits
-          </h3>
-          <ul className="space-y-2">
-            {keyBenefits?.map((item: any, index: any) => (
-              <li
-                key={item + index}
-                className="flex gap-2 text-sm text-muted-foreground"
-              >
-                <span className="font-bold">•</span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
+          <p className="text-sm text-muted-foreground mb-6">{bio}</p>
+          <div className="mb-6">
+            <h3
+              style={{
+                color: primary_color,
+              }}
+              className="text-sm font-semibold mb-3"
+            >
+              Key benefits
+            </h3>
+            <ul className="space-y-2">
+              {benefits?.map((item: any, index: any) => (
+                <li
+                  key={item.id + index}
+                  className="flex gap-2 text-sm text-muted-foreground"
+                >
+                  <span className="font-bold">•</span>
+                  <span>{item.title}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         {children}
       </div>

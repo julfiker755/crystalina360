@@ -1,12 +1,10 @@
 "use client";
-import { ADeletebtn, AEditbtn } from "@/components/view/admin/reuse/btn";
-import useConfirmation from "@/provider/confirmation";
+import { AEditbtn } from "@/components/view/admin/reuse/btn";
 import NavTitle from "@/components/reuseable/nav-title";
 import SearchBox from "@/components/reuseable/search-box";
 import AddOnCd from "@/components/view/admin/reuse/add-ons-cd";
-import { addOns } from "@/components/view/user/dummy-json";
-import { useModalState } from "@/hooks";
-import { Button } from "@/components/ui";
+import { useGlobalState, useModalState } from "@/hooks";
+import { Button, Skeleton } from "@/components/ui";
 import { CircleAlert, Plus } from "lucide-react";
 import Modal2 from "@/components/reuseable/modal2";
 import ModalHeading from "@/components/reuseable/modal-heading";
@@ -15,35 +13,42 @@ import Form from "@/components/reuseable/from";
 import { FromInput2 } from "@/components/reuseable/form-input2";
 import { FromTextarea2 } from "@/components/reuseable/from-textarea2";
 import FromDropdown from "@/components/reuseable/from-dropdown";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { add_on, sign_In } from "@/schema";
+import { add_on } from "@/schema";
 import FromColorPicker from "@/components/reuseable/from-color";
-import { useStoreAddOnMutation } from "@/redux/api/admin/addonApi";
+import {
+  useGetAddonQuery,
+  useStoreAddOnMutation,
+  useUpdateAddonMutation,
+} from "@/redux/api/admin/addonApi";
 import FromBenefits from "@/components/reuseable/from-benefits";
-
-
+import { helpers } from "@/lib";
+import sonner from "@/components/reuseable/sonner";
+import { useDebounce } from "use-debounce";
+import { Pagination } from "@/components/reuseable/pagination";
+import { Repeat } from "@/components/reuseable/repeat";
 
 const initState = {
   isStore: false,
   isUpdate: false,
 };
 
-export default function Addons() {
-  const { confirm } = useConfirmation();
-  const [state, setState] = useModalState(initState);
+const initGlobalSate = {
+  page: 1,
+  search: "",
+};
 
-  const handleDelete = async (id: any) => {
-    const confirmed = await confirm({
-      subTitle: "Delete add-on",
-      title: "You are going to delete this add-on",
-      description:
-        "After deleting, user's won't be able to find this add-on in your system",
-    });
-    if (confirmed) {
-      console.log(id);
-    }
-  };
+export default function Addons() {
+  const [state, setState] = useModalState(initState);
+  const [global, updateGlobal] = useGlobalState(initGlobalSate);
+  const [details, setIsDetails] = useState<any>({});
+  const [value] = useDebounce(global.search, 1000);
+  const { data: addon, isLoading } = useGetAddonQuery({
+    page: global.page,
+    ...(value && { search: value }),
+  });
+
   return (
     <div>
       <NavTitle
@@ -51,7 +56,7 @@ export default function Addons() {
         subTitle="Manage all of your add-ons from this section"
       />
       <div className="flex-between gap-10">
-        <SearchBox onChange={(e) => console.log(e)} />
+        <SearchBox onChange={(v: any) => updateGlobal("search", v)} />
         <Button
           onClick={() => setState("isStore", true)}
           type="button"
@@ -63,15 +68,43 @@ export default function Addons() {
         </Button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 xl:grid-cols-3 pt-8">
-        {addOns.map((item, idx) => (
-          <AddOnCd key={idx} {...item}>
-            <div className="flex space-x-3  justify-end mt-3">
-              <AEditbtn onClick={() => setState("isUpdate", true)} />
-              <ADeletebtn onClick={() => handleDelete("123")} />
-            </div>
-          </AddOnCd>
-        ))}
+        {isLoading ? (
+          <Repeat count={10}>
+            <Skeleton className="w-full h-[400px]" />
+          </Repeat>
+        ) : (
+          addon?.data?.length > 0 &&
+          addon?.data?.map((item: any, idx: any) => (
+            <AddOnCd key={idx} {...item}>
+              <div className="flex space-x-3  justify-end mt-3">
+                <AEditbtn
+                  onClick={() => {
+                    setIsDetails(item);
+                    setState("isUpdate", true);
+                  }}
+                />
+              </div>
+            </AddOnCd>
+          ))
+        )}
       </div>
+      {addon?.meta?.total > 10 && (
+        <ul className="flex items-center flex-wrap justify-between pt-10 pb-3">
+          <li className="flex">
+            Total:
+            <sup className="font-medium text-2xl relative -top-3 px-2 ">
+              {addon?.meta?.total}
+            </sup>
+            Add Ons
+          </li>
+          <li>
+            <Pagination
+              onPageChange={(v: any) => updateGlobal("page", v)}
+              {...addon?.meta}
+            />
+          </li>
+        </ul>
+      )}
       {/* ====================== isStore ================== */}
       <Modal2
         open={state.isStore}
@@ -86,7 +119,7 @@ export default function Addons() {
         setIsOpen={(v) => setState("isUpdate", v)}
         className="sm:max-w-xl"
       >
-        <AddonEditForm setState={setState} />
+        <AddonEditForm setState={setState} details={details} />
       </Modal2>
     </div>
   );
@@ -95,7 +128,6 @@ export default function Addons() {
 //  ===================== AddonStoreForm ==================
 const AddonStoreForm = ({ setState }: any) => {
   const [storeAddOn, { isLoading }] = useStoreAddOnMutation();
-  const [isItem, setIsItem] = useState<any>([]);
   const [primarycolor, setPrimaryColor] = useState<string>("#6366F1");
   const [secondarycolor, setSecondaryColor] = useState<string>("#C6C3F6");
   const from = useForm({
@@ -111,17 +143,22 @@ const AddonStoreForm = ({ setState }: any) => {
   });
 
   const handleSubmit = async (values: FieldValues) => {
-    const { primary_color, secondary_color, ...rest } = values
+    const { primary_color, secondary_color, ...rest } = values;
     const data = {
       ...rest,
       primary_color: primarycolor,
-      secondary_color: secondarycolor
-
+      secondary_color: secondarycolor,
+    };
+    const data1 = helpers.fromData(data);
+    const res = await storeAddOn(data1).unwrap();
+    if (res) {
+      setState("isStore", false);
+      sonner.success(
+        "Added Successfull",
+        "Add on Addded Successs",
+        "bottom-right",
+      );
     }
-    console.log(values)
-    // const data1 = helpers.fromData(data)
-    // const res = await storeAddOn(data)
-
   };
 
   return (
@@ -142,6 +179,7 @@ const AddonStoreForm = ({ setState }: any) => {
           label="Price"
           placeholder="Enter your price"
           className="h-10 rounded-xl"
+          type="number"
         />
         <FromTextarea2
           name="bio"
@@ -150,15 +188,7 @@ const AddonStoreForm = ({ setState }: any) => {
           className="rounded-xl sm:min-h-30"
         />
         <div>
-          <FromBenefits
-            className="border-b  pb-2 px-1"
-            label="Key benefits"
-            onChange={(values) => {
-              console.log(values)
-              // setIsItem(values);
-              // from.setValue("benefits", isItem);
-            }}
-          />
+          <FromBenefits label="Key benefits" name="benefits" />
           {from.watch("benefits")?.length == 0 &&
             from?.formState?.errors?.benefits && (
               <p className="text-reds justify-end flex items-center text-red-400 gap-1 text-sm">
@@ -169,7 +199,6 @@ const AddonStoreForm = ({ setState }: any) => {
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-10">
           <FromColorPicker
-            defaultColor={"#6366F1"}
             name="primary_color"
             label="Primary Color"
             color={primarycolor}
@@ -178,7 +207,6 @@ const AddonStoreForm = ({ setState }: any) => {
 
           <FromColorPicker
             name="secondary_color"
-            defaultColor={"#C6C3F6"}
             label="Secondery Color"
             color={secondarycolor}
             setColor={setSecondaryColor}
@@ -192,8 +220,14 @@ const AddonStoreForm = ({ setState }: any) => {
   );
 };
 //  ===================== Edit add on details ==================
-const AddonEditForm = ({ setState }: any) => {
-  const [isItem, setIsItem] = useState<any>([]);
+const AddonEditForm = ({ setState, details }: any) => {
+  const [primarycolor, setPrimaryColor] = useState<string>("");
+  const [secondarycolor, setSecondaryColor] = useState<string>("");
+
+  const id = details?.id;
+
+  console.log(id);
+
   const from = useForm({
     resolver: zodResolver(add_on),
     defaultValues: {
@@ -202,12 +236,46 @@ const AddonEditForm = ({ setState }: any) => {
       bio: "",
       benefits: [],
       primary_color: "",
-      // secondery_color: ""
+      secondary_color: "",
     },
   });
 
+  useEffect(() => {
+    if (!details) return;
+
+    const benefits_id = details.benefits?.map((item: any) => item.id) || [];
+
+    from.reset({
+      title: details?.title || "",
+      price: details?.price?.toString() || "",
+      bio: details.bio || "",
+      primary_color: details?.primary_color || "",
+      secondary_color: details?.secondary_color || "",
+      benefits: benefits_id,
+    });
+    setPrimaryColor(details?.primary_color);
+    setSecondaryColor(details?.secondary_color);
+  }, [details, from]);
+
+  const [updateAddon, { isLoading }] = useUpdateAddonMutation();
+
   const handleSubmit = async (values: FieldValues) => {
-    console.log(values);
+    const { primary_color, secondary_color, ...rest } = values;
+    const data1 = {
+      ...rest,
+      primary_color: primarycolor,
+      secondary_color: secondarycolor,
+    };
+    const data = helpers.fromData(data1);
+    const res = await updateAddon({ id, data }).unwrap();
+    if (res) {
+      setState("isUpdate", false);
+      sonner.success(
+        "Update Successfull",
+        "Add on Update Successs",
+        "bottom-right",
+      );
+    }
   };
 
   return (
@@ -228,6 +296,7 @@ const AddonEditForm = ({ setState }: any) => {
           label="Price"
           placeholder="Enter your price"
           className="h-10 rounded-xl"
+          type="number"
         />
         <FromTextarea2
           name="bio"
@@ -236,29 +305,24 @@ const AddonEditForm = ({ setState }: any) => {
           className="rounded-xl sm:min-h-30"
         />
         <div>
-          <FromDropdown
-            options={isItem}
-            className="border-b  pb-2 px-1"
-            label="Key benefits"
-            onChange={(values) => {
-              setIsItem(values);
-              console.log(values);
-              from.setValue("benefits", isItem);
-            }}
-          />
-          {from.watch("benefits")?.length == 0 &&
-            from?.formState?.errors?.benefits && (
-              <p className="text-reds justify-end flex items-center text-red-400 gap-1 text-sm">
-                {from?.formState?.errors?.benefits?.message as string}
-                <CircleAlert size={14} />
-              </p>
-            )}
+          <FromBenefits label="Key benefits" name="benefits" />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-10">
-          <FromColorPicker defaultColor="#6366F1" label="Primary Color" />
-          <FromColorPicker defaultColor="#C6C3F6" label="Secondery Color" />
+          <FromColorPicker
+            name="primary_color"
+            label="Primary Color"
+            color={primarycolor}
+            setColor={setPrimaryColor}
+          />
+
+          <FromColorPicker
+            name="secondary_color"
+            label="Secondery Color"
+            color={secondarycolor}
+            setColor={setSecondaryColor}
+          />
         </div>
-        <Button size="lg" className="w-full rounded-xl">
+        <Button disabled={isLoading} size="lg" className="w-full rounded-xl">
           Save changes
         </Button>
       </Form>

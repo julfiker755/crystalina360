@@ -1,10 +1,9 @@
 "use client";
-
-import { useState } from "react";
 import { ScrollArea } from "@/components/ui";
 import { cn } from "@/lib";
 import { DeleteBtn } from "../btn";
 import { useAllBenefitsQuery } from "@/redux/api/admin/addonApi";
+import { Controller, useFormContext } from "react-hook-form";
 import {
   Select,
   SelectTrigger,
@@ -19,98 +18,109 @@ type Benefit = {
   title: string;
 };
 
-export default function FormBenefits({
-  onChange,
-  scroll = true,
-  className,
-  label,
-}: {
-  onChange: (ids: number[]) => void;
+interface FormBenefitsProps {
   scroll?: boolean;
   className?: string;
   label: string;
-}) {
+  name: string;
+}
+
+export default function FormBenefits({
+  scroll = true,
+  className,
+  label,
+  name,
+}: FormBenefitsProps) {
+  const { control } = useFormContext();
   const { data } = useAllBenefitsQuery({});
   const options: Benefit[] = data?.data || [];
 
-  const [selectedBenefits, setSelectedBenefits] = useState<number[]>([]);
-
-  // ✅ MAIN LOGIC
-  const handleSelect = (value: string) => {
-    const id = Number(value);
-
-    setSelectedBenefits((prev) => {
-      const updated = prev.includes(id)
-        ? prev.filter((item) => item !== id)
-        : [...prev, id];
-
-      onChange(updated); // ✅ correct value
-      return updated;
-    });
-  };
-
-  const handleDelete = (id: number) => {
-    const updated = selectedBenefits.filter((item) => item !== id);
-    setSelectedBenefits(updated);
-    onChange(updated);
-  };
-
   return (
-    <div className={className}>
-      <div className="relative mb-2">
-        <span className="absolute -top-3 left-4 bg-background px-2 text-sm font-medium">
-          {label}
-        </span>
-      </div>
+    <Controller
+      control={control}
+      name={name}
+      defaultValue={[]}
+      render={({ field }) => {
+        const selectedBenefits: number[] = field.value || [];
 
-      {/* ✅ Select MUST */}
-      <Select onValueChange={handleSelect}>
-        <SelectTrigger className="w-full rounded-xl py-5">
-          <SelectValue placeholder="Select benefits" />
-        </SelectTrigger>
+        // ✅ select / unselect
+        const handleSelect = (value: string) => {
+          const id = Number(value);
 
-        <SelectContent>
-          <SelectGroup>
-            {options.map((benefit) => (
-              <SelectItem
-                key={benefit.id}
-                value={String(benefit.id)}
-                className={cn(
-                  "cursor-pointer",
-                  selectedBenefits.includes(benefit.id) &&
-                  "bg-muted font-medium"
-                )}
-              >
-                {benefit.title}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+          const updated = selectedBenefits.includes(id)
+            ? selectedBenefits.filter((item) => item !== id)
+            : [...selectedBenefits, id];
 
-      {/* ✅ Selected Output */}
-      <ScrollArea
-        className={scroll && selectedBenefits.length > 2 ? "h-[120px] mt-3" : ""}
-      >
-        {selectedBenefits.length > 0 && (
-          <div className="mt-4 space-y-2">
-            {selectedBenefits.map((id) => {
-              const item = options.find((o) => o.id === id);
-              if (!item) return null;
+          field.onChange(updated);
+        };
 
-              return (
-                <div
-                  key={id}
-                  className="flex justify-between items-center border-b pb-2"
-                >
-                  <span>{item.title}</span>
-                  <DeleteBtn onClick={() => handleDelete(id)} />
+        // ✅ delete
+        const handleDelete = (id: number) => {
+          const updated = selectedBenefits.filter((item) => item !== id);
+          field.onChange(updated);
+        };
+
+        return (
+          <div className={className}>
+            {/* Label */}
+            <div className="relative mb-2">
+              <span className="absolute -top-3 left-4 bg-background px-2 text-sm font-medium">
+                {label}
+              </span>
+            </div>
+
+            {/* Select */}
+            <Select onValueChange={handleSelect}>
+              <SelectTrigger className="w-full rounded-xl py-5">
+                <SelectValue placeholder="Select benefits" />
+              </SelectTrigger>
+
+              <SelectContent className="h-[200px]">
+                <SelectGroup>
+                  {options.map((benefit) => (
+                    <SelectItem
+                      key={benefit.id}
+                      value={String(benefit.id)}
+                      className={cn(
+                        "cursor-pointer",
+                        selectedBenefits.includes(benefit.id) && "bg-muted",
+                      )}
+                    >
+                      {benefit.title}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            {/* Selected Items */}
+            <ScrollArea
+              className={
+                scroll && selectedBenefits.length > 2 ? "h-[120px] mt-3" : ""
+              }
+            >
+              {selectedBenefits.length > 0 && (
+                <div className="mt-4 space-y-2">
+                  {selectedBenefits.map((id) => {
+                    const item = options.find((o) => o.id === id);
+                    if (!item) return null;
+
+                    return (
+                      <div
+                        key={id}
+                        className="flex items-center justify-between border-b pb-2"
+                      >
+                        <span>{item.title}</span>
+                        <DeleteBtn onClick={() => handleDelete(id)} />
+                      </div>
+                    );
+                  })}
                 </div>
-              );
-            })}
+              )}
+            </ScrollArea>
           </div>
-        )}
-      </ScrollArea>
-    </div>
+        );
+      }}
+    />
   );
 }

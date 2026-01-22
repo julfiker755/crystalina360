@@ -69,8 +69,9 @@ export default function FromDropdown({
         className={scroll && options.length > 2 ? "h-[100px] mt-3" : ""}
       >
         <div
-          className={`mt-3 ${scroll && options.length > 2 ? "space-y-2 mr-4" : "space-y-2"
-            }`}
+          className={`mt-3 ${
+            scroll && options.length > 2 ? "space-y-2 mr-4" : "space-y-2"
+          }`}
         >
           {options.map((item, index) => (
             <div
