@@ -109,7 +109,7 @@ export default function RetreatEdit({ msg, events_all }: { msg: string; events_a
   const handleSubmit = async (values: FieldValues) => {
     const { ticket_quantity, max_person, min_person, img, ...rest } = values || {};
     const data = helpers.fromData({
-      event_type: "group",
+      event_type: "retreat",
       ticket_quantity: "200",
       min_person: "1",
       max_person: "200",
@@ -119,29 +119,29 @@ export default function RetreatEdit({ msg, events_all }: { msg: string; events_a
     console.log(values)
 
 
-    // try {
-    //   const res = await updateEvents({
-    //     id,
-    //     data,
-    //     onUploadProgress: (progressEvent: ProgressEvent) => {
-    //       if (progressEvent.total) {
-    //         const progress = Math.round(
-    //           (progressEvent.loaded * 100) / progressEvent.total,
-    //         );
-    //         setProgress(progress);
-    //       }
-    //     },
-    //   }).unwrap();
-    //   if (res.status) {
-    //     router.back();
-    //     sonner.success("Event Updated Successfully", "The event has been successfully updated.", "bottom-right");
-    //     setProgress(0)
-    //   }
-    // } catch (err: any) {
-    //   console.log(err)
-    //   sonner.error("Error", err?.data?.error, "bottom-right");
-    //   setProgress(0)
-    // }
+    try {
+      const res = await updateEvents({
+        id,
+        data,
+        onUploadProgress: (progressEvent: ProgressEvent) => {
+          if (progressEvent.total) {
+            const progress = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total,
+            );
+            setProgress(progress);
+          }
+        },
+      }).unwrap();
+      if (res.status) {
+        router.back();
+        sonner.success("Event Updated Successfully", "The event has been successfully updated.", "bottom-right");
+        setProgress(0)
+      }
+    } catch (err: any) {
+      console.log(err)
+      sonner.error("Error", err?.data?.error, "bottom-right");
+      setProgress(0)
+    }
   };
 
 
