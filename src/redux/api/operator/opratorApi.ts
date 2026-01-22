@@ -34,6 +34,16 @@ export const opratorsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.o_events, tagTypes.a_admin_events],
     }),
+    updateEvents: build.mutation({
+      query: ({ id, data, onUploadProgress }) => ({
+        url: `/events/${id}`,
+        method: "POST",
+        ContentType: "multipart/form-data",
+        data,
+        onUploadProgress,
+      }),
+      invalidatesTags: [tagTypes.o_events, tagTypes.a_admin_events],
+    }),
     singleEvents: build.query({
       query: (id) => ({
         url: `/events/${id}`,
@@ -84,5 +94,6 @@ export const {
   useConnectPaypalMutation,
   usePendingEventOpertorQuery,
   useBuyPlanMutation,
-  useAddsonCartQuery
+  useAddsonCartQuery,
+  useUpdateEventsMutation
 } = opratorsApi;

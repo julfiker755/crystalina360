@@ -23,7 +23,7 @@ import PersonLimit from "../element/person-limit";
 import { LocationDroupDown } from "../element/location";
 import { AccessibilityBox } from "../element/accessibility";
 import TicketQuantity from "../element/ticket-quantity";
-import { useStoreEventsMutation } from "@/redux/api/operator/opratorApi";
+import { useUpdateEventsMutation } from "@/redux/api/operator/opratorApi";
 import { useRouter } from "next/navigation";
 import { getSchemaEdit, getValuesOne } from "../element/default";
 import sonner from "@/components/reuseable/sonner";
@@ -57,6 +57,7 @@ export default function OnetoOneEdit({
   const defaultValues = getValuesOne(isDelivery, "2") as any;
   const defaultSchema = getSchemaEdit(isDelivery) as any;
   const router = useRouter();
+  const [progress, setProgress] = useState(0);
 
   const from = useForm({
     resolver: zodResolver(defaultSchema),
@@ -64,33 +65,75 @@ export default function OnetoOneEdit({
     mode: "onChange",
   });
 
-  console.log(from.formState.errors);
 
+  const id = events_all?.data?.event?.id
+  //  ================= default value set =============
   useEffect(() => {
     if (!events_all?.data?.event) return;
     const event = events_all.data.event;
-    from.reset({
+    const cloneobj = {
       delivery_type: event.delivery_type,
       event_purpose: event.event_purpose || "",
       event_title: event.event_title || "",
       event_description: event.event_description || "",
       holistic_discipline: event.holistic_discipline || [],
-      event_date: event.event_date?.[0] || "",
-      event_time: event.event_time || [],
-      event_duration: event.event_duration || "",
-      tags: event.tags || [],
-      city: event.city || "",
-      province: event.province || "",
-      region: event.region || "",
-      country: event.country || "",
-      price: event?.price?.toString() || "",
-      accessibility: event.accessibility || [],
-    });
+    }
+    const sametosame = {
+      ticket_quantity: "2",
+      min_person: "1",
+      max_person: "2",
+    }
+    if (event?.delivery_type == delivary_t.offline) {
+      //   === offline ===
+      const offlineObj = {
+        event_date: event.event_date?.[0] || "",
+        event_time: event.event_time || [],
+        event_duration: event.event_duration || "",
+        tags: event.tags || [],
+        city: event.city || "",
+        province: event.province || "",
+        region: event.region || "",
+        country: event.country || "",
+        price: event?.price?.toString() || "",
+        accessibility: event.accessibility || [],
+        ...cloneobj,
+        ...sametosame
+      }
+      from.reset(offlineObj);
+      setSelAccbility(event.accessibility || []);
+      setSelectedTimes(event.event_time || []);
+    } else if (event?.delivery_type === delivary_t.online) {
+      //  === online ===
+      const onlineObj = {
+        event_date: event.event_date?.[0] || "",
+        event_time: event.event_time || [],
+        tags: event.tags || [],
+        price: event?.price?.toString() || "",
+        ...cloneobj,
+        ...sametosame
+      }
+      from.reset(onlineObj);
+      setSelectedTimes(event.event_time || []);
+    } else if (event?.delivery_type === delivary_t.ondemand) {
+      //  === ondemand ===
+      const ondemandObj = {
+        event_date: event.event_date?.[0] || "",
+        event_time: event.event_time?.[0] || [],
+        price: event?.price?.toString() || "",
+        city: event.city || "",
+        province: event.province || "",
+        region: event.region || "",
+        country: event.country || "",
+        tags: event.tags || [],
+        ...cloneobj
+      }
+      from.reset(ondemandObj);
+    }
+
 
     // UI related states
     setIsDelivery(event.delivery_type);
-    setSelAccbility(event.accessibility || []);
-    setSelectedTimes(event.event_time || []);
+
   }, [events_all]);
 
   const get = (v: any) => from.watch(v);
@@ -104,44 +147,45 @@ export default function OnetoOneEdit({
     from.setValue("accessibility", selAccbility || []);
   }, [files, selAccbility]);
 
-  // const resetFrom = (deliveryType: string) => {
-  //   const values = getValuesOne(deliveryType, "2") as any;
-  //   from.reset(values);
-  //   setSelAccbility([]);
-  //   setSelectDate([]);
-  //   setIsDelivery(deliveryType);
-  //   setSelectedTimes([]);
-  //   clearFiles();
-  // };
 
-  const [storeEvents, { isLoading }] = useStoreEventsMutation();
+
+  const [updateEvents, { isLoading }] = useUpdateEventsMutation()
 
   const handleSubmit = async (values: FieldValues) => {
-    const { ticket_quantity, max_person, min_person, ...rest } = values || {};
+    const { ticket_quantity, max_person, min_person, img, ...rest } = values || {};
     const data = helpers.fromData({
       event_type: "onetoone",
       ticket_quantity: "2",
       min_person: "1",
       max_person: "2",
+      ...(img ? { img: img } : {}),
       ...rest,
     });
 
-    console.log(values);
 
-    // try {
-    //   const res = await storeEvents(data).unwrap();
-    //   if (res.status) {
-    //     // resetFrom(get("delivery_type"));
-    //     router.back();
-    //     sonner.success(
-    //       "Event Added Successfully",
-    //       msg,
-    //       "bottom-right",
-    //     );
-    //   }
-    // } catch (err: any) {
-    //   sonner.error("Error", err.message, "bottom-right");
-    // }
+    try {
+      const res = await updateEvents({
+        id,
+        data,
+        onUploadProgress: (progressEvent: ProgressEvent) => {
+          if (progressEvent.total) {
+            const progress = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total,
+            );
+            setProgress(progress);
+          }
+        },
+      }).unwrap();
+      if (res.status) {
+        router.back();
+        sonner.success("Event Updated Successfully", "The event has been successfully updated.", "bottom-right");
+        setProgress(0)
+      }
+    } catch (err: any) {
+      console.log(err)
+      sonner.error("Error", err?.data?.error, "bottom-right");
+      setProgress(0)
+    }
   };
 
   const toggleHolistic = (value: any) => {
@@ -155,6 +199,7 @@ export default function OnetoOneEdit({
       from.setValue("holistic_discipline", [...current, value] as any);
     }
   };
+
 
   return (
     <div>
@@ -229,10 +274,9 @@ export default function OnetoOneEdit({
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                     type="button"
                   >
                     {item.label}
@@ -347,8 +391,16 @@ export default function OnetoOneEdit({
             )}
 
             {/* Submit Button */}
-            <Button disabled={isLoading} className="w-full">
-              Submit
+            <Button disabled={isLoading} className="w-full relative disabled:opacity-100">
+              <div
+                className={`absolute top-0 z-0 left-0  h-full rounded-md bg-[#3990dceb]`}
+                style={{
+                  width: `${progress}%`,
+                }}
+              ></div>
+              <span className="relative z-10">
+                {isLoading ? "Waiting..." : "Submit"}
+              </span>
             </Button>
           </div>
         </div>
@@ -458,7 +510,7 @@ const VideoBannerBox = ({ files, getInputProps, img }: any) => {
               borderRadius: "10px",
             }}
           >
-            <source src={files[0]?.preview} />
+            <source src={files[0]?.preview || img} />
             Your browser does not support the video tag.
           </video>
           <UploadBtn />

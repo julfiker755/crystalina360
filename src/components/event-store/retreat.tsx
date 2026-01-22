@@ -105,9 +105,11 @@ export default function RetreatStore({ msg }: { msg: string }) {
         resetFrom(get("delivery_type"));
         router.back();
         sonner.success("Event Added Successfully", msg, "bottom-right");
+        setProgress(0)
       }
     } catch (err: any) {
-      sonner.error("Error", err.message, "bottom-right");
+      setProgress(0)
+      sonner.error("Error", err?.data?.error, "bottom-right");
     }
   };
   const toggleHolistic = (value: any) => {
@@ -161,10 +163,9 @@ export default function RetreatStore({ msg }: { msg: string }) {
                         from.setValue("delivery_type", item.value);
                       }}
                       type="button"
-                      className={`font-normal transition-colors border bg-transparent text-figma-black ${
-                        item.value === get("delivery_type") &&
+                      className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
                         "bg-primary text-white"
-                      }`}
+                        }`}
                     >
                       <FavIcon
                         color={
@@ -192,10 +193,9 @@ export default function RetreatStore({ msg }: { msg: string }) {
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                     type="button"
                   >
                     {item.label}
@@ -281,7 +281,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
             />
             <FromTagInput name="tags" label="Tags" className="py-2" />
             <EmailCollent />
-            <Button disabled={isLoading} className="w-full relative">
+            <Button disabled={isLoading} className="w-full relative disabled:opacity-100">
               <div
                 className={`absolute top-0 z-0 left-0  h-full rounded-md bg-[#3990dceb]`}
                 style={{
@@ -294,11 +294,12 @@ export default function RetreatStore({ msg }: { msg: string }) {
             </Button>
           </div>
         </div>
-      </Form>
+      </Form >
       {/*  =============== Select holistic descipline Modal =================== */}
-      <Modal
+      < Modal
         open={state.holistic}
-        setIsOpen={(v) => setState("holistic", v)}
+        setIsOpen={(v) => setState("holistic", v)
+        }
         title="Select Holistic Descipline"
         className="sm:max-w-4xl"
         titleStyle="text-center"
@@ -326,9 +327,9 @@ export default function RetreatStore({ msg }: { msg: string }) {
               </label>
             ))}
         </div>
-      </Modal>
+      </Modal >
       {/*  =============== Select time slot Modal =================== */}
-      <Modal
+      < Modal
         open={state.istime}
         setIsOpen={(v) => setState("istime", v)}
         title="Create Time Slot"
@@ -341,9 +342,9 @@ export default function RetreatStore({ msg }: { msg: string }) {
           setState={setState}
           from={from}
         />
-      </Modal>
+      </Modal >
       {/*  === date === */}
-      <Modal
+      < Modal
         open={state.isDate}
         setIsOpen={(v) => setState("isDate", v)}
         title="Create Date Slot"
@@ -356,8 +357,8 @@ export default function RetreatStore({ msg }: { msg: string }) {
           from={from}
           setState={setState}
         />
-      </Modal>
-    </div>
+      </Modal >
+    </div >
   );
 }
 //  -------------------------------------------------------------- X ----------------------------------------------------------

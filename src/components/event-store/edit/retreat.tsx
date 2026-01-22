@@ -6,7 +6,6 @@ import { FromTextarea2 } from "@/components/reuseable/from-textarea2";
 import SearchBox from "@/components/reuseable/search-box";
 import { SingleCalendar } from "@/components/reuseable/single-date";
 import { Button, Checkbox, Label } from "@/components/ui";
-import { disciplineItem } from "@/components/view/oparator/dummy-json";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { FieldValues, useForm } from "react-hook-form";
 import { ChevronRight } from "lucide-react";
@@ -19,24 +18,19 @@ import { useEffect, useState } from "react";
 import { UploadBtn } from "@/components/reuseable/btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  durationItem,
-  getSchema,
-  getValuesOne,
-  purposeItem,
-} from "./element/default";
-import TimeSelect from "./element/time-select";
-import MultiDate from "./element/multi-date";
-import { ErrorInput } from "../reuseable/error";
-import { InputTime } from "../reuseable/timeInput";
-import PersonLimit from "./element/person-limit";
-import { LocationDroupDown } from "./element/location";
-import { AccessibilityBox } from "./element/accessibility";
-import TicketQuantity from "./element/ticket-quantity";
-import EmailCollent from "./element/email-collect";
-import { useStoreEventsMutation } from "@/redux/api/operator/opratorApi";
+import { getSchemaEdit, getValuesOne } from "../element/default";
+import TimeSelect from "../element/time-select";
+import MultiDate from "../element/multi-date";
+import PersonLimit from "../element/person-limit";
+import { LocationDroupDown } from "../element/location";
+import { AccessibilityBox } from "../element/accessibility";
+import TicketQuantity from "../element/ticket-quantity";
+import { useUpdateEventsMutation } from "@/redux/api/operator/opratorApi";
 import { useRouter } from "next/navigation";
-import sonner from "../reuseable/sonner";
+import { disciplineOptions, durationOptions, purposeItem } from "@/components/dummy-data";
+import { ErrorInput } from "@/components/reuseable/error";
+import sonner from "@/components/reuseable/sonner";
+
 
 const initialState = {
   holistic: false,
@@ -44,17 +38,19 @@ const initialState = {
   isDate: false,
 };
 
-export default function EditEventFrom() {
+export default function RetreatEdit({ msg, events_all }: { msg: string; events_all: any }) {
   const [searchText, setSearchText] = useState("");
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
   const [state, setState] = useModalState(initialState);
   const [selAccbility, setSelAccbility] = useState<string[]>([]);
   const [isDelivery, setIsDelivery] = useState<any>("offline");
   const [selectDate, setSelectDate] = useState<any>([]);
-
-  const defaultValues = getValuesOne(isDelivery, "2") as any;
-  const defaultSchema = getSchema(isDelivery) as any;
+  const defaultValues = getValuesOne(isDelivery, "200") as any;
+  const defaultSchema = getSchemaEdit(isDelivery) as any;
+  const [progress, setProgress] = useState(0);
   const router = useRouter();
+
+
 
   const from = useForm({
     resolver: zodResolver(defaultSchema),
@@ -62,6 +58,40 @@ export default function EditEventFrom() {
     mode: "onChange",
   });
 
+  const id = events_all?.data?.event?.id
+  //  ================= default value set =============
+  useEffect(() => {
+    if (!events_all?.data?.event) return;
+    const event = events_all.data.event;
+
+    from.reset({
+      delivery_type: event.delivery_type,
+      event_purpose: event.event_purpose || "",
+      event_title: event.event_title || "",
+      event_description: event.event_description || "",
+      holistic_discipline: event.holistic_discipline || [],
+      event_date: event.event_date?.[0] || "",
+      event_time: event.event_time || [],
+      event_duration: event.event_duration || "",
+      tags: event.tags || [],
+      city: event.city || "",
+      province: event.province || "",
+      region: event.region || "",
+      country: event.country || "",
+      price: event?.price?.toString() || "",
+      accessibility: event.accessibility || [],
+      ticket_quantity: "200",
+      min_person: "1",
+      max_person: "200"
+    })
+    setSelAccbility(event.accessibility || []);
+    setSelectedTimes(event.event_time || []);
+    setIsDelivery(event.delivery_type);
+  }, [events_all]);
+
+
+  // accept: "video/*",
+  //   multiple: false
   const get = (v: any) => from.watch(v);
   const delivaryType = get("delivery_type") == delivary_t.ondemand;
   const [{ files }, { getInputProps, clearFiles }] = useFileUpload({
@@ -73,41 +103,47 @@ export default function EditEventFrom() {
     from.setValue("accessibility", selAccbility || []);
   }, [files, selAccbility]);
 
-  const resetFrom = (deliveryType: string) => {
-    const values = getValuesOne(deliveryType, "2") as any;
-    from.reset(values);
-    setSelAccbility([]);
-    setSelectDate([]);
-    setIsDelivery(deliveryType);
-    setSelectedTimes([]);
-    clearFiles();
-  };
-  const [storeEvents, { isLoading }] = useStoreEventsMutation();
+  const [updateEvents, { isLoading }] = useUpdateEventsMutation()
+
 
   const handleSubmit = async (values: FieldValues) => {
-    const { ticket_quantity, max_person, min_person, ...rest } = values || {};
+    const { ticket_quantity, max_person, min_person, img, ...rest } = values || {};
     const data = helpers.fromData({
-      event_type: "onetoone",
-      ticket_quantity: "2",
+      event_type: "group",
+      ticket_quantity: "200",
       min_person: "1",
-      max_person: "2",
+      max_person: "200",
+      ...(img ? { img: img } : {}),
       ...rest,
     });
-    try {
-      const res = await storeEvents(data).unwrap();
-      if (res.status) {
-        resetFrom(get("delivery_type"));
-        router.back();
-        sonner.success(
-          "Event Added Successfully",
-          "Your event has been added successfully.",
-          "bottom-right",
-        );
-      }
-    } catch (err: any) {
-      sonner.error("Error", err.message, "bottom-right");
-    }
+    console.log(values)
+
+
+    // try {
+    //   const res = await updateEvents({
+    //     id,
+    //     data,
+    //     onUploadProgress: (progressEvent: ProgressEvent) => {
+    //       if (progressEvent.total) {
+    //         const progress = Math.round(
+    //           (progressEvent.loaded * 100) / progressEvent.total,
+    //         );
+    //         setProgress(progress);
+    //       }
+    //     },
+    //   }).unwrap();
+    //   if (res.status) {
+    //     router.back();
+    //     sonner.success("Event Updated Successfully", "The event has been successfully updated.", "bottom-right");
+    //     setProgress(0)
+    //   }
+    // } catch (err: any) {
+    //   console.log(err)
+    //   sonner.error("Error", err?.data?.error, "bottom-right");
+    //   setProgress(0)
+    // }
   };
+
 
   const toggleHolistic = (value: any) => {
     const current = from.getValues("holistic_discipline") || [];
@@ -126,57 +162,48 @@ export default function EditEventFrom() {
       <Form className="py-15" from={from} onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-8">
-            {delivaryType ? (
-              <div>
-                <VideoBannerBox files={files} getInputProps={getInputProps} />
-                {!get("img") && (
-                  <ErrorInput
-                    error={from?.formState?.errors?.img?.message as string}
-                  />
-                )}
-              </div>
-            ) : (
-              <div>
-                <ImageBannerBox files={files} getInputProps={getInputProps} />
-                {!get("img") && (
-                  <ErrorInput
-                    error={from?.formState?.errors?.img?.message as string}
-                  />
-                )}
-              </div>
-            )}
+            <div>
+              <ImageBannerBox
+                img={events_all?.data?.event?.img}
+                files={files}
+                getInputProps={getInputProps} />
+
+              {!get("img") && (
+                <ErrorInput
+                  error={from?.formState?.errors?.img?.message as string}
+                />
+              )}
+            </div>
             {/*  ------ Select Delivery Type --------  */}
             <div>
               <label className="block text-lg mb-2 font-semibold">
                 Select Delivery Type
               </label>
               <div className="flex gap-3">
-                {[
-                  { value: "offline", label: "Offline", icon: "offline" },
-                  { value: "online", label: "Online", icon: "online" },
-                  { value: "ondemand", label: "On demand", icon: "ondemand" },
-                ]?.map((item) => (
-                  <Button
-                    key={item.value}
-                    onClick={() => {
-                      resetFrom(item.value);
-                      from.setValue("delivery_type", item.value);
-                    }}
-                    type="button"
-                    className={`font-normal transition-colors border bg-transparent text-figma-black ${
-                      item.value === get("delivery_type") &&
-                      "bg-primary text-white"
-                    }`}
-                  >
-                    <FavIcon
-                      color={
-                        item.value === get("delivery_type") ? "#fff" : undefined
-                      }
-                      name={item.icon as any}
-                    />
-                    {item.label}
-                  </Button>
-                ))}
+                {[{ value: "offline", label: "Offline", icon: "offline" }]?.map(
+                  (item) => (
+                    <Button
+                      key={item.value}
+                      onClick={() => {
+                        from.setValue("delivery_type", item.value);
+                      }}
+                      type="button"
+                      className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
+                        "bg-primary text-white"
+                        }`}
+                    >
+                      <FavIcon
+                        color={
+                          item.value === get("delivery_type")
+                            ? "#fff"
+                            : undefined
+                        }
+                        name={item.icon as any}
+                      />
+                      {item.label}
+                    </Button>
+                  ),
+                )}
               </div>
             </div>
             {/* --------  Select Event Purpose --------- */}
@@ -191,10 +218,9 @@ export default function EditEventFrom() {
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                     type="button"
                   >
                     {item.label}
@@ -215,7 +241,7 @@ export default function EditEventFrom() {
               </div>
               <div>
                 <div className="border p-3 flex items-center flex-wrap gap-3 rounded-md">
-                  {disciplineItem.slice(0, 10).map((item, idx) => (
+                  {disciplineOptions.slice(0, 10).map((item, idx) => (
                     <label key={idx} className="flex items-center gap-3">
                       <Checkbox
                         checked={get("holistic_discipline")?.includes(
@@ -261,75 +287,53 @@ export default function EditEventFrom() {
               placeholder="Enter your description"
               className="min-h-30"
             />
-            {/*  type  ------------ */}
-            {get("delivery_type") === delivary_t.offline ? (
-              //  ===================== offline ==========================
-              <>
-                <LocationDroupDown />
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  <SingleDateBox from={from} />
-                  <MultipleTime from={from} setState={setState} />
-                </div>
-                <PersonLimit read={true} />
-                <TicketQuantity from={from} read={false} />
-                <FromSelect2
-                  items={durationItem}
-                  name="event_duration"
-                  placeholder="-Select duration-"
-                  className="rounded-md"
-                />
-                <AccessibilityBox
-                  selAccbility={selAccbility}
-                  setSelAccbility={setSelAccbility}
-                />
-                <FromTagInput name="tags" label="Tags" className="py-2" />
-                <EmailCollent />
-              </>
-            ) : from.watch("delivery_type") === "online" ? (
-              //  ============================= online =====================
-              <>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  <SingleDateBox from={from} />
-                  <MultipleTime from={from} setState={setState} />
-                </div>
-                <PersonLimit read={false} />
-                <TicketQuantity from={from} read={false} />
-                <FromTagInput name="tags" label="Tags" className="py-2" />
-              </>
-            ) : (
-              from.watch("delivery_type") === "ondemand" && (
-                <>
-                  <LocationDroupDown />
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <SingleDateBox from={from} />
-                    <InputTime name="event_time" placeholder="select time" />
-                  </div>
-                  <FromTagInput name="tags" label="Tags" className="py-2" />
-                </>
-              )
-            )}
-
-            {/* Submit Button */}
-            <Button disabled={isLoading} className="w-full">
-              Submit
+            <LocationDroupDown />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <SingleDateBox from={from} />
+              <MultipleTime from={from} setState={setState} />
+            </div>
+            <PersonLimit read={true} />
+            <TicketQuantity from={from} read={true} />
+            <FromSelect2
+              items={durationOptions}
+              name="event_duration"
+              placeholder="-Select duration-"
+              className="rounded-md"
+            />
+            <AccessibilityBox
+              selAccbility={selAccbility}
+              setSelAccbility={setSelAccbility}
+            />
+            <FromTagInput name="tags" label="Tags" className="py-2" />
+            <Button disabled={isLoading} className="w-full relative disabled:opacity-100">
+              <div
+                className={`absolute top-0 z-0 left-0  h-full rounded-md bg-[#3990dceb]`}
+                style={{
+                  width: `${progress}%`,
+                }}
+              ></div>
+              <span className="relative z-10">
+                {isLoading ? "Waiting..." : "Submit"}
+              </span>
             </Button>
           </div>
         </div>
-      </Form>
+      </Form >
       {/*  =============== Select holistic descipline Modal =================== */}
-      <Modal
+      < Modal
         open={state.holistic}
-        setIsOpen={(v) => setState("holistic", v)}
+        setIsOpen={(v) => setState("holistic", v)
+        }
         title="Select Holistic Descipline"
-        className="sm:max-w-xl"
+        className="sm:max-w-4xl"
         titleStyle="text-center"
       >
         <SearchBox
-          className="w-full"
+          className="w-full mx-auto"
           onChange={(value) => setSearchText(value)}
         />
         <div className="flex items-center flex-wrap gap-3 pt-5 pb-6">
-          {disciplineItem
+          {disciplineOptions
             ?.filter((item) =>
               helpers
                 .lowerCase(item?.label)
@@ -347,7 +351,7 @@ export default function EditEventFrom() {
               </label>
             ))}
         </div>
-      </Modal>
+      </Modal >
       {/*  =============== Select time slot Modal =================== */}
       <Modal
         open={state.istime}
@@ -362,9 +366,9 @@ export default function EditEventFrom() {
           setState={setState}
           from={from}
         />
-      </Modal>
+      </Modal >
       {/*  === date === */}
-      <Modal
+      < Modal
         open={state.isDate}
         setIsOpen={(v) => setState("isDate", v)}
         title="Create Date Slot"
@@ -377,21 +381,21 @@ export default function EditEventFrom() {
           from={from}
           setState={setState}
         />
-      </Modal>
-    </div>
+      </Modal >
+    </div >
   );
 }
 //  -------------------------------------------------------------- X ----------------------------------------------------------
 //  ================= image box ================
-const ImageBannerBox = ({ files, getInputProps }: any) => {
+const ImageBannerBox = ({ files, getInputProps, img }: any) => {
   return (
     <Label
       htmlFor="image"
       className="border-2 p-1 cursor-pointer border-dashed border-primary rounded-lg flex flex-col items-center justify-center h-60 overflow-hidden"
     >
-      {files[0]?.preview ? (
+      {files[0]?.preview || img ? (
         <ImgBox
-          src={files[0].preview}
+          src={files[0]?.preview || img}
           alt="img"
           className="w-full h-full object-cover rounded-md"
         >
@@ -415,49 +419,7 @@ const ImageBannerBox = ({ files, getInputProps }: any) => {
   );
 };
 //  ================= video box ================
-const VideoBannerBox = ({ files, getInputProps }: any) => {
-  return (
-    <Label
-      htmlFor="image"
-      className="border-2 p-1 cursor-pointer border-dashed border-primary rounded-lg flex flex-col items-center justify-center h-60 overflow-hidden"
-    >
-      {files[0]?.preview ? (
-        <div className="relative w-full">
-          <video
-            key={files[0]?.preview}
-            autoPlay
-            loop
-            playsInline
-            muted
-            style={{
-              width: "100%",
-              height: "220px",
-              objectFit: "cover",
-              borderRadius: "10px",
-            }}
-          >
-            <source src={files[0]?.preview} />
-            Your browser does not support the video tag.
-          </video>
-          <UploadBtn />
-        </div>
-      ) : (
-        <>
-          <FavIcon name="upload2" />
-          <p className="text-center mt-2 text-figma-black">
-            Upload pre recorded video
-          </p>
-        </>
-      )}
-      <input
-        {...getInputProps()}
-        className="sr-only"
-        aria-label="Upload image file"
-        id="image"
-      />
-    </Label>
-  );
-};
+
 
 //  ----------------------single date --------------------
 const SingleDateBox = ({ from }: any) => {
@@ -465,6 +427,7 @@ const SingleDateBox = ({ from }: any) => {
   return (
     <div>
       <SingleCalendar
+        defaultDate={val}
         onChange={(value: any) => {
           from.setValue("event_date", helpers.formatDate(value, "YYYY-MM-DD"));
         }}
@@ -476,6 +439,7 @@ const SingleDateBox = ({ from }: any) => {
     </div>
   );
 };
+
 
 //  ------------------- multiple time -------------------------
 const MultipleTime = ({ from, setState }: any) => {

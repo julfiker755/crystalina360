@@ -12,6 +12,7 @@ import { getDeliveryIcon } from "@/lib/function-utils";
 import { Calendar } from "lucide-react";
 import { useParams } from "next/navigation";
 import FavIcon from "@/icon/favIcon";
+import CopyBox from "@/components/reuseable/copy-box";
 
 export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
   const { id } = useParams();
@@ -37,6 +38,7 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
     event_date,
     event_time,
     sold_tickets,
+    link
   } = event || {};
 
   const NotOnDemand = (item: any) => {
@@ -167,11 +169,17 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
                 text={helpers.capitalize(delivery_type) || "N/A"}
               />
             </div>
-            <ShowBox
-              icon="location"
-              name="Location"
-              text={`${city},${province},${region},${country}` || "N/A"}
-            />
+            {delivery_type === delivary_t.online ? (
+              <CopyBox value={link} valueStyle="text-primary text-base!" linkStyle="text-primary" />
+            ) : (
+              <ShowBox
+                icon="location"
+                name="Location"
+                text={`${city},${province},${region},${country}` || "N/A"}
+              />
+            )}
+
+
             {elementShow}
             {NotOnDemand(
               <>

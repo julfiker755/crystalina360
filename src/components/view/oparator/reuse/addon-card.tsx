@@ -2,23 +2,24 @@
 import Modal2 from "@/components/reuseable/modal2";
 import { Button } from "@/components/ui";
 import { CalendarDays, Lock } from "lucide-react";
-import Link from "next/link";
 import { CloseIcon } from "../../common/btn-modal";
 import { useGlobalState } from "@/hooks";
-import { helpers } from "@/lib";
 import { useBuyPlanMutation } from "@/redux/api/operator/opratorApi";
 import sonner from "@/components/reuseable/sonner";
 import FavIcon from "@/icon/favIcon";
+import { helpers } from "@/lib";
 
-interface AddOnCardProps<T> {
-  item: T;
+
+
+interface AddOnCardProps {
+  item: any;
   buy?: boolean
 }
 
-export default function AddOnCard<T extends Record<string, any>>({
+export default function AddOnCard({
   item,
   buy = true
-}: AddOnCardProps<T>) {
+}: AddOnCardProps) {
   const {
     id,
     benefits,

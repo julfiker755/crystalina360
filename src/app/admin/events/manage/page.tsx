@@ -13,6 +13,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Suspense, useState } from "react";
 import { Pagination } from "@/components/reuseable/pagination";
+import { event_t } from "@/lib";
 
 function EventsBox() {
   const { confirm } = useConfirmation();
@@ -40,6 +41,8 @@ function EventsBox() {
     }
   };
 
+
+
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2  gap-10">
@@ -58,7 +61,15 @@ function EventsBox() {
                     </button>
                   </Link>
                   {params === "my-events" && (
-                    <Link href={`/admin/events/edit/one-to-one/${item.id}`}>
+                    <Link href={
+                      item?.event_type === event_t.onetoone
+                        ? `/admin/events/edit/one-to-one/${item.id}`
+                        : item?.event_type === event_t.group
+                          ? `/admin/events/edit/group/${item.id}`
+                          : item?.event_type === event_t.retreat
+                            ? `/admin/events/edit/retreat/${item.id}`
+                            : ''
+                    }>
                       <button aria-label="Edit">
                         <FavIcon color="#fff" name="edit2" />
                       </button>
@@ -90,6 +101,10 @@ function EventsBox() {
     </div>
   );
 }
+
+
+
+
 
 export default function Events() {
   return (

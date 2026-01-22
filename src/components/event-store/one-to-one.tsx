@@ -108,9 +108,11 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
         resetFrom(get("delivery_type"));
         router.back();
         sonner.success("Event Added Successfully", msg, "bottom-right");
+        setProgress(0)
       }
     } catch (err: any) {
-      sonner.error("Error", err.message, "bottom-right");
+      sonner.error("Error", err?.data?.error, "bottom-right");
+      setProgress(0)
     }
   };
 
@@ -164,10 +166,9 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
                       from.setValue("delivery_type", item.value);
                     }}
                     type="button"
-                    className={`font-normal transition-colors border bg-transparent text-figma-black ${
-                      item.value === get("delivery_type") &&
+                    className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                   >
                     <FavIcon
                       color={
@@ -192,10 +193,9 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                     type="button"
                   >
                     {item.label}
@@ -311,7 +311,7 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
             )}
 
             {/* Submit Button */}
-            <Button disabled={isLoading} className="w-full relative">
+            <Button disabled={isLoading} className="w-full relative disabled:opacity-100">
               <div
                 className={`absolute top-0 z-0 left-0  h-full rounded-md bg-[#3990dceb]`}
                 style={{

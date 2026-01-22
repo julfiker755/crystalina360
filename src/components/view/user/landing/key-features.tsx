@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui";
 import Link from "next/link";
 import FeatureCard from "../reuse/feature-card";
-import { featuresData } from "../dummy-json";
 import { roleKey } from "@/lib";
+import { featuresData } from "@/components/dummy-data";
 
 export default function KeyFeature({ role }: any) {
   return (

@@ -19,6 +19,7 @@ import { NoItemData } from "@/components/reuseable/table-no-item";
 import { useDeleteEventMutation } from "@/redux/api/admin/eventsApi";
 import EventInfo from "@/components/view/admin/reuse/event-info";
 import Link from "next/link";
+import { getInterval } from "@/lib/function-utils";
 
 export default function OperatorDetils() {
   const { id } = useParams();
@@ -42,6 +43,7 @@ export default function OperatorDetils() {
     total_earned,
     total_tickets_sold,
     created_at,
+    subscribed_plans
   } = details?.data || {};
 
   const handleOperatorDelete = async (id: any) => {
@@ -137,7 +139,11 @@ export default function OperatorDetils() {
                         Active plan:
                       </span>
                     </li>
-                    <li className="font-medium text-lg">Annual</li>
+                    <li className="font-medium text-lg">
+                      {subscribed_plans?.interval ? (
+                        getInterval[subscribed_plans?.interval]
+                      ) : ("Free")}
+                    </li>
                   </ul>
                 </li>
               </ul>
