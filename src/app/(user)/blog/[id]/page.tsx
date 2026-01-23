@@ -1,37 +1,60 @@
-"use client";
-import { BackBtn2 } from "@/components/reuseable/back-btn";
-import { ImgBox } from "@/components/reuseable/Img-box";
-import { AppAlert } from "@/components/view/user/reuse";
-import { useSlgBlogQuery } from "@/redux/api/admin/blogApi";
-import { QuillText } from "@/components/reuseable/text-editor";
-import { useParams } from "next/navigation";
-import { helpers } from "@/lib";
+import SingleBlog from '@/components/view/user/landing/single-blog'
+import { authKey, envs } from '@/lib';
+import { IdParams } from '@/types'
+import { cookies } from 'next/headers';
+import React from 'react'
 
-export default function Blog() {
-  const { id } = useParams();
-  const { data: blog } = useSlgBlogQuery(id);
-  const { img, description, title, created_at } = blog?.data || {};
+
+
+
+export async function generateMetadata({ params }: IdParams): Promise<any> {
+  const { id } = await params;
+  const token = (await cookies())?.get(authKey)?.value;
+  const res = await fetch(`${envs.api_url}/blogs/${id}`, {
+    cache: "no-store",
+    headers: {
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+  });
+  const data = await res.json()
+
+  const { title, description: text, image } = data?.data || {};
+  const description = text?.replace(/<[^>]+>/g, "")
+    ?.replace(/\s+/g, " ")
+    ?.trim();
+
+  const baseUrl = envs.app_url;
+  const url = `${baseUrl}/blogs/${id}`;
+
+  const tags = title
+    .split(/[,\s]+/)
+    .filter((word: string) => word.length > 2)
+    .map((word: string) => word.toLowerCase());
+
+  return {
+    title,
+    keywords: tags.join(", "),
+    description,
+    openGraph: {
+      title,
+      description,
+      url,
+      images: [{ url: image, width: 800, height: 600, alt: title }],
+      type: "website",
+      siteName: "MY TSV",
+    },
+    other: {
+      facebook: ["website", url, title, description, image],
+      linkedin: [url, title, description, image],
+    },
+  };
+}
+
+export default async function Blog({ params }: IdParams) {
 
   return (
-    <div className="container pt-5">
-      <BackBtn2 className="mb-2" />
-      <ImgBox
-        src={img || "/not.png"}
-        className="h-60 lg:h-100 w-full  rounded-lg bg-muted overflow-hidden"
-        alt={"img box fldjk"}
-      />
-      <div className="py-4 px-3">
-        <span className="text-sm text-article pb-5">
-          {helpers.formatDate(created_at)}
-        </span>
-        <div className="space-y-1">
-          <h3 className="text-2xl py-1 font-semibold  text-foreground">
-            {title}
-          </h3>
-          <QuillText className="mb-10" text={description} />
-        </div>
-      </div>
-      <AppAlert className="mb-10" />
+    <div>
+      <SingleBlog />
     </div>
-  );
+  )
 }
