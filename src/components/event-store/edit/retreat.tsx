@@ -116,7 +116,6 @@ export default function RetreatEdit({ msg, events_all }: { msg: string; events_a
       ...(img ? { img: img } : {}),
       ...rest,
     });
-    console.log(values)
 
 
     try {

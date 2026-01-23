@@ -68,7 +68,7 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
                   key={idx}
                   className="text-base bg-figma-delete px-3  py-0.5 rounded-full text-figma-black"
                 >
-                  {item}
+                  {helpers.planTime(item)}
                 </span>
               ))}
             </div>
@@ -84,7 +84,7 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
           <div className="flex flex-col">
             <span className="text-base text-figma-black">Time</span>
             <span className="text-base text-figma-black font-medium">
-              {event_time?.[0]}
+              {helpers.planTime(event_time?.[0])}
             </span>
           </div>
         </div>

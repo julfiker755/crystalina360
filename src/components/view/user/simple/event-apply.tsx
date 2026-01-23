@@ -1,9 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Button, Input, Label } from "@/components/ui";
-import { Minus, Plus, ChevronDown, CircleAlert } from "lucide-react";
-import clsx from "clsx";
-import Link from "next/link";
+import { Minus, Plus, ChevronDown } from "lucide-react";
 import { event_t, helpers } from "@/lib";
 import { useCouponCheckMutation } from "@/redux/api/user/userCouponApi";
 import { useFormFields } from "@/hooks";
@@ -11,6 +9,8 @@ import { usePurchaseStoreMutation } from "@/redux/api/user/userEventsApi";
 import { useRouter } from "next/navigation";
 import { usePaymentInitMutation } from "@/redux/api/user/paymetsApi";
 import { useOpenPopup } from "@/hooks/useOpenPopup";
+import { useStoreRoomMutation } from "@/redux/api/chat/chatApi";
+import clsx from "clsx";
 
 export default function EventApply({
   id,
@@ -19,7 +19,9 @@ export default function EventApply({
   event_time,
   available_tickets,
   price,
+  organizer
 }: any) {
+
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<any>([]);
@@ -28,6 +30,7 @@ export default function EventApply({
   const [couponCheck] = useCouponCheckMutation();
   const [purchaseStore, { isLoading: purchaseLoading }] =
     usePurchaseStoreMutation();
+  const [storeRoom, { isLoading: roomIsloading }] = useStoreRoomMutation()
   const from = useFormFields({
     coupon: "",
   });
@@ -37,6 +40,7 @@ export default function EventApply({
     coupon_code: "",
     quantity: 1,
   });
+
 
   //   ============== discount calculation =============
   const totalTaka = isBooking.quantity * price;
@@ -136,6 +140,19 @@ export default function EventApply({
       setIsPaymentLoading(false);
     }
   };
+  // store room
+
+  const handleStoreRoom = async (id: string) => {
+    console.log(id)
+    const data = helpers.fromData({
+      user2: id
+    })
+    const res = await storeRoom(data).unwrap()
+    if (res.status) {
+      router.push("/conversation")
+    }
+
+  }
 
   return (
     <div className="space-y-5 pt-10">
@@ -153,7 +170,7 @@ export default function EventApply({
             className="flex items-center justify-between"
           >
             <span className="text-sm text-foreground">
-              {isBooking.date || "Select here"}
+              {isBooking?.date?.includes(":") ? helpers.planTime(isBooking.date) : isBooking?.date || "Select here"}
             </span>
             <ChevronDown
               className={clsx(
@@ -183,7 +200,7 @@ export default function EventApply({
                     }}
                     className="p-2 rounded-md hover:bg-primary/10 cursor-pointer text-sm"
                   >
-                    <span className="text-muted-foreground">{item}</span>
+                    <span className="text-muted-foreground">{isDate ? item : helpers.planTime(item)}</span>
                   </li>
                 ))}
             </ul>
@@ -250,11 +267,9 @@ export default function EventApply({
       </form>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        <Link href="/conversation">
-          <Button className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]">
-            Send Message
-          </Button>
-        </Link>
+        <Button type="button" onClick={() => handleStoreRoom(organizer?.id)} disabled={roomIsloading} className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]">
+          Send Message
+        </Button>
 
         <Button
           disabled={isBooking?.date?.length > 0 ? false : true}

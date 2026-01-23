@@ -44,7 +44,7 @@ export default function EventCard({ item, wish = false }: EventCardProps) {
     elementShow = (
       <div className="flex  gap-2  items-center text-muted-foreground">
         <FavIcon color="#7F7F7F" className="size-5" name="ongoing_events" />
-        <span className="text-base">{event_time?.[0]}</span>
+        <span className="text-base">{helpers.planTime(event_time?.[0])}</span>
       </div>
     );
   }

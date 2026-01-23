@@ -38,7 +38,7 @@ export default function EventCard({ item }: any) {
     elementShow = (
       <div className="flex  gap-2  items-center text-muted-foreground">
         <FavIcon className="size-5" name="ongoing_events" />
-        <span className="text-base text-primary">{event_time?.[0]}</span>
+        <span className="text-base text-primary">{helpers.planTime(event_time?.[0])}</span>
       </div>
     );
   }

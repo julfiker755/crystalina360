@@ -1,7 +1,7 @@
 "use client";
 import VideoPlayer from "@/components/reuseable/player";
 import FavIcon from "@/icon/favIcon";
-import { cn, delivary_t, event_t } from "@/lib";
+import { cn, delivary_t, event_t, helpers } from "@/lib";
 import { Calendar } from "lucide-react";
 import React from "react";
 
@@ -44,7 +44,7 @@ export default function EventInfo({
                   key={idx}
                   className="text-base bg-figma-delete px-3 py-0.5 rounded-full text-figma-black"
                 >
-                  {item}
+                  {helpers.planTime(item)}
                 </span>
               ))}
             </div>
@@ -60,7 +60,7 @@ export default function EventInfo({
           <div className="flex flex-col">
             <span className="text-base text-figma-black">Time</span>
             <span className="text-base bg-figma-delete px-3 rounded-full text-figma-black">
-              {details?.event_time?.[0]}
+              {helpers.planTime(details?.event_time?.[0])}
             </span>
           </div>
         </div>
@@ -121,9 +121,8 @@ export default function EventInfo({
                 <ShowBox
                   icon="tiket"
                   name="Ticket sold"
-                  text={`${details?.sold_tickets || 0} /${
-                    details?.ticket_quantity
-                  }`}
+                  text={`${details?.sold_tickets || 0} /${details?.ticket_quantity
+                    }`}
                 />
                 <ShowBox
                   icon="price22"

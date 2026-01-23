@@ -53,10 +53,12 @@ export default function EventDetails() {
     elementShow = (
       <div className="flex gap-2 items-center text-muted-foreground">
         <Clock className="text-figma-black" size={20} />
-        <span className="text-base">{event_time?.[0]}</span>
+        <span className="text-base">{helpers.planTime(event_time?.[0])}</span>
       </div>
     );
   }
+
+
 
   return (
     <div className="container">
@@ -163,11 +165,13 @@ export default function EventDetails() {
             ticket_status == "available" && (
               <EventApply
                 id={id}
+                organizer={organizer}
                 event_type={event_type}
                 event_time={event_time}
                 event_date={event_date}
                 available_tickets={available_tickets}
                 price={price}
+
               />
             ),
           )}

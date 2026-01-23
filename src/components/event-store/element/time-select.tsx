@@ -1,6 +1,6 @@
 "use client";
 import { Button, Input } from "@/components/ui";
-import dayjs from "dayjs";
+import { helpers } from "@/lib";
 import { X } from "lucide-react";
 import React, { useState } from "react";
 
@@ -14,17 +14,7 @@ export default function TimeSelect({
   const [error, setError] = useState("");
 
   const formatTime = (time24: string) => {
-    const [hours, minutes] = time24.split(":").map(Number);
-    const now = new Date();
-    now.setHours(hours, minutes, 0, 0);
-
-    const italyTime = new Intl.DateTimeFormat("en-US", {
-      timeZone: "Europe/Rome",
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-    }).format(now);
-    return italyTime;
+    return helpers.planTime(time24)
   };
 
   // new Date().toISOString
@@ -58,7 +48,7 @@ export default function TimeSelect({
 
 
 
-  console.log(dayjs(`1970-01-01 ${newTime}`, "YYYY-MM-DD HH:mm").format("hh:mm A"))
+
 
   return (
     <div>
