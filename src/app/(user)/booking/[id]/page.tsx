@@ -103,7 +103,7 @@ export default function BookingDetails() {
       link.download = `${invoice_id}.pdf`;
       link.click();
       setdownlaodLoading(false);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const NotOnDemand = (item: any) => {
@@ -219,7 +219,9 @@ export default function BookingDetails() {
               </div>
             ),
           )}
-          {delivery_type === delivary_t.ondemand && <CopyBox value={link} />}
+          {delivery_type === delivary_t.online && (
+            <CopyBox icon={false} value={link} />
+          )}
 
           {NotOnDemand(
             <div>

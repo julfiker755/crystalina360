@@ -1,11 +1,12 @@
 "use client";
 import Avatars from "@/components/reuseable/avater";
 import { BackBtn2 } from "@/components/reuseable/back-btn";
+import CopyBox from "@/components/reuseable/copy-box";
 import VideoPlayer from "@/components/reuseable/player";
 import { AppAlert } from "@/components/view/user/reuse";
 import EventApply from "@/components/view/user/simple/event-apply";
 import FavIcon from "@/icon/favIcon";
-import { delivary_t, event_t, helpers, roleKey } from "@/lib";
+import { delivary_t, event_t, fakeZoom, helpers, roleKey } from "@/lib";
 import { useSingleEventsQuery } from "@/redux/api/operator/opratorApi";
 import { useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
@@ -33,6 +34,7 @@ export default function EventDetails() {
     organizer,
     available_tickets,
     ticket_status,
+    link
   } = events_all?.data?.event || {};
 
   const NotOnDemand = (item: any) => {
@@ -130,10 +132,15 @@ export default function EventDetails() {
               </span>
             </div>,
           )}
-          <div className="flex gap-2 items-center  text-muted-foreground">
-            <MapPin className="text-figma-black" size={23} />
-            <span className="text-base font-medium">{`${city}, ${province}, ${region}, ${country}`}</span>
-          </div>
+          {delivery_type === delivary_t.online ? (
+            <CopyBox icon={false} value={fakeZoom} />
+          ) : (
+            <div className="flex gap-2 items-center  text-muted-foreground">
+              <MapPin className="text-figma-black" size={23} />
+              <span className="text-base font-medium">{`${city}, ${province}, ${region}, ${country}`}</span>
+            </div>
+          )}
+
           {NotOnDemand(elementShow)}
           {NotOnDemand(
             parseInt(available_tickets) > 0 && (

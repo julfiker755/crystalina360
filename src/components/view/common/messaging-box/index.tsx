@@ -359,9 +359,8 @@ function MessageBubble({
   const isIncoming = type === "incoming";
   return (
     <div
-      className={`flex items-end ${
-        isIncoming ? "justify-start" : "justify-end"
-      }`}
+      className={`flex items-end ${isIncoming ? "justify-start" : "justify-end"
+        }`}
     >
       {isIncoming && (
         <Avatars
@@ -372,11 +371,10 @@ function MessageBubble({
         />
       )}
       <div
-        className={`flex flex-col max-w-[70%] p-3 rounded-lg ${
-          isIncoming
-            ? "bg-gray-100 text-gray-800 rounded-bl-none"
-            : "bg-[#F7F3EB] text-gray-800 rounded-br-none"
-        }`}
+        className={`flex flex-col max-w-[70%] p-3 rounded-lg ${isIncoming
+          ? "bg-gray-100 text-gray-800 rounded-bl-none"
+          : "bg-[#F7F3EB] text-gray-800 rounded-br-none"
+          }`}
       >
         <p className="text-sm break-words">{message}</p>
         <span className="text-xs text-gray-500 mt-1 self-end">{time}</span>
@@ -511,9 +509,8 @@ export default function MessagingApp() {
     <div className="flex h-[calc(100vh-90px)] w-full gap-x-5 container mx-auto my-10">
       {/* Sidebar */}
       <div
-        className={`p-4 w-full lg:w-80 border h-full rounded-md overflow-y-auto ${
-          isResponsive ? "hidden" : "block"
-        } lg:block`}
+        className={`p-4 w-full lg:w-80 border h-full rounded-md overflow-y-auto ${isResponsive ? "hidden" : "block"
+          } lg:block`}
       >
         <div className="relative mb-4">
           <Search
@@ -534,11 +531,10 @@ export default function MessagingApp() {
                 setSelectedContact(contact);
                 setIsResponsive(true);
               }}
-              className={`px-4 py-3 border-b cursor-pointer transition-colors ${
-                selectedContact?.id === contact.id
-                  ? "bg-muted"
-                  : "hover:bg-muted"
-              }`}
+              className={`px-4 py-3 border-b cursor-pointer transition-colors ${selectedContact?.id === contact.id
+                ? "bg-muted"
+                : "hover:bg-muted"
+                }`}
             >
               <div className="flex items-center gap-3">
                 <Avatars

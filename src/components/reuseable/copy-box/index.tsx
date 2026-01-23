@@ -10,9 +10,10 @@ interface CopyProps {
   iconStyle?: string;
   valueStyle?: string;
   linkStyle?: string;
+  icon?: boolean
 }
 
-export default function CopyBox({ value, className, iconStyle, linkStyle, valueStyle }: CopyProps) {
+export default function CopyBox({ value, className, iconStyle, linkStyle, valueStyle, icon = true }: CopyProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -25,14 +26,15 @@ export default function CopyBox({ value, className, iconStyle, linkStyle, valueS
     <div className={cn(`flex space-x-2 items-center`, className)}>
       <LinkIcon className={cn("size-5", linkStyle)} />
       <span className={cn("w-[100px] truncate text-sm", valueStyle)}>{value}</span>
-
-      <Files
-        onClick={handleCopy}
-        className={cn(
-          `text-[#828282b8] ${copied && "text-primary"} cursor-pointer ml-3 size-4 transition`,
-          iconStyle,
-        )}
-      />
+      {icon && (
+        <Files
+          onClick={handleCopy}
+          className={cn(
+            `text-[#828282b8] ${copied && "text-primary"} cursor-pointer ml-3 size-4 transition`,
+            iconStyle,
+          )}
+        />
+      )}
     </div>
   );
 }

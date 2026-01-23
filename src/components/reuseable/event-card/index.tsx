@@ -1,9 +1,10 @@
 import FavIcon from "@/icon/favIcon";
-import { delivary_t, event_t, helpers } from "@/lib";
+import { delivary_t, event_t, fakeZoom, helpers } from "@/lib";
 import { Calendar, MapPin, Tag } from "lucide-react";
 import { useWishEventsMutation } from "@/redux/api/user/userEventsApi";
 import { Skeleton } from "@/components/ui";
 import Avatars from "../avater";
+import CopyBox from "../copy-box";
 
 interface EventCardProps {
   item: any;
@@ -135,10 +136,17 @@ export default function EventCard({ item, wish = false }: EventCardProps) {
             {event_description}
           </p>
           <div className="space-y-1 mt-3 text-sm">
-            <div className="flex  gap-2  items-center text-muted-foreground">
-              <MapPin size={24} />
-              <span className="text-base">{`${city}, ${province}, ${region}, ${country}`}</span>
-            </div>
+            {delivery_type === delivary_t.online ? (
+              <div className="flex  gap-2  items-center text-muted-foreground">
+                <CopyBox icon={false} value={fakeZoom} />
+              </div>
+            ) : (
+              <div className="flex  gap-2  items-center text-muted-foreground">
+                <MapPin size={24} />
+                <span className="text-base">{`${city}, ${province}, ${region}, ${country}`}</span>
+              </div>
+            )}
+
             {elementShow}
             {delivery_type === delivary_t.ondemand ? (
               <h5 className="text-gray-500 opacity-0">Not Show ondemand </h5>

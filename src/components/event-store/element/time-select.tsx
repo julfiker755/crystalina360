@@ -1,5 +1,6 @@
 "use client";
 import { Button, Input } from "@/components/ui";
+import dayjs from "dayjs";
 import { X } from "lucide-react";
 import React, { useState } from "react";
 
@@ -12,30 +13,21 @@ export default function TimeSelect({
   const [newTime, setNewTime] = useState("12:00");
   const [error, setError] = useState("");
 
-  const formatTime = (time: string) => {
-    const [hours, minutes] = time.split(":");
-    const hour = parseInt(hours);
-    const ampm = hour >= 12 ? "PM" : "AM";
-    const displayHour = hour % 12 || 12;
-    return `${displayHour.toString().padStart(2, "0")}:${minutes} ${ampm}`;
-  };
+  const formatTime = (time24: string) => {
+    const [hours, minutes] = time24.split(":").map(Number);
+    const now = new Date();
+    now.setHours(hours, minutes, 0, 0);
 
-  const convertToRomeTime = (time: string) => {
-    const date = new Date();
-    const [hours, minutes] = time.split(":");
-    date.setHours(parseInt(hours), parseInt(minutes));
-
-    // Fixed: Added hour12: true to explicitly show AM/PM
-    const options: any = {
+    const italyTime = new Intl.DateTimeFormat("en-US", {
       timeZone: "Europe/Rome",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true, // This ensures AM/PM is displayed
-    };
-    const romeTime = new Intl.DateTimeFormat("en-US", options).format(date);
-
-    return romeTime;
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    }).format(now);
+    return italyTime;
   };
+
+  // new Date().toISOString
 
   const handleAddTime = () => {
     if (!newTime) {
@@ -58,9 +50,15 @@ export default function TimeSelect({
   };
 
   const handleSave = () => {
-    from.setValue("event_time", selectedTimes.map(convertToRomeTime));
+    from.setValue("event_time", selectedTimes);
+    console.log(selectedTimes)
+    selectedTimes.map(formatTime);
     setState("istime", false);
   };
+
+
+
+  console.log(dayjs(`1970-01-01 ${newTime}`, "YYYY-MM-DD HH:mm").format("hh:mm A"))
 
   return (
     <div>
