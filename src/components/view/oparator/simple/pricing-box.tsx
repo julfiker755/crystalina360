@@ -3,8 +3,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useGetPricingQuery } from "@/redux/api/admin/pricingApi";
 import { useGetProfileQuery } from "@/redux/api/authApi";
-import { useBuyPlanMutation } from "@/redux/api/operator/opratorApi";
+import { useBuyPlanMutation, usePaymentInitOpMutation } from "@/redux/api/operator/opratorApi";
 import { helpers } from "@/lib";
+import { useOpenPopup } from "@/hooks";
 
 const freePlan = {
   id: "basic",
@@ -22,15 +23,21 @@ export default function PricingBox() {
   const [buyPlan, { isLoading }] = useBuyPlanMutation();
   const pro_item = pricing?.data?.find((item: any) => item.interval === isTab);
   const { data: profile } = useGetProfileQuery({});
-
+  const [paymentInitOp] = usePaymentInitOpMutation()
   const bugPlanSubmit = async (id: string) => {
     const data = helpers.fromData({
       plan_id: id,
     });
-    await buyPlan(data).unwrap();
+    const res = await buyPlan(data).unwrap();
+    if (res.status) {
+      const res1 = await paymentInitOp(res?.data?.invoice_no)
+      window.open(res1?.data?.data)
+      // useOpenPopup(res1?.data?.data, "PayPal Payment", 600, 600);
+    }
   };
 
   const Ids = profile?.data?.user?.subscribed_plans?.id;
+
 
   return (
     <div className="pb-16">

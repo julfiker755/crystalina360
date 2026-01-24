@@ -84,6 +84,12 @@ export const opratorsApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.o_my_add_on],
     }),
+    paymentInitOp: build.mutation({
+      query: (id) => ({
+        url: `/paymentInit/${id}`,
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -95,5 +101,6 @@ export const {
   usePendingEventOpertorQuery,
   useBuyPlanMutation,
   useAddsonCartQuery,
-  useUpdateEventsMutation
+  useUpdateEventsMutation,
+  usePaymentInitOpMutation
 } = opratorsApi;

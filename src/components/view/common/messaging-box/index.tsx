@@ -76,8 +76,6 @@ export default function MessagingApp() {
   const { data: chatlist } = useGetChatListQuery({})
   const { data: messagelist } = useMessageListQuery(selectedUser)
   const [messageStore] = useMessageStoreMutation()
-
-
   const [messageInput, setMessageInput] = useState("");
 
 
@@ -143,9 +141,9 @@ export default function MessagingApp() {
 
   const { socket } = useReverbSocket(selectedUser)
 
-  socket?.onopen(e => {
-    console.log(e)
-  })
+  // socket?.onopen(e => {
+  //   console.log(e)
+  // })
 
 
   return (
@@ -205,8 +203,8 @@ export default function MessagingApp() {
       </div>
 
       {/* Chat Area */}
-      <div className={`flex-1 ${isResponsive ? "block" : "hidden"} lg:block`}>
-        <div className="border h-full rounded-md">
+      <div className={`flex-1 ${isResponsive ? "block" : "hidden"} lg:block overflow-y-hidden`}>
+        <div className="border h-full overflow-y-scroll rounded-md">
           <ChatBox />
           <div className="py-5  px-5 md:px-10 border-t flex items-center gap-3">
             <Input

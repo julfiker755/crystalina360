@@ -161,12 +161,13 @@ export default function GroupEdit({
   const [updateEvents, { isLoading }] = useUpdateEventsMutation()
 
   const handleSubmit = async (values: FieldValues) => {
-    const { ticket_quantity, max_person, min_person, ...rest } = values || {};
+    const { ticket_quantity, max_person, min_person, img, ...rest } = values || {};
     const data = helpers.fromData({
       event_type: "group",
       ticket_quantity: "200",
       min_person: "1",
       max_person: "200",
+      ...(img ? { img: img } : {}),
       ...rest,
     });
 

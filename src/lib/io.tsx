@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 
 export type ReverbEventType =
-    | { type: "onopen" }
+    | { type: "CONNECTED" }
     | { type: "MESSAGE_SENT"; payload: any }
     | { type: "MESSAGE_READ"; payload: any }
     | { type: "USER_TYPING"; payload: { user_id: number } }
@@ -61,7 +61,44 @@ export function useReverbSocket(
                         console.log("✅ Connect to Reverb")
                     }
 
+                    socket.onmessage = async (event) => {
+                        const payload = JSON.parse(event.data);
+                        console.log(" ===== payload ====== ", payload)
+                        if (payload.event === "pusher:connection_established") {
+                            const data = JSON.parse(payload.data);
+                            console.log(" ===== data ====== ", data)
+                            // setSocketId(data?.socket_id);
+                            const socketId = data?.socket_id;
+                            const requestBodySubscribeChannel = {
+                                socket_id: socketId,
+                                channel_name: `chat.${responseCreateRoom?.data?.id}`
+                            };
 
+                            const responseSubscribeChannel = await fetchSubscribeChannel(requestBodySubscribeChannel).unwrap();
+                            // console.log(" ======= response subscribe channel ==", JSON.stringify(responseSubscribeChannel, null, 2))
+                            socket.send(JSON.stringify({
+                                event: "pusher:subscribe",
+                                data: {
+                                    channel: `chat.${responseCreateRoom?.data?.id}`,
+                                    auth: responseSubscribeChannel?.auth
+                                }
+                            }))
+                        }
+
+                        if (payload.event === "pusher_internal:subscription_succeeded") {
+                            console.log("✅ Subscribe to channel")
+                            setConnected(true)
+                        }
+
+                        if (payload.event === "private.message") {
+                            console.log("💭 New message : ")
+                            onEvent?.({
+                                type: "MESSAGE_SENT",
+                                payload: JSON.parse(payload.data)
+                            })
+                        }
+
+                    }
 
                     socket.onerror = (e) => {
                         console.log("👺 Web socket error! ")

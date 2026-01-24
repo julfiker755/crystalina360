@@ -8,6 +8,8 @@ import { useParams, useRouter } from "next/navigation";
 import { useDeleteEventMutation } from "@/redux/api/admin/eventsApi";
 import FavIcon from "@/icon/favIcon";
 import Link from "next/link";
+import { event_t } from "@/lib";
+import { useSingleEventsQuery } from "@/redux/api/operator/opratorApi";
 
 export default function EvnetSingleBox() {
   const { confirm } = useConfirmation();
@@ -26,6 +28,9 @@ export default function EvnetSingleBox() {
       router.back();
     }
   };
+  const { data: events_all, isLoading } = useSingleEventsQuery(id);
+  const { event_type, id: ids } = events_all?.data?.event || {};
+
 
   return (
     <div>
@@ -40,7 +45,15 @@ export default function EvnetSingleBox() {
             <h2>Creating One to one event</h2>
           </div>
           <div className="z-10 flex items-center space-x-2">
-            <Link href={`/admin/events/edit/345`}>
+            <Link href={
+              event_type === event_t.onetoone
+                ? `/admin/events/edit/one-to-one/${ids}`
+                : event_type === event_t.group
+                  ? `/admin/events/edit/group/${ids}`
+                  : event_type === event_t.retreat
+                    ? `/admin/events/edit/retreat/${ids}`
+                    : ''
+            }>
               <button aria-label="Edit" className="icon bg-primary">
                 <FavIcon color="#fff" name="edit2" />
               </button>
