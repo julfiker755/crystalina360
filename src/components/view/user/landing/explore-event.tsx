@@ -28,7 +28,7 @@ export default function ExploreEvents() {
           </Repeat>
         ) : (
           eventsItem?.data?.slice(0, 6)?.map((item: any) => (
-            <EventCard wish={false} item={item} />
+            <EventCard key={item.id} wish={false} item={item} />
           ))
         )}
       </div>

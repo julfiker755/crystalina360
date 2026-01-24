@@ -129,7 +129,7 @@ export default function BookingDetails() {
       <>
         <div className="flex gap-2 items-center text-muted-foreground">
           <Clock className="text-figma-black" size={20} />
-          <span className="text-base">{event_time?.[0]}</span>
+          <span className="text-base">{helpers.planTime(event_time?.[0])}</span>
         </div>
         <div className="flex  gap-2  items-center text-muted-foreground">
           <Calendar className="text-figma-black" size={22} />

@@ -80,6 +80,8 @@ export default function SignIn() {
           router.push("/admin");
         } else if (resRole === roleKey.operator) {
           router.push("/operator/dashboard")
+        } else if (resRole === roleKey.user) {
+          router.push("/")
         }
       }
     } catch (err: any) {

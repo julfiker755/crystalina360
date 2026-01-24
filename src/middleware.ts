@@ -8,10 +8,6 @@ const roleConfig = {
     basePath: "/admin",
     allowedPaths: /^\/admin\/*/,
   },
-  // reviewer: {
-  //   basePath: "/operator",
-  //   allowedPaths: /^\/operator\/*/,
-  // },
 };
 
 export async function middleware(request: NextRequest) {
