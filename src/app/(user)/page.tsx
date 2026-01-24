@@ -7,7 +7,6 @@ import HeroSec from "@/components/view/user/landing/heroSec";
 import HowWorks from "@/components/view/user/landing/how-works";
 import KeyFeature from "@/components/view/user/landing/key-features";
 import PrivacyPolicy from "@/components/view/user/landing/privacy-policy";
-import Subscription from "@/components/view/user/landing/subscription";
 import Testimonial from "@/components/view/user/landing/testimonial";
 import { useAppSelector } from "@/redux/hooks";
 import { roleKey } from "@/lib";
@@ -22,7 +21,7 @@ export default function UserHome() {
       {user.role == roleKey.user ? (
         <>
           <Advertise />
-          <Subscription />
+          {/* <Subscription /> */}
         </>
       ) : (
         <>

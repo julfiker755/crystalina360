@@ -28,9 +28,7 @@ export default function ExploreEvents() {
           </Repeat>
         ) : (
           eventsItem?.data?.slice(0, 6)?.map((item: any) => (
-            <Link key={item.id} href={`/events/${item?.id}`}>
-              <EventCard wish={false} item={item} />
-            </Link>
+            <EventCard wish={false} item={item} />
           ))
         )}
       </div>
