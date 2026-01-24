@@ -9,43 +9,34 @@ import sonner from "@/components/reuseable/sonner";
 import FavIcon from "@/icon/favIcon";
 import { helpers } from "@/lib";
 
-
-
 interface AddOnCardProps {
   item: any;
-  buy?: boolean
+  buy?: boolean;
 }
 
-export default function AddOnCard({
-  item,
-  buy = true
-}: AddOnCardProps) {
-  const {
-    id,
-    benefits,
-    title,
-    price,
-    bio,
-    primary_color,
-    secondary_color, } =
+export default function AddOnCard({ item, buy = true }: AddOnCardProps) {
+  const { id, benefits, title, price, bio, primary_color, secondary_color } =
     item || {};
   const [global, updateGlobal] = useGlobalState({
     show: false,
     data: {} as any,
   });
   const [buyPlan, { isLoading: bugIsLoading }] = useBuyPlanMutation();
-  const token = helpers.hasAuthToken()
-
+  const token = helpers.hasAuthToken();
 
   const handlePayment = async (buy_id: string) => {
     const data = helpers.fromData({
-      addson_id: buy_id
-    })
-    const res = await buyPlan(data).unwrap()
+      addson_id: buy_id,
+    });
+    const res = await buyPlan(data).unwrap();
     if (res.status) {
-      sonner.success("Payment Successful", "Your add-on is ready. Time to enJay!", "bottom-right");
+      sonner.success(
+        "Payment Successful",
+        "Your add-on is ready. Time to enJay!",
+        "bottom-right",
+      );
     }
-  }
+  };
 
   return (
     <>
@@ -54,8 +45,8 @@ export default function AddOnCard({
         style={{
           borderColor: primary_color,
         }}
-      ><div>
-
+      >
+        <div>
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
               <div
@@ -76,8 +67,8 @@ export default function AddOnCard({
                 <p className="text-lg font-bold text-[#E07856]">${price}</p>
               </div>
             </div>
-            {token && (
-              buy ? (
+            {token &&
+              (buy ? (
                 <Button
                   style={{
                     backgroundColor: primary_color,
@@ -97,9 +88,7 @@ export default function AddOnCard({
                   <FavIcon className="size-5" name="check_circle" />
                   Purchased
                 </Button>
-              )
-            )}
-
+              ))}
           </div>
           <p className="text-sm text-muted-foreground mb-6">{bio}</p>
           <div className="mb-6">

@@ -1,11 +1,8 @@
-import SingleBlog from '@/components/view/user/landing/single-blog'
-import { authKey, envs } from '@/lib';
-import { IdParams } from '@/types'
-import { cookies } from 'next/headers';
-import React from 'react'
-
-
-
+import SingleBlog from "@/components/view/user/landing/single-blog";
+import { authKey, envs } from "@/lib";
+import { IdParams } from "@/types";
+import { cookies } from "next/headers";
+import React from "react";
 
 export async function generateMetadata({ params }: IdParams): Promise<any> {
   const { id } = await params;
@@ -16,10 +13,11 @@ export async function generateMetadata({ params }: IdParams): Promise<any> {
       ...(token && { Authorization: `Bearer ${token}` }),
     },
   });
-  const data = await res.json()
+  const data = await res.json();
 
   const { title, description: text, image } = data?.data || {};
-  const description = text?.replace(/<[^>]+>/g, "")
+  const description = text
+    ?.replace(/<[^>]+>/g, "")
     ?.replace(/\s+/g, " ")
     ?.trim();
 
@@ -51,10 +49,9 @@ export async function generateMetadata({ params }: IdParams): Promise<any> {
 }
 
 export default async function Blog({ params }: IdParams) {
-
   return (
     <div>
       <SingleBlog />
     </div>
-  )
+  );
 }

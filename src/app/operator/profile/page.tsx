@@ -86,9 +86,9 @@ export default function Profile() {
                   </span>
                 </div>
                 <div className="font-medium text-lg">
-                  {subscribed_plans?.interval ? (
-                    getInterval[subscribed_plans?.interval]
-                  ) : ("Free")}
+                  {subscribed_plans?.interval
+                    ? getInterval[subscribed_plans?.interval]
+                    : "Free"}
                 </div>
               </div>
             </div>

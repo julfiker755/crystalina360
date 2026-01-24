@@ -35,7 +35,7 @@ export default function OpEvtCd({
     country,
     organizer,
     delivery_type,
-    link
+    link,
   } = item || {};
 
   let elementShow: any;
@@ -51,7 +51,9 @@ export default function OpEvtCd({
     elementShow = (
       <div className="flex  gap-2  items-center text-muted-foreground">
         <FavIcon className="size-5" name="ongoing_events" />
-        <span className="text-base text-primary">{helpers.planTime(event_time?.[0])}</span>
+        <span className="text-base text-primary">
+          {helpers.planTime(event_time?.[0])}
+        </span>
       </div>
     );
   }
@@ -130,7 +132,11 @@ export default function OpEvtCd({
         <div className="space-y-1 text-sm mt-5">
           <div className="[&_div]:flex  [&_div]:gap-2   [&_div]:items-center [&_div]:text-muted-foreground flex flex-col lg:flex-row lg:justify-between">
             {delivery_type === delivary_t.online ? (
-              <CopyBox value={link} valueStyle="text-primary text-base!" linkStyle="text-primary" />
+              <CopyBox
+                value={link}
+                valueStyle="text-primary text-base!"
+                linkStyle="text-primary"
+              />
             ) : (
               <div>
                 <FavIcon className="size-5" name="location" />
@@ -161,6 +167,6 @@ export default function OpEvtCd({
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 }

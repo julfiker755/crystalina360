@@ -79,9 +79,9 @@ export default function SignIn() {
         if (resRole == roleKey.admin) {
           router.push("/admin");
         } else if (resRole === roleKey.operator) {
-          router.push("/operator/dashboard")
+          router.push("/operator/dashboard");
         } else if (resRole === roleKey.user) {
-          router.push("/")
+          router.push("/");
         }
       }
     } catch (err: any) {

@@ -43,7 +43,7 @@ export default function OperatorDetils() {
     total_earned,
     total_tickets_sold,
     created_at,
-    subscribed_plans
+    subscribed_plans,
   } = details?.data || {};
 
   const handleOperatorDelete = async (id: any) => {
@@ -140,9 +140,9 @@ export default function OperatorDetils() {
                       </span>
                     </li>
                     <li className="font-medium text-lg">
-                      {subscribed_plans?.interval ? (
-                        getInterval[subscribed_plans?.interval]
-                      ) : ("Free")}
+                      {subscribed_plans?.interval
+                        ? getInterval[subscribed_plans?.interval]
+                        : "Free"}
                     </li>
                   </ul>
                 </li>

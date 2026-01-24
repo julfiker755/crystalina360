@@ -4,7 +4,11 @@ import { Search, Send, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Avatars from "@/components/reuseable/avater";
-import { useGetChatListQuery, useMessageListQuery, useMessageStoreMutation } from "@/redux/api/chat/chatApi";
+import {
+  useGetChatListQuery,
+  useMessageListQuery,
+  useMessageStoreMutation,
+} from "@/redux/api/chat/chatApi";
 import { helpers } from "@/lib";
 import { useAppSelector } from "@/redux/hooks";
 import { useGetProfileQuery } from "@/redux/api/authApi";
@@ -20,25 +24,23 @@ interface Contact {
   role?: string;
 }
 
-
-
 function MessageBubble({
   msg,
-  seluser
+  seluser,
 }: {
   // type: "incoming" | "outgoing";
-  msg: any,
-  seluser: any
+  msg: any;
+  seluser: any;
 }) {
-  const { data: profile } = useGetProfileQuery({})
-  const direction = msg?.chat_room?.user1 === seluser ? "outgoing" : "incoming"
-  const isIncoming = msg?.user_id === profile?.data?.user?.id
-
+  const { data: profile } = useGetProfileQuery({});
+  const direction = msg?.chat_room?.user1 === seluser ? "outgoing" : "incoming";
+  const isIncoming = msg?.user_id === profile?.data?.user?.id;
 
   return (
     <div
-      className={`flex items-end ${isIncoming ? "justify-end" : "justify-start"
-        }`}
+      className={`flex items-end ${
+        isIncoming ? "justify-end" : "justify-start"
+      }`}
     >
       {isIncoming && (
         <Avatars
@@ -49,13 +51,16 @@ function MessageBubble({
         />
       )}
       <div
-        className={`flex flex-col max-w-[70%] p-3 rounded-lg ${isIncoming
-          ? "bg-gray-100 text-gray-800 rounded-bl-none"
-          : "bg-[#F7F3EB] text-gray-800 rounded-br-none"
-          }`}
+        className={`flex flex-col max-w-[70%] p-3 rounded-lg ${
+          isIncoming
+            ? "bg-gray-100 text-gray-800 rounded-bl-none"
+            : "bg-[#F7F3EB] text-gray-800 rounded-br-none"
+        }`}
       >
         <p className="text-sm break-words">{msg?.message}</p>
-        <span className="text-xs text-gray-500 mt-1 self-end">{msg?.created_at ? helpers.formatTime(msg?.created_at) : null}</span>
+        <span className="text-xs text-gray-500 mt-1 self-end">
+          {msg?.created_at ? helpers.formatTime(msg?.created_at) : null}
+        </span>
       </div>
       {!isIncoming && (
         <Avatars
@@ -73,23 +78,21 @@ export default function MessagingApp() {
   const [isResponsive, setIsResponsive] = useState(false);
   const [selectedContact, setSelectedContact] = useState<Contact | null>();
   const [selectedUser, setSelectedUser] = useState(null);
-  const { data: chatlist } = useGetChatListQuery({})
-  const { data: messagelist } = useMessageListQuery(selectedUser)
-  const [messageStore] = useMessageStoreMutation()
+  const { data: chatlist } = useGetChatListQuery({});
+  const { data: messagelist } = useMessageListQuery(selectedUser);
+  const [messageStore] = useMessageStoreMutation();
   const [messageInput, setMessageInput] = useState("");
 
-
-
-  console.log(messagelist?.data?.data?.[0]?.chat_room_id)
+  console.log(messagelist?.data?.data?.[0]?.chat_room_id);
 
   const handleSendMessage = async () => {
     const data = helpers.fromData({
       chat_room_id: messagelist?.data?.data?.[0]?.chat_room_id,
       message: messageInput,
       // typing: selectedUser,
-    })
-    const res = await messageStore(data).unwrap()
-    console.log(res)
+    });
+    const res = await messageStore(data).unwrap();
+    console.log(res);
   };
 
   const ChatBox = () => {
@@ -127,30 +130,25 @@ export default function MessagingApp() {
         {/* ====================  Messages  ===================== */}
         <div className="flex-1 overflow-y-auto px-4 md:px-6 py-6 space-y-4">
           {messagelist?.data?.data?.map((msg: any) => (
-            <MessageBubble
-              key={msg.id}
-              msg={msg}
-              seluser={selectedUser}
-            />
+            <MessageBubble key={msg.id} msg={msg} seluser={selectedUser} />
           ))}
         </div>
       </div>
     );
   };
 
-
-  const { socket } = useReverbSocket(selectedUser)
+  const { socket } = useReverbSocket(selectedUser);
 
   // socket?.onopen(e => {
   //   console.log(e)
   // })
 
-
   return (
     <div className="flex h-[80vh] overflow-y-scroll w-full gap-x-5 container mx-auto my-10">
       <div
-        className={`p-4 w-full lg:w-80 border h-full rounded-md overflow-y-auto ${isResponsive ? "hidden" : "block"
-          } lg:block`}
+        className={`p-4 w-full lg:w-80 border h-full rounded-md overflow-y-auto ${
+          isResponsive ? "hidden" : "block"
+        } lg:block`}
       >
         <div className="relative mb-4">
           <Search
@@ -168,14 +166,16 @@ export default function MessagingApp() {
             <div
               key={list?.id}
               onClick={() => {
-                const userId = list?.me === list?.user1?.id ? list?.user2?.id : list?.user1?.id
-                setSelectedUser(userId)
+                const userId =
+                  list?.me === list?.user1?.id
+                    ? list?.user2?.id
+                    : list?.user1?.id;
+                setSelectedUser(userId);
                 setIsResponsive(true);
               }}
-              className={`px-4 py-3 border-b cursor-pointer transition-colors ${selectedContact?.id === list.id
-                ? "bg-muted"
-                : "hover:bg-muted"
-                }`}
+              className={`px-4 py-3 border-b cursor-pointer transition-colors ${
+                selectedContact?.id === list.id ? "bg-muted" : "hover:bg-muted"
+              }`}
             >
               <div className="flex items-center gap-3">
                 <Avatars
@@ -188,13 +188,9 @@ export default function MessagingApp() {
                     <h3 className="font-semibold text-foreground truncate">
                       {list?.user1?.name}
                     </h3>
-                    <span className="text-xs text-muted-foreground">
-                      11.33
-                    </span>
+                    <span className="text-xs text-muted-foreground">11.33</span>
                   </div>
-                  <p className="text-sm text-muted-foreground truncate">
-                    ddd
-                  </p>
+                  <p className="text-sm text-muted-foreground truncate">ddd</p>
                 </div>
               </div>
             </div>
@@ -203,7 +199,9 @@ export default function MessagingApp() {
       </div>
 
       {/* Chat Area */}
-      <div className={`flex-1 ${isResponsive ? "block" : "hidden"} lg:block overflow-y-hidden`}>
+      <div
+        className={`flex-1 ${isResponsive ? "block" : "hidden"} lg:block overflow-y-hidden`}
+      >
         <div className="border h-full overflow-y-scroll rounded-md">
           <ChatBox />
           <div className="py-5  px-5 md:px-10 border-t flex items-center gap-3">

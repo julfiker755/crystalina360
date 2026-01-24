@@ -7,9 +7,7 @@ import Link from "next/link";
 
 export default function Footer() {
   // const [token, setToken] = useState<boolean | null>(null);
-  const user = useAppSelector(state => state.auth.user)
-
-
+  const user = useAppSelector((state) => state.auth.user);
 
   const socialMedia = [
     { name: "facebook", icon: "facebook" },
@@ -42,7 +40,7 @@ export default function Footer() {
             <h3 className="text-xl font-semibold mb-3 text-white">
               Quick links
             </h3>
-            { }
+            {}
             {user?.email ? (
               <ul className="space-y-1">
                 <li>

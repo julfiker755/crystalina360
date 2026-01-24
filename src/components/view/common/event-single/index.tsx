@@ -38,7 +38,7 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
     event_date,
     event_time,
     sold_tickets,
-    link
+    link,
   } = event || {};
 
   const NotOnDemand = (item: any) => {
@@ -170,7 +170,11 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
               />
             </div>
             {delivery_type === delivary_t.online ? (
-              <CopyBox value={link} valueStyle="text-primary text-base!" linkStyle="text-primary" />
+              <CopyBox
+                value={link}
+                valueStyle="text-primary text-base!"
+                linkStyle="text-primary"
+              />
             ) : (
               <ShowBox
                 icon="location"
@@ -178,7 +182,6 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
                 text={`${city},${province},${region},${country}` || "N/A"}
               />
             )}
-
 
             {elementShow}
             {NotOnDemand(

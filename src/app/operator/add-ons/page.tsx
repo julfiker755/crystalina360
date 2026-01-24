@@ -9,17 +9,15 @@ import { Pagination } from "@/components/reuseable/pagination";
 import { Repeat } from "@/components/reuseable/repeat";
 import { useAddsonCartQuery } from "@/redux/api/operator/opratorApi";
 
-
 export default function AddOnsAll() {
   const [isAlert, setIsAlert] = useState(true);
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
   const { data: addon, isLoading } = useGetAddonQuery({
-    page: page
+    page: page,
   });
-  const { data: myAddOn, isLoading: addOnLoading } = useAddsonCartQuery({})
+  const { data: myAddOn, isLoading: addOnLoading } = useAddsonCartQuery({});
 
-  console.log(myAddOn?.data)
-
+  console.log(myAddOn?.data);
 
   return (
     <div className="py-10 container">
@@ -68,8 +66,6 @@ export default function AddOnsAll() {
         </div>
       )}
 
-
-
       <div>
         <h5 className="text-lg font-medium mb-5">More add-ons</h5>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 2xl:gap-20">
@@ -82,7 +78,6 @@ export default function AddOnsAll() {
               <AddOnCard item={item} key={index} />
             ))
           )}
-
         </div>
       </div>
       <div className="flex justify-center my-10">

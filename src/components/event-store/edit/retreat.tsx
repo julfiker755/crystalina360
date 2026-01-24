@@ -27,10 +27,13 @@ import { AccessibilityBox } from "../element/accessibility";
 import TicketQuantity from "../element/ticket-quantity";
 import { useUpdateEventsMutation } from "@/redux/api/operator/opratorApi";
 import { useRouter } from "next/navigation";
-import { disciplineOptions, durationOptions, purposeItem } from "@/components/dummy-data";
+import {
+  disciplineOptions,
+  durationOptions,
+  purposeItem,
+} from "@/components/dummy-data";
 import { ErrorInput } from "@/components/reuseable/error";
 import sonner from "@/components/reuseable/sonner";
-
 
 const initialState = {
   holistic: false,
@@ -38,7 +41,13 @@ const initialState = {
   isDate: false,
 };
 
-export default function RetreatEdit({ msg, events_all }: { msg: string; events_all: any }) {
+export default function RetreatEdit({
+  msg,
+  events_all,
+}: {
+  msg: string;
+  events_all: any;
+}) {
   const [searchText, setSearchText] = useState("");
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
   const [state, setState] = useModalState(initialState);
@@ -50,15 +59,13 @@ export default function RetreatEdit({ msg, events_all }: { msg: string; events_a
   const [progress, setProgress] = useState(0);
   const router = useRouter();
 
-
-
   const from = useForm({
     resolver: zodResolver(defaultSchema),
     defaultValues: defaultValues,
     mode: "onChange",
   });
 
-  const id = events_all?.data?.event?.id
+  const id = events_all?.data?.event?.id;
   //  ================= default value set =============
   useEffect(() => {
     if (!events_all?.data?.event) return;
@@ -82,13 +89,12 @@ export default function RetreatEdit({ msg, events_all }: { msg: string; events_a
       accessibility: event.accessibility || [],
       ticket_quantity: "200",
       min_person: "1",
-      max_person: "200"
-    })
+      max_person: "200",
+    });
     setSelAccbility(event.accessibility || []);
     setSelectedTimes(event.event_time || []);
     setIsDelivery(event.delivery_type);
   }, [events_all]);
-
 
   // accept: "video/*",
   //   multiple: false
@@ -103,11 +109,11 @@ export default function RetreatEdit({ msg, events_all }: { msg: string; events_a
     from.setValue("accessibility", selAccbility || []);
   }, [files, selAccbility]);
 
-  const [updateEvents, { isLoading }] = useUpdateEventsMutation()
-
+  const [updateEvents, { isLoading }] = useUpdateEventsMutation();
 
   const handleSubmit = async (values: FieldValues) => {
-    const { ticket_quantity, max_person, min_person, img, ...rest } = values || {};
+    const { ticket_quantity, max_person, min_person, img, ...rest } =
+      values || {};
     const data = helpers.fromData({
       event_type: "retreat",
       ticket_quantity: "200",
@@ -116,7 +122,6 @@ export default function RetreatEdit({ msg, events_all }: { msg: string; events_a
       ...(img ? { img: img } : {}),
       ...rest,
     });
-
 
     try {
       const res = await updateEvents({
@@ -133,16 +138,19 @@ export default function RetreatEdit({ msg, events_all }: { msg: string; events_a
       }).unwrap();
       if (res.status) {
         router.back();
-        sonner.success("Event Updated Successfully", "The event has been successfully updated.", "bottom-right");
-        setProgress(0)
+        sonner.success(
+          "Event Updated Successfully",
+          "The event has been successfully updated.",
+          "bottom-right",
+        );
+        setProgress(0);
       }
     } catch (err: any) {
-      console.log(err)
+      console.log(err);
       sonner.error("Error", err?.data?.error, "bottom-right");
-      setProgress(0)
+      setProgress(0);
     }
   };
-
 
   const toggleHolistic = (value: any) => {
     const current = from.getValues("holistic_discipline") || [];
@@ -165,7 +173,8 @@ export default function RetreatEdit({ msg, events_all }: { msg: string; events_a
               <ImageBannerBox
                 img={events_all?.data?.event?.img}
                 files={files}
-                getInputProps={getInputProps} />
+                getInputProps={getInputProps}
+              />
 
               {!get("img") && (
                 <ErrorInput
@@ -187,9 +196,10 @@ export default function RetreatEdit({ msg, events_all }: { msg: string; events_a
                         from.setValue("delivery_type", item.value);
                       }}
                       type="button"
-                      className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
+                      className={`font-normal transition-colors border bg-transparent text-figma-black ${
+                        item.value === get("delivery_type") &&
                         "bg-primary text-white"
-                        }`}
+                      }`}
                     >
                       <FavIcon
                         color={
@@ -217,9 +227,10 @@ export default function RetreatEdit({ msg, events_all }: { msg: string; events_a
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
+                      item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                      }`}
+                    }`}
                     type="button"
                   >
                     {item.label}
@@ -304,7 +315,10 @@ export default function RetreatEdit({ msg, events_all }: { msg: string; events_a
               setSelAccbility={setSelAccbility}
             />
             <FromTagInput name="tags" label="Tags" className="py-2" />
-            <Button disabled={isLoading} className="w-full relative disabled:opacity-100">
+            <Button
+              disabled={isLoading}
+              className="w-full relative disabled:opacity-100"
+            >
               <div
                 className={`absolute top-0 z-0 left-0  h-full rounded-md bg-[#3990dceb]`}
                 style={{
@@ -317,12 +331,11 @@ export default function RetreatEdit({ msg, events_all }: { msg: string; events_a
             </Button>
           </div>
         </div>
-      </Form >
+      </Form>
       {/*  =============== Select holistic descipline Modal =================== */}
-      < Modal
+      <Modal
         open={state.holistic}
-        setIsOpen={(v) => setState("holistic", v)
-        }
+        setIsOpen={(v) => setState("holistic", v)}
         title="Select Holistic Descipline"
         className="sm:max-w-4xl"
         titleStyle="text-center"
@@ -350,7 +363,7 @@ export default function RetreatEdit({ msg, events_all }: { msg: string; events_a
               </label>
             ))}
         </div>
-      </Modal >
+      </Modal>
       {/*  =============== Select time slot Modal =================== */}
       <Modal
         open={state.istime}
@@ -365,9 +378,9 @@ export default function RetreatEdit({ msg, events_all }: { msg: string; events_a
           setState={setState}
           from={from}
         />
-      </Modal >
+      </Modal>
       {/*  === date === */}
-      < Modal
+      <Modal
         open={state.isDate}
         setIsOpen={(v) => setState("isDate", v)}
         title="Create Date Slot"
@@ -380,8 +393,8 @@ export default function RetreatEdit({ msg, events_all }: { msg: string; events_a
           from={from}
           setState={setState}
         />
-      </Modal >
-    </div >
+      </Modal>
+    </div>
   );
 }
 //  -------------------------------------------------------------- X ----------------------------------------------------------
@@ -419,7 +432,6 @@ const ImageBannerBox = ({ files, getInputProps, img }: any) => {
 };
 //  ================= video box ================
 
-
 //  ----------------------single date --------------------
 const SingleDateBox = ({ from }: any) => {
   const val = from.watch("event_date");
@@ -438,7 +450,6 @@ const SingleDateBox = ({ from }: any) => {
     </div>
   );
 };
-
 
 //  ------------------- multiple time -------------------------
 const MultipleTime = ({ from, setState }: any) => {

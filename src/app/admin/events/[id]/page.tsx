@@ -31,7 +31,6 @@ export default function EvnetSingleBox() {
   const { data: events_all, isLoading } = useSingleEventsQuery(id);
   const { event_type, id: ids } = events_all?.data?.event || {};
 
-
   return (
     <div>
       <NavTitle
@@ -45,15 +44,17 @@ export default function EvnetSingleBox() {
             <h2>Creating One to one event</h2>
           </div>
           <div className="z-10 flex items-center space-x-2">
-            <Link href={
-              event_type === event_t.onetoone
-                ? `/admin/events/edit/one-to-one/${ids}`
-                : event_type === event_t.group
-                  ? `/admin/events/edit/group/${ids}`
-                  : event_type === event_t.retreat
-                    ? `/admin/events/edit/retreat/${ids}`
-                    : ''
-            }>
+            <Link
+              href={
+                event_type === event_t.onetoone
+                  ? `/admin/events/edit/one-to-one/${ids}`
+                  : event_type === event_t.group
+                    ? `/admin/events/edit/group/${ids}`
+                    : event_type === event_t.retreat
+                      ? `/admin/events/edit/retreat/${ids}`
+                      : ""
+              }
+            >
               <button aria-label="Edit" className="icon bg-primary">
                 <FavIcon color="#fff" name="edit2" />
               </button>

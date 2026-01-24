@@ -33,7 +33,7 @@ export enum tagTypes {
   a_benefits_all = "a_benefits_all",
   a_add_on_get = "a_add_on_get",
   o_my_add_on = "o_my_add_on",
-  message = "message"
+  message = "message",
 }
 
 export const tagTypesList = [
@@ -71,5 +71,5 @@ export const tagTypesList = [
   tagTypes.a_benefits_all,
   tagTypes.a_add_on_get,
   tagTypes.o_my_add_on,
-  tagTypes.message
+  tagTypes.message,
 ];

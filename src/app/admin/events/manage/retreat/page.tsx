@@ -15,7 +15,6 @@ import { Suspense, useState } from "react";
 import { Pagination } from "@/components/reuseable/pagination";
 import { event_t } from "@/lib";
 
-
 function RetreatBox() {
   const { confirm } = useConfirmation();
   const qry = useSearchParams();
@@ -61,15 +60,17 @@ function RetreatBox() {
                     </button>
                   </Link>
                   {params === "my-events" && (
-                    <Link href={
-                      item?.event_type === event_t.onetoone
-                        ? `/admin/events/edit/one-to-one/${item.id}`
-                        : item?.event_type === event_t.group
-                          ? `/admin/events/edit/group/${item.id}`
-                          : item?.event_type === event_t.retreat
-                            ? `/admin/events/edit/retreat/${item.id}`
-                            : ''
-                    }>
+                    <Link
+                      href={
+                        item?.event_type === event_t.onetoone
+                          ? `/admin/events/edit/one-to-one/${item.id}`
+                          : item?.event_type === event_t.group
+                            ? `/admin/events/edit/group/${item.id}`
+                            : item?.event_type === event_t.retreat
+                              ? `/admin/events/edit/retreat/${item.id}`
+                              : ""
+                      }
+                    >
                       <button aria-label="Edit">
                         <FavIcon color="#fff" name="edit2" />
                       </button>

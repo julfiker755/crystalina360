@@ -74,7 +74,11 @@ export const opratorsApi = baseApi.injectEndpoints({
         method: "POST",
         data,
       }),
-      invalidatesTags: [tagTypes.profile, tagTypes.a_add_on_get, tagTypes.o_my_add_on],
+      invalidatesTags: [
+        tagTypes.profile,
+        tagTypes.a_add_on_get,
+        tagTypes.o_my_add_on,
+      ],
     }),
     addsonCart: build.query({
       query: (arg) => ({
@@ -102,5 +106,5 @@ export const {
   useBuyPlanMutation,
   useAddsonCartQuery,
   useUpdateEventsMutation,
-  usePaymentInitOpMutation
+  usePaymentInitOpMutation,
 } = opratorsApi;

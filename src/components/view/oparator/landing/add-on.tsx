@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import AddOnCard from "../reuse/addon-card";
 import { Repeat } from "@/components/reuseable/repeat";
 import { useGetAddonQuery } from "@/redux/api/admin/addonApi";
@@ -15,9 +15,11 @@ export default function AddOn() {
             <Skeleton className="w-full h-[400px]" />
           </Repeat>
         ) : (
-          addon?.data?.slice(0, 3).map((item: any, index: any) => (
-            <AddOnCard item={item} key={index} />
-          ))
+          addon?.data
+            ?.slice(0, 3)
+            .map((item: any, index: any) => (
+              <AddOnCard item={item} key={index} />
+            ))
         )}
       </div>
     </div>

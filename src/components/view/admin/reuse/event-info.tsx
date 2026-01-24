@@ -121,8 +121,9 @@ export default function EventInfo({
                 <ShowBox
                   icon="tiket"
                   name="Ticket sold"
-                  text={`${details?.sold_tickets || 0} /${details?.ticket_quantity
-                    }`}
+                  text={`${details?.sold_tickets || 0} /${
+                    details?.ticket_quantity
+                  }`}
                 />
                 <ShowBox
                   icon="price22"

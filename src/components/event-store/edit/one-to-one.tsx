@@ -65,8 +65,7 @@ export default function OnetoOneEdit({
     mode: "onChange",
   });
 
-
-  const id = events_all?.data?.event?.id
+  const id = events_all?.data?.event?.id;
   //  ================= default value set =============
   useEffect(() => {
     if (!events_all?.data?.event) return;
@@ -77,12 +76,12 @@ export default function OnetoOneEdit({
       event_title: event.event_title || "",
       event_description: event.event_description || "",
       holistic_discipline: event.holistic_discipline || [],
-    }
+    };
     const sametosame = {
       ticket_quantity: "2",
       min_person: "1",
       max_person: "2",
-    }
+    };
     if (event?.delivery_type == delivary_t.offline) {
       //   === offline ===
       const offlineObj = {
@@ -97,8 +96,8 @@ export default function OnetoOneEdit({
         price: event?.price?.toString() || "",
         accessibility: event.accessibility || [],
         ...cloneobj,
-        ...sametosame
-      }
+        ...sametosame,
+      };
       from.reset(offlineObj);
       setSelAccbility(event.accessibility || []);
       setSelectedTimes(event.event_time || []);
@@ -110,8 +109,8 @@ export default function OnetoOneEdit({
         tags: event.tags || [],
         price: event?.price?.toString() || "",
         ...cloneobj,
-        ...sametosame
-      }
+        ...sametosame,
+      };
       from.reset(onlineObj);
       setSelectedTimes(event.event_time || []);
     } else if (event?.delivery_type === delivary_t.ondemand) {
@@ -125,15 +124,13 @@ export default function OnetoOneEdit({
         region: event.region || "",
         country: event.country || "",
         tags: event.tags || [],
-        ...cloneobj
-      }
+        ...cloneobj,
+      };
       from.reset(ondemandObj);
     }
 
-
     // UI related states
     setIsDelivery(event.delivery_type);
-
   }, [events_all]);
 
   const get = (v: any) => from.watch(v);
@@ -147,12 +144,11 @@ export default function OnetoOneEdit({
     from.setValue("accessibility", selAccbility || []);
   }, [files, selAccbility]);
 
-
-
-  const [updateEvents, { isLoading }] = useUpdateEventsMutation()
+  const [updateEvents, { isLoading }] = useUpdateEventsMutation();
 
   const handleSubmit = async (values: FieldValues) => {
-    const { ticket_quantity, max_person, min_person, img, ...rest } = values || {};
+    const { ticket_quantity, max_person, min_person, img, ...rest } =
+      values || {};
     const data = helpers.fromData({
       event_type: "onetoone",
       ticket_quantity: "2",
@@ -161,7 +157,6 @@ export default function OnetoOneEdit({
       ...(img ? { img: img } : {}),
       ...rest,
     });
-
 
     try {
       const res = await updateEvents({
@@ -178,13 +173,17 @@ export default function OnetoOneEdit({
       }).unwrap();
       if (res.status) {
         router.back();
-        sonner.success("Event Updated Successfully", "The event has been successfully updated.", "bottom-right");
-        setProgress(0)
+        sonner.success(
+          "Event Updated Successfully",
+          "The event has been successfully updated.",
+          "bottom-right",
+        );
+        setProgress(0);
       }
     } catch (err: any) {
-      console.log(err)
+      console.log(err);
       sonner.error("Error", err?.data?.error, "bottom-right");
-      setProgress(0)
+      setProgress(0);
     }
   };
 
@@ -199,7 +198,6 @@ export default function OnetoOneEdit({
       from.setValue("holistic_discipline", [...current, value] as any);
     }
   };
-
 
   return (
     <div>
@@ -274,9 +272,10 @@ export default function OnetoOneEdit({
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
+                      item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                      }`}
+                    }`}
                     type="button"
                   >
                     {item.label}
@@ -391,7 +390,10 @@ export default function OnetoOneEdit({
             )}
 
             {/* Submit Button */}
-            <Button disabled={isLoading} className="w-full relative disabled:opacity-100">
+            <Button
+              disabled={isLoading}
+              className="w-full relative disabled:opacity-100"
+            >
               <div
                 className={`absolute top-0 z-0 left-0  h-full rounded-md bg-[#3990dceb]`}
                 style={{

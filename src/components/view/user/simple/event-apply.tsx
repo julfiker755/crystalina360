@@ -19,9 +19,8 @@ export default function EventApply({
   event_time,
   available_tickets,
   price,
-  organizer
+  organizer,
 }: any) {
-
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<any>([]);
@@ -30,7 +29,7 @@ export default function EventApply({
   const [couponCheck] = useCouponCheckMutation();
   const [purchaseStore, { isLoading: purchaseLoading }] =
     usePurchaseStoreMutation();
-  const [storeRoom, { isLoading: roomIsloading }] = useStoreRoomMutation()
+  const [storeRoom, { isLoading: roomIsloading }] = useStoreRoomMutation();
   const from = useFormFields({
     coupon: "",
   });
@@ -40,7 +39,6 @@ export default function EventApply({
     coupon_code: "",
     quantity: 1,
   });
-
 
   //   ============== discount calculation =============
   const totalTaka = isBooking.quantity * price;
@@ -143,16 +141,15 @@ export default function EventApply({
   // store room
 
   const handleStoreRoom = async (id: string) => {
-    console.log(id)
+    console.log(id);
     const data = helpers.fromData({
-      user2: id
-    })
-    const res = await storeRoom(data).unwrap()
+      user2: id,
+    });
+    const res = await storeRoom(data).unwrap();
     if (res.status) {
-      router.push("/conversation")
+      router.push("/conversation");
     }
-
-  }
+  };
 
   return (
     <div className="space-y-5 pt-10">
@@ -170,7 +167,9 @@ export default function EventApply({
             className="flex items-center justify-between"
           >
             <span className="text-sm text-foreground">
-              {isBooking?.date?.includes(":") ? helpers.planTime(isBooking.date) : isBooking?.date || "Select here"}
+              {isBooking?.date?.includes(":")
+                ? helpers.planTime(isBooking.date)
+                : isBooking?.date || "Select here"}
             </span>
             <ChevronDown
               className={clsx(
@@ -200,7 +199,9 @@ export default function EventApply({
                     }}
                     className="p-2 rounded-md hover:bg-primary/10 cursor-pointer text-sm"
                   >
-                    <span className="text-muted-foreground">{isDate ? item : helpers.planTime(item)}</span>
+                    <span className="text-muted-foreground">
+                      {isDate ? item : helpers.planTime(item)}
+                    </span>
                   </li>
                 ))}
             </ul>
@@ -267,7 +268,12 @@ export default function EventApply({
       </form>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        <Button type="button" onClick={() => handleStoreRoom(organizer?.id)} disabled={roomIsloading} className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]">
+        <Button
+          type="button"
+          onClick={() => handleStoreRoom(organizer?.id)}
+          disabled={roomIsloading}
+          className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]"
+        >
           Send Message
         </Button>
 

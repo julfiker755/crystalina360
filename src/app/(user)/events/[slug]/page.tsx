@@ -34,7 +34,7 @@ export default function EventDetails() {
     organizer,
     available_tickets,
     ticket_status,
-    link
+    link,
   } = events_all?.data?.event || {};
 
   const NotOnDemand = (item: any) => {
@@ -57,8 +57,6 @@ export default function EventDetails() {
       </div>
     );
   }
-
-
 
   return (
     <div className="container">
@@ -171,7 +169,6 @@ export default function EventDetails() {
                 event_date={event_date}
                 available_tickets={available_tickets}
                 price={price}
-
               />
             ),
           )}

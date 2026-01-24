@@ -14,7 +14,7 @@ export default function TimeSelect({
   const [error, setError] = useState("");
 
   const formatTime = (time24: string) => {
-    return helpers.planTime(time24)
+    return helpers.planTime(time24);
   };
 
   // new Date().toISOString
@@ -41,14 +41,10 @@ export default function TimeSelect({
 
   const handleSave = () => {
     from.setValue("event_time", selectedTimes);
-    console.log(selectedTimes)
+    console.log(selectedTimes);
     selectedTimes.map(formatTime);
     setState("istime", false);
   };
-
-
-
-
 
   return (
     <div>

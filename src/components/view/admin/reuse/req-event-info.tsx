@@ -5,10 +5,7 @@ import { cn, delivary_t, event_t, helpers } from "@/lib";
 import { Calendar } from "lucide-react";
 import React from "react";
 
-
-export default function ReqEventInfo({
-  details,
-}: any) {
+export default function ReqEventInfo({ details }: any) {
   // --- not show ondemand ---
   const NotOnDemand = (item: any) => {
     return details?.delivery_type === delivary_t.ondemand ? null : item;

@@ -49,7 +49,7 @@ export class helpers {
     return dayjs(date).fromNow();
   }
   static planTime(time: string | Date): string {
-    return dayjs(`1970-01-01 ${time}`, "YYYY-MM-DD HH:mm").format("hh:mm A")
+    return dayjs(`1970-01-01 ${time}`, "YYYY-MM-DD HH:mm").format("hh:mm A");
   }
 
   //  ===== localStorage  =====

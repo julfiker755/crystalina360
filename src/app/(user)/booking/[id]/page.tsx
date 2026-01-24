@@ -103,7 +103,7 @@ export default function BookingDetails() {
       link.download = `${invoice_id}.pdf`;
       link.click();
       setdownlaodLoading(false);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const NotOnDemand = (item: any) => {

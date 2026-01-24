@@ -65,7 +65,7 @@ export default function GroupEdit({
     mode: "onChange",
   });
 
-  const id = events_all?.data?.event?.id
+  const id = events_all?.data?.event?.id;
 
   //  ================= default value set =============
   useEffect(() => {
@@ -77,13 +77,13 @@ export default function GroupEdit({
       event_title: event.event_title || "",
       event_description: event.event_description || "",
       holistic_discipline: event.holistic_discipline || [],
-    }
+    };
     const sametosame = {
       event_type: "group",
       ticket_quantity: "200",
       min_person: "1",
-      max_person: "200"
-    }
+      max_person: "200",
+    };
     if (event?.delivery_type == delivary_t.offline) {
       //   === offline ===
       const offlineObj = {
@@ -98,8 +98,8 @@ export default function GroupEdit({
         price: event?.price?.toString() || "",
         accessibility: event.accessibility || [],
         ...cloneobj,
-        ...sametosame
-      }
+        ...sametosame,
+      };
       from.reset(offlineObj);
       setSelAccbility(event.accessibility || []);
       setSelectedTimes(event.event_time || []);
@@ -111,8 +111,8 @@ export default function GroupEdit({
         tags: event.tags || [],
         price: event?.price?.toString() || "",
         ...cloneobj,
-        ...sametosame
-      }
+        ...sametosame,
+      };
       from.reset(onlineObj);
       setSelectedTimes(event.event_time || []);
     } else if (event?.delivery_type === delivary_t.ondemand) {
@@ -126,15 +126,13 @@ export default function GroupEdit({
         region: event.region || "",
         country: event.country || "",
         tags: event.tags || [],
-        ...cloneobj
-      }
+        ...cloneobj,
+      };
       from.reset(ondemandObj);
     }
 
-
     // UI related states
     setIsDelivery(event.delivery_type);
-
   }, [events_all]);
 
   const get = (v: any) => from.watch(v);
@@ -158,10 +156,11 @@ export default function GroupEdit({
   //   clearFiles();
   // };
 
-  const [updateEvents, { isLoading }] = useUpdateEventsMutation()
+  const [updateEvents, { isLoading }] = useUpdateEventsMutation();
 
   const handleSubmit = async (values: FieldValues) => {
-    const { ticket_quantity, max_person, min_person, img, ...rest } = values || {};
+    const { ticket_quantity, max_person, min_person, img, ...rest } =
+      values || {};
     const data = helpers.fromData({
       event_type: "group",
       ticket_quantity: "200",
@@ -186,12 +185,16 @@ export default function GroupEdit({
       }).unwrap();
       if (res.status) {
         router.back();
-        sonner.success("Event Updated Successfully", "The event has been successfully updated.", "bottom-right");
-        setProgress(0)
+        sonner.success(
+          "Event Updated Successfully",
+          "The event has been successfully updated.",
+          "bottom-right",
+        );
+        setProgress(0);
       }
     } catch (err: any) {
       sonner.error("Error", err?.data?.error, "bottom-right");
-      setProgress(0)
+      setProgress(0);
     }
   };
 
@@ -206,7 +209,6 @@ export default function GroupEdit({
       from.setValue("holistic_discipline", [...current, value] as any);
     }
   };
-
 
   return (
     <div>
@@ -281,9 +283,10 @@ export default function GroupEdit({
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
+                      item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                      }`}
+                    }`}
                     type="button"
                   >
                     {item.label}
@@ -398,7 +401,10 @@ export default function GroupEdit({
             )}
 
             {/* Submit Button */}
-            <Button disabled={isLoading} className="w-full relative disabled:opacity-100">
+            <Button
+              disabled={isLoading}
+              className="w-full relative disabled:opacity-100"
+            >
               <div
                 className={`absolute top-0 z-0 left-0  h-full rounded-md bg-[#3990dceb]`}
                 style={{

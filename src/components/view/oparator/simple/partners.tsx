@@ -1,7 +1,7 @@
 "use client";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import { Marquee } from "@/components/ui/marquee";
-import oli from "@/assets/oli.png"
+import oli from "@/assets/oli.png";
 
 // const partnersItem = [
 //   {
