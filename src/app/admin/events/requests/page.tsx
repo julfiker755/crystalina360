@@ -215,7 +215,7 @@ export default function EventRequests() {
         </CustomTable>
       </div>
       {/*  ====================== preview ======================== */}
-      <Modal
+      {/* <Modal
         open={global.isPreview}
         setIsOpen={(v) => updateGlobal("isPreview", v)}
         title="Event Details"
@@ -223,7 +223,7 @@ export default function EventRequests() {
         className="sm:max-w-2xl"
       >
         <EventInfo details={details} />
-      </Modal>
+      </Modal> */}
       {/*  =========== reject message ========== */}
       <Modal2
         open={global.isReject}
