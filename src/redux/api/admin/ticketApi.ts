@@ -3,6 +3,7 @@ import { baseApi } from "../baseApi";
 import { buildResponse } from "@/lib";
 
 export const ticketsApi = baseApi.injectEndpoints({
+  overrideExisting: true,
   endpoints: (build) => ({
     getTickets: build.query({
       query: (arg) => ({

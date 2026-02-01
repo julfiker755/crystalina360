@@ -97,7 +97,7 @@ export default function Tickets() {
                   <span>{item?.events?.organizer?.name}</span>
                 </div>
               </TableCell>
-              <TableCell>{item?.events?.event_title}</TableCell>
+              <TableCell>{item?.events?.event_title.slice(0, 30)}...</TableCell>
               <TableCell>{item.invoice_no}</TableCell>
               <TableCell>{item.quantity}</TableCell>
               <TableCell>{item.amount}</TableCell>

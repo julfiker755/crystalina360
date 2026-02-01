@@ -1,9 +1,9 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { authKey } from "./lib";
+import { authKey, roleKey } from "./lib";
 import { jwtDecode } from "jwt-decode";
 
-const operatorPath = [
+const operatorRoutes = [
   "/operator/dashboard",
   "/operator/events",
   "/operator/pricing",
@@ -13,7 +13,7 @@ const operatorPath = [
   "/operator/profile",
   "/operator/conversation",
 ];
-const userPath = [
+const userRoutes = [
   "/events",
   "/booking",
   "/contact-us",
@@ -23,51 +23,61 @@ const userPath = [
   "/conversation",
   "/favorite-events",
 ];
+const adminRoutes = ["/admin"];
+
+const matchRoute = (routes: string[], pathname: string) =>
+  routes.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
+  );
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const cookiesStore = await cookies();
   const token = cookiesStore.get(authKey)?.value;
-  const decoded: any = token && jwtDecode(token as string);
-  const roleKey = decoded?.role as string;
 
   if (!token) {
-    if (pathname.startsWith("/admin")) {
+    cookiesStore.delete(authKey);
+    if (matchRoute(adminRoutes, pathname)) {
       return NextResponse.redirect(new URL("/", request.url));
-    } else if (operatorPath.includes(pathname)) {
+    }
+    if (matchRoute(operatorRoutes, pathname)) {
       return NextResponse.redirect(new URL("/operator", request.url));
-    } else if (userPath.includes(pathname)) {
+    }
+    return NextResponse.next();
+  }
+  // ================ role base access ================
+  const decoded: any = jwtDecode(token);
+  const role = decoded?.role;
+
+  const isOperator = matchRoute(operatorRoutes, pathname);
+  const isUser = matchRoute(userRoutes, pathname);
+  const isAdmin = matchRoute(adminRoutes, pathname);
+
+  const userPath = pathname === "/";
+  const operatorPath = pathname === "/operator";
+
+  if (role === roleKey.user) {
+    if (isAdmin || isOperator || operatorPath) {
       return NextResponse.redirect(new URL("/", request.url));
+    }
+    return NextResponse.next();
+  } else if (role === roleKey.operator) {
+    if (isAdmin || isUser || userPath) {
+      return NextResponse.redirect(new URL("/operator", request.url));
+    } else if (operatorPath) {
+      return NextResponse.redirect(new URL("/operator/dashboard", request.url));
+    }
+    return NextResponse.next();
+  } else if (role === roleKey.admin) {
+    if (isUser || isOperator || userPath || operatorPath) {
+      return NextResponse.redirect(new URL("/admin", request.url));
     }
     return NextResponse.next();
   }
 
-
-  //  ============ admin =========
-  if (roleKey === "admin") {
-    if (pathname === "/" || pathname === "/operator") {
-      return NextResponse.redirect(new URL("/admin", request.url));
-    }
-    const regex = /^\/admin\/*/;
-    if (regex.test(pathname)) {
-      return NextResponse.next();
-    }
-  } else if (roleKey === "operator") {
-    if (pathname === "/operator" || pathname === "/admin" || pathname === "/") {
-      return NextResponse.redirect(new URL("/operator/dashboard", request.url));
-    }
-    if (operatorPath.includes(pathname)) {
-      return NextResponse.next();
-    }
-  } else if (roleKey === "user") {
-    if (pathname === "/admin" || pathname === "/operator") {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
-    if (userPath.includes(pathname)) {
-      return NextResponse.next();
-    }
-  }
+  return NextResponse.redirect(new URL("/", request.url));
 }
 
 export const config = {
-  matcher: ["/", "/admin/:path*", ...operatorPath, ...userPath],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };

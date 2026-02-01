@@ -10,7 +10,10 @@ const montserrat = Montserrat({
   subsets: ["latin"],
 });
 
+const metadataBase = new URL(envs.app_url as string);
+
 export const metadata: Metadata = {
+  metadataBase,
   title: "Plan Your Next Experience",
   keywords: [
     "Stay connected events",
