@@ -133,7 +133,7 @@ export default function Operator() {
         ) : (
           <TableNoItem
             colSpan={headers?.length}
-            title="No operators` are available at the moment"
+            title="No operators are available at the moment"
             tdStyle="!bg-background"
           />
         )}

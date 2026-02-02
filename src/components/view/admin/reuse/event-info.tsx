@@ -1,18 +1,22 @@
 "use client";
-import VideoPlayer from "@/components/reuseable/player";
 import FavIcon from "@/icon/favIcon";
 import { cn, delivary_t, event_t, helpers } from "@/lib";
 import { Calendar } from "lucide-react";
+import dynamic from "next/dynamic";
 import React from "react";
+
+const VideoPlayer = dynamic(() => import("@/components/reuseable/player"), { ssr: false });
 
 interface eventinfoProps {
   details: any;
   oprator?: boolean;
+  video_key?: string
 }
 
 export default function EventInfo({
   details,
   oprator = false,
+  video_key,
 }: eventinfoProps) {
   // --- not show ondemand ---
   const NotOnDemand = (item: any) => {
@@ -91,7 +95,7 @@ export default function EventInfo({
           <div>
             <VideoPlayer
               className="aspect-video"
-              key={details?.id}
+              key={details?.id + video_key}
               src={details?.img}
             />
           </div>
@@ -121,9 +125,8 @@ export default function EventInfo({
                 <ShowBox
                   icon="tiket"
                   name="Ticket sold"
-                  text={`${details?.sold_tickets || 0} /${
-                    details?.ticket_quantity
-                  }`}
+                  text={`${details?.sold_tickets || 0} /${details?.ticket_quantity
+                    }`}
                 />
                 <ShowBox
                   icon="price22"

@@ -215,15 +215,15 @@ export default function EventRequests() {
         </CustomTable>
       </div>
       {/*  ====================== preview ======================== */}
-      {/* <Modal
+      <Modal
         open={global.isPreview}
         setIsOpen={(v) => updateGlobal("isPreview", v)}
         title="Event Details"
         titleStyle="text-center"
         className="sm:max-w-2xl"
       >
-        <EventInfo details={details} />
-      </Modal> */}
+        <EventInfo video_key="request-player" details={details} />
+      </Modal>
       {/*  =========== reject message ========== */}
       <Modal2
         open={global.isReject}

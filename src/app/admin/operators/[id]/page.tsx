@@ -252,7 +252,7 @@ export default function OperatorDetils() {
         titleStyle="text-center"
         className="sm:max-w-xl"
       >
-        <EventInfo oprator={true} details={isDetails} />
+        <EventInfo video_key="single-oprator-player" oprator={true} details={isDetails} />
       </Modal>
     </div>
   );

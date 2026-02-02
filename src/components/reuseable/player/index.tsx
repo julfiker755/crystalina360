@@ -1,8 +1,15 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import Plyr from "plyr";
+import Plyr from "plyr"
 import "plyr/dist/plyr.css";
 import { cn } from "@/lib";
+
+declare global {
+  interface Window {
+    Plyr: any;
+  }
+}
+
 
 interface VideoPlayerProps {
   src: string;
