@@ -76,6 +76,9 @@ export class helpers {
   static upperCase(text: string): string {
     return text ? text.toUpperCase() : "";
   }
+  static camelCaseText(str: string): string {
+    return str ? str.replace(/_/g, " ") : "";
+  }
   static randomString(): string {
     return crypto.randomUUID();
   }

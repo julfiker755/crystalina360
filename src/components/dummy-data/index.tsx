@@ -1,4 +1,5 @@
 import assets from "@/assets";
+import { newsletSts } from "@/lib/constants";
 
 export const featuresData = [
   {
@@ -459,4 +460,71 @@ export const dateOption = [
   { label: "Tomorrow", value: "tomorrow" },
   { label: "This Month", value: "this_month" },
   { label: "Next Month", value: "next_month" },
+];
+
+export const newsLetterOption = [
+  {
+    label: "User Purchase",
+    value: newsletSts.userPurchase,
+  },
+  {
+    label: "Operator Sales",
+    value: newsletSts.operatorSales,
+  },
+  {
+    label: "User Metrics",
+    value: newsletSts.userMetrics,
+  },
+  {
+    label: "Operator Metrics",
+    value: newsletSts.operatorMetrics,
+  },
+  {
+    label: "User Disciplines",
+    value: newsletSts.userDisciplines,
+  },
+  {
+    label: "Operator Disciplines",
+    value: newsletSts.operatorDisciplines,
+  },
+  {
+    label: "User Event",
+    value: newsletSts.userEvent,
+  },
+  {
+    label: "Operator Event",
+    value: newsletSts.operatorEvent,
+  },
+  {
+    label: "Purpose",
+    value: newsletSts.purpose,
+  },
+  {
+    label: "Tags",
+    value: newsletSts.tags,
+  },
+  {
+    label: "Locations",
+    value: newsletSts.locations,
+  },
+  {
+    label: "Duration",
+    value: newsletSts.duration,
+  },
+  {
+    label: "Price",
+    value: newsletSts.price,
+  },
+  {
+    label: "Capacity",
+    value: newsletSts.capacity,
+  },
+  {
+    label: "Accessibility",
+    value: newsletSts.accessibility,
+  },
+  {
+    label: "Subscribed",
+    value: newsletSts.subscribed,
+  },
 ];

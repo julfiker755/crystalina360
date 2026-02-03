@@ -23,3 +23,22 @@ export enum delivary_t {
   online = "online",
   ondemand = "ondemand",
 }
+
+export enum newsletSts {
+  userPurchase = "userPurchase",
+  operatorSales = "operatorSales",
+  userMetrics = "userMetrics",
+  operatorMetrics = "operatorMetrics",
+  userDisciplines = "userDisciplines",
+  operatorDisciplines = "operatorDisciplines",
+  userEvent = "userEvent",
+  operatorEvent = "operatorEvent",
+  purpose = "purpose",
+  tags = "tags",
+  locations = "locations",
+  duration = "duration",
+  price = "price",
+  capacity = "capacity",
+  accessibility = "accessibility",
+  subscribed = "subscribed",
+}

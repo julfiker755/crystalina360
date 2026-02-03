@@ -5,12 +5,14 @@ import { Calendar } from "lucide-react";
 import dynamic from "next/dynamic";
 import React from "react";
 
-const VideoPlayer = dynamic(() => import("@/components/reuseable/player"), { ssr: false });
+const VideoPlayer = dynamic(() => import("@/components/reuseable/player"), {
+  ssr: false,
+});
 
 interface eventinfoProps {
   details: any;
   oprator?: boolean;
-  video_key?: string
+  video_key?: string;
 }
 
 export default function EventInfo({
@@ -125,8 +127,9 @@ export default function EventInfo({
                 <ShowBox
                   icon="tiket"
                   name="Ticket sold"
-                  text={`${details?.sold_tickets || 0} /${details?.ticket_quantity
-                    }`}
+                  text={`${details?.sold_tickets || 0} /${
+                    details?.ticket_quantity
+                  }`}
                 />
                 <ShowBox
                   icon="price22"

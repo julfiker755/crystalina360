@@ -7,7 +7,14 @@ import { Pagination } from "@/components/reuseable/pagination";
 import SearchBox from "@/components/reuseable/search-box";
 import { TableNoItem } from "@/components/reuseable/table-no-item";
 import { TableSkeleton } from "@/components/reuseable/table-skeleton";
-import { Button, TableCell, TableRow, Textarea } from "@/components/ui";
+import {
+  Badge,
+  Button,
+  Checkbox,
+  TableCell,
+  TableRow,
+  Textarea,
+} from "@/components/ui";
 import { InputShow } from "@/components/reuseable/input-show";
 import { useGlobalState } from "@/hooks";
 import {
@@ -19,19 +26,22 @@ import { useDebounce } from "use-debounce";
 import { FormEvent, useState } from "react";
 import sonner from "@/components/reuseable/sonner";
 import Modal from "@/components/reuseable/modal";
-import { helpers } from "@/lib";
+import { helpers, newsletSts } from "@/lib";
+import { Sheet } from "lucide-react";
+import Avatars from "@/components/reuseable/avater";
+import { newsLetterOption } from "@/components/dummy-data";
 
 const intState: any = {
   page: 1,
   isPreview: false,
   search: "",
   details: {},
+  status: "userPurchase",
 };
 
 export default function Newsletter() {
   const { confirm } = useConfirmation();
   const [global, updateGlobal] = useGlobalState(intState);
-  const headers = ["Email", "Date", "Time", "Action"];
   const [value] = useDebounce(global.search, 1000);
   const [deleteNewslet] = useDeleteNewsletMutation();
   const [replayNewslet, { isLoading: replayLoading }] =
@@ -41,6 +51,7 @@ export default function Newsletter() {
   const { data: newsletter, isLoading } = useGetNewsletQuery({
     page: global.page,
     ...(value && { search: value }),
+    status: global?.status,
   });
 
   const handleDelete = async (id: any) => {
@@ -74,15 +85,68 @@ export default function Newsletter() {
     }
   };
 
+  const getTableColumns = () => {
+    switch (global.status) {
+      case newsletSts.userPurchase:
+        return ["Name", "Email", "Tags", "Date", "Time", "Action"];
+      case newsletSts.operatorSales:
+        return ["Name", "Email", "Tags", "Date", "Time", "Action"];
+      case newsletSts.userMetrics:
+        return ["Name", "Email", "Purchase Count", "Purchase Amount", "Action"];
+      case newsletSts.operatorMetrics:
+        return ["Name", "Email", "Sales Count", "Sales Amount", "Action"];
+      case newsletSts.userDisciplines:
+        return ["Name", "Email", "Discipline Purchased", "Date", "Time", "Action"];
+      case newsletSts.operatorDisciplines:
+        return ["Name", "Email", "Discipline Sold", "Action"];
+      case newsletSts.userEvent:
+        return ["Name", "Email", "Event Purchase", "Action"];
+      case newsletSts.operatorEvent:
+        return ["Name", "Email", "Event Sold", "Action"];
+      case newsletSts.purpose:
+        return ["Name", "Email", "Purpose", "Action"];
+      case newsletSts.duration:
+        return ["Name", "Email", "Event Duration", "Action"];
+      case newsletSts.price:
+        return ["Name", "Email", "Price Bucket", "Action"];
+      case newsletSts.capacity:
+        return ["Name", "Email", "Average Capacity", "Event Capacity", "Action"];
+      case newsletSts.subscribed:
+        return ["Name", "Email", "Subscribed", "Action"];
+      default:
+        return [];
+    }
+  };
+
   return (
     <div>
       <NavTitle
         title="Newsletter"
         subTitle="Manage Newsletter subscriptions of your systemn from this section"
       />
-      <SearchBox onChange={(v: any) => updateGlobal("search", v)} />
+      <div className="flex items-center justify-between">
+        <SearchBox onChange={(v: any) => updateGlobal("search", v)} />
+        <Button>
+          {" "}
+          <Sheet />
+          CSV
+        </Button>
+      </div>
+      <div className="border p-4 flex gap-4 flex-wrap rounded-md mt-7">
+        {newsLetterOption?.map((item, idx) => (
+          <ul key={idx} className="flex items-center space-x-2">
+            <li>
+              <Checkbox
+                onCheckedChange={() => updateGlobal("status", item.value)}
+                checked={global.status == item.value}
+              />
+            </li>
+            <li>{item.label}</li>
+          </ul>
+        ))}
+      </div>
       <CustomTable
-        headers={headers}
+        headers={getTableColumns()}
         pagination={
           newsletter?.meta?.total > 10 ? (
             <ul className="flex items-center flex-wrap justify-between py-3">
@@ -104,13 +168,191 @@ export default function Newsletter() {
         }
       >
         {isLoading ? (
-          <TableSkeleton colSpan={headers?.length} tdStyle="!pl-2" />
+          <TableSkeleton colSpan={getTableColumns()?.length} tdStyle="!pl-2" />
         ) : newsletter?.data?.length > 0 ? (
           newsletter?.data?.map((item: any, index: any) => (
             <TableRow key={index} className="border">
+              <TableCell className="relative">
+                <div className="flex items-center gap-3">
+                  <Avatars
+                    src={item.img || "/avater.png"}
+                    fallback={item.name}
+                    alt="profile"
+                    fallbackStyle="aStyle"
+                  />
+                  <span>{item.name}</span>
+                </div>
+              </TableCell>
               <TableCell>{item.email}</TableCell>
-              <TableCell>{helpers.formatDate(item.created_at)}</TableCell>
-              <TableCell>{helpers.formatTime(item.created_at)}</TableCell>
+              {/* === userPurchase === */}
+              {global.status === newsletSts.userPurchase && (
+                <>
+                  <TableCell>
+                    <Badge>{helpers.camelCaseText(item.tags)}</Badge>
+                  </TableCell>
+                  <TableCell>
+                    {helpers.formatDate(item.last_purchase_date)}
+                  </TableCell>
+                  <TableCell>
+                    {helpers.formatTime(item.last_purchase_date)}
+                  </TableCell>
+                </>
+              )}
+              {/* === operatorSales === */}
+              {global.status === newsletSts.operatorSales && (
+                <>
+                  <TableCell>
+                    <Badge>{helpers.camelCaseText(item.tags)}</Badge>
+                  </TableCell>
+                  <TableCell>
+                    {helpers.formatDate(item.last_sale_date)}
+                  </TableCell>
+                  <TableCell>
+                    {helpers.formatTime(item.last_sale_date)}
+                  </TableCell>
+                </>
+              )}
+              {/* === userMetrics === */}
+              {global.status === newsletSts.userMetrics && (
+                <>
+                  <TableCell>
+                    <span className="ml-6">{item?.purchase_counts}</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="ml-6">{item?.purchase_amounts}</span>
+                  </TableCell>
+                </>
+              )}
+              {/* === operatorMetrics === */}
+              {global.status === newsletSts.operatorMetrics && (
+                <>
+                  <TableCell>
+                    <span className="ml-6">{item?.sales_count}</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="ml-6">{item?.sales_amount}</span>
+                  </TableCell>
+                </>
+              )}
+              {/* === user Disciplines === */}
+              {global.status === newsletSts.userDisciplines && (
+                <>
+                  <TableCell>
+                    <div className="flex flex-wrap  gap-1 w-[200px]">
+                      {item?.discipline_purchased?.length > 0 ? (
+                        item?.discipline_purchased?.map((item: any, idx: any) => (
+                          <Badge key={idx}>{item}</Badge>
+                        ))
+                      ) : (<Badge>N/A</Badge>)}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {helpers.formatDate(item.last_purchase_date)}
+                  </TableCell>
+                  <TableCell>
+                    {helpers.formatTime(item.last_purchase_date)}
+                  </TableCell>
+                </>
+              )}
+              {/* === operatorDisciplines === */}
+              {global.status === newsletSts.operatorDisciplines && (
+                <>
+                  <TableCell>
+                    <div className="flex flex-wrap  gap-1 w-[200px]">
+                      {item?.discipline_sold?.length > 0 ? (
+                        item?.discipline_sold?.map((item: any, idx: any) => (
+                          <Badge key={idx}>{item}</Badge>
+                        ))
+                      ) : (<Badge>N/A</Badge>)}
+                    </div>
+                  </TableCell>
+                </>
+              )}
+              {/* === userEvent === */}
+              {global.status === newsletSts.userEvent && (
+                <>
+                  <TableCell>
+                    <div className="flex flex-wrap  gap-1 w-[200px]">
+                      {item?.event_type_purchase?.length > 0 ? (
+                        item?.event_type_purchase?.map((item: any, idx: any) => (
+                          <Badge key={idx}>{item}</Badge>
+                        ))
+                      ) : (<Badge>N/A</Badge>)}
+                    </div>
+                  </TableCell>
+                </>
+              )}
+              {/* === operatorEvent === */}
+              {global.status === newsletSts.operatorEvent && (
+                <>
+                  <TableCell>
+                    <div className="flex flex-wrap  gap-1 w-[200px]">
+                      {item?.event_type_sold?.length > 0 ? (
+                        item?.event_type_sold?.map((item: any, idx: any) => (
+                          <Badge key={idx}>{item}</Badge>
+                        ))
+                      ) : (<Badge>N/A</Badge>)}
+                    </div>
+                  </TableCell>
+                </>
+              )}
+              {/* === purpose === */}
+              {global.status === newsletSts.purpose && (
+                <>
+                  <TableCell>
+                    <div className="flex flex-wrap  gap-1 w-[200px]">
+                      {item?.purpose?.length > 0 ? (
+                        item?.purpose?.map((item: any, idx: any) => (
+                          <Badge key={idx}>{item}</Badge>
+                        ))
+                      ) : (<Badge>N/A</Badge>)}
+                    </div>
+                  </TableCell>
+                </>
+              )}
+              {/*  === duration === */}
+              {global.status === newsletSts.duration && (
+                <>
+                  <TableCell>
+                    <div className="flex flex-wrap  gap-1 w-[200px]">
+                      {item?.average_event_duration?.length > 0 ? (
+                        item?.average_event_duration?.map((item: any, idx: any) => (
+                          <Badge key={idx}>{helpers.camelCaseText(item)}</Badge>
+                        ))
+                      ) : (<Badge>N/A</Badge>)}
+                    </div>
+                  </TableCell>
+                </>
+              )}
+              {/*  === price === */}
+              {global.status === newsletSts.price && (
+                <>
+                  <TableCell>
+                    <Badge>{item?.price_bucket || "N/A"}</Badge>
+                  </TableCell>
+                </>
+              )}
+
+              {/*  === capacity == */}
+              {global.status === newsletSts.capacity && (
+                <>
+                  <TableCell>
+                    <span className="ml-5">{item?.average_capacity || 0}</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="ml-5">{item?.event_capacity || 0}</span>
+                  </TableCell>
+                </>
+              )}
+              {/*  === subscribed  == */}
+              {global.status === newsletSts.subscribed && (
+                <>
+                  <TableCell>
+                    <Badge>{item?.is_subscribed ? "Yes" : "No"}</Badge>
+                  </TableCell>
+                </>
+              )}
+
               <TableCell>
                 <ul className="flex gap-2">
                   <li>
@@ -133,7 +375,7 @@ export default function Newsletter() {
           ))
         ) : (
           <TableNoItem
-            colSpan={headers?.length}
+            colSpan={getTableColumns()?.length}
             title="No Newsletter are available at the moment"
             tdStyle="!bg-background"
           />

@@ -110,7 +110,11 @@ export default function EventAll() {
         titleStyle="text-center"
         className="sm:max-w-xl"
       >
-        <EventInfo video_key="oprator-details-player" oprator={true} details={isDetails} />
+        <EventInfo
+          video_key="oprator-details-player"
+          oprator={true}
+          details={isDetails}
+        />
       </Modal>
     </div>
   );
