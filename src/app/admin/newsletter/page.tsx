@@ -1,4 +1,5 @@
 "use client";
+import { CSVLink } from "react-csv";
 import useConfirmation from "@/provider/confirmation";
 import { DeleteBtn } from "@/components/reuseable/btn";
 import { CustomTable } from "@/components/reuseable/custom-table";
@@ -118,6 +119,83 @@ export default function Newsletter() {
     }
   };
 
+  const getCSVData = () => {
+    return newsletter?.data?.map((item: any, idx: any) => {
+      const row: any = {};
+      row["S.No"] = idx + 1;
+      getTableColumns().forEach((header) => {
+        switch (header) {
+          case "Name":
+            row["Name"] = item.name;
+            break;
+          case "Email":
+            row["Email"] = item.email;
+            break;
+          case "Tags":
+            row["Tags"] = helpers.camelCaseText(item.tags);
+            break;
+          case "Date":
+            row["Date"] = helpers.formatDate(item.last_purchase_date);
+            break;
+          case "Time":
+            row["Time"] = helpers.formatTime(item.last_purchase_date);
+            break;
+          case "Date":
+            row["Date"] = helpers.formatDate(item.last_sale_date);
+            break;
+          case "Time":
+            row["Time"] = helpers.formatTime(item.last_sale_date);
+            break;
+          case "Purchase Count":
+            row["Purchase Count"] = item.purchase_counts;
+            break;
+          case "Purchase Amount":
+            row["Purchase Amount"] = item.purchase_amounts;
+            break;
+          case "Sales Count":
+            row["Sales Count"] = item.sales_count;
+            break;
+          case "Sales Amount":
+            row["Sales Amount"] = item.sales_amount;
+            break;
+          case "Discipline Purchased":
+            row["Discipline Purchased"] = item.discipline_purchased?.join(", ") || "N/A";
+            break;
+          case "Discipline Sold":
+            row["Discipline Sold"] = item.discipline_sold?.join(", ") || "N/A";
+            break;
+          case "Event Purchase":
+            row["Event Purchase"] = item.event_type_purchase?.join(", ") || "N/A";
+            break;
+          case "Event Sold":
+            row["Event Sold"] = item.event_type_sold?.join(", ") || "N/A";
+            break;
+          case "Purpose":
+            row["Purpose"] = item.purpose?.join(", ") || "N/A";
+            break;
+          case "Event Duration":
+            row["Event Duration"] = item.average_event_duration?.join(", ") || "N/A";
+            break;
+          case "Price Bucket":
+            row["Price Bucket"] = item.price_bucket || "N/A";
+            break;
+          case "Average Capacity":
+            row["Average Capacity"] = item.average_capacity || 0;
+            break;
+          case "Event Capacity":
+            row["Event Capacity"] = item.event_capacity || 0;
+            break;
+          case "Subscribed":
+            row["Subscribed"] = item.is_subscribed ? "Yes" : "No";
+            break;
+          default:
+            break;
+        }
+      });
+      return row;
+    }) || [];
+  };
+
   return (
     <div>
       <NavTitle
@@ -126,11 +204,15 @@ export default function Newsletter() {
       />
       <div className="flex items-center justify-between">
         <SearchBox onChange={(v: any) => updateGlobal("search", v)} />
-        <Button>
-          {" "}
-          <Sheet />
-          CSV
-        </Button>
+        <CSVLink
+          data={getCSVData()}
+          filename={`newsletter_${global?.status}.csv`}
+        >
+          <Button>
+            <Sheet />
+            CSV
+          </Button>
+        </CSVLink>
       </div>
       <div className="border p-4 flex gap-4 flex-wrap rounded-md mt-7">
         {newsLetterOption?.map((item, idx) => (
