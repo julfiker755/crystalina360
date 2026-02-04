@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useForm, FieldValues } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import Form from "@/components/reuseable/from";
-import { helpers, PlaceholderImg } from "@/lib";
+import { helpers } from "@/lib";
 import ImgUpload from "@/components/reuseable/img-upload";
 import { Upload } from "lucide-react";
 import Image from "next/image";
@@ -15,6 +15,15 @@ import {
   useUpdateProfileMutation,
 } from "@/redux/api/authApi";
 import sonner from "@/components/reuseable/sonner";
+import { FormSelDropdown } from "@/components/reuseable/from-select@1";
+import {
+  cityOptions,
+  countryOptions,
+  genderOptions,
+  provinceOptions,
+  regionOptions,
+} from "@/components/dummy-data";
+import { Checkbox } from "@/components/ui";
 
 const intAva = {
   file: null,
@@ -24,7 +33,19 @@ const intAva = {
 export default function ProfileEdit2() {
   const [avatar, setAvatar] = React.useState<any>(intAva);
   const { data: profile } = useGetProfileQuery({});
-  const { img, name, email, bio, skills } = profile?.data?.user || {};
+  const {
+    img,
+    name,
+    email,
+    bio,
+    skills,
+    residence_city,
+    residence_province,
+    residence_region,
+    residence_country,
+    marketing_consent,
+    gender
+  } = profile?.data?.user || {};
   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
 
   const form = useForm({
@@ -33,6 +54,12 @@ export default function ProfileEdit2() {
       email: "",
       description: "",
       tag: [],
+      gender: "",
+      residence_city: "",
+      residence_province: "",
+      residence_region: "",
+      residence_country: "",
+      marketing_consent: null,
     },
   });
 
@@ -43,6 +70,12 @@ export default function ProfileEdit2() {
         email: email,
         description: bio,
         tag: skills,
+        residence_city: residence_city,
+        residence_province: residence_province,
+        residence_region: residence_region,
+        residence_country: residence_country,
+        marketing_consent: marketing_consent,
+        gender: gender
       });
     }
   }, [profile]);
@@ -53,6 +86,12 @@ export default function ProfileEdit2() {
       bio: values.description,
       skills: values.tag,
       ...(avatar?.file && { img: avatar?.file }),
+      gender: values?.gender,
+      residence_city: values?.residence_city,
+      residence_province: values?.residence_province,
+      residence_region: values?.residence_region,
+      residence_country: values?.residence_country,
+      marketing_consent: values?.marketing_consent,
     });
     const res = await updateProfile(data).unwrap();
     if (res.status) {
@@ -101,19 +140,21 @@ export default function ProfileEdit2() {
           </ImgUpload>
         </div>
         <div className="space-y-5">
-          <FromInput2
-            className="h-10"
-            name="name"
-            label="Full Name"
-            placeholder="Enter your full name"
-          />
-          <FromInput2
-            className="h-10"
-            name="email"
-            label="Email"
-            placeholder="Enter your email"
-            readOnly={true}
-          />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            <FromInput2
+              className="h-10"
+              name="name"
+              label="Full Name"
+              placeholder="Enter your full name"
+            />
+            <FromInput2
+              className="h-10"
+              name="email"
+              label="Email"
+              placeholder="Enter your email"
+              readOnly={true}
+            />
+          </div>
           <FromTextarea2
             name="description"
             label="Description"
@@ -121,6 +162,43 @@ export default function ProfileEdit2() {
             className="field-sizing-content min-h-[100px]"
           />
           <FromTagInput label="Your Skills" name="tag" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            <FormSelDropdown
+              label="-Country-"
+              name="residence_country"
+              options={countryOptions}
+            />
+            <FormSelDropdown
+              label="-Region-"
+              name="residence_region"
+              options={regionOptions}
+            />
+            <FormSelDropdown
+              label="-Province-"
+              name="residence_province"
+              options={provinceOptions}
+            />
+
+            <FormSelDropdown
+              label="-City-"
+              name="residence_city"
+              options={cityOptions}
+            />
+            <FormSelDropdown
+              label="-gender-"
+              name="gender"
+              options={genderOptions}
+            />
+            <div className="flex items-center gap-1 ml-1">
+              <Checkbox
+                checked={form.watch("marketing_consent") as any}
+                onCheckedChange={(v: any) => {
+                  form.setValue("marketing_consent", v);
+                }}
+              />
+              <h5>Marketing Consent</h5>
+            </div>
+          </div>
         </div>
 
         <Button disabled={isUpdating} className="w-full">

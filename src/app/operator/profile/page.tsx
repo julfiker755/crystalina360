@@ -32,8 +32,19 @@ const initState = {
 export default function Profile() {
   const [state, setState] = useModalState(initState);
   const { data: profile } = useGetProfileQuery({});
-  const { img, name, email, bio, skills, subscribed_plans } =
-    profile?.data?.user || {};
+  const {
+    img,
+    name,
+    email,
+    bio,
+    skills,
+    subscribed_plans,
+    residence_city,
+    residence_province,
+    residence_region,
+    residence_country,
+    marketing_consent,
+  } = profile?.data?.user || {};
   const [connectPaypal, { isLoading: paypalLoading }] =
     useConnectPaypalMutation();
   const dispatch = useAppDispatch();
@@ -150,13 +161,6 @@ export default function Profile() {
             >
               <TabsContent value="overview" className="p-0">
                 <div className="space-y-7 pt-4 relative">
-                  <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-                    <InputShow label="Your full name" value={name || "N/A"} />
-                    <InputShow label="Email" value={email || "N/A"} />
-                  </div>
-                  <TextAreaShow label="Your bio" value={bio || "N/A"} />
-
-                  <BadgeShow label="Your skills" items={skills || []} />
                   <Button
                     onClick={() => setState("isProfile", true)}
                     className="absolute  -top-10 right-0"
@@ -165,6 +169,18 @@ export default function Profile() {
                     <FavIcon color="#fff" name="edit2" />
                     Edit profile
                   </Button>
+                  <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                    <InputShow label="Your full name" value={name || "N/A"} />
+                    <InputShow label="Email" value={email || "N/A"} />
+                  </div>
+                  <TextAreaShow label="Your bio" value={bio || "N/A"} />
+                  <BadgeShow label="Your skills" items={skills || []} />
+                  <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                    <InputShow label="City" value={residence_city || "N/A"} />
+                    <InputShow label="Province" value={residence_province || "N/A"} />
+                    <InputShow label="Region" value={residence_region || "N/A"} />
+                    <InputShow label="Country" value={residence_country || "N/A"} />
+                  </div>
                   <div className="border p-3 rounded-md flex-col lg:flex-row lg:flex items-center justify-center gap-10">
                     <div>
                       To collect and receive revenue generated from events, you
@@ -224,7 +240,7 @@ export default function Profile() {
       <Modal2
         open={state.isProfile}
         setIsOpen={(v) => setState("isProfile", v)}
-        className="sm:max-w-lg"
+        className="sm:max-w-xl"
       >
         <CloseIcon
           className="mt-2 mr-2"

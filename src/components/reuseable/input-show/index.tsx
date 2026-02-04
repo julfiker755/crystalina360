@@ -28,7 +28,7 @@ export function InputShow({
       </div>
       <Label
         className={cn(
-          "text-blacks text-base font-medium bg-background absolute -top-3 left-5 px-3",
+          "text-black text-base font-medium bg-background absolute -top-3 left-5 px-3",
           stylelabel,
         )}
       >

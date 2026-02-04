@@ -437,6 +437,12 @@ export const regionOptions = [
   { label: "Texas", value: "Texas" },
 ];
 
+export const genderOptions = [
+  { label: "Male", value: "male" },
+  { label: "Female", value: "female" },
+  { label: "Others", value: "others" },
+];
+
 export const provinceOptions = [
   { label: "Lazio", value: "Lazio" },
   { label: "Tuscany", value: "Tuscany" },

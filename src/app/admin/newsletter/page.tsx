@@ -97,7 +97,14 @@ export default function Newsletter() {
       case newsletSts.operatorMetrics:
         return ["Name", "Email", "Sales Count", "Sales Amount", "Action"];
       case newsletSts.userDisciplines:
-        return ["Name", "Email", "Discipline Purchased", "Date", "Time", "Action"];
+        return [
+          "Name",
+          "Email",
+          "Discipline Purchased",
+          "Date",
+          "Time",
+          "Action",
+        ];
       case newsletSts.operatorDisciplines:
         return ["Name", "Email", "Discipline Sold", "Action"];
       case newsletSts.userEvent:
@@ -111,7 +118,13 @@ export default function Newsletter() {
       case newsletSts.price:
         return ["Name", "Email", "Price Bucket", "Action"];
       case newsletSts.capacity:
-        return ["Name", "Email", "Average Capacity", "Event Capacity", "Action"];
+        return [
+          "Name",
+          "Email",
+          "Average Capacity",
+          "Event Capacity",
+          "Action",
+        ];
       case newsletSts.subscribed:
         return ["Name", "Email", "Subscribed", "Action"];
       default:
@@ -120,80 +133,86 @@ export default function Newsletter() {
   };
 
   const getCSVData = () => {
-    return newsletter?.data?.map((item: any, idx: any) => {
-      const row: any = {};
-      row["S.No"] = idx + 1;
-      getTableColumns().forEach((header) => {
-        switch (header) {
-          case "Name":
-            row["Name"] = item.name;
-            break;
-          case "Email":
-            row["Email"] = item.email;
-            break;
-          case "Tags":
-            row["Tags"] = helpers.camelCaseText(item.tags);
-            break;
-          case "Date":
-            row["Date"] = helpers.formatDate(item.last_purchase_date);
-            break;
-          case "Time":
-            row["Time"] = helpers.formatTime(item.last_purchase_date);
-            break;
-          case "Date":
-            row["Date"] = helpers.formatDate(item.last_sale_date);
-            break;
-          case "Time":
-            row["Time"] = helpers.formatTime(item.last_sale_date);
-            break;
-          case "Purchase Count":
-            row["Purchase Count"] = item.purchase_counts;
-            break;
-          case "Purchase Amount":
-            row["Purchase Amount"] = item.purchase_amounts;
-            break;
-          case "Sales Count":
-            row["Sales Count"] = item.sales_count;
-            break;
-          case "Sales Amount":
-            row["Sales Amount"] = item.sales_amount;
-            break;
-          case "Discipline Purchased":
-            row["Discipline Purchased"] = item.discipline_purchased?.join(", ") || "N/A";
-            break;
-          case "Discipline Sold":
-            row["Discipline Sold"] = item.discipline_sold?.join(", ") || "N/A";
-            break;
-          case "Event Purchase":
-            row["Event Purchase"] = item.event_type_purchase?.join(", ") || "N/A";
-            break;
-          case "Event Sold":
-            row["Event Sold"] = item.event_type_sold?.join(", ") || "N/A";
-            break;
-          case "Purpose":
-            row["Purpose"] = item.purpose?.join(", ") || "N/A";
-            break;
-          case "Event Duration":
-            row["Event Duration"] = item.average_event_duration?.join(", ") || "N/A";
-            break;
-          case "Price Bucket":
-            row["Price Bucket"] = item.price_bucket || "N/A";
-            break;
-          case "Average Capacity":
-            row["Average Capacity"] = item.average_capacity || 0;
-            break;
-          case "Event Capacity":
-            row["Event Capacity"] = item.event_capacity || 0;
-            break;
-          case "Subscribed":
-            row["Subscribed"] = item.is_subscribed ? "Yes" : "No";
-            break;
-          default:
-            break;
-        }
-      });
-      return row;
-    }) || [];
+    return (
+      newsletter?.data?.map((item: any, idx: any) => {
+        const row: any = {};
+        row["S.No"] = idx + 1;
+        getTableColumns().forEach((header) => {
+          switch (header) {
+            case "Name":
+              row["Name"] = item.name;
+              break;
+            case "Email":
+              row["Email"] = item.email;
+              break;
+            case "Tags":
+              row["Tags"] = helpers.camelCaseText(item.tags);
+              break;
+            case "Date":
+              row["Date"] = helpers.formatDate(item.last_purchase_date);
+              break;
+            case "Time":
+              row["Time"] = helpers.formatTime(item.last_purchase_date);
+              break;
+            case "Date":
+              row["Date"] = helpers.formatDate(item.last_sale_date);
+              break;
+            case "Time":
+              row["Time"] = helpers.formatTime(item.last_sale_date);
+              break;
+            case "Purchase Count":
+              row["Purchase Count"] = item.purchase_counts;
+              break;
+            case "Purchase Amount":
+              row["Purchase Amount"] = item.purchase_amounts;
+              break;
+            case "Sales Count":
+              row["Sales Count"] = item.sales_count;
+              break;
+            case "Sales Amount":
+              row["Sales Amount"] = item.sales_amount;
+              break;
+            case "Discipline Purchased":
+              row["Discipline Purchased"] =
+                item.discipline_purchased?.join(", ") || "N/A";
+              break;
+            case "Discipline Sold":
+              row["Discipline Sold"] =
+                item.discipline_sold?.join(", ") || "N/A";
+              break;
+            case "Event Purchase":
+              row["Event Purchase"] =
+                item.event_type_purchase?.join(", ") || "N/A";
+              break;
+            case "Event Sold":
+              row["Event Sold"] = item.event_type_sold?.join(", ") || "N/A";
+              break;
+            case "Purpose":
+              row["Purpose"] = item.purpose?.join(", ") || "N/A";
+              break;
+            case "Event Duration":
+              row["Event Duration"] =
+                item.average_event_duration?.join(", ") || "N/A";
+              break;
+            case "Price Bucket":
+              row["Price Bucket"] = item.price_bucket || "N/A";
+              break;
+            case "Average Capacity":
+              row["Average Capacity"] = item.average_capacity || 0;
+              break;
+            case "Event Capacity":
+              row["Event Capacity"] = item.event_capacity || 0;
+              break;
+            case "Subscribed":
+              row["Subscribed"] = item.is_subscribed ? "Yes" : "No";
+              break;
+            default:
+              break;
+          }
+        });
+        return row;
+      }) || []
+    );
   };
 
   return (
@@ -322,10 +341,14 @@ export default function Newsletter() {
                   <TableCell>
                     <div className="flex flex-wrap  gap-1 w-[200px]">
                       {item?.discipline_purchased?.length > 0 ? (
-                        item?.discipline_purchased?.map((item: any, idx: any) => (
-                          <Badge key={idx}>{item}</Badge>
-                        ))
-                      ) : (<Badge>N/A</Badge>)}
+                        item?.discipline_purchased?.map(
+                          (item: any, idx: any) => (
+                            <Badge key={idx}>{item}</Badge>
+                          ),
+                        )
+                      ) : (
+                        <Badge>N/A</Badge>
+                      )}
                     </div>
                   </TableCell>
                   <TableCell>
@@ -345,7 +368,9 @@ export default function Newsletter() {
                         item?.discipline_sold?.map((item: any, idx: any) => (
                           <Badge key={idx}>{item}</Badge>
                         ))
-                      ) : (<Badge>N/A</Badge>)}
+                      ) : (
+                        <Badge>N/A</Badge>
+                      )}
                     </div>
                   </TableCell>
                 </>
@@ -356,10 +381,14 @@ export default function Newsletter() {
                   <TableCell>
                     <div className="flex flex-wrap  gap-1 w-[200px]">
                       {item?.event_type_purchase?.length > 0 ? (
-                        item?.event_type_purchase?.map((item: any, idx: any) => (
-                          <Badge key={idx}>{item}</Badge>
-                        ))
-                      ) : (<Badge>N/A</Badge>)}
+                        item?.event_type_purchase?.map(
+                          (item: any, idx: any) => (
+                            <Badge key={idx}>{item}</Badge>
+                          ),
+                        )
+                      ) : (
+                        <Badge>N/A</Badge>
+                      )}
                     </div>
                   </TableCell>
                 </>
@@ -373,7 +402,9 @@ export default function Newsletter() {
                         item?.event_type_sold?.map((item: any, idx: any) => (
                           <Badge key={idx}>{item}</Badge>
                         ))
-                      ) : (<Badge>N/A</Badge>)}
+                      ) : (
+                        <Badge>N/A</Badge>
+                      )}
                     </div>
                   </TableCell>
                 </>
@@ -387,7 +418,9 @@ export default function Newsletter() {
                         item?.purpose?.map((item: any, idx: any) => (
                           <Badge key={idx}>{item}</Badge>
                         ))
-                      ) : (<Badge>N/A</Badge>)}
+                      ) : (
+                        <Badge>N/A</Badge>
+                      )}
                     </div>
                   </TableCell>
                 </>
@@ -398,10 +431,16 @@ export default function Newsletter() {
                   <TableCell>
                     <div className="flex flex-wrap  gap-1 w-[200px]">
                       {item?.average_event_duration?.length > 0 ? (
-                        item?.average_event_duration?.map((item: any, idx: any) => (
-                          <Badge key={idx}>{helpers.camelCaseText(item)}</Badge>
-                        ))
-                      ) : (<Badge>N/A</Badge>)}
+                        item?.average_event_duration?.map(
+                          (item: any, idx: any) => (
+                            <Badge key={idx}>
+                              {helpers.camelCaseText(item)}
+                            </Badge>
+                          ),
+                        )
+                      ) : (
+                        <Badge>N/A</Badge>
+                      )}
                     </div>
                   </TableCell>
                 </>

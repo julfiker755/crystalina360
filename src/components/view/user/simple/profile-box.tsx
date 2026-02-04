@@ -98,7 +98,7 @@ export default function ProfileBox() {
       <Modal2
         open={state.isProfile}
         setIsOpen={(v) => setState("isProfile", v)}
-        className="sm:max-w-lg"
+        className="sm:max-w-xl"
       >
         <CloseIcon
           className="mt-2 mr-2"
