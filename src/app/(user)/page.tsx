@@ -10,12 +10,16 @@ import PrivacyPolicy from "@/components/view/user/landing/privacy-policy";
 import Testimonial from "@/components/view/user/landing/testimonial";
 import { useAppSelector } from "@/redux/hooks";
 import { roleKey } from "@/lib";
+import MissingInfo from "@/components/reuseable/missing-alert";
+
+
 
 
 export default function UserHome() {
   const { user } = useAppSelector((state: any) => state.auth);
   return (
     <>
+      <MissingInfo />
       <HeroSec role={user?.role} />
       <KeyFeature role={user?.role} />
       <ExploreEvents />

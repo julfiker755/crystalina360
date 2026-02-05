@@ -14,6 +14,16 @@ export const contact_us = z.object({
   email: emailField,
   description: z.string().nonempty("Description is required"),
 });
+// == contact us==
+
+export const missing_sc = z.object({
+  gender: z.string().nonempty("Gender is required"),
+  residence_city: z.string().nonempty("City is required"),
+  residence_province: z.string().nonempty("Province is required"),
+  residence_region: z.string().nonempty("Region is required"),
+  residence_country: z.string().nonempty("Country is required"),
+  marketing_consent: z.any().optional(),
+});
 //  === sign_In ==
 export const sign_In = z.object({
   email: emailField,
