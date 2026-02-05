@@ -8,4 +8,4 @@
 - **Tailwind CSS**: Utility-first CSS framework for rapid UI styling.
 - **TypeScript**: Adds type safety and development efficiency to JavaScript.
 - **Figma**: Design and prototyping tool for creating beautiful user interfaces.
-- **Biome**: A modern code formatter and linter for Rust, TypeScript, JavaScript, and more.
+- **Biome**: A modern code formatter and linter for Rust, TypeScript, JavaScript, and more
