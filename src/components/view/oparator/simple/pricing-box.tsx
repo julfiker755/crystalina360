@@ -8,7 +8,7 @@ import {
   usePaymentInitOpMutation,
 } from "@/redux/api/operator/opratorApi";
 import { helpers } from "@/lib";
-import { useOpenPopup } from "@/hooks";
+
 
 const freePlan = {
   id: "basic",
@@ -49,17 +49,15 @@ export default function PricingBox() {
         <div className="flex justify-center mt-5 mx-auto space-x-3 bg-figma-gray1 w-fit rounded-full">
           <button
             onClick={() => setIsTab("MONTH")}
-            className={`py-2 px-7 ${
-              isTab == "MONTH" && "bg-figma-primary  text-white!"
-            } rounded-full text-figma-black cursor-pointer`}
+            className={`py-2 px-7 ${isTab == "MONTH" && "bg-figma-primary  text-white!"
+              } rounded-full text-figma-black cursor-pointer`}
           >
             Monthly
           </button>
           <button
             onClick={() => setIsTab("YEAR")}
-            className={`py-2 px-7 ${
-              isTab === "YEAR" && "bg-figma-primary  text-white!"
-            } rounded-full text-figma-black cursor-pointer`}
+            className={`py-2 px-7 ${isTab === "YEAR" && "bg-figma-primary  text-white!"
+              } rounded-full text-figma-black cursor-pointer`}
           >
             Annual
           </button>
@@ -104,7 +102,7 @@ export default function PricingBox() {
               </h2>
               <div className="text-center mb-8">
                 <span className="text-3xl lg:text-4xl font-bold">
-                  {pro_item?.price + ".00"}
+                  {pro_item?.price}
                 </span>
               </div>
               <div>
@@ -168,7 +166,7 @@ export default function PricingBox() {
                 </h2>
                 <div className="text-center mb-8">
                   <span className="text-3xl lg:text-4xl font-bold">
-                    {pro_item?.price + ".00"}
+                    {pro_item?.price}
                   </span>
                 </div>
                 <div>

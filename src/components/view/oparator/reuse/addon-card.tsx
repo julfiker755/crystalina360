@@ -4,7 +4,7 @@ import { Button } from "@/components/ui";
 import { CalendarDays, Lock } from "lucide-react";
 import { CloseIcon } from "../../common/btn-modal";
 import { useGlobalState } from "@/hooks";
-import { useBuyPlanMutation } from "@/redux/api/operator/opratorApi";
+import { useBuyPlanMutation, usePaymentInitOpMutation } from "@/redux/api/operator/opratorApi";
 import sonner from "@/components/reuseable/sonner";
 import FavIcon from "@/icon/favIcon";
 import { helpers } from "@/lib";
@@ -22,20 +22,27 @@ export default function AddOnCard({ item, buy = true }: AddOnCardProps) {
     data: {} as any,
   });
   const [buyPlan, { isLoading: bugIsLoading }] = useBuyPlanMutation();
+  const [paymentInitOp] = usePaymentInitOpMutation();
   const token = helpers.hasAuthToken();
 
   const handlePayment = async (buy_id: string) => {
     const data = helpers.fromData({
       addson_id: buy_id,
     });
+
     const res = await buyPlan(data).unwrap();
     if (res.status) {
-      sonner.success(
-        "Payment Successful",
-        "Your add-on is ready. Time to enJay!",
-        "bottom-right",
-      );
+      const res1 = await paymentInitOp(res?.data?.invoice_no);
+      window.open(res1?.data?.data);
+      // useOpenPopup(res1?.data?.data, "PayPal Payment", 600, 600);
     }
+    // if (res.status) {
+    //   sonner.success(
+    //     "Payment Successful",
+    //     "Your add-on is ready. Time to enJay!",
+    //     "bottom-right",
+    //   );
+    // }
   };
 
   return (
@@ -96,9 +103,9 @@ export default function AddOnCard({ item, buy = true }: AddOnCardProps) {
               Key benefits
             </h3>
             <ul className="space-y-2">
-              {benefits?.map((item: any, index: any) => (
+              {benefits?.map((item: any, idx: any) => (
                 <li
-                  key={item.id + index}
+                  key={idx}
                   className="flex gap-2 text-sm text-muted-foreground"
                 >
                   <span className="font-bold">•</span>
