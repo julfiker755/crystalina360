@@ -132,7 +132,7 @@ export default function EventApply({
         }).unwrap();
         //  ========= link ========
         const paypalLink = res2.data?.link;
-        useOpenPopup(paypalLink, "PayPal Payment", 600, 600);
+        window.location.href = paypalLink
       }
     } finally {
       setIsPaymentLoading(false);
