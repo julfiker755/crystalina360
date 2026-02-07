@@ -23,7 +23,9 @@ export default function CopyBox({
 }: CopyProps) {
   const [copied, setCopied] = useState(false);
 
-  const handleCopy = async () => {
+  const handleCopy = async (e: any) => {
+    e.stopPropagation()
+    e.preventDefault()
     await navigator.clipboard.writeText(value);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -37,7 +39,7 @@ export default function CopyBox({
       </span>
       {icon && (
         <Files
-          onClick={handleCopy}
+          onClick={(e) => handleCopy(e)}
           className={cn(
             `text-[#828282b8] ${copied && "text-primary"} cursor-pointer ml-3 size-4 transition`,
             iconStyle,

@@ -1,3 +1,4 @@
+import CopyBox from "@/components/reuseable/copy-box";
 import { Badge } from "@/components/ui";
 import FavIcon from "@/icon/favIcon";
 import { delivary_t, event_t, helpers } from "@/lib";
@@ -19,6 +20,7 @@ export default function EventCard({ item }: any) {
     region,
     country,
     delivery_type,
+    link
   } = item || {};
 
   const NotOnDemand = (item: any) => {
@@ -87,15 +89,24 @@ export default function EventCard({ item }: any) {
           {event_description}
         </p>
 
+
         {/* Event Details */}
         <div className="space-y-1 text-sm mt-5">
           <div className="[&_div]:flex  [&_div]:gap-2  [&_div]:items-center [&_div]:text-muted-foreground flex flex-col lg:flex-row lg:justify-between">
-            <div>
-              <FavIcon className="size-5" name="location" />
-              <span className="text-base text-primary">
-                {city}, {province}, {region}, {country}
-              </span>
-            </div>
+            {delivery_type === delivary_t.online ? (
+              <CopyBox
+                value={link}
+                valueStyle="text-primary text-base!"
+                linkStyle="text-primary"
+              />
+            ) : (
+              <div>
+                <FavIcon className="size-5" name="location" />
+                <span className="text-base text-primary">
+                  {city}, {province}, {region}, {country}
+                </span>
+              </div>
+            )}
             {NotOnDemand(
               <div className="flex  gap-2  items-center text-muted-foreground">
                 <FavIcon className="size-5" name="tiket" />

@@ -62,7 +62,7 @@ export default function MissingInfo() {
             if (isMissing && !isShow) {
                 const timer = setTimeout(() => {
                     setIsShow(true);
-                }, 2000); // 5 min
+                }, 3 * 60 * 1000); // 5 * 60 * 1000 --5 min
 
                 return () => clearTimeout(timer);
             }
