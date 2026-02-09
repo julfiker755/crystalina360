@@ -27,11 +27,11 @@ export default function ExploreEvents() {
             <SkeletonEventCard />
           </Repeat>
         ) : (
-          eventsItem?.data
-            ?.slice(0, 6)
-            ?.map((item: any) => (
+          eventsItem?.data?.slice(0, 6)?.map((item: any) => (
+            <Link key={item.id} href={user.email ? `/events/${item?.id}` : "#"}>
               <EventCard key={item.id} wish={false} item={item} />
-            ))
+            </Link>
+          ))
         )}
       </div>
       <div className="flex justify-center">

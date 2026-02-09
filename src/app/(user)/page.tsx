@@ -12,9 +12,6 @@ import { useAppSelector } from "@/redux/hooks";
 import { roleKey } from "@/lib";
 import MissingInfo from "@/components/reuseable/missing-alert";
 
-
-
-
 export default function UserHome() {
   const { user } = useAppSelector((state: any) => state.auth);
   return (
@@ -26,7 +23,6 @@ export default function UserHome() {
       {user.role == roleKey.user ? (
         <>
           <Advertise />
-          {/* <Subscription /> */}
         </>
       ) : (
         <>

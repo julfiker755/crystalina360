@@ -147,9 +147,7 @@ export default function ProfileEdit({ children }: childrenProps) {
               placeholder="Enter your full email"
             />
             <div>
-              <Label
-                className="text-blacks text-base font-medium  mb-1"
-              >
+              <Label className="text-blacks text-base font-medium  mb-1">
                 Country
               </Label>
               <FormSelDropdown
@@ -160,9 +158,7 @@ export default function ProfileEdit({ children }: childrenProps) {
               />
             </div>
             <div>
-              <Label
-                className="text-blacks text-base font-medium  mb-1"
-              >
+              <Label className="text-blacks text-base font-medium  mb-1">
                 Region
               </Label>
               <FormSelDropdown
@@ -173,9 +169,7 @@ export default function ProfileEdit({ children }: childrenProps) {
               />
             </div>
             <div>
-              <Label
-                className="text-blacks text-base font-medium  mb-1"
-              >
+              <Label className="text-blacks text-base font-medium  mb-1">
                 Province
               </Label>
               <FormSelDropdown
@@ -186,9 +180,7 @@ export default function ProfileEdit({ children }: childrenProps) {
               />
             </div>
             <div>
-              <Label
-                className="text-blacks text-base font-medium  mb-1"
-              >
+              <Label className="text-blacks text-base font-medium  mb-1">
                 City
               </Label>
               <FormSelDropdown
@@ -199,9 +191,7 @@ export default function ProfileEdit({ children }: childrenProps) {
               />
             </div>
             <div>
-              <Label
-                className="text-blacks text-base font-medium  mb-1"
-              >
+              <Label className="text-blacks text-base font-medium  mb-1">
                 Gender
               </Label>
               <FormSelDropdown

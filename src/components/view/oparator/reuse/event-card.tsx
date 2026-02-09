@@ -20,7 +20,7 @@ export default function EventCard({ item }: any) {
     region,
     country,
     delivery_type,
-    link
+    link,
   } = item || {};
 
   const NotOnDemand = (item: any) => {
@@ -88,7 +88,6 @@ export default function EventCard({ item }: any) {
         <p className="text-muted-foreground line-clamp-2">
           {event_description}
         </p>
-
 
         {/* Event Details */}
         <div className="space-y-1 text-sm mt-5">

@@ -24,8 +24,8 @@ export default function CopyBox({
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async (e: any) => {
-    e.stopPropagation()
-    e.preventDefault()
+    e.stopPropagation();
+    e.preventDefault();
     await navigator.clipboard.writeText(value);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);

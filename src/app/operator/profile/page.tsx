@@ -177,9 +177,18 @@ export default function Profile() {
                   <BadgeShow label="Your skills" items={skills || []} />
                   <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
                     <InputShow label="City" value={residence_city || "N/A"} />
-                    <InputShow label="Province" value={residence_province || "N/A"} />
-                    <InputShow label="Region" value={residence_region || "N/A"} />
-                    <InputShow label="Country" value={residence_country || "N/A"} />
+                    <InputShow
+                      label="Province"
+                      value={residence_province || "N/A"}
+                    />
+                    <InputShow
+                      label="Region"
+                      value={residence_region || "N/A"}
+                    />
+                    <InputShow
+                      label="Country"
+                      value={residence_country || "N/A"}
+                    />
                   </div>
                   <div className="border p-3 rounded-md flex-col lg:flex-row lg:flex items-center justify-center gap-10">
                     <div>

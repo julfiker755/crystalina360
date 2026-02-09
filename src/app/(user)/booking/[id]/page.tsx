@@ -6,6 +6,7 @@ import Modal2 from "@/components/reuseable/modal2";
 import VideoPlayer from "@/components/reuseable/player";
 import { RatingScore } from "@/components/reuseable/rating";
 import sonner from "@/components/reuseable/sonner";
+import { OlistamiLabel, StarBadge } from "@/components/reuseable/star-badge";
 import { Button, Textarea } from "@/components/ui";
 import { CloseIcon } from "@/components/view/common/btn-modal";
 import { AppAlert } from "@/components/view/user/reuse";
@@ -51,6 +52,7 @@ export default function BookingDetails() {
     status,
     ratings,
     is_rated,
+    organizer_label,
   } = bookings?.data?.events || {};
 
   const handleSubmitRating = async (e: React.FormEvent) => {
@@ -161,24 +163,31 @@ export default function BookingDetails() {
           )}
         </div>
 
-        <ul className="flex-between mb-5 mt-10">
+        <ul className="flex-between flex-wrap mb-5 mt-10">
           <li className="flex items-center space-x-2">
-            <Avatars
-              src={organizer?.img || "/avater.png"}
-              fallback={organizer?.name}
-              alt="event organizer"
-            />
-            <span className="text-lg items-center flex space-x-1 font-bold text-foreground">
-              <h5>{organizer?.name}</h5>
-              {organizer?.is_top_seller === true ? (
-                <FavIcon className="size-5" name="top_seller" />
-              ) : (
-                <FavIcon className="size-5" name="verified" />
-              )}
-            </span>
+            {organizer_label ? (
+              <OlistamiLabel />
+            ) : (
+              <>
+                <Avatars
+                  src={organizer?.img || "/avater.png"}
+                  fallback={organizer?.name}
+                  alt="event organizer"
+                />
+                <span className="text-lg items-center flex space-x-1 font-bold text-foreground">
+                  <h5>{organizer?.name}</h5>
+                  {
+                    <StarBadge
+                      is_subscribed={organizer?.is_subscribed}
+                      is_top_seller={organizer?.is_top_sellerF}
+                    />
+                  }
+                </span>
+              </>
+            )}
           </li>
 
-          <li>
+          <li className="mt-2 md:mt-0">
             <div className="border rounded-md w-fit h-fit bg-[#F2F2F2] font-medium py-1 px-3">
               {event_type === event_t.onetoone
                 ? "1.1"

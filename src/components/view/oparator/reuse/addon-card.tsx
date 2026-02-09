@@ -4,7 +4,10 @@ import { Button } from "@/components/ui";
 import { CalendarDays, Lock } from "lucide-react";
 import { CloseIcon } from "../../common/btn-modal";
 import { useGlobalState } from "@/hooks";
-import { useBuyPlanMutation, usePaymentInitOpMutation } from "@/redux/api/operator/opratorApi";
+import {
+  useBuyPlanMutation,
+  usePaymentInitOpMutation,
+} from "@/redux/api/operator/opratorApi";
 import sonner from "@/components/reuseable/sonner";
 import FavIcon from "@/icon/favIcon";
 import { helpers } from "@/lib";
@@ -33,7 +36,7 @@ export default function AddOnCard({ item, buy = true }: AddOnCardProps) {
     const res = await buyPlan(data).unwrap();
     if (res.status) {
       const res1 = await paymentInitOp(res?.data?.invoice_no);
-      window.location.href = res1?.data?.data
+      window.location.href = res1?.data?.data;
       // useOpenPopup(res1?.data?.data, "PayPal Payment", 600, 600);
     }
     // if (res.status) {

@@ -3,6 +3,7 @@ import Avatars from "@/components/reuseable/avater";
 import { BackBtn2 } from "@/components/reuseable/back-btn";
 import CopyBox from "@/components/reuseable/copy-box";
 import VideoPlayer from "@/components/reuseable/player";
+import { OlistamiLabel, StarBadge } from "@/components/reuseable/star-badge";
 import { AppAlert } from "@/components/view/user/reuse";
 import EventApply from "@/components/view/user/simple/event-apply";
 import FavIcon from "@/icon/favIcon";
@@ -35,6 +36,7 @@ export default function EventDetails() {
     available_tickets,
     ticket_status,
     link,
+    organizer_label,
   } = events_all?.data?.event || {};
 
   const NotOnDemand = (item: any) => {
@@ -80,24 +82,31 @@ export default function EventDetails() {
           )}
         </div>
 
-        <ul className="flex-between mb-5 mt-10">
+        <ul className="flex-between flex-wrap mb-5 mt-10">
           <li className="flex items-center space-x-2">
-            <Avatars
-              src={organizer?.img || "/avater.png"}
-              fallback={organizer?.name}
-              alt="event organizer"
-            />
-            <span className="text-lg items-center flex space-x-1 font-bold text-foreground">
-              <h5>{organizer?.name}</h5>
-              {organizer?.is_top_seller === true ? (
-                <FavIcon className="size-5" name="top_seller" />
-              ) : (
-                <FavIcon className="size-5" name="verified" />
-              )}
-            </span>
+            {organizer_label ? (
+              <OlistamiLabel />
+            ) : (
+              <>
+                <Avatars
+                  src={organizer?.img || "/avater.png"}
+                  fallback={organizer?.name}
+                  alt="event organizer"
+                />
+                <span className="text-lg items-center flex space-x-1 font-bold text-foreground">
+                  <h5>{organizer?.name}</h5>
+                  {
+                    <StarBadge
+                      is_subscribed={organizer?.is_subscribed}
+                      is_top_seller={organizer?.is_top_sellerF}
+                    />
+                  }
+                </span>
+              </>
+            )}
           </li>
 
-          <li>
+          <li className="mt-2 md:mt-0">
             <div className="border rounded-md w-fit h-fit bg-[#F2F2F2] font-medium py-1 px-3">
               {event_type === event_t.onetoone
                 ? "1.1"

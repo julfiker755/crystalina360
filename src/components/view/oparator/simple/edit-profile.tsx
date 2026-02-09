@@ -44,7 +44,7 @@ export default function ProfileEdit2() {
     residence_region,
     residence_country,
     marketing_consent,
-    gender
+    gender,
   } = profile?.data?.user || {};
   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
 
@@ -75,7 +75,7 @@ export default function ProfileEdit2() {
         residence_region: residence_region,
         residence_country: residence_country,
         marketing_consent: marketing_consent,
-        gender: gender
+        gender: gender,
       });
     }
   }, [profile]);

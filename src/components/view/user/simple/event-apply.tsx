@@ -8,7 +8,6 @@ import { useFormFields } from "@/hooks";
 import { usePurchaseStoreMutation } from "@/redux/api/user/userEventsApi";
 import { useRouter } from "next/navigation";
 import { usePaymentInitMutation } from "@/redux/api/user/paymetsApi";
-import { useOpenPopup } from "@/hooks/useOpenPopup";
 import { useStoreRoomMutation } from "@/redux/api/chat/chatApi";
 import clsx from "clsx";
 
@@ -132,7 +131,7 @@ export default function EventApply({
         }).unwrap();
         //  ========= link ========
         const paypalLink = res2.data?.link;
-        window.location.href = paypalLink
+        window.location.href = paypalLink;
       }
     } finally {
       setIsPaymentLoading(false);

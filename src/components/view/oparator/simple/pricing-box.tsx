@@ -9,7 +9,6 @@ import {
 } from "@/redux/api/operator/opratorApi";
 import { helpers } from "@/lib";
 
-
 const freePlan = {
   id: "basic",
   title: "Free Plan",
@@ -34,7 +33,7 @@ export default function PricingBox() {
     const res = await buyPlan(data).unwrap();
     if (res.status) {
       const res1 = await paymentInitOp(res?.data?.invoice_no);
-      window.location.href = res1?.data?.data
+      window.location.href = res1?.data?.data;
       // window.open(res1?.data?.data);
       // useOpenPopup(res1?.data?.data, "PayPal Payment", 600, 600);
     }
@@ -50,15 +49,17 @@ export default function PricingBox() {
         <div className="flex justify-center mt-5 mx-auto space-x-3 bg-figma-gray1 w-fit rounded-full">
           <button
             onClick={() => setIsTab("MONTH")}
-            className={`py-2 px-7 ${isTab == "MONTH" && "bg-figma-primary  text-white!"
-              } rounded-full text-figma-black cursor-pointer`}
+            className={`py-2 px-7 ${
+              isTab == "MONTH" && "bg-figma-primary  text-white!"
+            } rounded-full text-figma-black cursor-pointer`}
           >
             Monthly
           </button>
           <button
             onClick={() => setIsTab("YEAR")}
-            className={`py-2 px-7 ${isTab === "YEAR" && "bg-figma-primary  text-white!"
-              } rounded-full text-figma-black cursor-pointer`}
+            className={`py-2 px-7 ${
+              isTab === "YEAR" && "bg-figma-primary  text-white!"
+            } rounded-full text-figma-black cursor-pointer`}
           >
             Annual
           </button>
