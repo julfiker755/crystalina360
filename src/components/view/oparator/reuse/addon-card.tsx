@@ -11,15 +11,18 @@ import {
 import sonner from "@/components/reuseable/sonner";
 import FavIcon from "@/icon/favIcon";
 import { helpers } from "@/lib";
+import { useRouter } from "next/navigation";
 
 interface AddOnCardProps {
   item: any;
   buy?: boolean;
+  href?: string;
 }
 
-export default function AddOnCard({ item, buy = true }: AddOnCardProps) {
+export default function AddOnCard({ item, buy = true, href = "#" }: AddOnCardProps) {
   const { id, benefits, title, price, bio, primary_color, secondary_color } =
     item || {};
+  const router = useRouter()
   const [global, updateGlobal] = useGlobalState({
     show: false,
     data: {} as any,
@@ -83,7 +86,7 @@ export default function AddOnCard({ item, buy = true }: AddOnCardProps) {
                   style={{
                     backgroundColor: primary_color,
                   }}
-                  onClick={() => handlePayment(id)}
+                  onClick={() => router.push(href)}
                   disabled={bugIsLoading}
                   className="rounded-full text-white"
                 >
@@ -202,7 +205,7 @@ export default function AddOnCard({ item, buy = true }: AddOnCardProps) {
             style={{
               backgroundColor: global?.data?.primaryColor,
             }}
-            onClick={() => handlePayment(global?.data?.id)}
+            onClick={() => router.push(href)}
             className="rounded-full w-full text-white"
           >
             <Lock className="w-4 h-4 mr-2" />

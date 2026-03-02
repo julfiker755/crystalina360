@@ -42,3 +42,7 @@ export enum newsletSts {
   accessibility = "accessibility",
   subscribed = "subscribed",
 }
+
+export enum addonType {
+  featuredEvent = "featured-event",
+}
