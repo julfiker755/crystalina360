@@ -1,172 +1,159 @@
 "use client";
-
-import { Button } from '@/components/ui';
-import {
-    User,
-    Building2,
-    Mail,
-    Link as LinkIcon,
-    Globe,
-    Share2,
-    FileText,
-    AlertCircle,
-    Send,
-    CheckCircle2,
-    ArrowRight
-} from 'lucide-react';
-import React, { useState, useCallback } from 'react';
-
-// --- Types ---
+import { disciplineOptions } from '@/components/dummy-data';
+import sonner from '@/components/reuseable/sonner';
+import { Button, Checkbox, Command, CommandEmpty, CommandGroup, CommandItem, CommandList, Popover, PopoverContent, PopoverTrigger } from '@/components/ui';
+import { addonType, helpers } from '@/lib';
+import { useBuyPlanMutation, useGetEvtListQuery, useGetSlgAddOnQuery, usePaymentInitOpMutation, useStoreQuestionMutation } from '@/redux/api/operator/opratorApi';
+import { AlertCircle, Check, ChevronDown, FileText } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 
 interface FormData {
-    fullName: string;
-    companyName: string;
+    first_name: string;
+    surname: string;
+    company_name: string;
     email: string;
-    eventLink: string;
-    disciplines: string;
-    websiteLink: string;
-    socialLink: string;
+    event_id: string;
+    disciplines_covered: string;
+    website_link: string;
+    social_links: string;
     notes: string;
-    acceptedTerms: boolean;
+    sponsorship_subject?: string;
+    indicate?: string;
 }
 
 interface FormErrors {
     [key: string]: string;
+    terms?: any;
 }
 
-// --- Components ---
-
-interface FormFieldProps {
-    label: string;
-    name: keyof FormData;
-    type?: string;
-    placeholder?: string;
-    icon: React.ElementType;
-    value: string;
-    error?: string;
-    required?: boolean;
-    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    isTextArea?: boolean;
-    maxLength?: number;
+const initFrom = {
+    first_name: '',
+    surname: "",
+    company_name: '',
+    email: '',
+    event_id: '',
+    disciplines_covered: '',
+    website_link: '',
+    social_links: '',
+    notes: '',
+    sponsorship_subject: '',
+    indicate: '',
 }
 
-const FormField = ({
-    label,
-    name,
-    type = 'text',
-    placeholder,
-    icon: Icon,
-    value,
-    error,
-    required,
-    onChange,
-    isTextArea,
-    maxLength
-}: FormFieldProps) => {
-    const baseClasses = `
-    w-full px-4 py-3 bg-stone-50/50 border rounded-2xl transition-all duration-200 outline-none
-    ${error ? 'border-red-400 focus:ring-2 focus:ring-red-100' : 'border-stone-200 focus:border-primary focus:ring-4 focus:ring-primary/5'}
-    text-stone-700 placeholder:text-stone-300
-  `;
 
-    return (
-        <div className="space-y-1.5">
-            <label htmlFor={name} className="flex items-center gap-2 text-sm font-medium text-stone-600 ml-1">
-                <Icon className="w-4 h-4 text-stone-400" />
-                {label} {required && <span className="text-red-400">*</span>}
-            </label>
-
-            <div className="relative">
-                {isTextArea ? (
-                    <textarea
-                        id={name}
-                        name={name}
-                        value={value}
-                        onChange={onChange}
-                        placeholder={placeholder}
-                        rows={3}
-                        className={`${baseClasses} resize-none`}
-                    />
-                ) : (
-                    <input
-                        type={type}
-                        id={name}
-                        name={name}
-                        value={value}
-                        onChange={onChange}
-                        placeholder={placeholder}
-                        className={baseClasses}
-                    />
-                )}
-
-                {maxLength && (
-                    <div className="absolute bottom-2 right-3 text-[10px] font-mono text-stone-400">
-                        {value.length}/{maxLength}
-                    </div>
-                )}
-            </div>
-
-            {error && (
-                <p className="text-xs text-red-500 ml-1 animate-slide-down">
-                    {error}
-                </p>
-            )}
-        </div>
-    );
-};
-
-// --- Main App ---
-
-export default function App() {
-    const [formData, setFormData] = useState<FormData>({
-        fullName: '',
-        companyName: '',
-        email: '',
-        eventLink: '',
-        disciplines: '',
-        websiteLink: '',
-        socialLink: '',
-        notes: '',
-        acceptedTerms: false,
-    });
-
+export default function AddOnQuestion() {
+    const { id } = useParams()
+    const { data: addson } = useGetSlgAddOnQuery(id)
+    const { id: ids, slug } = addson?.data || {}
+    const [eventOptions, setEventOptions] = useState<any[]>([]);
+    const [terms, setIsTerms] = useState(false);
+    const { data: eventList } = useGetEvtListQuery({})
+    const [storeQuestion] = useStoreQuestionMutation()
+    const [formData, setFormData] = useState<FormData>(initFrom)
     const [errors, setErrors] = useState<FormErrors>({});
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
+    const [buyPlan, { isLoading: bugIsLoading }] = useBuyPlanMutation();
+    const [paymentInitOp] = usePaymentInitOpMutation();
+
+    const exclusiveTypes = [
+        addonType.exclusivePost,
+        addonType.exclusiveVideo,
+        addonType.blogFeature,
+        addonType.podcastSpotlight
+    ];
+    const isExclusivePost = exclusiveTypes.includes(slug);
+    const isPodcastSpotlight = slug === addonType.podcastSpotlight;
+
 
     const validate = useCallback(() => {
         const newErrors: FormErrors = {};
 
-        if (!formData.fullName.trim()) newErrors.fullName = 'First name and Surname is required';
 
-        if (!formData.email.trim()) {
-            newErrors.email = 'Contact e-mail is required';
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            newErrors.email = 'Please enter a valid email address';
+        if (!formData.first_name.trim()) {
+            newErrors.first_name = "First name is required";
         }
 
-        if (!formData.eventLink.trim()) newErrors.eventLink = 'Event link on Olistami is required';
-        if (!formData.disciplines.trim()) newErrors.disciplines = 'Disciplines covered by the event is required';
-        if (!formData.acceptedTerms) newErrors.acceptedTerms = 'You must accept the terms and conditions';
+        if (!formData.surname.trim()) {
+            newErrors.surname = "Surname is required";
+        }
 
-        if (formData.notes.length > 400) {
-            newErrors.notes = 'Notes cannot exceed 400 characters';
+        if (!formData.email.trim()) {
+            newErrors.email = "Email is required";
+        } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+            newErrors.email = "Please enter a valid email address";
+        }
+
+        if (!formData.event_id) {
+            newErrors.event_id = "Event selection is required";
+        }
+
+        if (!formData.disciplines_covered.trim()) {
+            newErrors.disciplines_covered = "Disciplines covered is required";
+        }
+        if (isExclusivePost) {
+            if (!formData.sponsorship_subject) {
+                newErrors.sponsorship_subject = "Sponsorship is required";
+            }
+        }
+        if (isPodcastSpotlight) {
+            if (!formData.indicate) {
+                newErrors.indicate = "Guest preference is required";
+            }
+        }
+        //    optional fields validation
+        if (formData.website_link?.trim() &&
+            !/^https?:\/\/\S+$/.test(formData.website_link.trim())) {
+            newErrors.website_link = "Enter a valid website URL";
+        }
+
+        if (formData.social_links?.trim() &&
+            !/^https?:\/\/\S+$/.test(formData.social_links.trim())) {
+            newErrors.social_links = "Enter a valid social link URL";
+        }
+
+        // 🔥 TERMS VALIDATION
+        if (!terms) {
+            newErrors.terms = "You must accept the terms and conditions";
         }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
-    }, [formData]);
+
+    }, [formData, terms]);
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (validate()) {
-            setIsSubmitting(true);
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            setIsSubmitting(false);
-            setIsSuccess(true);
+            const data = helpers.fromData(formData)
+            const res = await storeQuestion(data).unwrap()
+            if (res?.status) {
+                setFormData(initFrom)
+                // ==== payment===
+                const data = helpers.fromData({
+                    addson_id: ids,
+                });
+
+                const res = await buyPlan(data).unwrap();
+                if (res.status) {
+                    const res1 = await paymentInitOp(res?.data?.invoice_no);
+                    window.location.href = res1?.data?.data;
+                }
+                if (res.status) {
+                    sonner.success(
+                        "Payment Successful",
+                        "Your add-on is ready. Time to enJay!",
+                        "bottom-right",
+                    );
+                }
+            }
         }
     };
+
+
+    // console.log(addson)
+
+
 
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
@@ -186,6 +173,18 @@ export default function App() {
             });
         }
     }, [errors]);
+
+
+
+    useEffect(() => {
+        if (eventList?.data) {
+            setEventOptions(eventList?.data?.map((item: any) => ({
+                label: item.event_title,
+                value: item.id?.toString()
+            })));
+        }
+    }, [eventList]);
+
 
 
     return (
@@ -238,108 +237,140 @@ export default function App() {
 
                     {/* Right Side: Form */}
                     <div className="lg:col-span-7 animate-slide-up [animation-delay:100ms]">
-                        <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-stone-200/30 border border-stone-100 overflow-hidden">
+                        <div className="bg-white rounded-[2.5rem] shadow-stone-200/30 border border-stone-100 overflow-hidden">
                             <form onSubmit={handleSubmit} className="p-8 sm:p-12 space-y-10">
 
-                                {/* Section: Contact Details */}
                                 <div className="space-y-6">
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <div className="h-px flex-1 bg-stone-100"></div>
-                                        <span className="text-[10px] font-bold text-stone-300 uppercase tracking-widest">Contact Information</span>
-                                        <div className="h-px flex-1 bg-stone-100"></div>
-                                    </div>
-
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <FormField
-                                            label="Full Name"
-                                            name="fullName"
-                                            value={formData.fullName}
+                                            label="First name"
+                                            name="first_name"
+                                            value={formData.first_name}
                                             onChange={handleChange}
-                                            placeholder="John Doe"
-                                            icon={User}
+                                            placeholder="John"
                                             required
-                                            error={errors.fullName}
+                                            error={errors.first_name}
                                         />
                                         <FormField
-                                            label="Company Name"
-                                            name="companyName"
-                                            value={formData.companyName}
+                                            label="Surname"
+                                            name="surname"
+                                            value={formData.surname}
+                                            onChange={handleChange}
+                                            placeholder="Doe"
+                                            error={errors.surname}
+                                        />
+
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <FormField
+                                            label="Company name"
+                                            name="company_name"
+                                            value={formData.company_name}
                                             onChange={handleChange}
                                             placeholder="Optional"
-                                            icon={Building2}
+                                        />
+
+                                        <FormField
+                                            label="Email"
+                                            name="email"
+                                            type="email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            placeholder="john@example.com"
+                                            required
+                                            error={errors.email}
+                                        />
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <FormField
+                                            label="Website link"
+                                            name="website_link"
+                                            value={formData.website_link}
+                                            onChange={handleChange}
+                                            placeholder="Optional"
+                                            error={errors.website_link}
+                                        />
+                                        <FormField
+                                            label="Primary Social Link"
+                                            name="social_links"
+                                            value={formData.social_links}
+                                            onChange={handleChange}
+                                            error={errors.social_links}
+                                            placeholder="Optional"
                                         />
                                     </div>
 
-                                    <FormField
-                                        label="Contact Email"
-                                        name="email"
-                                        type="email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        placeholder="john@example.com"
-                                        icon={Mail}
-                                        required
-                                        error={errors.email}
-                                    />
+
                                 </div>
-
-                                {/* Section: Event Details */}
                                 <div className="space-y-6">
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <div className="h-px flex-1 bg-stone-100"></div>
-                                        <span className="text-[10px] font-bold text-stone-300 uppercase tracking-widest">Event Details</span>
-                                        <div className="h-px flex-1 bg-stone-100"></div>
-                                    </div>
-
                                     <FormField
                                         label="Olistami Event Link"
-                                        name="eventLink"
-                                        value={formData.eventLink}
+                                        name="event_id"
+                                        value={formData.event_id}
                                         onChange={handleChange}
-                                        placeholder="https://olistami.com/event/..."
-                                        icon={LinkIcon}
-                                        required
-                                        error={errors.eventLink}
+                                        target='select'
+                                        options={eventOptions}
+                                        error={errors.event_id}
                                     />
 
                                     <FormField
                                         label="Disciplines Covered"
-                                        name="disciplines"
-                                        value={formData.disciplines}
+                                        name="disciplines_covered"
+                                        value={formData.disciplines_covered}
                                         onChange={handleChange}
-                                        placeholder="Yoga, Meditation, etc."
-                                        icon={FileText}
-                                        required
-                                        error={errors.disciplines}
+                                        target='select'
+                                        options={disciplineOptions}
+                                        error={errors.disciplines_covered}
                                     />
+                                    {isExclusivePost && (
+                                        <FormField
+                                            label="Sponsorship Subject"
+                                            name="sponsorship_subject"
+                                            value={formData.sponsorship_subject as any}
+                                            onChange={handleChange}
+                                            target='select'
+                                            options={[
+                                                {
+                                                    label: "Myself",
+                                                    value: "myself",
+                                                },
+                                                {
+                                                    label: "A Specific Event on the Olistami Website",
+                                                    value: "A Specific Event on the Olistami Website",
+                                                },
+                                            ]}
+                                            error={errors.sponsorship_subject}
+                                        />
+                                    )}
+                                    {isPodcastSpotlight && (
+                                        <FormField
+                                            label="Guest Preference"
+                                            name="indicate"
+                                            value={formData.indicate as any}
+                                            onChange={handleChange}
+                                            target='select'
+                                            options={[
+                                                {
+                                                    label: "Yes, I want to participate personally",
+                                                    value: "Yes, I want to participate personally",
+                                                },
+                                                {
+                                                    label: "No, I prefer you handle it yourselves",
+                                                    value: "No, I prefer you handle it yourselves",
+                                                },
+                                            ]}
+                                            error={errors.indicate}
+                                        />
+                                    )}
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <FormField
-                                            label="Website"
-                                            name="websiteLink"
-                                            value={formData.websiteLink}
-                                            onChange={handleChange}
-                                            placeholder="https://..."
-                                            icon={Globe}
-                                        />
-                                        <FormField
-                                            label="Social Link"
-                                            name="socialLink"
-                                            value={formData.socialLink}
-                                            onChange={handleChange}
-                                            placeholder="Instagram, etc."
-                                            icon={Share2}
-                                        />
-                                    </div>
 
                                     <FormField
                                         label="Additional Notes"
                                         name="notes"
                                         value={formData.notes}
                                         onChange={handleChange}
-                                        placeholder="Tell us more about your requirements..."
-                                        icon={FileText}
-                                        isTextArea
+                                        placeholder="Tell us more about your requirements (optional)"
+                                        target="textarea"
                                         maxLength={400}
                                         error={errors.notes}
                                     />
@@ -350,26 +381,30 @@ export default function App() {
                                     <div className="bg-stone-50 rounded-3xl p-6 border border-stone-100">
                                         <div className="flex items-start gap-4">
                                             <div className="flex items-center h-6">
-                                                <input
-                                                    id="acceptedTerms"
-                                                    name="acceptedTerms"
-                                                    type="checkbox"
-                                                    checked={formData.acceptedTerms}
-                                                    onChange={handleChange}
-                                                    className="w-5 h-5 text-primary border-stone-300 rounded-lg focus:ring-primary/20 cursor-pointer transition-colors"
+                                                <Checkbox
+                                                    checked={terms}
+                                                    onCheckedChange={() => {
+                                                        setIsTerms(!terms);
+                                                        if (!terms) {
+                                                            setErrors(prev => {
+                                                                const newErrors = { ...prev };
+                                                                delete newErrors.terms;
+                                                                return newErrors;
+                                                            });
+                                                        }
+                                                    }}
+                                                    className={!terms && errors.terms ? "border-red-400" : ""}
                                                 />
                                             </div>
-                                            <label htmlFor="acceptedTerms" className="text-xs text-stone-500 leading-relaxed cursor-pointer select-none">
+
+                                            <label
+                                                className={`leading-relaxed cursor-pointer select-none ${errors.terms ? "text-red-400" : "text-stone-500"
+                                                    }`}
+                                            >
                                                 I declare that I have read and accepted the general terms and conditions of contract, and I authorise Olistami as per the text reported above.
                                             </label>
                                         </div>
-                                        {errors.acceptedTerms && (
-                                            <p className="text-[10px] text-red-500 mt-2 ml-9 animate-slide-down">
-                                                {errors.acceptedTerms}
-                                            </p>
-                                        )}
-
-                                        <p className="mt-4 text-[10px] text-stone-400 italic leading-relaxed border-t border-stone-200/50 pt-4">
+                                        <p className="mt-4 text-sm text-stone-400 italic leading-relaxed border-t border-stone-200/50 pt-4">
                                             By submitting, you authorise Olistami srl to manage the content in accordance with an obligation of means. Submission implies full acceptance of these terms.
                                         </p>
                                     </div>
@@ -377,9 +412,7 @@ export default function App() {
 
                                 {/* Submit */}
                                 <div className="pt-2">
-                                    <Button className="w-full h-12">Submit Request
-                                        <Send className="w-5 h-5" />
-                                    </Button>
+                                    <Button className="w-full h-12">Submit</Button>
 
                                 </div>
                             </form>
@@ -390,3 +423,142 @@ export default function App() {
         </div>
     );
 }
+
+// --- Form Field Component ---
+
+interface FormFieldProps {
+    label: string;
+    name: keyof FormData;
+    type?: string;
+    placeholder?: string;
+    value: string;
+    error?: string;
+    required?: boolean;
+    onChange: (e: any) => void;
+    target?: "input" | "textarea" | "select";
+    maxLength?: number;
+    options?: any[];
+}
+
+const FormField = ({
+    label,
+    name,
+    type = "text",
+    placeholder,
+    value,
+    error,
+    onChange,
+    target = "input",
+    maxLength,
+    options = [],
+}: FormFieldProps) => {
+    const baseStyle = `
+        w-full px-4 py-3 bg-stone-50/50 border rounded-2xl transition-all duration-200 outline-none
+        border-stone-200 focus:border-primary/60 focus:ring-4 focus:ring-primary/5
+        text-stone-700 placeholder:text-stone-300
+    `;
+    const popoverRef = useRef<HTMLButtonElement>(null);
+    const [open, setOpen] = useState(false);
+    const selectedOption = options.find((opt) => opt.value === value);
+
+
+    const handleSelect = (selectedValue: string) => {
+        onChange({
+            target: {
+                name,
+                value: selectedValue,
+            },
+        });
+        setOpen(false);
+    };
+
+    return (
+        <div className="space-y-1.5">
+            <label className="text-sm font-medium text-stone-600 ml-1">
+                {label}
+            </label>
+
+            <div className="relative">
+                {target === "textarea" ? (
+                    <textarea
+                        name={name}
+                        value={value}
+                        onChange={onChange}
+                        placeholder={placeholder}
+                        rows={3}
+                        className={`${baseStyle} resize-y`}
+                    />
+                ) : target === "input" ? (
+                    <input
+                        type={type}
+                        name={name}
+                        value={value}
+                        onChange={onChange}
+                        placeholder={placeholder}
+                        className={baseStyle}
+                    />
+                ) : (
+                    <Popover open={open} onOpenChange={setOpen}>
+                        <PopoverTrigger asChild>
+                            <Button
+                                ref={popoverRef}
+                                variant="outline"
+                                role="combobox"
+                                aria-expanded={open}
+                                className="w-full justify-between rounded-2xl  h-12 font-normal"
+                            >
+                                <div className='text-stone-300'>
+                                    {selectedOption
+                                        ? <span className='text-black'>{selectedOption.label}</span>
+                                        : "Select an option"}
+                                </div>
+                                <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                        </PopoverTrigger>
+
+                        <PopoverContent style={{
+                            width: popoverRef.current
+                                ? `${popoverRef.current.offsetWidth}px`
+                                : "auto",
+                        }} className="p-0 w-full">
+                            <Command>
+                                <CommandList>
+                                    <CommandEmpty>No event found</CommandEmpty>
+                                    <CommandGroup>
+                                        {options?.map((item, idx) => (
+                                            <CommandItem
+                                                key={idx}
+                                                value={item.label}
+                                                onSelect={() =>
+                                                    handleSelect(item.value)
+                                                }
+                                            >
+                                                <Check
+                                                    className={`mr-2 h-4 w-4 ${value === item.value
+                                                        ? "opacity-100"
+                                                        : "opacity-0"
+                                                        }`}
+                                                />
+                                                {item.label}
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                </CommandList>
+                            </Command>
+                        </PopoverContent>
+                    </Popover>
+                )}
+
+                {maxLength && (
+                    <div className="absolute bottom-2 right-3 text-[10px] font-mono text-stone-400">
+                        {value.length}/{maxLength}
+                    </div>
+                )}
+            </div>
+
+            {error && (
+                <p className="text-xs text-red-400 ml-1">{error}</p>
+            )}
+        </div>
+    );
+};

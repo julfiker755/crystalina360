@@ -10,7 +10,7 @@ import {
 } from "@/redux/api/operator/opratorApi";
 import sonner from "@/components/reuseable/sonner";
 import FavIcon from "@/icon/favIcon";
-import { helpers } from "@/lib";
+import { addOns, helpers } from "@/lib";
 import { useRouter } from "next/navigation";
 
 interface AddOnCardProps {
@@ -20,7 +20,7 @@ interface AddOnCardProps {
 }
 
 export default function AddOnCard({ item, buy = true, href = "#" }: AddOnCardProps) {
-  const { id, benefits, title, price, bio, primary_color, secondary_color } =
+  const { id, benefits, title, price, bio, primary_color, secondary_color, slug } =
     item || {};
   const router = useRouter()
   const [global, updateGlobal] = useGlobalState({
@@ -31,6 +31,12 @@ export default function AddOnCard({ item, buy = true, href = "#" }: AddOnCardPro
   const [paymentInitOp] = usePaymentInitOpMutation();
   const token = helpers.hasAuthToken();
 
+  const exclusiveTypes = [
+    addOns.miniPdfCourse,
+    addOns.videoMasterclass
+  ];
+  const ispayment = exclusiveTypes.includes(slug);
+
   const handlePayment = async (buy_id: string) => {
     const data = helpers.fromData({
       addson_id: buy_id,
@@ -40,15 +46,14 @@ export default function AddOnCard({ item, buy = true, href = "#" }: AddOnCardPro
     if (res.status) {
       const res1 = await paymentInitOp(res?.data?.invoice_no);
       window.location.href = res1?.data?.data;
-      // useOpenPopup(res1?.data?.data, "PayPal Payment", 600, 600);
     }
-    // if (res.status) {
-    //   sonner.success(
-    //     "Payment Successful",
-    //     "Your add-on is ready. Time to enJay!",
-    //     "bottom-right",
-    //   );
-    // }
+    if (res.status) {
+      sonner.success(
+        "Payment Successful",
+        "Your add-on is ready. Time to enJay!",
+        "bottom-right",
+      );
+    }
   };
 
   return (
@@ -86,7 +91,12 @@ export default function AddOnCard({ item, buy = true, href = "#" }: AddOnCardPro
                   style={{
                     backgroundColor: primary_color,
                   }}
-                  onClick={() => router.push(href)}
+                  onClick={() => {
+                    if (ispayment) {
+                      handlePayment(id)
+                    }
+                    router.push(href)
+                  }}
                   disabled={bugIsLoading}
                   className="rounded-full text-white"
                 >

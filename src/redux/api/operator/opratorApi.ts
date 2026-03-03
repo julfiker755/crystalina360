@@ -94,6 +94,26 @@ export const opratorsApi = baseApi.injectEndpoints({
         method: "POST",
       }),
     }),
+    getEvtList: build.query({
+      query: (arg) => ({
+        url: "/addsOn/events/list",
+        method: "GET",
+        params: arg,
+      }),
+    }),
+    getSlgAddOn: build.query({
+      query: (id) => ({
+        url: `/adds-on/${id}`,
+        method: "GET",
+      }),
+    }),
+    storeQuestion: build.mutation({
+      query: (data) => ({
+        url: "/addson/question",
+        method: "POST",
+        data,
+      }),
+    }),
   }),
 });
 
@@ -107,4 +127,7 @@ export const {
   useAddsonCartQuery,
   useUpdateEventsMutation,
   usePaymentInitOpMutation,
+  useGetEvtListQuery,
+  useGetSlgAddOnQuery,
+  useStoreQuestionMutation
 } = opratorsApi;

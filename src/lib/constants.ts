@@ -45,4 +45,13 @@ export enum newsletSts {
 
 export enum addonType {
   featuredEvent = "featured-event",
+  exclusivePost = "exclusive-post",
+  exclusiveVideo = "exclusive-video",
+  blogFeature = "blog-feature",
+  podcastSpotlight = "podcast-spotlight",
+}
+
+export enum addOns {
+  videoMasterclass = "video-masterclass",
+  miniPdfCourse = "mini-pdf-course",
 }
