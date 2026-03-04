@@ -49,7 +49,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
   const [progress, setProgress] = useState(0);
   const router = useRouter();
   const defaultValues = getValuesOne("offline_retreat", "200") as any;
-
+  const [emailAll, setAllEmail] = useState<string[]>([]);
 
   const from = useForm({
     resolver: zodResolver(retreat_sc),
@@ -268,7 +268,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
               setSelAccbility={setSelAccbility}
             />
             <FromTagInput name="tags" label="Tags" className="py-2" />
-            <EmailCollent />
+            <EmailCollent emailAll={emailAll} setAllEmail={setAllEmail} />
             <Button
               disabled={isLoading}
               className="w-full relative disabled:opacity-100"

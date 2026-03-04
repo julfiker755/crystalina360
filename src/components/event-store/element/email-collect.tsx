@@ -1,71 +1,104 @@
 import Avatars from "@/components/reuseable/avater";
 import { Button, Input } from "@/components/ui";
-import { RandomImg } from "@/lib";
-import { useEmailFindQuery } from "@/redux/api/authApi";
 import { X } from "lucide-react";
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 
-export default function EmailCollect() {
-  const [email, setEmail] = useState("");
-  const [items, setItems] = useState<{ img: string; email: string }[]>([]);
 
-  const { data: emailItem } = useEmailFindQuery({
-    email: email,
-  });
 
-  console.log(emailItem)
+export default function EmailCollect({ emailAll, setAllEmail }: any) {
+  const [email, setEmail] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
-  //   useEffect(() => {}, [emailItem, items]);
+  // ✅ Email validation
+  const isValidEmail = (value: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
-  // Handle adding email with avatar (if exists)
-  const handleAddEmail = useCallback(() => {
-    if (email) {
-      setItems((prevItems) => [...prevItems, { img: "", email }]);
-      setEmail("");
+  // ✅ Add email function
+
+  const handleAddEmail = () => {
+    setError("")
+    const email_V = email.trim();
+
+    if (!email_V) {
+      setError("Email is required");
+      return;
     }
-  }, [email]);
+    if (!isValidEmail(email_V)) {
+      setError("Email not Vaild");
+      return;
+    }
 
-  const handleDeleteEmail = (emailToDelete: string) => {
-    setItems(items.filter((item) => item.email !== emailToDelete));
-  };
+    setAllEmail((prev: any) => [...prev, email_V]);
+    setEmail(""); // clear input after adding
+    setError("");
+  }
+
+
+
+
+  // ✅ Delete email
+  const handleDeleteEmail = useCallback((emailToDelete: string) => {
+    setAllEmail((prev: any) => prev.filter((item: any) => item !== emailToDelete));
+  }, [setAllEmail]);
 
   return (
-    <div className="flex items-center gap-5">
-      <div className="border w-full rounded-md h-10 flex items-center">
-        {items?.slice(0, 1)?.map((item) => (
-          <div className="flex items-center space-x-1 px-2">
-            <Avatars
-              className="size-8!"
-              src={item.img || RandomImg(50, 50)}
-              alt="Attendees"
-              fallback="A"
-            />
-            <span>{item.email}</span>
-            <span>
+    <div className="flex flex-col gap-2 w-full">
+      <div className="flex items-center gap-5">
+        <div className="border w-full rounded-md min-h-10 flex items-center flex-wrap px-2 gap-2">
+          {emailAll?.slice(0, 1).map((item: any) => (
+            <div
+              key={item.id}
+              className="flex items-center space-x-1 bg-gray-100 rounded-md px-2 py-0.5"
+            >
+              <Avatars
+                className="size-5!"
+                src={"avater.png"}
+                alt="Attendees"
+                fallback={item?.charAt(0)?.toUpperCase()}
+              />
+              <span className="text-sm">{item}</span>
               <X
-                onClick={() => handleDeleteEmail(item.email)}
+                onClick={() => handleDeleteEmail(item)}
                 className="size-4 cursor-pointer"
               />
-            </span>
-          </div>
-        ))}
-        {items?.length > 1 && (
-          <div className="w-10 px-1 text-sm  bg-figma-primary text-white rounded-md grid place-items-center">
-            {items?.length}+
-          </div>
-        )}
+            </div>
+          ))}
 
-        <Input
-          type="email"
-          className="border-none"
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Type recipients email here"
-          value={email}
-        />
+          {emailAll?.length > 1 && (
+            <div className="px-2 text-sm bg-figma-primary text-white rounded-md">
+              +{emailAll?.length - 1}
+            </div>
+          )}
+
+          <Input
+            type="email"
+            className="border-none flex-1"
+            value={email}
+            placeholder="Type recipient email here"
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setError(""); // clear error while typing
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleAddEmail();
+              }
+            }}
+          />
+        </div>
+
+        <Button type="button" onClick={handleAddEmail}>
+          Add
+        </Button>
       </div>
-      <Button className="w-fit" type="button" onClick={handleAddEmail}>
-        Add
-      </Button>
+
+      {/* 🔴 Error Message Below Input */}
+      {error && (
+        <p className="text-red-500 text-sm ml-1">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

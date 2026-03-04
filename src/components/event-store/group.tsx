@@ -50,7 +50,7 @@ export default function GroupStore({ msg }: { msg: string }) {
   const [isDelivery, setIsDelivery] = useState<any>("offline");
   const [selectDate, setSelectDate] = useState<any>([]);
   const [progress, setProgress] = useState(0);
-
+  const [emailAll, setAllEmail] = useState<string[]>([]);
   const defaultValues = getValuesGroup(isDelivery, "200") as any;
   const defaultSchema = getSchema2(isDelivery) as any;
 
@@ -282,7 +282,7 @@ export default function GroupStore({ msg }: { msg: string }) {
                   setSelAccbility={setSelAccbility}
                 />
                 <FromTagInput name="tags" label="Tags" className="py-2" />
-                <EmailCollent />
+                <EmailCollent emailAll={emailAll} setAllEmail={setAllEmail} />
               </>
             ) : from.watch("delivery_type") === "online" ? (
               //  ============================= online =====================

@@ -7,10 +7,13 @@ export const chatApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getChatList: build.query({
       query: (arg?: Record<string, any>) => ({
-        url: "/chat/list",
+        url: "/group-chats/my/chat/list",
         method: "GET",
         params: arg,
       }),
+      transformResponse: (res: any) => {
+        return buildResponse(res);
+      },
       providesTags: [tagTypes.message],
     }),
     messageList: build.query({
