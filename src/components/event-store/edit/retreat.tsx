@@ -8,7 +8,6 @@ import { SingleCalendar } from "@/components/reuseable/single-date";
 import { Button, Checkbox, Label } from "@/components/ui";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { FieldValues, useForm } from "react-hook-form";
-import { ChevronRight } from "lucide-react";
 import Form from "@/components/reuseable/from";
 import Modal from "@/components/reuseable/modal";
 import { useModalState } from "@/hooks";
@@ -34,6 +33,7 @@ import {
 } from "@/components/dummy-data";
 import { ErrorInput } from "@/components/reuseable/error";
 import sonner from "@/components/reuseable/sonner";
+import { InputTime } from "@/components/reuseable/timeInput";
 
 const initialState = {
   holistic: false,
@@ -78,7 +78,7 @@ export default function RetreatEdit({
       event_description: event.event_description || "",
       holistic_discipline: event.holistic_discipline || [],
       event_date: event.event_date?.[0] || "",
-      event_time: event.event_time || [],
+      event_time: event.event_time?.[0] || [],
       event_duration: event.event_duration || "",
       tags: event.tags || [],
       city: event.city || "",
@@ -196,10 +196,9 @@ export default function RetreatEdit({
                         from.setValue("delivery_type", item.value);
                       }}
                       type="button"
-                      className={`font-normal transition-colors border bg-transparent text-figma-black ${
-                        item.value === get("delivery_type") &&
+                      className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
                         "bg-primary text-white"
-                      }`}
+                        }`}
                     >
                       <FavIcon
                         color={
@@ -227,10 +226,9 @@ export default function RetreatEdit({
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                     type="button"
                   >
                     {item.label}
@@ -251,7 +249,7 @@ export default function RetreatEdit({
               </div>
               <div>
                 <div className="border p-3 flex items-center flex-wrap gap-3 rounded-md">
-                  {disciplineOptions.slice(0, 10).map((item, idx) => (
+                  {disciplineOptions?.slice(0, 10).map((item, idx) => (
                     <label key={idx} className="flex items-center gap-3">
                       <Checkbox
                         checked={get("holistic_discipline")?.includes(
@@ -300,7 +298,7 @@ export default function RetreatEdit({
             <LocationDroupDown />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <SingleDateBox from={from} />
-              <MultipleTime from={from} setState={setState} />
+              <InputTime name="event_time" />
             </div>
             <PersonLimit read={true} />
             <TicketQuantity from={from} read={true} />
@@ -451,21 +449,4 @@ const SingleDateBox = ({ from }: any) => {
   );
 };
 
-//  ------------------- multiple time -------------------------
-const MultipleTime = ({ from, setState }: any) => {
-  const val = from.watch("event_time");
-  return (
-    <div className="w-full">
-      <Button
-        onClick={() => setState("istime", true)}
-        type="button"
-        className="flex h-10 w-full  bg-transparent border text-black font-normal justify-between items-center"
-      >
-        <span>Create time slot</span> <ChevronRight />
-      </Button>
-      {val?.length == 0 && (
-        <ErrorInput error={from?.formState?.errors?.event_time?.message} />
-      )}
-    </div>
-  );
-};
+

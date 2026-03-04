@@ -9,9 +9,11 @@ export default function EmailCollect() {
   const [email, setEmail] = useState("");
   const [items, setItems] = useState<{ img: string; email: string }[]>([]);
 
-  //   const { data: emailItem } = useEmailFindQuery({
-  //     email: email,
-  //   });
+  const { data: emailItem } = useEmailFindQuery({
+    email: email,
+  });
+
+  console.log(emailItem)
 
   //   useEffect(() => {}, [emailItem, items]);
 

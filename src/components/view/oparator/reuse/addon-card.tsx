@@ -94,6 +94,7 @@ export default function AddOnCard({ item, buy = true, href = "#" }: AddOnCardPro
                   onClick={() => {
                     if (ispayment) {
                       handlePayment(id)
+                      return
                     }
                     router.push(href)
                   }}

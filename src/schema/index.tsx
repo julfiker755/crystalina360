@@ -183,6 +183,19 @@ export const offline_sc = online_sc.extend({
   country: z.string().nonempty("country is required"),
 });
 
+// === retreat for single===
+export const on_sc = event.extend({
+  event_date: z.string().nonempty("date is required"),
+  event_time: z.string().nonempty("time is required"),
+});
+
+export const retreat_sc = on_sc.extend({
+  city: z.string().nonempty("city is required"),
+  province: z.string().nonempty("province is required"),
+  region: z.string().nonempty("region is required"),
+  country: z.string().nonempty("country is required"),
+});
+
 // === event group from  ==
 export const online_sc2 = event.extend({
   event_date: z.array(z.string()).nonempty("Date Slot is required"),

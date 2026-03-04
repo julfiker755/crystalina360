@@ -1,6 +1,5 @@
 "use client";
 import { disciplineOptions } from '@/components/dummy-data';
-import sonner from '@/components/reuseable/sonner';
 import { Button, Checkbox, Command, CommandEmpty, CommandGroup, CommandItem, CommandList, Popover, PopoverContent, PopoverTrigger } from '@/components/ui';
 import { addonType, helpers } from '@/lib';
 import { useBuyPlanMutation, useGetEvtListQuery, useGetSlgAddOnQuery, usePaymentInitOpMutation, useStoreQuestionMutation } from '@/redux/api/operator/opratorApi';
@@ -49,10 +48,10 @@ export default function AddOnQuestion() {
     const [eventOptions, setEventOptions] = useState<any[]>([]);
     const [terms, setIsTerms] = useState(false);
     const { data: eventList } = useGetEvtListQuery({})
-    const [storeQuestion] = useStoreQuestionMutation()
+    const [storeQuestion, { isLoading }] = useStoreQuestionMutation()
     const [formData, setFormData] = useState<FormData>(initFrom)
     const [errors, setErrors] = useState<FormErrors>({});
-    const [buyPlan, { isLoading: bugIsLoading }] = useBuyPlanMutation();
+    const [buyPlan] = useBuyPlanMutation();
     const [paymentInitOp] = usePaymentInitOpMutation();
 
     const exclusiveTypes = [
@@ -410,7 +409,7 @@ export default function AddOnQuestion() {
 
                                 {/* Submit */}
                                 <div className="pt-2">
-                                    <Button disabled={bugIsLoading} className="w-full h-12">Submit</Button>
+                                    <Button disabled={isLoading} className="w-full h-12">Submit</Button>
 
                                 </div>
                             </form>

@@ -33,6 +33,28 @@ export const getValuesOne = (isDelivery: string, ticket: string) => {
       tags: [],
       ticket_quantity: ticket,
     };
+  } else if (isDelivery === "offline_retreat") {
+    return {
+      img: "",
+      delivery_type: "offline",
+      event_purpose: "educational",
+      holistic_discipline: [],
+      event_title: "",
+      event_description: "",
+      country: "",
+      region: "",
+      province: "",
+      city: "",
+      event_date: "",
+      event_time: "",
+      min_person: "1",
+      max_person: ticket,
+      price: "",
+      event_duration: "less_than_30_minutes",
+      accessibility: [],
+      tags: [],
+      ticket_quantity: ticket,
+    };
   } else if (isDelivery == "online") {
     return {
       img: "",

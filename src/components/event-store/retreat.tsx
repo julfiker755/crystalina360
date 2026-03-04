@@ -8,7 +8,6 @@ import { SingleCalendar } from "@/components/reuseable/single-date";
 import { Button, Checkbox, Label } from "@/components/ui";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { FieldValues, useForm } from "react-hook-form";
-import { ChevronRight } from "lucide-react";
 import Form from "@/components/reuseable/from";
 import Modal from "@/components/reuseable/modal";
 import { useModalState } from "@/hooks";
@@ -31,6 +30,8 @@ import { useStoreEventsMutation } from "@/redux/api/operator/opratorApi";
 import { useRouter } from "next/navigation";
 import sonner from "../reuseable/sonner";
 import { disciplineOptions, durationOptions, purposeItem } from "../dummy-data";
+import { InputTime } from "../reuseable/timeInput";
+import { retreat_sc } from "@/schema";
 
 const initialState = {
   holistic: false,
@@ -47,21 +48,19 @@ export default function RetreatStore({ msg }: { msg: string }) {
   const [selectDate, setSelectDate] = useState<any>([]);
   const [progress, setProgress] = useState(0);
   const router = useRouter();
-  const defaultValues = getValuesOne(isDelivery, "200") as any;
-  const defaultSchema = getSchema(isDelivery) as any;
+  const defaultValues = getValuesOne("offline_retreat", "200") as any;
+
 
   const from = useForm({
-    resolver: zodResolver(defaultSchema),
+    resolver: zodResolver(retreat_sc),
     defaultValues: defaultValues,
     mode: "onChange",
   });
 
-  // accept: "video/*",
-  //   multiple: false
+
   const get = (v: any) => from.watch(v);
-  const delivaryType = get("delivery_type") == delivary_t.ondemand;
   const [{ files }, { getInputProps, clearFiles }] = useFileUpload({
-    accept: delivaryType ? "video/*" : "image/*",
+    accept: "image/*"
   });
 
   useEffect(() => {
@@ -129,25 +128,14 @@ export default function RetreatStore({ msg }: { msg: string }) {
       <Form className="py-15" from={from} onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-8">
-            {delivaryType ? (
-              <div>
-                <VideoBannerBox files={files} getInputProps={getInputProps} />
-                {!get("img") && (
-                  <ErrorInput
-                    error={from?.formState?.errors?.img?.message as string}
-                  />
-                )}
-              </div>
-            ) : (
-              <div>
-                <ImageBannerBox files={files} getInputProps={getInputProps} />
-                {!get("img") && (
-                  <ErrorInput
-                    error={from?.formState?.errors?.img?.message as string}
-                  />
-                )}
-              </div>
-            )}
+            <div>
+              <ImageBannerBox files={files} getInputProps={getInputProps} />
+              {!get("img") && (
+                <ErrorInput
+                  error={from?.formState?.errors?.img?.message as string}
+                />
+              )}
+            </div>
             {/*  ------ Select Delivery Type --------  */}
             <div>
               <label className="block text-lg mb-2 font-semibold">
@@ -163,10 +151,9 @@ export default function RetreatStore({ msg }: { msg: string }) {
                         from.setValue("delivery_type", item.value);
                       }}
                       type="button"
-                      className={`font-normal transition-colors border bg-transparent text-figma-black ${
-                        item.value === get("delivery_type") &&
+                      className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
                         "bg-primary text-white"
-                      }`}
+                        }`}
                     >
                       <FavIcon
                         color={
@@ -194,10 +181,9 @@ export default function RetreatStore({ msg }: { msg: string }) {
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                     type="button"
                   >
                     {item.label}
@@ -267,7 +253,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
             <LocationDroupDown />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <SingleDateBox from={from} />
-              <MultipleTime from={from} setState={setState} />
+              <InputTime name="event_time" />
             </div>
             <PersonLimit read={true} />
             <TicketQuantity from={from} read={true} />
@@ -461,21 +447,3 @@ const SingleDateBox = ({ from }: any) => {
   );
 };
 
-//  ------------------- multiple time -------------------------
-const MultipleTime = ({ from, setState }: any) => {
-  const val = from.watch("event_time");
-  return (
-    <div className="w-full">
-      <Button
-        onClick={() => setState("istime", true)}
-        type="button"
-        className="flex h-10 w-full  bg-transparent border text-black font-normal justify-between items-center"
-      >
-        <span>Create time slot</span> <ChevronRight />
-      </Button>
-      {val?.length == 0 && (
-        <ErrorInput error={from?.formState?.errors?.event_time?.message} />
-      )}
-    </div>
-  );
-};
