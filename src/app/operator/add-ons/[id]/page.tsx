@@ -125,7 +125,10 @@ export default function AddOnQuestion() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (validate()) {
-            const data = helpers.fromData(formData)
+            const data = helpers.fromData({
+                ...formData,
+                type: slug,
+            })
             const res = await storeQuestion(data).unwrap()
             if (res?.status) {
                 setFormData(initFrom)
@@ -138,13 +141,6 @@ export default function AddOnQuestion() {
                 if (res.status) {
                     const res1 = await paymentInitOp(res?.data?.invoice_no);
                     window.location.href = res1?.data?.data;
-                }
-                if (res.status) {
-                    sonner.success(
-                        "Payment Successful",
-                        "Your add-on is ready. Time to enJay!",
-                        "bottom-right",
-                    );
                 }
             }
         }
@@ -289,6 +285,7 @@ export default function AddOnQuestion() {
                                             onChange={handleChange}
                                             placeholder="Optional"
                                             error={errors.website_link}
+                                            type='url'
                                         />
                                         <FormField
                                             label="Primary Social Link"
@@ -297,6 +294,7 @@ export default function AddOnQuestion() {
                                             onChange={handleChange}
                                             error={errors.social_links}
                                             placeholder="Optional"
+                                            type='url'
                                         />
                                     </div>
 
@@ -412,7 +410,7 @@ export default function AddOnQuestion() {
 
                                 {/* Submit */}
                                 <div className="pt-2">
-                                    <Button className="w-full h-12">Submit</Button>
+                                    <Button disabled={bugIsLoading} className="w-full h-12">Submit</Button>
 
                                 </div>
                             </form>
