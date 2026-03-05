@@ -135,7 +135,6 @@
 //     );
 //   };
 
-
 //   return (
 //     <div className="flex h-[80vh] overflow-y-scroll w-full gap-x-5 container mx-auto my-10">
 //       <div
@@ -224,8 +223,17 @@
 // }
 
 import { useState, useRef, useEffect, useMemo } from "react";
-import { Search, Send, ArrowLeft, MoreVertical, Phone, Video, Paperclip, Smile } from "lucide-react";
-import { useStickToBottom } from 'use-stick-to-bottom';
+import {
+  Search,
+  Send,
+  ArrowLeft,
+  MoreVertical,
+  Phone,
+  Video,
+  Paperclip,
+  Smile,
+} from "lucide-react";
+import { useStickToBottom } from "use-stick-to-bottom";
 import { Button, Input } from "@/components/ui";
 import Avatars from "@/components/reuseable/avater";
 import { useGetProfileQuery } from "@/redux/api/authApi";
@@ -252,39 +260,115 @@ interface Contact {
 
 // --- Mock Data ---
 const MOCK_CONTACTS: Contact[] = [
-  { id: "1", name: "Sarah Wilson", avatar: "https://picsum.photos/seed/sarah/200", lastMessage: "Let's catch up later!", time: "10:45 AM", status: "online", unreadCount: 2 },
-  { id: "2", name: "James Miller", avatar: "https://picsum.photos/seed/james/200", lastMessage: "The project looks great.", time: "Yesterday", status: "offline" },
-  { id: "3", name: "Elena Rodriguez", avatar: "https://picsum.photos/seed/elena/200", lastMessage: "Can you send the file?", time: "Monday", status: "online" },
-  { id: "4", name: "David Chen", avatar: "https://picsum.photos/seed/david/200", lastMessage: "See you at the meeting.", time: "2:15 PM", status: "offline" },
-  { id: "5", name: "Maya Patel", avatar: "https://picsum.photos/seed/maya/200", lastMessage: "Thanks for the help!", time: "Just now", status: "online" },
+  {
+    id: "1",
+    name: "Sarah Wilson",
+    avatar: "https://picsum.photos/seed/sarah/200",
+    lastMessage: "Let's catch up later!",
+    time: "10:45 AM",
+    status: "online",
+    unreadCount: 2,
+  },
+  {
+    id: "2",
+    name: "James Miller",
+    avatar: "https://picsum.photos/seed/james/200",
+    lastMessage: "The project looks great.",
+    time: "Yesterday",
+    status: "offline",
+  },
+  {
+    id: "3",
+    name: "Elena Rodriguez",
+    avatar: "https://picsum.photos/seed/elena/200",
+    lastMessage: "Can you send the file?",
+    time: "Monday",
+    status: "online",
+  },
+  {
+    id: "4",
+    name: "David Chen",
+    avatar: "https://picsum.photos/seed/david/200",
+    lastMessage: "See you at the meeting.",
+    time: "2:15 PM",
+    status: "offline",
+  },
+  {
+    id: "5",
+    name: "Maya Patel",
+    avatar: "https://picsum.photos/seed/maya/200",
+    lastMessage: "Thanks for the help!",
+    time: "Just now",
+    status: "online",
+  },
 ];
 
 const MOCK_MESSAGES: Record<string, Message[]> = {
   "1": [
-    { id: "m1", senderId: "1", text: "Hey! How's it going?", timestamp: "10:30 AM" },
-    { id: "m2", senderId: "me", text: "Pretty good! Just working on the new chat UI.", timestamp: "10:32 AM" },
-    { id: "m3", senderId: "1", text: "Oh nice! Is it responsive?", timestamp: "10:33 AM" },
-    { id: "m4", senderId: "me", text: "Yes, absolutely. Works great on mobile too.", timestamp: "10:35 AM" },
-    { id: "m5", senderId: "1", text: "Let's catch up later!", timestamp: "10:45 AM" },
+    {
+      id: "m1",
+      senderId: "1",
+      text: "Hey! How's it going?",
+      timestamp: "10:30 AM",
+    },
+    {
+      id: "m2",
+      senderId: "me",
+      text: "Pretty good! Just working on the new chat UI.",
+      timestamp: "10:32 AM",
+    },
+    {
+      id: "m3",
+      senderId: "1",
+      text: "Oh nice! Is it responsive?",
+      timestamp: "10:33 AM",
+    },
+    {
+      id: "m4",
+      senderId: "me",
+      text: "Yes, absolutely. Works great on mobile too.",
+      timestamp: "10:35 AM",
+    },
+    {
+      id: "m5",
+      senderId: "1",
+      text: "Let's catch up later!",
+      timestamp: "10:45 AM",
+    },
   ],
   "2": [
-    { id: "m6", senderId: "2", text: "The project looks great.", timestamp: "Yesterday" },
-  ]
+    {
+      id: "m6",
+      senderId: "2",
+      text: "The project looks great.",
+      timestamp: "Yesterday",
+    },
+  ],
 };
 
 // --- Sub-Components ---
 
-function MessageBubble({ message, isMe }: { message: Message; isMe: boolean; key?: string | number }) {
+function MessageBubble({
+  message,
+  isMe,
+}: {
+  message: Message;
+  isMe: boolean;
+  key?: string | number;
+}) {
   return (
     <div className={`flex ${isMe ? "justify-end" : "justify-start"} mb-4`}>
       <div
-        className={`max-w-[80%] md:max-w-[70%] px-4 py-2.5 rounded-2xl shadow-sm ${isMe
-          ? "bg-black text-white rounded-tr-none"
-          : "bg-zinc-100 text-zinc-900 rounded-tl-none"
-          }`}
+        className={`max-w-[80%] md:max-w-[70%] px-4 py-2.5 rounded-2xl shadow-sm ${
+          isMe
+            ? "bg-black text-white rounded-tr-none"
+            : "bg-zinc-100 text-zinc-900 rounded-tl-none"
+        }`}
       >
         <p className="text-sm leading-relaxed">{message.text}</p>
-        <div className={`text-[10px] mt-1 ${isMe ? "text-zinc-400" : "text-zinc-500"} text-right`}>
+        <div
+          className={`text-[10px] mt-1 ${isMe ? "text-zinc-400" : "text-zinc-500"} text-right`}
+        >
           {message.timestamp}
         </div>
       </div>
@@ -295,7 +379,7 @@ function MessageBubble({ message, isMe }: { message: Message; isMe: boolean; key
 function ContactItem({
   contact,
   isSelected,
-  onClick
+  onClick,
 }: {
   contact: any;
   isSelected: boolean;
@@ -311,15 +395,24 @@ function ContactItem({
       `}
     >
       <div className="relative">
-        <Avatars src={contact?.group_event?.event?.img} fallback={"T"} alt="img" className="h-12 w-12" />
+        <Avatars
+          src={contact?.group_event?.event?.img}
+          fallback={"T"}
+          alt="img"
+          className="h-12 w-12"
+        />
         {contact.status === "online" && (
           <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-emerald-500" />
         )}
       </div>
       <div className="flex-1 text-left min-w-0">
         <div className="flex justify-between items-center mb-0.5">
-          <span className="font-semibold text-zinc-900 truncate">{contact?.group_event?.name}</span>
-          <span className="text-[11px] text-zinc-400 font-medium">{helpers.formatTime(contact?.updated_at)}</span>
+          <span className="font-semibold text-zinc-900 truncate">
+            {contact?.group_event?.name}
+          </span>
+          <span className="text-[11px] text-zinc-400 font-medium">
+            {helpers.formatTime(contact?.updated_at)}
+          </span>
         </div>
         {/* <div className="flex justify-between items-center">
           <p className="text-sm text-zinc-500 truncate">{contact.lastMessage}</p>
@@ -337,27 +430,32 @@ function ContactItem({
 // --- Main App ---
 
 export default function MessagingApp() {
-  const [selectedContactId, setSelectedContactId] = useState<string | null>(null);
+  const [selectedContactId, setSelectedContactId] = useState<string | null>(
+    null,
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [messageInput, setMessageInput] = useState("");
-  const [messages, setMessages] = useState<Record<string, Message[]>>(MOCK_MESSAGES);
+  const [messages, setMessages] =
+    useState<Record<string, Message[]>>(MOCK_MESSAGES);
   const [view, setView] = useState<"list" | "chat">("list");
-  const { data: profile } = useGetProfileQuery({})
+  const { data: profile } = useGetProfileQuery({});
   const { data: chatlist } = useGetChatListQuery({ per_page: 2 });
   // const { data: messagelist } = useMessageListQuery(selectedUser);
 
-  const selectedContact = useMemo(() =>
-    MOCK_CONTACTS.find(c => c.id === selectedContactId),
-    [selectedContactId]
+  const selectedContact = useMemo(
+    () => MOCK_CONTACTS.find((c) => c.id === selectedContactId),
+    [selectedContactId],
   );
 
-  console.log(chatlist)
+  console.log(chatlist);
 
   const filteredContacts = chatlist?.data?.filter((c: any) =>
-    c?.group_event?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+    c?.group_event?.name?.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  const currentMessages = selectedContactId ? (messages[selectedContactId] || []) : [];
+  const currentMessages = selectedContactId
+    ? messages[selectedContactId] || []
+    : [];
   const { scrollRef, contentRef } = useStickToBottom();
 
   const handleSendMessage = () => {
@@ -367,12 +465,15 @@ export default function MessagingApp() {
       id: Date.now().toString(),
       senderId: "me",
       text: messageInput,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      timestamp: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
     };
 
-    setMessages(prev => ({
+    setMessages((prev) => ({
       ...prev,
-      [selectedContactId]: [...(prev[selectedContactId] || []), newMessage]
+      [selectedContactId]: [...(prev[selectedContactId] || []), newMessage],
     }));
     setMessageInput("");
   };
@@ -380,19 +481,26 @@ export default function MessagingApp() {
   return (
     <div className="flex h-screen bg-zinc-50 overflow-hidden font-sans">
       {/* --- Sidebar --- */}
-      <aside className={`
+      <aside
+        className={`
         ${view === "list" ? "flex" : "hidden md:flex"}
         w-full md:w-[380px] flex-col border-r border-zinc-200 bg-white
-      `}>
+      `}
+      >
         <div className="p-6 border-b border-zinc-100">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-900">Messages</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+              Messages
+            </h1>
             <Button variant="ghost" size="icon" className="rounded-full">
               <MoreVertical size={20} className="text-zinc-500" />
             </Button>
           </div>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+              size={18}
+            />
             <Input
               placeholder="Search conversations..."
               className="pl-10 bg-zinc-100 border-none rounded-xl focus-visible:ring-1 focus-visible:ring-zinc-300"
@@ -403,51 +511,93 @@ export default function MessagingApp() {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          {filteredContacts && filteredContacts?.map((item: any, idx: any) => (
-            <ContactItem
-              key={item?.group_event_id}
-              contact={item}
-              isSelected={selectedContactId === item.group_event_id}
-              onClick={() => {
-                setSelectedContactId(item.group_event_id);
-                setView("chat");
-              }}
-            />
-          ))}
+          {filteredContacts &&
+            filteredContacts?.map((item: any, idx: any) => (
+              <ContactItem
+                key={item?.group_event_id}
+                contact={item}
+                isSelected={selectedContactId === item.group_event_id}
+                onClick={() => {
+                  setSelectedContactId(item.group_event_id);
+                  setView("chat");
+                }}
+              />
+            ))}
         </div>
       </aside>
 
       {/* --- Main Chat --- */}
-      <main className={`
+      <main
+        className={`
         ${view === "chat" ? "flex" : "hidden md:flex"}
         flex-1 flex-col bg-white relative
-      `}>
+      `}
+      >
         {selectedContact ? (
           <>
             <header className="h-20 border-b border-zinc-100 flex items-center justify-between px-6 bg-white/80 backdrop-blur-md sticky top-0 z-10">
               <div className="flex items-center gap-4">
-                <Button variant="ghost" size="icon" className="md:hidden -ml-2" onClick={() => setView("list")}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="md:hidden -ml-2"
+                  onClick={() => setView("list")}
+                >
                   <ArrowLeft size={20} />
                 </Button>
-                <Avatars src={selectedContact.avatar} fallback={selectedContact.name} alt="img" className="h-10 w-10" />
+                <Avatars
+                  src={selectedContact.avatar}
+                  fallback={selectedContact.name}
+                  alt="img"
+                  className="h-10 w-10"
+                />
                 <div>
-                  <h2 className="font-bold text-zinc-900 leading-tight">{selectedContact.name}</h2>
+                  <h2 className="font-bold text-zinc-900 leading-tight">
+                    {selectedContact.name}
+                  </h2>
                   <p className="text-xs text-emerald-500 font-medium">
-                    {selectedContact.status === "online" ? "Active now" : "Offline"}
+                    {selectedContact.status === "online"
+                      ? "Active now"
+                      : "Offline"}
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-1">
-                <Button variant="ghost" size="icon" className="rounded-full text-zinc-500"><Phone size={20} /></Button>
-                <Button variant="ghost" size="icon" className="rounded-full text-zinc-500"><Video size={20} /></Button>
-                <Button variant="ghost" size="icon" className="rounded-full text-zinc-500"><MoreVertical size={20} /></Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full text-zinc-500"
+                >
+                  <Phone size={20} />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full text-zinc-500"
+                >
+                  <Video size={20} />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full text-zinc-500"
+                >
+                  <MoreVertical size={20} />
+                </Button>
               </div>
             </header>
 
-            <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 bg-zinc-50/50">
+            <div
+              ref={scrollRef}
+              className="flex-1 overflow-y-auto p-6 bg-zinc-50/50"
+            >
               <div ref={contentRef}>
                 {currentMessages.map((msg) => (
-                  <MessageBubble key={msg.id} message={msg} isMe={msg.senderId === "me"} />
+                  <MessageBubble
+                    key={msg.id}
+                    message={msg}
+                    isMe={msg.senderId === "me"}
+                  />
                 ))}
               </div>
             </div>
@@ -455,8 +605,20 @@ export default function MessagingApp() {
             <footer className="p-6 bg-white border-t border-zinc-100">
               <div className="max-w-4xl mx-auto flex items-center gap-3">
                 <div className="flex items-center gap-1">
-                  <Button variant="ghost" size="icon" className="rounded-full text-zinc-400"><Paperclip size={20} /></Button>
-                  <Button variant="ghost" size="icon" className="rounded-full text-zinc-400"><Smile size={20} /></Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="rounded-full text-zinc-400"
+                  >
+                    <Paperclip size={20} />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="rounded-full text-zinc-400"
+                  >
+                    <Smile size={20} />
+                  </Button>
                 </div>
                 <div className="flex-1 relative">
                   <Input
@@ -487,8 +649,12 @@ export default function MessagingApp() {
             <div className="w-20 h-20 bg-zinc-100 rounded-full flex items-center justify-center mb-6">
               <Send size={32} className="text-zinc-300" />
             </div>
-            <h2 className="text-xl font-bold text-zinc-900 mb-2">Select a conversation</h2>
-            <p className="text-zinc-500 max-w-xs">Choose a contact from the list to start messaging.</p>
+            <h2 className="text-xl font-bold text-zinc-900 mb-2">
+              Select a conversation
+            </h2>
+            <p className="text-zinc-500 max-w-xs">
+              Choose a contact from the list to start messaging.
+            </p>
           </div>
         )}
       </main>

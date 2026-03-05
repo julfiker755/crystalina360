@@ -2,6 +2,7 @@ import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 
 export const authApi = baseApi.injectEndpoints({
+  overrideExisting: true,
   endpoints: (build) => ({
     LoginIn: build.mutation({
       query: (data) => {
@@ -65,6 +66,14 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.profile],
     }),
+    addCompany: build.mutation({
+      query: (data) => ({
+        url: "/addCompany",
+        method: "POST",
+        ContentType: "multipart/form-data",
+        data,
+      }),
+    }),
     updatePass: build.mutation({
       query: (data) => ({
         url: "/change/password",
@@ -92,4 +101,5 @@ export const {
   useUpdateProfileMutation,
   useUpdatePassMutation,
   useEmailFindQuery,
+  useAddCompanyMutation
 } = authApi;

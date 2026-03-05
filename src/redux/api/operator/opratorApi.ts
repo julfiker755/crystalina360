@@ -129,5 +129,5 @@ export const {
   usePaymentInitOpMutation,
   useGetEvtListQuery,
   useGetSlgAddOnQuery,
-  useStoreQuestionMutation
+  useStoreQuestionMutation,
 } = opratorsApi;

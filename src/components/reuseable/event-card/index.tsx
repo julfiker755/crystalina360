@@ -29,7 +29,7 @@ export default function EventCard({ item, wish = false }: EventCardProps) {
     delivery_type,
     img,
     is_loved_by_user,
-    organizer_label
+    organizer_label,
   } = item || {};
 
   const [wishEvents, { isLoading }] = useWishEventsMutation();
@@ -61,7 +61,6 @@ export default function EventCard({ item, wish = false }: EventCardProps) {
       await wishEvents(data).unwrap();
     }
   };
-
 
   return (
     <div className="overflow-hidden  transition-shadow bg-figma-gray rounded-lg p-3">
@@ -116,13 +115,14 @@ export default function EventCard({ item, wish = false }: EventCardProps) {
             />
             <span className="text-lg items-center flex space-x-1 font-bold text-foreground">
               <h5>{organizer?.name}</h5>
-              {organizer_label ? ("") : (
+              {organizer_label ? (
+                ""
+              ) : (
                 <StarBadge
                   is_subscribed={organizer?.is_subscribed}
                   is_top_seller={organizer?.is_top_seller}
                 />
               )}
-
             </span>
           </div>
           <div className="border rounded-md w-fit h-fit bg-[#F2F2F2] font-medium py-1 px-3">

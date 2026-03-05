@@ -17,8 +17,6 @@ export default function AddOnsAll() {
   });
   const { data: myAddOn, isLoading: addOnLoading } = useAddsonCartQuery({});
 
-
-
   return (
     <div className="py-10 container">
       <h5 className="text-center h1 pb-8">Add-ons</h5>
@@ -75,7 +73,11 @@ export default function AddOnsAll() {
             </Repeat>
           ) : (
             addon?.data?.map((item: any, index: any) => (
-              <AddOnCard item={item} key={index} href={`/operator/add-ons/${item.id}`} />
+              <AddOnCard
+                item={item}
+                key={index}
+                href={`/operator/add-ons/${item.id}`}
+              />
             ))
           )}
         </div>

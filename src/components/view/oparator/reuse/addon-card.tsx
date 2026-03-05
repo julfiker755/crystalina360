@@ -19,10 +19,22 @@ interface AddOnCardProps {
   href?: string;
 }
 
-export default function AddOnCard({ item, buy = true, href = "#" }: AddOnCardProps) {
-  const { id, benefits, title, price, bio, primary_color, secondary_color, slug } =
-    item || {};
-  const router = useRouter()
+export default function AddOnCard({
+  item,
+  buy = true,
+  href = "#",
+}: AddOnCardProps) {
+  const {
+    id,
+    benefits,
+    title,
+    price,
+    bio,
+    primary_color,
+    secondary_color,
+    slug,
+  } = item || {};
+  const router = useRouter();
   const [global, updateGlobal] = useGlobalState({
     show: false,
     data: {} as any,
@@ -31,10 +43,7 @@ export default function AddOnCard({ item, buy = true, href = "#" }: AddOnCardPro
   const [paymentInitOp] = usePaymentInitOpMutation();
   const token = helpers.hasAuthToken();
 
-  const exclusiveTypes = [
-    addOns.miniPdfCourse,
-    addOns.videoMasterclass
-  ];
+  const exclusiveTypes = [addOns.miniPdfCourse, addOns.videoMasterclass];
   const ispayment = exclusiveTypes.includes(slug);
 
   const handlePayment = async (buy_id: string) => {
@@ -93,10 +102,10 @@ export default function AddOnCard({ item, buy = true, href = "#" }: AddOnCardPro
                   }}
                   onClick={() => {
                     if (ispayment) {
-                      handlePayment(id)
-                      return
+                      handlePayment(id);
+                      return;
                     }
-                    router.push(href)
+                    router.push(href);
                   }}
                   disabled={bugIsLoading}
                   className="rounded-full text-white"

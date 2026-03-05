@@ -1,69 +1,42 @@
 "use client";
-import { ImgBox } from "@/components/reuseable/Img-box";
 import {
   BadgeShow,
   InputShow,
   TextAreaShow,
 } from "@/components/reuseable/input-show";
-import Modal2 from "@/components/reuseable/modal2";
 import { SubTitle } from "@/components/reuseable/sub-title";
 import TabBox from "@/components/reuseable/tab-box";
 import UpdatePassword from "@/components/reuseable/update-password";
 import { Button, TabsContent } from "@/components/ui";
-import { CloseIcon } from "@/components/view/common/btn-modal";
-import ProfileEdit2 from "@/components/view/oparator/simple/edit-profile";
-import { useModalState } from "@/hooks";
 import { useGetProfileQuery } from "@/redux/api/authApi";
 import FavIcon from "@/icon/favIcon";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { useConnectPaypalMutation } from "@/redux/api/operator/opratorApi";
-import { authKey, helpers } from "@/lib";
-import { useAppDispatch } from "@/redux/hooks";
-import { clearAuth } from "@/redux/features/authSlice";
-import { useRouter } from "next/navigation";
-import { getInterval } from "@/lib/function-utils";
-import { baseApi } from "@/redux/api/baseApi";
+import Link from "next/link";
+import { Switch } from "@/components/ui/switch";
 
-const initState = {
-  isProfile: false,
-  isPassword: false,
-};
 export default function Profile() {
-  const [state, setState] = useModalState(initState);
   const { data: profile } = useGetProfileQuery({});
   const {
-    img,
     name,
     email,
     bio,
     skills,
-    subscribed_plans,
     residence_city,
     residence_province,
     residence_region,
     residence_country,
-    marketing_consent,
+    gender,
+    sdi_code,
+    code_fiscal,
+    province_code,
+    vat_number,
+    company,
+    marketing_consent
   } = profile?.data?.user || {};
   const [connectPaypal, { isLoading: paypalLoading }] =
     useConnectPaypalMutation();
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-
-  const stashItem = [
-    {
-      id: 1,
-      icon: "completed",
-      title: "Total Events",
-      count: profile?.data?.total_events,
-    },
-    {
-      id: 2,
-      icon: "cost",
-      title: "Total revenue",
-      count: profile?.data?.total_revenue,
-    },
-  ];
 
   const collectPaypal = async () => {
     const res = await connectPaypal({}).unwrap();
@@ -73,190 +46,134 @@ export default function Profile() {
   };
 
   return (
-    <div className="container py-10">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        <div className="bg-figma-delete px-2 lg:px-6 py-8 rounded-md space-y-6 *:text-figma-black">
-          <div>
-            <ImgBox
-              src={img || "/avater.png"}
-              className="w-32 h-32 rounded-full mx-auto"
-              alt="Profile"
-            />
-            <div className="flex items-center justify-center space-x-2 mt-3">
-              <span className="font-medium text-base">{name}</span>
-            </div>
-            <div className="flex items-center justify-center space-x-2">
-              <span>{email}</span>
-            </div>
-            <div className="bg-figma-delete w-full py-1 px-3 rounded-md">
-              <div className="flex justify-between space-x-10 bg-white px-2 py-1 mx-auto rounded-md max-w-xs mt-3">
-                <div className="flex items-center">
-                  <FavIcon name="a_plans" />{" "}
-                  <span className="ml-2 text-base font-normal">
-                    Active plan:
-                  </span>
-                </div>
-                <div className="font-medium text-lg">
-                  {subscribed_plans?.interval
-                    ? getInterval[subscribed_plans?.interval]
-                    : "Free"}
-                </div>
-              </div>
-            </div>
-          </div>
-          <h1 className="w-full h-px bg-[#C4ACA4]/15"></h1>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {stashItem?.map((item) => (
-              <div
-                className="p-3 flex  items-center bg-white rounded-md space-y-0.5"
-                key={item.id}
+    <div>
+      <div className="p-4 rounded-md space-y-6 h-full *:text-figma-black">
+        <SubTitle className="text-figma-black" text="Profile" />
+        <TabBox
+          defaultValue="overview"
+          tabItem={["Overview", "Change password"]}
+          className="justify-start w-fit"
+          tabStyle="border-b  border-transparent data-[state=active]:border-primary!  data-[state=active]:border-b!  data-[state=active]:text-primary"
+        >
+          <TabsContent value="overview" className="p-0">
+            <div className="space-y-7 pt-4 relative">
+              <Link
+                className="absolute  -top-10 right-0"
+                href={`/operator/profile/update`}
               >
-                <div className="grid size-10 rounded-md place-items-center">
-                  <FavIcon className="size-6" name={item.icon as any} />
+                <Button>
+                  {" "}
+                  <FavIcon color="#fff" name="edit2" />
+                  Edit profile
+                </Button>
+              </Link>
+
+
+              <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                <InputShow label="Your full name" value={name || "N/A"} />
+                <InputShow label="Email" value={email || "N/A"} />
+                <InputShow label="City" value={residence_city || "N/A"} />
+                <InputShow
+                  label="Province"
+                  value={residence_province || "N/A"}
+                />
+                <InputShow label="Region" value={residence_region || "N/A"} />
+                <InputShow label="Country" value={residence_country || "N/A"} />
+                <InputShow label="Gender" value={gender || "N/A"} />
+                <InputShow label="Sdi Code" value={sdi_code || "N/A"} />
+                <InputShow label="Code Fiscal" value={code_fiscal || "N/A"} />
+                <InputShow label="Province Code" value={province_code || "N/A"} />
+                <InputShow label="Vat Number" value={vat_number || "N/A"} />
+                {vat_number?.length > 0 && (
+                  <>
+                    <InputShow label="Company Name" value={company?.company_name || "N/A"} />
+                    <InputShow label="Cmpany Address" value={company?.company_address || "N/A"} />
+                    <InputShow label="Company Postal Code" value={company?.company_postal_code || "N/A"} />
+                    <InputShow label="Company City" value={company?.company_city || "N/A"} />
+                    <InputShow label="Company Province Code" value={company?.company_province_code || "N/A"} />
+                  </>
+                )}
+                <div className="lg:col-span-2">
+                  <TextAreaShow label="Your bio" value={bio || "N/A"} />
                 </div>
-                <div>
-                  <p className="text-figma-black">{item.title}</p>
-                  <h2>{item.count || 0}</h2>
+                <div className="lg:col-span-2">
+                  <BadgeShow label="Your skills" items={skills || []} />
+                </div>
+                <div className="bg-gray-50/50 col-span-2 rounded-2xl p-6 border border-gray-100">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="space-y-1">
+                      <label
+                        htmlFor="marketing"
+                        className="font-bold text-figma-black"
+                      >
+                        Marketing Consent
+                      </label>
+                      <p className="text-sm text-gray-500">
+                        Receive updates about new features, promotions, and
+                        personalized recommendations.
+                      </p>
+                    </div>
+                    <Switch
+                      id="airplane-mode"
+                      checked={marketing_consent}
+                    />
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-          <h1 className="w-full h-px bg-[#C4ACA4]/15"></h1>
-          <div className="p-3 flex last:col-span-2 items-center bg-white rounded-md space-y-0.5">
-            <div className="grid size-10 rounded-md place-items-center">
-              <FavIcon className="size-6" name="ongoing_events" />
-            </div>
-            <div>
-              <p className="text-figma-black">Joined since</p>
-              <h2>{profile?.data?.user?.joined_date}</h2>
-            </div>
-          </div>
 
-          <div className="flex justify-center mt-5">
-            <Button
-              onClick={() => {
-                router.push("/operator");
-                helpers.removeAuthCookie(authKey);
-                dispatch(clearAuth());
-                dispatch(baseApi.util.resetApiState());
-              }}
-              variant="destructive"
-              size="lg"
-              className="w-fit"
-            >
-              <FavIcon className="size-5" name="logout" />
-              Logout
-            </Button>
-          </div>
-        </div>
-
-        <div className="col-span-1 lg:col-span-2">
-          <div className="p-4 rounded-md space-y-6 h-full *:text-figma-black">
-            <SubTitle className="text-figma-black" text="Profile" />
-            <TabBox
-              defaultValue="overview"
-              tabItem={["Overview", "Change password"]}
-              className="justify-start w-fit"
-              tabStyle="border-b  border-transparent data-[state=active]:border-primary!  data-[state=active]:border-b!  data-[state=active]:text-primary"
-            >
-              <TabsContent value="overview" className="p-0">
-                <div className="space-y-7 pt-4 relative">
+              <div className="border p-3 rounded-md flex-col lg:flex-row lg:flex items-center justify-center gap-10">
+                <div>
+                  To collect and receive revenue generated from events, you will
+                  need to connect your PayPal account to the system. This will
+                  allow payments to be processed and transferred to you smoothly
+                  and securely
+                </div>
+                {/* PayPal connected */}
+                {profile?.data?.user?.paypal_merchant_id?.length > 0 ? (
                   <Button
-                    onClick={() => setState("isProfile", true)}
-                    className="absolute  -top-10 right-0"
+                    disabled
+                    className="bg-white border disabled:opacity-80 border-primary/20 text-black font-medium mt-5 lg:mt-0"
                   >
-                    {" "}
-                    <FavIcon color="#fff" name="edit2" />
-                    Edit profile
+                    <Image
+                      src={"/paypal.svg"}
+                      width={20}
+                      height={20}
+                      alt="img"
+                    />
+                    PayPal Connected
                   </Button>
-                  <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-                    <InputShow label="Your full name" value={name || "N/A"} />
-                    <InputShow label="Email" value={email || "N/A"} />
-                  </div>
-                  <TextAreaShow label="Your bio" value={bio || "N/A"} />
-                  <BadgeShow label="Your skills" items={skills || []} />
-                  <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-                    <InputShow label="City" value={residence_city || "N/A"} />
-                    <InputShow
-                      label="Province"
-                      value={residence_province || "N/A"}
+                ) : (
+                  <Button
+                    disabled={paypalLoading}
+                    onClick={() => collectPaypal()}
+                    className="bg-white border border-primary/20 text-black font-medium mt-5 lg:mt-0"
+                  >
+                    <Image
+                      src={"/paypal.svg"}
+                      width={20}
+                      height={20}
+                      alt="img"
                     />
-                    <InputShow
-                      label="Region"
-                      value={residence_region || "N/A"}
-                    />
-                    <InputShow
-                      label="Country"
-                      value={residence_country || "N/A"}
-                    />
-                  </div>
-                  <div className="border p-3 rounded-md flex-col lg:flex-row lg:flex items-center justify-center gap-10">
-                    <div>
-                      To collect and receive revenue generated from events, you
-                      will need to connect your PayPal account to the system.
-                      This will allow payments to be processed and transferred
-                      to you smoothly and securely
-                    </div>
-                    {/* PayPal connected */}
-                    {profile?.data?.user?.paypal_merchant_id?.length > 0 ? (
-                      <Button
-                        disabled
-                        className="bg-white border disabled:opacity-80 border-primary/20 text-black font-medium mt-5 lg:mt-0"
-                      >
-                        <Image
-                          src={"/paypal.svg"}
-                          width={20}
-                          height={20}
-                          alt="img"
-                        />
-                        PayPal Connected
-                      </Button>
-                    ) : (
-                      <Button
-                        disabled={paypalLoading}
-                        onClick={() => collectPaypal()}
-                        className="bg-white border border-primary/20 text-black font-medium mt-5 lg:mt-0"
-                      >
-                        <Image
-                          src={"/paypal.svg"}
-                          width={20}
-                          height={20}
-                          alt="img"
-                        />
-                        {paypalLoading
-                          ? "Connecting your Paypal"
-                          : "Connect your Paypal account"}
-                        <ArrowRight className="text-[#2790C3]" />
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </TabsContent>
+                    {paypalLoading
+                      ? "Connecting your Paypal"
+                      : "Connect your Paypal account"}
+                    <ArrowRight className="text-[#2790C3]" />
+                  </Button>
+                )}
+              </div>
+            </div>
+          </TabsContent>
 
-              <TabsContent value="change-password" className="space-y-6">
-                <div className="pt-5">
-                  <UpdatePassword
-                    btnStyle="flex w-fit justify-end"
-                    className="space-y-8"
-                  />
-                </div>
-              </TabsContent>
-            </TabBox>
-          </div>
-        </div>
+          <TabsContent value="change-password" className="space-y-6">
+            <div className="pt-5">
+              <UpdatePassword
+                btnStyle="flex w-fit justify-end"
+                className="space-y-8"
+              />
+            </div>
+          </TabsContent>
+        </TabBox>
       </div>
-      {/* ====== profie edit======= */}
-      <Modal2
-        open={state.isProfile}
-        setIsOpen={(v) => setState("isProfile", v)}
-        className="sm:max-w-xl"
-      >
-        <CloseIcon
-          className="mt-2 mr-2"
-          onClose={() => setState("isProfile", false)}
-        />
-        <ProfileEdit2 />
-      </Modal2>
     </div>
   );
 }

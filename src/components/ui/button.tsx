@@ -15,8 +15,7 @@ const buttonVariants = cva(
         ongoing: "bg-[#F0FFF1]  font-medium  text-[#009F05]",
         upcoming: "bg-[#FFF4F0] font-medium text-[#99796F]",
         complete: "bg-[#FFF4F0] font-medium text-[#99796F]",
-        outline:
-          "border bg-background",
+        outline: "border bg-background",
         secondary: "bg-[#F8F8F8] text-secondary-foreground border",
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",

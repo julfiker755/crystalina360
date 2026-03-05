@@ -3,8 +3,6 @@ import { Button, Input } from "@/components/ui";
 import { X } from "lucide-react";
 import React, { useState, useCallback } from "react";
 
-
-
 export default function EmailCollect({ emailAll, setAllEmail }: any) {
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -16,7 +14,7 @@ export default function EmailCollect({ emailAll, setAllEmail }: any) {
   // ✅ Add email function
 
   const handleAddEmail = () => {
-    setError("")
+    setError("");
     const email_V = email.trim();
 
     if (!email_V) {
@@ -31,15 +29,17 @@ export default function EmailCollect({ emailAll, setAllEmail }: any) {
     setAllEmail((prev: any) => [...prev, email_V]);
     setEmail(""); // clear input after adding
     setError("");
-  }
-
-
-
+  };
 
   // ✅ Delete email
-  const handleDeleteEmail = useCallback((emailToDelete: string) => {
-    setAllEmail((prev: any) => prev.filter((item: any) => item !== emailToDelete));
-  }, [setAllEmail]);
+  const handleDeleteEmail = useCallback(
+    (emailToDelete: string) => {
+      setAllEmail((prev: any) =>
+        prev.filter((item: any) => item !== emailToDelete),
+      );
+    },
+    [setAllEmail],
+  );
 
   return (
     <div className="flex flex-col gap-2 w-full">
@@ -94,11 +94,7 @@ export default function EmailCollect({ emailAll, setAllEmail }: any) {
       </div>
 
       {/* 🔴 Error Message Below Input */}
-      {error && (
-        <p className="text-red-500 text-sm ml-1">
-          {error}
-        </p>
-      )}
+      {error && <p className="text-red-500 text-sm ml-1">{error}</p>}
     </div>
   );
 }

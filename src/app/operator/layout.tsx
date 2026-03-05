@@ -6,7 +6,7 @@ import { childrenProps } from "@/types";
 export default function OperatorLayout({ children }: childrenProps) {
   return (
     <>
-      <MissingInfo />
+      <MissingInfo path="/operator/profile/update" />
       <Navber />
       {children}
       <Footer />
