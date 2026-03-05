@@ -16,7 +16,7 @@ export default function UserHome() {
   const { user } = useAppSelector((state: any) => state.auth);
   return (
     <>
-      <MissingInfo />
+      <MissingInfo href={`/profile/update`} />
       <HeroSec role={user?.role} />
       <KeyFeature role={user?.role} />
       <ExploreEvents />

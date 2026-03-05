@@ -3,21 +3,13 @@ import { useGetProfileQuery } from "@/redux/api/authApi";
 import { Button } from "@/components/ui";
 import { SubTitle } from "@/components/reuseable/sub-title";
 import { ImgBox } from "@/components/reuseable/Img-box";
-import { useLogout, useModalState } from "@/hooks";
-import Modal2 from "@/components/reuseable/modal2";
-import { CloseIcon } from "../../common/btn-modal";
-import ProfileEdit from "./profile-edit";
-import UpdatePassword from "@/components/reuseable/update-password";
+import { useLogout } from "@/hooks";
 import FavIcon from "@/icon/favIcon";
+import Link from "next/link";
 
-const initState = {
-  isProfile: false,
-  isPassword: false,
-};
 
 export default function ProfileBox() {
   const { logout, isLoading: logoutLoading } = useLogout();
-  const [state, setState] = useModalState(initState);
   const { data: profile } = useGetProfileQuery({});
   const { img, name, email } = profile?.data?.user || {};
 
@@ -42,7 +34,7 @@ export default function ProfileBox() {
     },
   ];
   return (
-    <div className="bg-figma-gray p-4 rounded-md space-y-6 *:text-figma-black">
+    <div className="bg-figma-gray h-fit p-4 rounded-md space-y-6 *:text-figma-black">
       <SubTitle className="text-figma-black" text="Basic info" />
       <div>
         <ImgBox
@@ -80,12 +72,15 @@ export default function ProfileBox() {
         ))}
       </div>
       <div className="space-y-3">
-        <Button
-          onClick={() => setState("isProfile", true)}
-          className="w-full text-white!"
-        >
-          Edit Profile
-        </Button>
+        <div>
+          <Link href={`/profile/update`}>
+            <Button
+              className="w-full text-white!"
+            >
+              Edit Profile
+            </Button>
+          </Link>
+        </div>
         <Button
           onClick={() => logout()}
           className="w-full text-primary! bg-transparent border disabled:opacity-100"
@@ -94,48 +89,6 @@ export default function ProfileBox() {
           Log Out
         </Button>
       </div>
-      {/* ========== edit profile modal ==========  */}
-      <Modal2
-        open={state.isProfile}
-        setIsOpen={(v) => setState("isProfile", v)}
-        className="sm:max-w-xl"
-      >
-        <CloseIcon
-          className="mt-2 mr-2"
-          onClose={() => setState("isProfile", false)}
-        />
-        <ProfileEdit>
-          <div
-            onClick={() => {
-              setState("isPassword", true);
-              setState("isProfile", false);
-            }}
-            className="text-primary cursor-pointer text-end underline mt-2"
-          >
-            Change Password
-          </div>
-        </ProfileEdit>
-      </Modal2>
-      {/* ========== update password Modal ==========  */}
-      <Modal2
-        open={state.isPassword}
-        setIsOpen={(v) => setState("isPassword", v)}
-        className="sm:max-w-lg"
-      >
-        <CloseIcon
-          className="mt-2 mr-2"
-          onClose={() => setState("isPassword", false)}
-        />
-        <div className="pb-2">
-          <div className="my-5">
-            <h2 className="font-bold text-center">Change Password</h2>
-            <p className="text-center text-primary text-sm">
-              Please fill in the correct information to update your account
-            </p>
-          </div>
-          <UpdatePassword setState={setState} btnStyle="" />
-        </div>
-      </Modal2>
     </div>
   );
 }

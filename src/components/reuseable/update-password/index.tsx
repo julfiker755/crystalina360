@@ -19,7 +19,6 @@ export default function UpdatePassword({
   btnStyle2,
   className,
   inputStyle,
-  setState,
 }: any) {
   const { user } = useAppSelector((state: AppState) => state.auth);
   const [updatePass, { isLoading }] = useUpdatePassMutation();
@@ -48,7 +47,6 @@ export default function UpdatePassword({
           "Your password has been updated successfully",
         );
         from2.reset();
-        setState("isPassword", false);
       }
     } catch (err: any) {
       setError(err?.data?.message);
