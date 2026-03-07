@@ -70,6 +70,9 @@ export default function EventAll() {
   const upcommingItem = events?.data?.data?.filter(
     (item: any) => item.status === "upcoming",
   );
+  const completeItem = events?.data?.data?.filter(
+    (item: any) => item.status === "complete",
+  );
 
   return (
     <div className="container pb-10">
@@ -135,7 +138,7 @@ export default function EventAll() {
               <NoItemData title="No Events Items Available at the Moment" />
             )}
             {ongoingItem?.length > 0 && (
-              <div>
+              <div className="mt-10">
                 <h2 className="text-2xl text-black">Ongoing Events</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {ongoingItem?.map((item: any, idx: any) => (
@@ -148,10 +151,22 @@ export default function EventAll() {
             )}
 
             {upcommingItem?.length > 0 && (
-              <div>
+              <div className="mt-10">
                 <h2 className="text-2xl text-black">Upcoming Events</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {upcommingItem.map((item: any, idx: any) => (
+                    <Link key={idx} href={`/operator/events/${item?.id}`}>
+                      <EventCard item={item} />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+            {completeItem?.length > 0 && (
+              <div className="mt-10">
+                <h2 className="text-2xl text-black">Completed Events</h2>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {completeItem.map((item: any, idx: any) => (
                     <Link key={idx} href={`/operator/events/${item?.id}`}>
                       <EventCard item={item} />
                     </Link>
