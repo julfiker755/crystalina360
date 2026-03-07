@@ -27,9 +27,12 @@ export default function MissingInfo({ path }: any) {
         !residence_country;
 
       if (isMissing) {
-        const timer = setTimeout(() => {
-          router.push(path);
-        }, 3 * 60 * 1000); // 3 minutes
+        const timer = setTimeout(
+          () => {
+            router.push(path);
+          },
+          3 * 60 * 1000,
+        ); // 3 minutes
 
         return () => clearTimeout(timer);
       }

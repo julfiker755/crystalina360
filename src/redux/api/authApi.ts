@@ -87,6 +87,13 @@ export const authApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    aiChat: build.mutation({
+      query: (data) => ({
+        url: "/ai",
+        method: "POST",
+        data,
+      }),
+    }),
   }),
 });
 
@@ -101,5 +108,6 @@ export const {
   useUpdateProfileMutation,
   useUpdatePassMutation,
   useEmailFindQuery,
-  useAddCompanyMutation
+  useAddCompanyMutation,
+  useAiChatMutation,
 } = authApi;

@@ -348,3 +348,16 @@
   margin-right: 10px !important;
   overflow: hidden !important;
 }
+
+/* animation all ok */
+@keyframes wave {
+  0% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1.6);
+  }
+  100% {
+    transform: scaleY(0.3);
+  }
+}

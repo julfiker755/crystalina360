@@ -7,7 +7,6 @@ import { useLogout } from "@/hooks";
 import FavIcon from "@/icon/favIcon";
 import Link from "next/link";
 
-
 export default function ProfileBox() {
   const { logout, isLoading: logoutLoading } = useLogout();
   const { data: profile } = useGetProfileQuery({});
@@ -74,11 +73,7 @@ export default function ProfileBox() {
       <div className="space-y-3">
         <div>
           <Link href={`/profile/update`}>
-            <Button
-              className="w-full text-white!"
-            >
-              Edit Profile
-            </Button>
+            <Button className="w-full text-white!">Edit Profile</Button>
           </Link>
         </div>
         <Button

@@ -32,14 +32,11 @@ export default function Profile() {
           "Privacy Policy",
           "FAQ",
           "Coupons",
-          "Security"
+          "Security",
         ]}
         tabStyle="border-b border-transparent data-[state=active]:border-primary!  data-[state=active]:border-b!  data-[state=active]:text-primary"
       >
-        <TabsContent
-          value="terms-&-conditions"
-          className="mt-8 space-y-6"
-        >
+        <TabsContent value="terms-&-conditions" className="mt-8 space-y-6">
           {termsLoading ? (
             <SkeletonLoader />
           ) : (

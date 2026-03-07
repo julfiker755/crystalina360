@@ -33,7 +33,7 @@ export default function Profile() {
     province_code,
     vat_number,
     company,
-    marketing_consent
+    marketing_consent,
   } = profile?.data?.user || {};
   const [connectPaypal, { isLoading: paypalLoading }] =
     useConnectPaypalMutation();
@@ -68,7 +68,6 @@ export default function Profile() {
                 </Button>
               </Link>
 
-
               <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
                 <InputShow label="Your full name" value={name || "N/A"} />
                 <InputShow label="Email" value={email || "N/A"} />
@@ -82,15 +81,33 @@ export default function Profile() {
                 <InputShow label="Gender" value={gender || "N/A"} />
                 <InputShow label="Sdi Code" value={sdi_code || "N/A"} />
                 <InputShow label="Code Fiscal" value={code_fiscal || "N/A"} />
-                <InputShow label="Province Code" value={province_code || "N/A"} />
+                <InputShow
+                  label="Province Code"
+                  value={province_code || "N/A"}
+                />
                 <InputShow label="Vat Number" value={vat_number || "N/A"} />
                 {vat_number?.length > 0 && (
                   <>
-                    <InputShow label="Company Name" value={company?.company_name || "N/A"} />
-                    <InputShow label="Cmpany Address" value={company?.company_address || "N/A"} />
-                    <InputShow label="Company Postal Code" value={company?.company_postal_code || "N/A"} />
-                    <InputShow label="Company City" value={company?.company_city || "N/A"} />
-                    <InputShow label="Company Province Code" value={company?.company_province_code || "N/A"} />
+                    <InputShow
+                      label="Company Name"
+                      value={company?.company_name || "N/A"}
+                    />
+                    <InputShow
+                      label="Cmpany Address"
+                      value={company?.company_address || "N/A"}
+                    />
+                    <InputShow
+                      label="Company Postal Code"
+                      value={company?.company_postal_code || "N/A"}
+                    />
+                    <InputShow
+                      label="Company City"
+                      value={company?.company_city || "N/A"}
+                    />
+                    <InputShow
+                      label="Company Province Code"
+                      value={company?.company_province_code || "N/A"}
+                    />
                   </>
                 )}
                 <div className="lg:col-span-2">
@@ -113,10 +130,7 @@ export default function Profile() {
                         personalized recommendations.
                       </p>
                     </div>
-                    <Switch
-                      id="airplane-mode"
-                      checked={marketing_consent}
-                    />
+                    <Switch id="airplane-mode" checked={marketing_consent} />
                   </div>
                 </div>
               </div>
