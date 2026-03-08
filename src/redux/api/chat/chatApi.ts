@@ -52,9 +52,5 @@ export const chatApi = baseApi.injectEndpoints({
 });
 
 export const {
-  useGetChatListQuery,
-  useStoreRoomMutation,
-  useMessageListQuery,
-  useMessageStoreMutation,
-  useSubscribeChannelMutation,
+  useGetChatListQuery
 } = chatApi;

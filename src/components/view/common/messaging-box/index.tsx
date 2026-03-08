@@ -359,11 +359,10 @@ function MessageBubble({
   return (
     <div className={`flex ${isMe ? "justify-end" : "justify-start"} mb-4`}>
       <div
-        className={`max-w-[80%] md:max-w-[70%] px-4 py-2.5 rounded-2xl shadow-sm ${
-          isMe
-            ? "bg-black text-white rounded-tr-none"
-            : "bg-zinc-100 text-zinc-900 rounded-tl-none"
-        }`}
+        className={`max-w-[80%] md:max-w-[70%] px-4 py-2.5 rounded-2xl shadow-sm ${isMe
+          ? "bg-black text-white rounded-tr-none"
+          : "bg-zinc-100 text-zinc-900 rounded-tl-none"
+          }`}
       >
         <p className="text-sm leading-relaxed">{message.text}</p>
         <div
@@ -410,18 +409,11 @@ function ContactItem({
           <span className="font-semibold text-zinc-900 truncate">
             {contact?.group_event?.name}
           </span>
-          <span className="text-[11px] text-zinc-400 font-medium">
-            {helpers.formatTime(contact?.updated_at)}
-          </span>
         </div>
-        {/* <div className="flex justify-between items-center">
-          <p className="text-sm text-zinc-500 truncate">{contact.lastMessage}</p>
-          {contact.unreadCount && (
-            <span className="bg-black text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full">
-              {contact.unreadCount}
-            </span>
-          )}
-        </div> */}
+        <div className="flex justify-between items-center">
+          <p className="text-sm text-zinc-500 truncate">We convened yesterday.</p>
+
+        </div>
       </div>
     </button>
   );
@@ -430,28 +422,30 @@ function ContactItem({
 // --- Main App ---
 
 export default function MessagingApp() {
-  const [selectedContactId, setSelectedContactId] = useState<string | null>(
-    null,
-  );
-  const [searchQuery, setSearchQuery] = useState("");
+  const [msgId, setmsgId] = useState<any>()
+  const [selectedContactId, setSelectedContactId] = useState<any>();
+  const [searchGroup, setSearchGroup] = useState("");
   const [messageInput, setMessageInput] = useState("");
   const [messages, setMessages] =
     useState<Record<string, Message[]>>(MOCK_MESSAGES);
   const [view, setView] = useState<"list" | "chat">("list");
   const { data: profile } = useGetProfileQuery({});
-  const { data: chatlist } = useGetChatListQuery({ per_page: 2 });
+  const { data: chatlist } = useGetChatListQuery({});
   // const { data: messagelist } = useMessageListQuery(selectedUser);
 
-  const selectedContact = useMemo(
-    () => MOCK_CONTACTS.find((c) => c.id === selectedContactId),
-    [selectedContactId],
+  const chatItem = chatlist?.data?.filter((c: any) =>
+    c?.group_event?.name?.toLowerCase().includes(searchGroup.toLowerCase()),
   );
 
-  console.log(chatlist);
+  useEffect(() => {
+    if (chatlist?.data) {
+      setmsgId(chatlist?.data?.[0]?.id)
+    }
+  }, [chatlist])
 
-  const filteredContacts = chatlist?.data?.filter((c: any) =>
-    c?.group_event?.name?.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+
+  console.log(chatlist)
+
 
   const currentMessages = selectedContactId
     ? messages[selectedContactId] || []
@@ -504,15 +498,15 @@ export default function MessagingApp() {
             <Input
               placeholder="Search conversations..."
               className="pl-10 bg-zinc-100 border-none rounded-xl focus-visible:ring-1 focus-visible:ring-zinc-300"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchGroup}
+              onChange={(e) => setSearchGroup(e.target.value)}
             />
           </div>
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          {filteredContacts &&
-            filteredContacts?.map((item: any, idx: any) => (
+          {chatItem &&
+            chatItem?.map((item: any, idx: any) => (
               <ContactItem
                 key={item?.group_event_id}
                 contact={item}
@@ -533,7 +527,7 @@ export default function MessagingApp() {
         flex-1 flex-col bg-white relative
       `}
       >
-        {selectedContact ? (
+        {chatItem ? (
           <>
             <header className="h-20 border-b border-zinc-100 flex items-center justify-between px-6 bg-white/80 backdrop-blur-md sticky top-0 z-10">
               <div className="flex items-center gap-4">
@@ -546,17 +540,17 @@ export default function MessagingApp() {
                   <ArrowLeft size={20} />
                 </Button>
                 <Avatars
-                  src={selectedContact.avatar}
-                  fallback={selectedContact.name}
+                  src={chatItem.avatar}
+                  fallback={chatItem.name}
                   alt="img"
                   className="h-10 w-10"
                 />
                 <div>
                   <h2 className="font-bold text-zinc-900 leading-tight">
-                    {selectedContact.name}
+                    {chatItem.name}
                   </h2>
                   <p className="text-xs text-emerald-500 font-medium">
-                    {selectedContact.status === "online"
+                    {chatItem.status === "online"
                       ? "Active now"
                       : "Offline"}
                   </p>
