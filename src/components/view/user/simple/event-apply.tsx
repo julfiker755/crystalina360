@@ -8,7 +8,6 @@ import { useFormFields } from "@/hooks";
 import { usePurchaseStoreMutation } from "@/redux/api/user/userEventsApi";
 import { useRouter } from "next/navigation";
 import { usePaymentInitMutation } from "@/redux/api/user/paymetsApi";
-import { useStoreRoomMutation } from "@/redux/api/chat/chatApi";
 import clsx from "clsx";
 
 export default function EventApply({
@@ -28,7 +27,7 @@ export default function EventApply({
   const [couponCheck] = useCouponCheckMutation();
   const [purchaseStore, { isLoading: purchaseLoading }] =
     usePurchaseStoreMutation();
-  const [storeRoom, { isLoading: roomIsloading }] = useStoreRoomMutation();
+  // const [storeRoom, { isLoading: roomIsloading }] = useStoreRoomMutation();
   const from = useFormFields({
     coupon: "",
   });
@@ -140,14 +139,14 @@ export default function EventApply({
   // store room
 
   const handleStoreRoom = async (id: string) => {
-    console.log(id);
-    const data = helpers.fromData({
-      user2: id,
-    });
-    const res = await storeRoom(data).unwrap();
-    if (res.status) {
-      router.push("/conversation");
-    }
+    // console.log(id);
+    // const data = helpers.fromData({
+    //   user2: id,
+    // });
+    // const res = await storeRoom(data).unwrap();
+    // if (res.status) {
+    //   router.push("/conversation");
+    // }
   };
 
   return (
@@ -270,7 +269,6 @@ export default function EventApply({
         <Button
           type="button"
           onClick={() => handleStoreRoom(organizer?.id)}
-          disabled={roomIsloading}
           className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]"
         >
           Send Message
