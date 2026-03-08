@@ -34,6 +34,12 @@ import {
 import { ErrorInput } from "@/components/reuseable/error";
 import sonner from "@/components/reuseable/sonner";
 import { InputTime } from "@/components/reuseable/timeInput";
+import { retreat_sc } from "@/schema";
+
+
+const schema = retreat_sc.extend({
+  img: retreat_sc.shape.img.optional(),
+})
 
 const initialState = {
   holistic: false,
@@ -60,7 +66,7 @@ export default function RetreatEdit({
   const router = useRouter();
 
   const from = useForm({
-    resolver: zodResolver(defaultSchema),
+    resolver: zodResolver(schema),
     defaultValues: defaultValues,
     mode: "onChange",
   });
@@ -196,10 +202,9 @@ export default function RetreatEdit({
                         from.setValue("delivery_type", item.value);
                       }}
                       type="button"
-                      className={`font-normal transition-colors border bg-transparent text-figma-black ${
-                        item.value === get("delivery_type") &&
+                      className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
                         "bg-primary text-white"
-                      }`}
+                        }`}
                     >
                       <FavIcon
                         color={
@@ -227,10 +232,9 @@ export default function RetreatEdit({
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                     type="button"
                   >
                     {item.label}

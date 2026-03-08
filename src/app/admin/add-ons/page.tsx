@@ -173,6 +173,7 @@ const AddonStoreForm = ({ setState }: any) => {
           name="title"
           placeholder="Enter your  title"
           className="h-10 rounded-xl"
+          readOnly={true}
         />
         <FromInput2
           name="price"
@@ -226,7 +227,7 @@ const AddonEditForm = ({ setState, details }: any) => {
 
   const id = details?.id;
 
-  console.log(id);
+
 
   const from = useForm({
     resolver: zodResolver(add_on),
@@ -290,6 +291,7 @@ const AddonEditForm = ({ setState, details }: any) => {
           name="title"
           placeholder="Enter your  title"
           className="h-10 rounded-xl"
+          readOnly={true}
         />
         <FromInput2
           name="price"

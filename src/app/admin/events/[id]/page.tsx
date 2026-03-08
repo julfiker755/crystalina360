@@ -8,7 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useDeleteEventMutation } from "@/redux/api/admin/eventsApi";
 import FavIcon from "@/icon/favIcon";
 import Link from "next/link";
-import { event_t } from "@/lib";
+import { event_t, helpers } from "@/lib";
 import { useSingleEventsQuery } from "@/redux/api/operator/opratorApi";
 
 export default function EvnetSingleBox() {
@@ -41,7 +41,7 @@ export default function EvnetSingleBox() {
         <div className="flex justify-between">
           <div className="flex items-center space-x-2">
             <BackBtn className="bg-white rounded-md" />
-            <h2>Creating One to one event</h2>
+            <h2>{helpers.capitalize(event_type)} Event</h2>
           </div>
           <div className="z-10 flex items-center space-x-2">
             <Link

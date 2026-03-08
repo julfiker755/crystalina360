@@ -3,7 +3,7 @@ import { BackBtn } from "@/components/reuseable/back-btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import Modal from "@/components/reuseable/modal";
 import NavTitle from "@/components/reuseable/nav-title";
-import { Badge, Button, Skeleton } from "@/components/ui";
+import { Button, Skeleton } from "@/components/ui";
 import OpEvtCd from "@/components/view/admin/reuse/op-event-cd";
 import useConfirmation from "@/provider/confirmation";
 import {
@@ -12,7 +12,7 @@ import {
 } from "@/redux/api/admin/userApi";
 import { useParams, useRouter } from "next/navigation";
 import FavIcon from "@/icon/favIcon";
-import { cn, helpers } from "@/lib";
+import { helpers } from "@/lib";
 import { useState } from "react";
 import { Repeat } from "@/components/reuseable/repeat";
 import { NoItemData } from "@/components/reuseable/table-no-item";
