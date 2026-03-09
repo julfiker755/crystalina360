@@ -54,7 +54,7 @@ export default function GroupStore({ msg }: { msg: string }) {
   const [emailAll, setAllEmail] = useState<string[]>([]);
   const defaultValues = getValuesGroup(isDelivery, "200") as any;
   const defaultSchema = getSchema2(isDelivery) as any;
-  const { data: profile } = useGetProfileQuery({})
+  const { data: profile } = useGetProfileQuery({});
   const videolimit =
     profile?.data?.user?.is_subscribed &&
     profile?.data?.user?.role === roleKey.operator;
@@ -68,7 +68,7 @@ export default function GroupStore({ msg }: { msg: string }) {
   const get = (v: any) => from.watch(v);
   const delivaryType = get("delivery_type") == delivary_t.ondemand;
   const maxVideoSize = 2 * 1024 * 1024 * 1024;
-  const maxApply = videolimit && delivaryType
+  const maxApply = videolimit && delivaryType;
   const [{ files }, { getInputProps, clearFiles }] = useFileUpload({
     accept: delivaryType ? "video/*" : "image/*",
     maxSize: maxApply ? undefined : maxVideoSize,
@@ -76,7 +76,7 @@ export default function GroupStore({ msg }: { msg: string }) {
       sonner.error(
         "Upload Limit Reached",
         "Free plan supports videos up to 2GB. Please upgrade your plan.",
-        "bottom-right"
+        "bottom-right",
       );
     },
   });
@@ -179,9 +179,10 @@ export default function GroupStore({ msg }: { msg: string }) {
                       from.setValue("delivery_type", item.value);
                     }}
                     type="button"
-                    className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
+                    className={`font-normal transition-colors border bg-transparent text-figma-black ${
+                      item.value === get("delivery_type") &&
                       "bg-primary text-white"
-                      }`}
+                    }`}
                   >
                     <FavIcon
                       color={
@@ -206,9 +207,10 @@ export default function GroupStore({ msg }: { msg: string }) {
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
+                      item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                      }`}
+                    }`}
                     type="button"
                   >
                     {item.label}

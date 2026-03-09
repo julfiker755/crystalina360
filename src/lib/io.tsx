@@ -1,143 +1,125 @@
-import {
-  useMessageStoreMutation,
-  useSubscribeChannelMutation,
-} from "@/redux/api/chat/chatApi";
 import { useEffect, useRef, useState } from "react";
+import { io, Socket } from "socket.io-client";
 
-export type ReverbEventType =
-  | { type: "CONNECTED" }
-  | { type: "MESSAGE_SENT"; payload: any }
-  | { type: "MESSAGE_READ"; payload: any }
-  | { type: "USER_TYPING"; payload: { user_id: number } }
-  | { type: "USER_STOP_TYPING"; payload: { user_id: number } };
 
-export function useReverbSocket(
-  user2: number | null,
-  onEvent?: (event: ReverbEventType) => void,
-) {
-  // console.log(" user id =", user2, typeof user2)
+export const SOCKET_URL = "ws://10.10.10.90:3000"
 
-  const socketRef = useRef<WebSocket | null>(null);
-  // const [socketId, setSocketId] = useState(null);
-  const [roomId, setRoomId] = useState(null);
+export type UseSocketType = {
+  userId?: number;
+  onPrivateMessage?: (data: any) => void; // selected type inside the data
+  onGroupMessage?: (data: any) => void;
+  onTyping?: (data: any) => void;
+  onJoinGroup?: (data: any) => void;
+  onLeaveGroup?: (data: any) => void;
+  onMuteUser?: (data: any) => void;
+  onBanUser?: (data: any) => void;
+}
+
+
+export const useSocket = ({
+  userId,
+  onPrivateMessage,
+  onGroupMessage,
+  onTyping,
+  onJoinGroup,
+  onLeaveGroup,
+  onMuteUser,
+  onBanUser
+}: UseSocketType) => {
+  const socketRef = useRef<Socket | null>(null);
   const [connected, setConnected] = useState(false);
-  const [socket, setSocket] = useState<WebSocket>();
-  // * ===================================== API's =============================== //
-  const [
-    fetchCreateChatRoom,
-    {
-      data: dataCreateChatRoom,
-      isLoading: isLoadingCreateChatRoom,
-      isError: isErrorCreateChatRoom,
-      error: errorCreateChatRoom,
-    },
-  ] = useMessageStoreMutation();
 
-  const [
-    fetchSubscribeChannel,
-    {
-      data: dataSubscribeChannel,
-      isError: isErrorSubscribeChannel,
-      error: errorSubscribeChannel,
-      isLoading: isLoadingSubscribeChannel,
-    },
-  ] = useSubscribeChannelMutation();
 
   useEffect(() => {
-    // console.log(" ===== hock user id ======== ", user2)
-    if (!user2) return;
-    let active = true;
-    const loadReverbSocket = async () => {
-      try {
-        const requestBodyCreateRoom = {
-          user2: user2,
-        };
-        const responseCreateRoom = await fetchCreateChatRoom(
-          requestBodyCreateRoom,
-        ).unwrap();
-        if (responseCreateRoom?.status === true) {
-          const socket = new WebSocket(
-            "http://10.10.10.90:8080/app/1xx0m2ioui4g5n90f9xw",
-          );
-          setRoomId(responseCreateRoom?.data?.id);
-
-          setSocket(socket);
-          socketRef.current = socket;
-
-          socket.onopen = () => {
-            console.log("✅ Connect to Reverb");
-          };
-
-          socket.onmessage = async (event) => {
-            const payload = JSON.parse(event.data);
-            console.log(" ===== payload ====== ", payload);
-            if (payload.event === "pusher:connection_established") {
-              const data = JSON.parse(payload.data);
-              console.log(" ===== data ====== ", data);
-              // setSocketId(data?.socket_id);
-              const socketId = data?.socket_id;
-              const requestBodySubscribeChannel = {
-                socket_id: socketId,
-                channel_name: `chat.${responseCreateRoom?.data?.id}`,
-              };
-
-              const responseSubscribeChannel = await fetchSubscribeChannel(
-                requestBodySubscribeChannel,
-              ).unwrap();
-              // console.log(" ======= response subscribe channel ==", JSON.stringify(responseSubscribeChannel, null, 2))
-              socket.send(
-                JSON.stringify({
-                  event: "pusher:subscribe",
-                  data: {
-                    channel: `chat.${responseCreateRoom?.data?.id}`,
-                    auth: responseSubscribeChannel?.auth,
-                  },
-                }),
-              );
-            }
-
-            if (payload.event === "pusher_internal:subscription_succeeded") {
-              console.log("✅ Subscribe to channel");
-              setConnected(true);
-            }
-
-            if (payload.event === "private.message") {
-              console.log("💭 New message : ");
-              onEvent?.({
-                type: "MESSAGE_SENT",
-                payload: JSON.parse(payload.data),
-              });
-            }
-          };
-
-          socket.onerror = (e) => {
-            console.log("👺 Web socket error! ");
-          };
-
-          socket.onclose = () => {
-            console.log("😡 Web socket closed");
-          };
-        }
-      } catch (error: any) {
-        console.log(
-          " =========== web socket error =================",
-          error.message,
-        );
+    // console.log(" ========= hit socket ======", userId);
+    if (!userId) return;
+    const socket = io(SOCKET_URL, {
+      transports: ["websocket"],
+      // auth: {
+      //   token
+      // }
+      query: {
+        userId
       }
-    };
-    loadReverbSocket();
-    console.log(" ====== after loader =========== ");
+    });
+    console.log("== socket io==")
+    socketRef.current = socket;
+    // console.log("Socket ID:", socket);
+    // console.log("engine readyState:", socket.io.engine.readyState);
+    // * ===================== connection ============================ //
+    socket.on("connect", () => {
+      console.log("✅ Connected ", socket.id);
+      setConnected(true)
+    })
+
+    // * ===================== disconnection ======================= //
+    socket.on("disconnect", () => {
+      console.log("👺 Disconnected ", socket.id);
+      setConnected(false)
+    })
+
+    // * ========================== all event ===================== //
+    socket.on("private_message", (data) => {
+      onPrivateMessage?.(data)
+    })
+    socket.on("group_message", (data) => {
+
+      onGroupMessage?.(data)
+    })
+    socket.on("typing", (data) => {
+      onTyping?.(data)
+    })
+    socket.on("join_group", (data) => {
+
+      onJoinGroup?.(data)
+    })
+    socket.on("leave_group", (data) => {
+      onLeaveGroup?.(data)
+    })
+    socket.on("mute_user", (data) => {
+      onMuteUser?.(data)
+    })
+    socket.on("ban_user", (data) => {
+      onBanUser?.(data)
+    })
+
     return () => {
-      active = false;
-      socketRef?.current?.close();
-      socketRef.current = null;
-    };
-  }, [user2]);
-  // console.log(" ======= room id hook ====", roomId, connected, socket)
+      socket.removeAllListeners();
+      socket.disconnect();
+    }
+
+  }, [userId])
+
+  // Emit Methods
+  const sendPrivateMessage = (payload: any) => {
+    socketRef.current?.emit("private_message", payload);
+  }
+  const sendGroupMessage = (payload: any) => {
+    console.log("💭 Send group message ------", payload)
+    socketRef.current?.emit("group_message", payload, (response: any) => {
+      console.log("ACK  response", response)
+    });
+    // console.log(" after send group message ", socketRef.current)
+  }
+  const joinGroup = (eventId: number) => {
+
+    socketRef.current?.emit("join_group", { eventId }, (res: any) => {
+      console.log("Joining ack", res);
+    });
+  }
+  const leaveGroup = (payload: any) => {
+    socketRef.current?.emit("leave_group", payload);
+  }
+  const sendTyping = (payload: any) => {
+    socketRef.current?.emit("typing", payload);
+  }
 
   return {
-    roomId,
-    socket,
     connected,
-  };
+    sendPrivateMessage,
+    sendGroupMessage,
+    joinGroup,
+    leaveGroup,
+    sendTyping
+  }
 }

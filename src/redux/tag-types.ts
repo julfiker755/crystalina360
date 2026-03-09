@@ -34,6 +34,7 @@ export enum tagTypes {
   a_add_on_get = "a_add_on_get",
   o_my_add_on = "o_my_add_on",
   message = "message",
+  chatlist = "chat_list",
 }
 
 export const tagTypesList = [
@@ -72,4 +73,5 @@ export const tagTypesList = [
   tagTypes.a_add_on_get,
   tagTypes.o_my_add_on,
   tagTypes.message,
+  tagTypes.chatlist,
 ];

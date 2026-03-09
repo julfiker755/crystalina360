@@ -25,11 +25,8 @@ export default function EventInfo({
     return details?.delivery_type === delivary_t.ondemand ? null : item;
   };
   let elementShow: any;
-  const onetoOne = details.event_type === event_t.onetoone
-  if (
-    onetoOne ||
-    details?.event_type == event_t.retreat
-  ) {
+  const onetoOne = details.event_type === event_t.onetoone;
+  if (onetoOne || details?.event_type == event_t.retreat) {
     elementShow = (
       <div className="space-y-3">
         <div className="flex items-center gap-2 text-muted-foreground">
@@ -44,12 +41,14 @@ export default function EventInfo({
         <div className="flex items-center gap-2 text-muted-foreground">
           <FavIcon className="size-6" name="ongoing_events" />
           <div className="flex flex-col">
-            <span className="text-base text-figma-black">Time{onetoOne && ("s")}</span>
+            <span className="text-base text-figma-black">
+              Time{onetoOne && "s"}
+            </span>
             <div className="space-x-3">
               {details?.event_time?.map((item: any, idx: any) => (
                 <span
                   key={idx}
-                  className={`text-base ${onetoOne && ("bg-figma-delete px-3 font-normal!  py-0.5")} font-medium rounded-full text-figma-black`}
+                  className={`text-base ${onetoOne && "bg-figma-delete px-3 font-normal!  py-0.5"} font-medium rounded-full text-figma-black`}
                 >
                   {helpers.planTime(item)}
                 </span>
@@ -128,8 +127,9 @@ export default function EventInfo({
                 <ShowBox
                   icon="tiket"
                   name="Ticket sold"
-                  text={`${details?.sold_tickets || 0} /${details?.ticket_quantity
-                    }`}
+                  text={`${details?.sold_tickets || 0} /${
+                    details?.ticket_quantity
+                  }`}
                 />
                 <ShowBox
                   icon="price22"

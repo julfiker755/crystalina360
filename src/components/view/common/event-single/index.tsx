@@ -61,12 +61,14 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
         <div className="flex items-center gap-2 text-muted-foreground">
           <FavIcon className="size-6" name="ongoing_events" />
           <div className="flex flex-col">
-            <span className="text-base text-figma-black">Time{event_type === event_t.onetoone && ("s")}</span>
+            <span className="text-base text-figma-black">
+              Time{event_type === event_t.onetoone && "s"}
+            </span>
             <div className="space-x-3">
               {event_time?.map((item: any, idx: any) => (
                 <span
                   key={idx}
-                  className={`text-base ${event_type === event_t.onetoone && ("bg-figma-delete px-3 font-normal!  py-0.5")} font-medium rounded-full text-figma-black`}
+                  className={`text-base ${event_type === event_t.onetoone && "bg-figma-delete px-3 font-normal!  py-0.5"} font-medium rounded-full text-figma-black`}
                 >
                   {helpers.planTime(item)}
                 </span>

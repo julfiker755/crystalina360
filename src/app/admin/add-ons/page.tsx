@@ -227,8 +227,6 @@ const AddonEditForm = ({ setState, details }: any) => {
 
   const id = details?.id;
 
-
-
   const from = useForm({
     resolver: zodResolver(add_on),
     defaultValues: {

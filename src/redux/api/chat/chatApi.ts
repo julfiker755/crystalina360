@@ -14,43 +14,32 @@ export const chatApi = baseApi.injectEndpoints({
       transformResponse: (res: any) => {
         return buildResponse(res);
       },
-      providesTags: [tagTypes.message],
+      providesTags: [tagTypes.chatlist],
     }),
     messageList: build.query({
-      query: (id) => ({
-        url: `/chat/room/${id}`,
+      query: ({ id, page }) => ({
+        url: `/group-chats/${id}/messages/history`,
         method: "GET",
+        params: { page },
       }),
-      providesTags: [tagTypes.message],
+      transformResponse: (res: any) => {
+        return buildResponse(res);
+      },
     }),
-    subscribeChannel: build.mutation({
-      query: (id) => ({
-        url: `/broadcasting/auth`,
-        method: "GET",
-      }),
-      invalidatesTags: [tagTypes.message],
-    }),
-    storeRoom: build.mutation({
-      query: (data) => ({
-        url: `/chat/room`,
-        method: "POST",
-        ContentType: "multipart/form-data",
-        data,
-      }),
-      invalidatesTags: [tagTypes.message],
-    }),
+
     messageStore: build.mutation({
-      query: (data) => ({
-        url: `/chats`,
+      query: ({ id, data }) => ({
+        url: `/group-chats/${id}/messages`,
         method: "POST",
         ContentType: "multipart/form-data",
         data,
       }),
-      invalidatesTags: [tagTypes.message],
     }),
   }),
 });
 
 export const {
-  useGetChatListQuery
+  useGetChatListQuery,
+  useMessageListQuery,
+  useMessageStoreMutation,
 } = chatApi;

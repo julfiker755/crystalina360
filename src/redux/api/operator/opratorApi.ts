@@ -42,7 +42,11 @@ export const opratorsApi = baseApi.injectEndpoints({
         data,
         onUploadProgress,
       }),
-      invalidatesTags: [tagTypes.o_events, tagTypes.a_admin_events, tagTypes.o_single_events],
+      invalidatesTags: [
+        tagTypes.o_events,
+        tagTypes.a_admin_events,
+        tagTypes.o_single_events,
+      ],
     }),
     singleEvents: build.query({
       query: (id) => ({

@@ -11,9 +11,10 @@ import Testimonial from "@/components/view/user/landing/testimonial";
 import { useAppSelector } from "@/redux/hooks";
 import { roleKey } from "@/lib";
 import MissingInfo from "@/components/reuseable/missing-alert";
+import { AppState } from "@/redux/store";
 
 export default function UserHome() {
-  const { user } = useAppSelector((state: any) => state.auth);
+  const { user } = useAppSelector((state: AppState) => state.auth);
   return (
     <>
       <MissingInfo href={`/profile/update`} />
