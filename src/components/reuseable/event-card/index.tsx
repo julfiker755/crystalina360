@@ -6,6 +6,8 @@ import { Skeleton } from "@/components/ui";
 import Avatars from "../avater";
 import CopyBox from "../copy-box";
 import { StarBadge } from "../star-badge";
+import { ImgBox } from "../Img-box";
+import Image from "next/image";
 
 interface EventCardProps {
   item: any;
@@ -31,6 +33,8 @@ export default function EventCard({ item, wish = false }: EventCardProps) {
     is_loved_by_user,
     organizer_label,
   } = item || {};
+
+
 
   const [wishEvents, { isLoading }] = useWishEventsMutation();
   let elementShow: any;
@@ -116,7 +120,7 @@ export default function EventCard({ item, wish = false }: EventCardProps) {
             <span className="text-lg items-center flex space-x-1 font-bold text-foreground">
               <h5>{organizer?.name}</h5>
               {organizer_label ? (
-                ""
+                <Image src={"/admin.png"} width={17} height={10} alt="img" />
               ) : (
                 <StarBadge
                   is_subscribed={organizer?.is_subscribed}

@@ -11,6 +11,7 @@ import {
 } from "@/components/view/admin/simple/stats-card";
 import { helpers } from "@/lib";
 import { useGetDashboardQuery } from "@/redux/api/admin/dashboardApi";
+import { useGetNotiQuery } from "@/redux/api/common/notificationApi";
 import { useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
 import { useState } from "react";
@@ -48,6 +49,7 @@ export default function HomePage() {
   const { data: overview } = useGetDashboardQuery({
     type: filter,
   });
+  const { data: noti } = useGetNotiQuery({});
   const {
     statistics,
     eventPostingPreference: preference,
@@ -79,6 +81,8 @@ export default function HomePage() {
       icon: "doller",
     },
   ];
+
+
 
   return (
     <div>
@@ -125,8 +129,8 @@ export default function HomePage() {
             <div className="bg-figma-sidebar p-4 rounded-xl">
               <ScrollArea className="h-[350px]">
                 <div className="space-y-3 ">
-                  {activityData.map((item, idx) => (
-                    <RecentCard key={idx} {...item} />
+                  {noti?.data?.map((item: any, idx: any) => (
+                    <RecentCard key={idx} item={item} />
                   ))}
                 </div>
               </ScrollArea>

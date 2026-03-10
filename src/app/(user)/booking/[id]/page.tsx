@@ -105,7 +105,7 @@ export default function BookingDetails() {
       link.download = `${invoice_id}.pdf`;
       link.click();
       setdownlaodLoading(false);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const NotOnDemand = (item: any) => {
@@ -248,7 +248,7 @@ export default function BookingDetails() {
               <li className="text-xl font-medium">Rating</li>
               <li>
                 <div className="flex items-center space-x-2">
-                  <Link href="/conversation">
+                  <Link href={`/conversation?group=${ids}`}>
                     <Button className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]">
                       Send Message
                     </Button>
@@ -281,7 +281,7 @@ export default function BookingDetails() {
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-10">
-            <Link href="/conversation">
+            <Link href={`/conversation?group=${ids}`}>
               <Button className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]">
                 Send Message
               </Button>

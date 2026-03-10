@@ -10,6 +10,7 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default: "border text-black",
+        authorized: "border-[#009F05] bg-[#F0FFF1] text-[#009F05]",
         ongoing: "border-[#009F05] bg-[#F0FFF1] text-[#009F05]",
         upcoming: "border-[#99796F] bg-[#FFF4F0] text-[#99796F]",
         pending: "border-[#8C63DA] bg-[#F8F4FF] text-[#8C63DA]",

@@ -1,4 +1,5 @@
 import FavIcon from "@/icon/favIcon";
+import { helpers } from "@/lib";
 import { ArrowUpRight } from "lucide-react";
 
 // StatsCard
@@ -17,22 +18,20 @@ export function StatsCard({ icon, title, value }: any) {
 }
 
 // Recent card
-export function RecentCard({ icon, title, timestamp }: any) {
+export function RecentCard({ item }: any) {
   return (
     <div className="flex items-center justify-between p-4 rounded-xl border border-white  transition-colors cursor-pointer">
       <div className="flex items-center gap-4 flex-1">
-        <div className="grid place-items-center size-[50px] rounded-full bg-white">
-          <FavIcon name={icon as any} />
-        </div>
 
         <div className="flex flex-col">
-          <h3 className="text-xl font-medium">{title}</h3>
-          <p className=" text-figma-primary">{timestamp}</p>
+          <h3 className="text-lg font-medium">{item?.data?.title}</h3>
+          <p className=" text-figma-primary">{helpers.formatDate(
+            item.updated_at)} at {helpers.formatTime(item.updated_at)}</p>
         </div>
       </div>
-      <div className="ml-4">
+      {/* <div className="ml-4">
         <ArrowUpRight size={20} className="text-figma-black" />
-      </div>
+      </div> */}
     </div>
   );
 }

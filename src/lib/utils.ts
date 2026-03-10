@@ -21,6 +21,8 @@ export const RandomImg = (
 export const fakeZoom =
   "https://us05web.zoom.us/j/81803180144?pwd=EIj4sgJYUYWc8qJKD7ERKx1WxwjnHh.1";
 
-// return `https://picsum.photos/${width}/${height}?random=${Math.floor(
-//   Math.random() * 1000
-// )}`;
+export function limitWords({ str, count = 3 }: any) {
+  const words = str?.split(" ");
+  const firstThree = words?.slice(0, count);
+  return firstThree?.join(" ");
+}

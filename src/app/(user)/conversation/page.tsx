@@ -8,5 +8,5 @@ export default function Conversation() {
       window.scrollTo(0, 0);
     }
   }, []);
-  return <MessagingApp />;
+  return <MessagingApp className="h-[calc(100vh-200px)] container my-10" />;
 }

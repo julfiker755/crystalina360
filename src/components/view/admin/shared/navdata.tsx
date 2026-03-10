@@ -70,6 +70,11 @@ export const adminLinks = [
     icon: "coupons",
     act_io: "coupons_i",
     to: "/admin/coupons",
+  }, {
+    label: "Chat",
+    icon: "chats",
+    act_io: "chats_i",
+    to: "/admin/chat",
   },
   {
     label: "Settings",
