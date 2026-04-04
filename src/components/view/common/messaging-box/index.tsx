@@ -251,7 +251,7 @@ function MessagingAppChild({ className }: any) {
                   <h2 className="font-bold text-zinc-900  leading-tight">
                     {limitWords({ str: msgId.group_event?.name })}
                   </h2>
-                  {typingUsers.length > 0 ? (
+                  {/* {typingUsers.length > 0 ? (
                     <p className="text-xs text-blue-500 font-medium">
                       {typingUsers.join(", ")} {typingUsers.length === 1 ? "is" : "are"} typing…
                     </p>
@@ -259,7 +259,10 @@ function MessagingAppChild({ className }: any) {
                     <p className={`text-xs font-medium ${isConnected ? "text-emerald-500" : "text-zinc-400"}`}>
                       {isConnected ? "Connected" : "Reconnecting…"}
                     </p>
-                  )}
+                  )} */}
+                  <p className={`text-xs font-medium ${isConnected ? "text-emerald-500" : "text-zinc-400"}`}>
+                    {isConnected ? "Connected" : "Reconnecting…"}
+                  </p>
                 </div>
               </div>
             </header>

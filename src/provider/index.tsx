@@ -8,6 +8,7 @@ import { store } from "@/redux/store";
 import { initAuth } from "@/redux/features/authSlice";
 import { useEffect } from "react";
 
+
 export default function Provider({ children }: childrenProps) {
   return (
     <ReduxProvider store={store}>
@@ -21,7 +22,6 @@ export default function Provider({ children }: childrenProps) {
                 background: "rgba(153, 121, 111, 0.90)",
                 border: "1px solid rgba(255, 255, 255, 0.1)",
                 color: "white",
-                // backdropFilter: "blur(48px)",
               },
               classNames: {
                 description: "!text-white",
@@ -32,6 +32,7 @@ export default function Provider({ children }: childrenProps) {
           />
         </ConfirmDialogProvider>
       </SuccessDialogProvider>
+      <div id="google_translate_element" className="hidden!" />
     </ReduxProvider>
   );
 }

@@ -9,7 +9,7 @@ import Modal2 from "@/components/reuseable/modal2";
 import AuthModalController from "../../common/auth-controller";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setSignupRole, toggleIsOpen } from "@/redux/features/authSlice";
-import { cn, RandomImg, roleKey } from "@/lib";
+import { cn, RandomImg, roleKey, useGoogleTranslate } from "@/lib";
 import { AppState } from "@/redux/store";
 import FavIcon from "@/icon/favIcon";
 import { usePathname } from "next/navigation";
@@ -65,9 +65,8 @@ export default function Navber({ className }: any) {
               {navItems.map((item) => (
                 <li
                   key={item.name}
-                  className={`py-2 text-base!  font-medium ${
-                    pathname == item?.href ? "text-white! bg-primary" : ""
-                  }   text-figma-black rounded-md  px-10`}
+                  className={`py-2 text-base!  font-medium ${pathname == item?.href ? "text-white! bg-primary" : ""
+                    }   text-figma-black rounded-md  px-10`}
                 >
                   <Link href={item.href} className="transition-colors">
                     {item.name}
@@ -78,6 +77,7 @@ export default function Navber({ className }: any) {
 
             {/* Buttons */}
             <div className="flex items-center space-x-2">
+              <LanguageSwitcher />
               <SignInButton />
               <Button
                 size="icon-sm"
@@ -161,6 +161,23 @@ export default function Navber({ className }: any) {
     </>
   );
 }
+
+const LanguageSwitcher = () => {
+  const { toggleLanguage, isTranslating } = useGoogleTranslate('en');
+  return (
+    <Button
+      onClick={() => toggleLanguage()}
+      size="lg"
+      className="hidden md:block border disabled:opacity-100 has-[>svg]:px-2.5 bg-white text-figma-black"
+      disabled={isTranslating.current}
+    >
+      <FavIcon className="size-7" name="language" />
+    </Button >
+
+
+  )
+}
+
 
 function SignInButton() {
   const dispatch = useAppDispatch();

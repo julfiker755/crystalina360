@@ -1,41 +1,15 @@
-import { useStoreNewsletMutation } from "@/redux/api/admin/newsletterApi";
 import AppStore from "@/components/reuseable/app-store/app-store";
-// import sonner from "@/components/reuseable/sonner";
-// import { Button, Input } from "@/components/ui";
 import FavIcon from "@/icon/favIcon";
-import { helpers } from "@/lib";
-import { useState } from "react";
 import assets from "@/assets";
 
 export default function Footer() {
-  // const [email, setIsEmail] = useState("");
-  // const [storeNewslet, { isLoading }] = useStoreNewsletMutation();
   const socialMedia = [
     { name: "facebook", icon: "facebook" },
     { name: "youtube", icon: "youtube" },
     { name: "instagram", icon: "instagram" },
   ];
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   try {
-  //     const data = helpers.fromData({
-  //       email: email,
-  //     });
-  //     const res = await storeNewslet(data).unwrap();
-  //     if (res.status) {
-  //       setIsEmail("");
-  //       sonner.success(
-  //         "Subscribed!",
-  //         "Your subscription was successfull",
-  //         "bottom-right",
-  //       );
-  //     }
-  //   } catch (err: any) {
-  //     sonner.error("Oops!", err?.data?.message, "bottom-right");
-  //     setIsEmail("");
-  //   }
-  // };
+
 
   return (
     <div className="bg-figma-black py-10 lg:py-16 *:text-white">
@@ -58,31 +32,6 @@ export default function Footer() {
               </p>
             </div>
           </div>
-          {/* <form onSubmit={handleSubmit}>
-            <h3 className="text-xl font-semibold text-white mb-3 md:mb-7">
-              Newsletter
-            </h3>
-            <div>
-              <label>Email</label>
-              <div className="relative mt-1">
-                <Input
-                  placeholder="Enter your email"
-                  type="email"
-                  name="email"
-                  required={true}
-                  value={email}
-                  onChange={(e) => setIsEmail(e.target.value)}
-                  className="w-full pl-10 border-none text-black bg-[#F4F4F4] rounded-sm"
-                />
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                  <FavIcon name="mail" className="size-4" color="#777777" />
-                </div>
-              </div>
-            </div>
-            <Button disabled={isLoading} className="mt-3">
-              Subscribe
-            </Button>
-          </form> */}
           <div className="lg:ml-5">
             <h3 className="text-xl font-semibold text-white mb-3">
               Quick links

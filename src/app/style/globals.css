@@ -240,12 +240,64 @@
     -4px 0 4px 0 rgba(196, 172, 164, 0.25);
 }
 
-/* .aStyle {
-  background-color:#99796f8f;
-  color: #303030;
-} */
+/* Fix autofill styles for WebKit browsers */
+@layer utilities {
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--foreground);
+    transition: background-color 5000s ease-in-out 0s;
+  }
 
-/* ========= Quill Editor Styles ========= */
+  input:-moz-autofill,
+  textarea:-moz-autofill,
+  select:-moz-autofill {
+    -moz-text-fill-color: var(--foreground) !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+}
+
+.custom-plyr {
+  --plyr-color-main: var(--primary);
+  --plyr-control-bg: var(--primary);
+  --plyr-control-color: #ffffff;
+  --plyr-progress-played: var(--primary);
+  --plyr-progress-buffer: #888888;
+}
+
+.custom-plyr,
+.custom-plyr .plyr__video-wrapper {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* volme size small */
+.plyr__controls__item.plyr__volume {
+  width: 80px !important;
+  margin-right: 10px !important;
+  overflow: hidden !important;
+}
+
+/* animation all ok */
+@keyframes wave {
+  0% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1.6);
+  }
+  100% {
+    transform: scaleY(0.3);
+  }
+}
+
+/* ================ Quill Editor Styles ============= */
 .ql-toolbar {
   border-top: none !important;
   border-left: none !important;
@@ -305,59 +357,49 @@
   color: #202020 !important;
 }
 
-/* Fix autofill styles for WebKit browsers */
-@layer utilities {
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus,
-  textarea:-webkit-autofill,
-  textarea:-webkit-autofill:hover,
-  textarea:-webkit-autofill:focus,
-  select:-webkit-autofill,
-  select:-webkit-autofill:hover,
-  select:-webkit-autofill:focus {
-    -webkit-text-fill-color: var(--foreground);
-    transition: background-color 5000s ease-in-out 0s;
-  }
-
-  input:-moz-autofill,
-  textarea:-moz-autofill,
-  select:-moz-autofill {
-    -moz-text-fill-color: var(--foreground) !important;
-    transition: background-color 5000s ease-in-out 0s;
-  }
+/* ============  Hide Google Translate UI =========== */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-banner-frame,
+.goog-te-banner,
+.goog-te-gadget-icon,
+.goog-te-gadget-simple span,
+.goog-te-menu-value span:nth-child(3),
+.goog-te-menu-value span:nth-child(5),
+.goog-te-menu-value img,
+iframe.goog-te-banner-frame {
+  display: none !important;
+  visibility: hidden !important;
 }
 
-.custom-plyr {
-  --plyr-color-main: var(--primary);
-  --plyr-control-bg: var(--primary);
-  --plyr-control-color: #ffffff;
-  --plyr-progress-played: var(--primary);
-  --plyr-progress-buffer: #888888;
+.goog-te-gadget-simple {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
 }
 
-.custom-plyr,
-.custom-plyr .plyr__video-wrapper {
-  border-radius: 10px;
-  overflow: hidden;
+#google_translate_element {
+  display: none !important;
 }
 
-/* volme size small */
-.plyr__controls__item.plyr__volume {
-  width: 80px !important;
-  margin-right: 10px !important;
-  overflow: hidden !important;
+.skiptranslate {
+  display: none !important;
 }
 
-/* animation all ok */
-@keyframes wave {
-  0% {
-    transform: scaleY(0.3);
-  }
-  50% {
-    transform: scaleY(1.6);
-  }
-  100% {
-    transform: scaleY(0.3);
-  }
+body {
+  top: 0 !important;
+  position: static !important;
+}
+
+.goog-tooltip {
+  display: none !important;
+}
+
+.goog-tooltip:hover {
+  display: none !important;
+}
+
+.goog-text-highlight {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }

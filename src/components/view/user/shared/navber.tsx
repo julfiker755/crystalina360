@@ -9,7 +9,7 @@ import Modal2 from "@/components/reuseable/modal2";
 import AuthModalController from "../../common/auth-controller";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setSignupRole, toggleIsOpen } from "@/redux/features/authSlice";
-import { cn, roleKey } from "@/lib";
+import { cn, roleKey, useGoogleTranslate } from "@/lib";
 import { AppState } from "@/redux/store";
 import FavIcon from "@/icon/favIcon";
 import { usePathname } from "next/navigation";
@@ -54,7 +54,7 @@ export default function Navber({ className }: any) {
 
   return (
     <>
-      {/* Navbar */}
+
       <motion.div
         initial={{ y: 0, opacity: 1 }}
         animate={{
@@ -63,8 +63,7 @@ export default function Navber({ className }: any) {
         }}
         transition={{ type: "spring", stiffness: 100, damping: 20 }}
         className={cn(
-          `w-[95%] absolute top-5 md:w-full h-14 container rounded-full px-3 content-center bg-[#000000]/10 backdrop-blur-xl z-50 ${
-            scrolled && "fixed! top-4 left-1/2 -translate-x-1/2"
+          `w-[95%] absolute top-5 md:w-full h-14 container rounded-full px-3 content-center bg-[#000000]/10 backdrop-blur-xl z-50 ${scrolled && "fixed! top-4 left-1/2 -translate-x-1/2"
           }`,
           className,
         )}
@@ -81,9 +80,8 @@ export default function Navber({ className }: any) {
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className={`text-base! text-article font-medium ${
-                    pathname == item?.href ? "text-primary" : ""
-                  } hover:text-primary transition-colors`}
+                  className={`text-base! text-article font-medium ${pathname == item?.href ? "text-primary" : ""
+                    } hover:text-primary transition-colors`}
                 >
                   {item.name}
                 </Link>
@@ -93,6 +91,7 @@ export default function Navber({ className }: any) {
 
           {/* Buttons */}
           <div className="flex items-center space-x-2">
+            <LanguageSwitcher />
             <SignInButton />
             <Button
               size="icon-sm"
@@ -174,6 +173,16 @@ export default function Navber({ className }: any) {
       </AnimatePresence>
     </>
   );
+}
+
+// ======== language switcher =========
+const LanguageSwitcher = () => {
+  const { toggleLanguage, isTranslating } = useGoogleTranslate('en');
+  return (
+    <Button variant={"none"} disabled={isTranslating.current} onClick={() => toggleLanguage()} className="cursor-pointer">
+      <FavIcon className="size-7" name="language" />
+    </Button>
+  )
 }
 
 //  ======= SignInButton ===========
