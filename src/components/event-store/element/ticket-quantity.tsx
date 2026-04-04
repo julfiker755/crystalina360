@@ -3,21 +3,24 @@ import { FromInput } from "@/components/reuseable/form-input";
 import FavIcon from "@/icon/favIcon";
 import React from "react";
 
-export default function TicketQuantity({ from, read = true }: any) {
+export default function TicketQuantity({ from }: any) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <div className="h-10 flex items-center justify-between px-2 border rounded-md">
-        <span className="flex items-center">
-          <FavIcon className="size-5" name="tiket" />
-          <span className="ml-1"> Ticket quantity</span>
-        </span>
-        <FromInput
-          name="ticket_quantity"
-          className="w-[100px] h-10 text-end bg-transparent p-0"
-          type="number"
-          placeholder="quantity hare"
-          readOnly={read}
-        />
+      <div>
+        <div className="h-10 flex items-center justify-between px-2 border rounded-md">
+          <span className="flex items-center">
+            <FavIcon className="size-5" name="tiket" />
+            <span className="ml-1"> Ticket quantity</span>
+          </span>
+          <FromInput
+            name="ticket_quantity"
+            className="w-[100px] h-10  bg-transparent p-0"
+            type="number"
+            placeholder="quantity hare"
+            err={false}
+          />
+        </div>
+        <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.ticket_quantity?.message} />
       </div>
       <div>
         <div className="h-10 flex items-center justify-between px-2 border rounded-md">
@@ -33,7 +36,7 @@ export default function TicketQuantity({ from, read = true }: any) {
             err={false}
           />
         </div>
-        <ErrorInput error={from?.formState?.errors?.price?.message} />
+        <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.price?.message} />
       </div>
     </div>
   );

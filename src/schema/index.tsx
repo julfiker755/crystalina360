@@ -151,24 +151,93 @@ export const audio_sc = z.object({
     message: "Audio is required",
   }),
 });
-//  ============= event store schema ===========
+
+//  ============= event common schema ===========
 export const event = z.object({
-  img: z.any().refine((file) => file instanceof File, {
-    message: "image is required",
-  }),
   delivery_type: z.string().nonempty("Delivery is required"),
   event_purpose: z.string().nonempty("Purpose is required"),
   holistic_discipline: z.array(z.string()).nonempty("Holistic is required"),
   event_title: z.string().nonempty("title is required"),
   event_description: z.string().nonempty("description is required"),
-  min_person: z.string().optional(),
-  max_person: z.string().optional(),
+  min_person: z.string().nonempty("Minimum persons is required"),
+  max_person: z.string().nonempty("Maximum persons is required"),
   price: z.string().nonempty("Price is required"),
   event_duration: z.string().optional(),
   tags: z.array(z.string()).nonempty("tags is required"),
   ticket_quantity: z.string().nonempty("tiket is required"),
   accessibility: z.array(z.string()).optional(),
 });
+
+const eventCountry = z.object({
+  city: z.string().nonempty("city is required"),
+  province: z.string().nonempty("province is required"),
+  region: z.string().nonempty("region is required"),
+  country: z.string().nonempty("country is required"),
+})
+
+const imgSchema = z.object({
+  image: z.any().refine((file) => file instanceof File, {
+    message: "image is required",
+  }),
+  video: z.any().refine((file) => file instanceof File, {
+    message: "Video is required",
+  }),
+})
+
+// =====  groups events =====
+export const group_offline_sc = event.extend({
+  ...eventCountry.shape,
+  img: imgSchema.shape.image,
+  event_date: z.array(z.string()).nonempty("date slot is required"),
+  event_time: z.string().nonempty("time is required"),
+});
+
+export const group_online_sc = event.extend({
+  img: imgSchema.shape.image,
+  event_date: z.array(z.string()).nonempty("date slot is required"),
+  event_time: z.string().nonempty("time is required"),
+});
+
+const group_demand = event.omit({
+  min_person: true,
+  max_person: true,
+  event_duration: true,
+  ticket_quantity: true,
+  accessibility: true
+})
+
+export const group_demand_sc = group_demand.extend({
+  ...eventCountry.shape,
+  img: imgSchema.shape.video,
+})
+//  ================= retreat event ================
+export const retreat_offline_sc = event.extend({
+  ...eventCountry.shape,
+  img: imgSchema.shape.image,
+  event_date: z.string().nonempty("date is required"),
+  event_time: z.string().nonempty("time is required"),
+});
+
+
+
+
+
+
+
+
+
+
+
+//  ------------------------------ x -------------------------------
+export const group_online_sc2 = event.extend({
+  city: z.string().nonempty("city is required"),
+  province: z.string().nonempty("province is required"),
+  region: z.string().nonempty("region is required"),
+  country: z.string().nonempty("country is required"),
+  event_date: z.array(z.string()).nonempty("date slot is required"),
+  event_time: z.string().nonempty("time is required"),
+});
+
 
 //  one to one
 export const online_sc = event.extend({

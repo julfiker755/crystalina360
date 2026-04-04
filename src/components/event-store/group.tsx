@@ -4,7 +4,6 @@ import { FromSelect2 } from "@/components/reuseable/from-select2";
 import { FromTagInput } from "@/components/reuseable/from-tag";
 import { FromTextarea2 } from "@/components/reuseable/from-textarea2";
 import SearchBox from "@/components/reuseable/search-box";
-import { SingleCalendar } from "@/components/reuseable/single-date";
 import { Button, Checkbox, Label } from "@/components/ui";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { FieldValues, useForm } from "react-hook-form";
@@ -18,7 +17,7 @@ import { useEffect, useState } from "react";
 import { UploadBtn } from "@/components/reuseable/btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getSchema2, getValuesGroup } from "./element/default";
+import { getGroupSchema, getValuesGroup } from "./element/default";
 import MultiDate from "./element/multi-date";
 import { ErrorInput } from "../reuseable/error";
 import { InputTime } from "../reuseable/timeInput";
@@ -37,6 +36,8 @@ import {
   purposeItem,
 } from "../dummy-data";
 import { useGetProfileQuery } from "@/redux/api/authApi";
+import { FromInput } from "../reuseable/form-input";
+import { cleanObject } from "@/lib/function-utils";
 
 const initialState = {
   holistic: false,
@@ -52,8 +53,8 @@ export default function GroupStore({ msg }: { msg: string }) {
   const [selectDate, setSelectDate] = useState<any>([]);
   const [progress, setProgress] = useState(0);
   const [emailAll, setAllEmail] = useState<string[]>([]);
-  const defaultValues = getValuesGroup(isDelivery, "200") as any;
-  const defaultSchema = getSchema2(isDelivery) as any;
+  const defaultValues = getValuesGroup(isDelivery) as any;
+  const defaultSchema = getGroupSchema(isDelivery) as any;
   const { data: profile } = useGetProfileQuery({});
   const videolimit =
     profile?.data?.user?.is_subscribed &&
@@ -86,7 +87,7 @@ export default function GroupStore({ msg }: { msg: string }) {
   }, [files]);
 
   const resetFrom = (deliveryType: string) => {
-    const values = getValuesGroup(deliveryType, "200") as any;
+    const values = getValuesGroup(deliveryType) as any;
     from.reset(values);
     setSelAccbility([]);
     setSelectDate([]);
@@ -97,14 +98,12 @@ export default function GroupStore({ msg }: { msg: string }) {
   const [storeEvents, { isLoading }] = useStoreEventsMutation();
 
   const handleSubmit = async (values: FieldValues) => {
-    const { ticket_quantity, max_person, min_person, ...rest } = values || {};
+    const valuedata = cleanObject(values)
     const data = helpers.fromData({
       event_type: "group",
-      ticket_quantity: "200",
-      min_person: "1",
-      max_person: "200",
-      ...rest,
+      ...valuedata,
     });
+
     try {
       const res = await storeEvents({
         data,
@@ -129,6 +128,7 @@ export default function GroupStore({ msg }: { msg: string }) {
     }
   };
 
+
   const toggleHolistic = (value: any) => {
     const current = from.getValues("holistic_discipline") || [];
     if (current.includes(value as never)) {
@@ -151,6 +151,7 @@ export default function GroupStore({ msg }: { msg: string }) {
                 <VideoBannerBox files={files} getInputProps={getInputProps} />
                 {!get("img") && (
                   <ErrorInput
+                    className="text-red-400 text-sm"
                     error={from?.formState?.errors?.img?.message as string}
                   />
                 )}
@@ -160,6 +161,7 @@ export default function GroupStore({ msg }: { msg: string }) {
                 <ImageBannerBox files={files} getInputProps={getInputProps} />
                 {!get("img") && (
                   <ErrorInput
+                    className="text-red-400 text-sm"
                     error={from?.formState?.errors?.img?.message as string}
                   />
                 )}
@@ -179,10 +181,9 @@ export default function GroupStore({ msg }: { msg: string }) {
                       from.setValue("delivery_type", item.value);
                     }}
                     type="button"
-                    className={`font-normal transition-colors border bg-transparent text-figma-black ${
-                      item.value === get("delivery_type") &&
+                    className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                   >
                     <FavIcon
                       color={
@@ -207,10 +208,9 @@ export default function GroupStore({ msg }: { msg: string }) {
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                     type="button"
                   >
                     {item.label}
@@ -252,6 +252,7 @@ export default function GroupStore({ msg }: { msg: string }) {
 
                 {get("holistic_discipline")?.length == 0 && (
                   <ErrorInput
+                    className="text-red-400 text-sm"
                     error={
                       from?.formState?.errors?.holistic_discipline
                         ?.message as string
@@ -286,8 +287,8 @@ export default function GroupStore({ msg }: { msg: string }) {
                   <MultipleDate from={from} setState={setState} />
                   <InputTime name="event_time" />
                 </div>
-                <PersonLimit read={true} />
-                <TicketQuantity from={from} read={true} />
+                <PersonLimit />
+                <TicketQuantity from={from} />
                 <FromSelect2
                   items={durationOptions}
                   name="event_duration"
@@ -308,17 +309,29 @@ export default function GroupStore({ msg }: { msg: string }) {
                   <MultipleDate from={from} setState={setState} />
                   <InputTime name="event_time" />
                 </div>
-                <PersonLimit read={true} />
-                <TicketQuantity from={from} read={true} />
+                <PersonLimit />
+                <TicketQuantity from={from} />
                 <FromTagInput name="tags" label="Tags" className="py-2" />
               </>
             ) : (
               from.watch("delivery_type") === "ondemand" && (
                 <>
                   <LocationDroupDown />
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <SingleDateBox from={from} />
-                    <InputTime name="event_time" placeholder="select time" />
+                  <div>
+                    <div className="h-10 flex items-center justify-between px-2 border rounded-md">
+                      <span className="flex items-center">
+                        <FavIcon className="size-5" name="price22" />
+                        <span className="ml-1">Price</span>
+                      </span>
+                      <FromInput
+                        name="price"
+                        className="w-[300px] h-10 bg-transparent p-0"
+                        type="number"
+                        placeholder="Price here"
+                        err={false}
+                      />
+                    </div>
+                    <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.price?.message as string} />
                   </div>
                   <FromTagInput name="tags" label="Tags" className="py-2" />
                 </>
@@ -471,23 +484,7 @@ const VideoBannerBox = ({ files, getInputProps }: any) => {
   );
 };
 
-//  ----------------------single date --------------------
-const SingleDateBox = ({ from }: any) => {
-  const val = from.watch("event_date");
-  return (
-    <div>
-      <SingleCalendar
-        onChange={(value: any) => {
-          from.setValue("event_date", helpers.formatDate(value, "YYYY-MM-DD"));
-        }}
-        className="h-10 text-black"
-      />
-      {!val && (
-        <ErrorInput error={from?.formState?.errors?.event_date?.message} />
-      )}
-    </div>
-  );
-};
+
 //  ------------ multiple date ---------------------
 const MultipleDate = ({ from, setState }: any) => {
   const val = from.watch("event_date");
@@ -498,10 +495,10 @@ const MultipleDate = ({ from, setState }: any) => {
         type="button"
         className="flex h-10 w-full  bg-transparent border text-black font-normal justify-between items-center"
       >
-        <span>Create date slot</span> <ChevronRight />
+        <span>{val?.length > 0 ? `${val?.length} date slot` : "Create date slot"}</span> <ChevronRight />
       </Button>
       {val?.length === 0 && (
-        <ErrorInput error={from?.formState?.errors?.event_date?.message} />
+        <ErrorInput className="text-sm text-red-400" error={from?.formState?.errors?.event_date?.message} />
       )}
     </div>
   );

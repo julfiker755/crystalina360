@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { UploadBtn } from "@/components/reuseable/btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getValuesOne } from "./element/default";
+import { getGroupSchema, getValuesGroup } from "./element/default";
 import TimeSelect from "./element/time-select";
 import MultiDate from "./element/multi-date";
 import { ErrorInput } from "../reuseable/error";
@@ -32,6 +32,7 @@ import sonner from "../reuseable/sonner";
 import { disciplineOptions, durationOptions, purposeItem } from "../dummy-data";
 import { InputTime } from "../reuseable/timeInput";
 import { retreat_sc } from "@/schema";
+import { cleanObject } from "@/lib/function-utils";
 
 const initialState = {
   holistic: false,
@@ -48,11 +49,12 @@ export default function RetreatStore({ msg }: { msg: string }) {
   const [selectDate, setSelectDate] = useState<any>([]);
   const [progress, setProgress] = useState(0);
   const router = useRouter();
-  const defaultValues = getValuesOne("offline_retreat", "200") as any;
   const [emailAll, setAllEmail] = useState<string[]>([]);
+  const defaultValues = getValuesGroup('retreat') as any;
+  const defaultSchema = getGroupSchema('retreat') as any;
 
   const from = useForm({
-    resolver: zodResolver(retreat_sc),
+    resolver: zodResolver(defaultSchema),
     defaultValues: defaultValues,
     mode: "onChange",
   });
@@ -67,7 +69,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
   }, [files]);
 
   const resetFrom = (deliveryType: string) => {
-    const values = getValuesOne(deliveryType, "200") as any;
+    const values = getValuesGroup('retreat') as any;
     from.reset(values);
     setSelAccbility([]);
     setSelectDate([]);
@@ -79,14 +81,12 @@ export default function RetreatStore({ msg }: { msg: string }) {
   const [storeEvents, { isLoading }] = useStoreEventsMutation();
 
   const handleSubmit = async (values: FieldValues) => {
-    const { ticket_quantity, max_person, min_person, ...rest } = values || {};
+    const valuedata = cleanObject(values)
     const data = helpers.fromData({
       event_type: "retreat",
-      ticket_quantity: "200",
-      min_person: "1",
-      max_person: "200",
-      ...rest,
+      ...valuedata,
     });
+
     try {
       const res = await storeEvents({
         data,
@@ -131,6 +131,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
               <ImageBannerBox files={files} getInputProps={getInputProps} />
               {!get("img") && (
                 <ErrorInput
+                  className="text-red-400 text-sm"
                   error={from?.formState?.errors?.img?.message as string}
                 />
               )}
@@ -150,10 +151,9 @@ export default function RetreatStore({ msg }: { msg: string }) {
                         from.setValue("delivery_type", item.value);
                       }}
                       type="button"
-                      className={`font-normal transition-colors border bg-transparent text-figma-black ${
-                        item.value === get("delivery_type") &&
+                      className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
                         "bg-primary text-white"
-                      }`}
+                        }`}
                     >
                       <FavIcon
                         color={
@@ -181,10 +181,9 @@ export default function RetreatStore({ msg }: { msg: string }) {
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                     type="button"
                   >
                     {item.label}
@@ -226,6 +225,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
 
                 {get("holistic_discipline")?.length == 0 && (
                   <ErrorInput
+                    className="text-red-400 text-sm"
                     error={
                       from?.formState?.errors?.holistic_discipline
                         ?.message as string
@@ -256,8 +256,8 @@ export default function RetreatStore({ msg }: { msg: string }) {
               <SingleDateBox from={from} />
               <InputTime name="event_time" />
             </div>
-            <PersonLimit read={true} />
-            <TicketQuantity from={from} read={true} />
+            <PersonLimit />
+            <TicketQuantity from={from} />
             <FromSelect2
               items={durationOptions}
               name="event_duration"
@@ -442,7 +442,7 @@ const SingleDateBox = ({ from }: any) => {
         className="h-10 text-black"
       />
       {!val && (
-        <ErrorInput error={from?.formState?.errors?.event_date?.message} />
+        <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.event_date?.message} />
       )}
     </div>
   );

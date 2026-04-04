@@ -8,7 +8,7 @@ import {
   type ControllerRenderProps,
   type ControllerFieldState,
 } from "react-hook-form";
-import { Input, Label } from "@/components/ui";
+import { Input } from "@/components/ui";
 import { cn } from "@/lib/utils";
 
 interface formInputProps {
@@ -23,10 +23,9 @@ interface formInputProps {
   icon?: any;
   [key: string]: any;
   err?: boolean;
-  children?: React.ReactNode;
 }
 
-export function FromInput({
+export function PersionLimit({
   name,
   type = "text",
   eye = false,
@@ -36,13 +35,10 @@ export function FromInput({
   className,
   icon,
   err = true,
-  children,
+  mainStyle,
   ...rest
 }: formInputProps) {
-  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const { control } = useFormContext();
-  const inputType = eye ? (isPasswordVisible ? "text" : "password") : type;
-
   const reactId = useId();
   const inputId = `${reactId}-${name}`;
 
@@ -58,48 +54,20 @@ export function FromInput({
         fieldState: ControllerFieldState;
       }) => (
         <div>
-          {label && (
-            <Label
-              htmlFor={inputId}
-              className={cn(
-                "text-blacks text-base font-medium  mb-1",
-                stylelabel,
-              )}
-            >
-              {label}
-            </Label>
-          )}
-          <div className="relative">
+          <div className={cn("relative h-10 flex items-center justify-between px-2 border rounded-md", mainStyle)}>
             <Input
               id={inputId}
               className={cn(
-                `h-13 w-full border-none bg-[#F4F4F4] rounded-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${icon ? "pl-10" : "pl-4"
+                `w-[100px] h-10 border-none bg-transparent  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${icon ? "pl-10" : "pl-4"
                 } ${eye ? "pr-10" : "pr-3"} text-blacks`,
                 className,
               )}
               {...field}
               {...rest}
-              type={inputType}
+              type={type}
               placeholder={placeholder}
             />
-
-            {icon && (
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                {icon}
-              </div>
-            )}
-            {eye && (
-              <div
-                onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
-              >
-                {isPasswordVisible ? (
-                  <EyeOff className="text-muted-foreground" size={20} />
-                ) : (
-                  <Eye className="text-muted-foreground" size={20} />
-                )}
-              </div>
-            )}
+            <span>{label}</span>
           </div>
           {err && error?.message && (
             <h3 className="text-sm pt-px text-end text-red-400 flex gap-1 items-center justify-end">
