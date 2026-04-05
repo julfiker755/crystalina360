@@ -4,7 +4,6 @@ import { FromSelect2 } from "@/components/reuseable/from-select2";
 import { FromTagInput } from "@/components/reuseable/from-tag";
 import { FromTextarea2 } from "@/components/reuseable/from-textarea2";
 import SearchBox from "@/components/reuseable/search-box";
-import { SingleCalendar } from "@/components/reuseable/single-date";
 import { Button, Checkbox, Label } from "@/components/ui";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { FieldValues, useForm } from "react-hook-form";
@@ -18,14 +17,12 @@ import { useEffect, useState } from "react";
 import { UploadBtn } from "@/components/reuseable/btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import { zodResolver } from "@hookform/resolvers/zod";
-import TimeSelect from "../element/time-select";
 import PersonLimit from "../element/person-limit";
 import { LocationDroupDown } from "../element/location";
 import { AccessibilityBox } from "../element/accessibility";
 import TicketQuantity from "../element/ticket-quantity";
 import { useUpdateEventsMutation } from "@/redux/api/operator/opratorApi";
 import { useRouter } from "next/navigation";
-import { getSchemaEdit, getValuesOne } from "../element/default";
 import sonner from "@/components/reuseable/sonner";
 import { ErrorInput } from "@/components/reuseable/error";
 import {
@@ -35,6 +32,11 @@ import {
   purposeItem,
 } from "@/components/dummy-data";
 import { InputTime } from "@/components/reuseable/timeInput";
+import { getGroupSchemaEdit, getValuesGroup } from "../element/default";
+import { FromInput } from "@/components/reuseable/form-input";
+import MultiDate from "../element/multi-date";
+import { cleanObject } from "@/lib/function-utils";
+
 
 const initialState = {
   holistic: false,
@@ -50,12 +52,12 @@ export default function GroupEdit({
   events_all: any;
 }) {
   const [searchText, setSearchText] = useState("");
-  const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
+  const [selectDate, setSelectDate] = useState<any>([]);
   const [state, setState] = useModalState(initialState);
   const [selAccbility, setSelAccbility] = useState<string[]>([]);
   const [isDelivery, setIsDelivery] = useState<any>("offline");
-  const defaultValues = getValuesOne(isDelivery, "2") as any;
-  const defaultSchema = getSchemaEdit(isDelivery) as any;
+  const defaultValues = getValuesGroup(isDelivery) as any;
+  const defaultSchema = getGroupSchemaEdit(isDelivery) as any;
   const router = useRouter();
   const [progress, setProgress] = useState(0);
 
@@ -67,28 +69,25 @@ export default function GroupEdit({
 
   const id = events_all?.data?.event?.id;
 
+
+
   //  ================= default value set =============
   useEffect(() => {
     if (!events_all?.data?.event) return;
     const event = events_all.data.event;
     const cloneobj = {
-      delivery_type: event.delivery_type,
+      delivery_type: event.delivery_type || "",
       event_purpose: event.event_purpose || "",
       event_title: event.event_title || "",
       event_description: event.event_description || "",
       holistic_discipline: event.holistic_discipline || [],
     };
-    const sametosame = {
-      event_type: "group",
-      ticket_quantity: "200",
-      min_person: "1",
-      max_person: "200",
-    };
+
     if (event?.delivery_type == delivary_t.offline) {
       //   === offline ===
       const offlineObj = {
-        event_date: event.event_date?.[0] || "",
-        event_time: event.event_time || [],
+        event_time: event.event_time?.[0] || "",
+        event_date: event.event_date || [],
         event_duration: event.event_duration || "",
         tags: event.tags || [],
         city: event.city || "",
@@ -97,24 +96,29 @@ export default function GroupEdit({
         country: event.country || "",
         price: event?.price?.toString() || "",
         accessibility: event.accessibility || [],
+        ticket_quantity: event?.ticket_quantity?.toString() || "",
+        min_person: event?.min_person?.toString() || "",
+        max_person: event.max_person?.toString() || "",
         ...cloneobj,
-        ...sametosame,
+
       };
       from.reset(offlineObj);
       setSelAccbility(event.accessibility || []);
-      setSelectedTimes(event.event_time || []);
+      setSelectDate(event?.event_date || []);
     } else if (event?.delivery_type === delivary_t.online) {
       //  === online ===
       const onlineObj = {
-        event_date: event.event_date?.[0] || "",
-        event_time: event.event_time || [],
+        event_time: event?.event_time?.[0] || "",
+        event_date: event?.event_date || [],
         tags: event.tags || [],
         price: event?.price?.toString() || "",
+        ticket_quantity: event?.ticket_quantity?.toString() || "",
+        min_person: event?.min_person?.toString() || "",
+        max_person: event.max_person?.toString() || "",
         ...cloneobj,
-        ...sametosame,
       };
       from.reset(onlineObj);
-      setSelectedTimes(event.event_time || []);
+      setSelectDate(event.event_date || []);
     } else if (event?.delivery_type === delivary_t.ondemand) {
       //  === ondemand ===
       const ondemandObj = {
@@ -146,28 +150,19 @@ export default function GroupEdit({
     from.setValue("accessibility", selAccbility || []);
   }, [files, selAccbility]);
 
-  // const resetFrom = (deliveryType: string) => {
-  //   const values = getValuesOne(deliveryType, "2") as any;
-  //   from.reset(values);
-  //   setSelAccbility([]);
-  //   setSelectDate([]);
-  //   setIsDelivery(deliveryType);
-  //   setSelectedTimes([]);
-  //   clearFiles();
-  // };
 
   const [updateEvents, { isLoading }] = useUpdateEventsMutation();
 
   const handleSubmit = async (values: FieldValues) => {
-    const { ticket_quantity, max_person, min_person, img, ...rest } =
+    const { img, ...rest } =
       values || {};
+    const valuedata = cleanObject({
+      ...rest
+    })
     const data = helpers.fromData({
       event_type: "group",
-      ticket_quantity: "200",
-      min_person: "1",
-      max_person: "200",
       ...(img ? { img: img } : {}),
-      ...rest,
+      ...valuedata,
     });
 
     try {
@@ -198,6 +193,8 @@ export default function GroupEdit({
     }
   };
 
+
+
   const toggleHolistic = (value: any) => {
     const current = from.getValues("holistic_discipline") || [];
     if (current.includes(value as never)) {
@@ -220,10 +217,10 @@ export default function GroupEdit({
                 <VideoBannerBox
                   files={files}
                   getInputProps={getInputProps}
-                  img={events_all?.data?.event?.img}
-                />
+                  img={events_all?.data?.event?.img} />
                 {!get("img") && (
                   <ErrorInput
+                    className="text-red-400 text-sm"
                     error={from?.formState?.errors?.img?.message as string}
                   />
                 )}
@@ -233,10 +230,10 @@ export default function GroupEdit({
                 <ImageBannerBox
                   files={files}
                   getInputProps={getInputProps}
-                  img={events_all?.data?.event?.img}
-                />
+                  img={events_all?.data?.event?.img} />
                 {!get("img") && (
                   <ErrorInput
+                    className="text-red-400 text-sm"
                     error={from?.formState?.errors?.img?.message as string}
                   />
                 )}
@@ -257,9 +254,9 @@ export default function GroupEdit({
                       type="button"
                       disabled={current !== item.value}
                       className={`font-normal transition-colors border bg-transparent text-figma-black
-                      ${item.value === current && "bg-primary text-white"}
-                      ${current !== item.value && "opacity-50 cursor-not-allowed"}
-                    `}
+                                 ${item.value === current && "bg-primary text-white"}
+                                 ${current !== item.value && "opacity-50 cursor-not-allowed"}
+                               `}
                     >
                       <FavIcon
                         color={item.value === current ? "#fff" : undefined}
@@ -283,10 +280,9 @@ export default function GroupEdit({
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                     type="button"
                   >
                     {item.label}
@@ -328,6 +324,7 @@ export default function GroupEdit({
 
                 {get("holistic_discipline")?.length == 0 && (
                   <ErrorInput
+                    className="text-red-400 text-sm"
                     error={
                       from?.formState?.errors?.holistic_discipline
                         ?.message as string
@@ -359,11 +356,11 @@ export default function GroupEdit({
               <>
                 <LocationDroupDown />
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  <SingleDateBox from={from} />
-                  <MultipleTime from={from} setState={setState} />
+                  <MultipleDate from={from} setState={setState} />
+                  <InputTime name="event_time" />
                 </div>
-                <PersonLimit read={true} />
-                <TicketQuantity from={from} read={true} />
+                <PersonLimit />
+                <TicketQuantity from={from} />
                 <FromSelect2
                   items={durationOptions}
                   name="event_duration"
@@ -380,20 +377,32 @@ export default function GroupEdit({
               //  ============================= online =====================
               <>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  <SingleDateBox from={from} />
-                  <MultipleTime from={from} setState={setState} />
+                  <MultipleDate from={from} setState={setState} />
+                  <InputTime name="event_time" />
                 </div>
-                <PersonLimit read={true} />
-                <TicketQuantity from={from} read={true} />
+                <PersonLimit />
+                <TicketQuantity from={from} />
                 <FromTagInput name="tags" label="Tags" className="py-2" />
               </>
             ) : (
               from.watch("delivery_type") === "ondemand" && (
                 <>
                   <LocationDroupDown />
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <SingleDateBox from={from} />
-                    <InputTime name="event_time" placeholder="select time" />
+                  <div>
+                    <div className="h-10 flex items-center justify-between px-2 border rounded-md">
+                      <span className="flex items-center">
+                        <FavIcon className="size-5" name="price22" />
+                        <span className="ml-1">Price</span>
+                      </span>
+                      <FromInput
+                        name="price"
+                        className="w-[300px] h-10 bg-transparent p-0"
+                        type="number"
+                        placeholder="Price here"
+                        err={false}
+                      />
+                    </div>
+                    <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.price?.message as string} />
                   </div>
                   <FromTagInput name="tags" label="Tags" className="py-2" />
                 </>
@@ -411,7 +420,7 @@ export default function GroupEdit({
                   width: `${progress}%`,
                 }}
               ></div>
-              <span className="relative z-10">
+              <span className="relative z-10 ">
                 {isLoading ? "Waiting..." : "Submit"}
               </span>
             </Button>
@@ -427,7 +436,7 @@ export default function GroupEdit({
         titleStyle="text-center"
       >
         <SearchBox
-          className="mx-auto"
+          className="w-full mx-auto"
           onChange={(value) => setSearchText(value)}
         />
         <div className="flex items-center flex-wrap gap-3 pt-5 pb-6">
@@ -450,19 +459,19 @@ export default function GroupEdit({
             ))}
         </div>
       </Modal>
-      {/*  =============== Select time slot Modal =================== */}
+      {/*  === date === */}
       <Modal
-        open={state.istime}
-        setIsOpen={(v) => setState("istime", v)}
-        title="Create Time Slot"
+        open={state.isDate}
+        setIsOpen={(v) => setState("isDate", v)}
+        title="Create Date Slot"
         className="sm:max-w-xl"
         titleStyle="text-center"
       >
-        <TimeSelect
-          selectedTimes={selectedTimes}
-          setSelectedTimes={setSelectedTimes}
-          setState={setState}
+        <MultiDate
+          selectDate={selectDate}
+          setSelectDate={setSelectDate}
           from={from}
+          setState={setState}
         />
       </Modal>
     </div>
@@ -546,39 +555,21 @@ const VideoBannerBox = ({ files, getInputProps, img }: any) => {
   );
 };
 
-//  ----------------------single date --------------------
-const SingleDateBox = ({ from }: any) => {
-  const val = from.watch("event_date");
-  return (
-    <div>
-      <SingleCalendar
-        defaultDate={val}
-        onChange={(value: any) => {
-          from.setValue("event_date", helpers.formatDate(value, "YYYY-MM-DD"));
-        }}
-        className="h-10 text-black"
-      />
-      {!val && (
-        <ErrorInput error={from?.formState?.errors?.event_date?.message} />
-      )}
-    </div>
-  );
-};
 
-//  ------------------- multiple time -------------------------
-const MultipleTime = ({ from, setState }: any) => {
-  const val = from.watch("event_time");
+//  ------------ multiple date ---------------------
+const MultipleDate = ({ from, setState }: any) => {
+  const val = from.watch("event_date");
   return (
     <div className="w-full">
       <Button
-        onClick={() => setState("istime", true)}
+        onClick={() => setState("isDate", true)}
         type="button"
         className="flex h-10 w-full  bg-transparent border text-black font-normal justify-between items-center"
       >
-        <span>Create time slot</span> <ChevronRight />
+        <span>{val?.length > 0 ? `${val?.length} date slot` : "Create date slot"}</span> <ChevronRight />
       </Button>
-      {val?.length == 0 && (
-        <ErrorInput error={from?.formState?.errors?.event_time?.message} />
+      {val?.length === 0 && (
+        <ErrorInput className="text-sm text-red-400" error={from?.formState?.errors?.event_date?.message} />
       )}
     </div>
   );

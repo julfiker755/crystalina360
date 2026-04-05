@@ -13,7 +13,7 @@ import ModalHeading from "@/components/reuseable/modal-heading";
 import Form from "@/components/reuseable/from";
 import { FromInput2 } from "@/components/reuseable/form-input2";
 import { AudioUpload, MusicPlayer } from "@/components/reuseable/music";
-import { helpers } from "@/lib";
+import { formOpts, helpers } from "@/lib";
 import {
   useDeletePodcastMutation,
   useGetPodcastQuery,
@@ -226,7 +226,7 @@ const PadcastStore = ({ setState }: any) => {
     const previewUrl = URL.createObjectURL(file);
     updateGlobal("preview", previewUrl);
     updateGlobal("idx", crypto.randomUUID());
-    from.setValue("audio", file as any);
+    from.setValue("audio", file as any, formOpts);
   };
 
   return (
@@ -368,7 +368,7 @@ const PadcastUpdate = ({ setState, details }: any) => {
     const previewUrl = URL.createObjectURL(file);
     updateGlobal("preview", previewUrl);
     updateGlobal("idx", crypto.randomUUID());
-    from.setValue("audio", file as any);
+    from.setValue("audio", file as any, formOpts);
   };
 
   return (

@@ -197,6 +197,18 @@ export const one2one_online_sc = event.extend({
   event_date: z.string().nonempty("time is required"),
   event_time: z.array(z.string()).nonempty("time slot is required"),
 });
+export const one2one_off_sc_edit = event.extend({
+  ...eventCountry.shape,
+  img: z.any().optional(),
+  event_date: z.string().nonempty("time is required"),
+  event_time: z.array(z.string()).nonempty("time slot is required"),
+});
+
+export const one2one_on_sc_edit = event.extend({
+  img: z.any().optional(),
+  event_date: z.string().nonempty("time is required"),
+  event_time: z.array(z.string()).nonempty("time slot is required"),
+});
 
 
 // =====  groups events =====
@@ -206,9 +218,20 @@ export const group_offline_sc = event.extend({
   event_date: z.array(z.string()).nonempty("date is required"),
   event_time: z.string().nonempty("time slot is required"),
 });
+export const group_offline_sc_edit = event.extend({
+  ...eventCountry.shape,
+  img: z.any().optional(),
+  event_date: z.array(z.string()).nonempty("date is required"),
+  event_time: z.string().nonempty("time slot is required"),
+});
 
 export const group_online_sc = event.extend({
   img: imgSchema.shape.image,
+  event_date: z.array(z.string()).nonempty("date slot is required"),
+  event_time: z.string().nonempty("time is required"),
+});
+export const group_online_sc_edit = event.extend({
+  img: z.any().optional(),
   event_date: z.array(z.string()).nonempty("date slot is required"),
   event_time: z.string().nonempty("time is required"),
 });
@@ -225,10 +248,22 @@ export const group_demand_sc = group_demand.extend({
   ...eventCountry.shape,
   img: imgSchema.shape.video,
 })
+export const group_demand_sc_edit = group_demand.extend({
+  ...eventCountry.shape,
+  img: z.any().optional(),
+})
+
+
 //  ================= retreat event ================
 export const retreat_offline_sc = event.extend({
   ...eventCountry.shape,
   img: imgSchema.shape.image,
+  event_date: z.string().nonempty("date is required"),
+  event_time: z.string().nonempty("time is required"),
+});
+export const retreat_offline_sc_edit = event.extend({
+  ...eventCountry.shape,
+  img: z.any().optional(),
   event_date: z.string().nonempty("date is required"),
   event_time: z.string().nonempty("time is required"),
 });

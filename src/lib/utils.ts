@@ -26,3 +26,10 @@ export function limitWords({ str, count = 3 }: any) {
   const firstThree = words?.slice(0, count);
   return firstThree?.join(" ");
 }
+
+
+export const formOpts = {
+  shouldValidate: true,
+  shouldDirty: true,
+  shouldTouch: true,
+};

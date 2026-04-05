@@ -25,7 +25,7 @@ import { AccessibilityBox } from "../element/accessibility";
 import TicketQuantity from "../element/ticket-quantity";
 import { useUpdateEventsMutation } from "@/redux/api/operator/opratorApi";
 import { useRouter } from "next/navigation";
-import { getSchemaEdit, getValuesOne } from "../element/default";
+import { getOneSchemaEdit, getValuesOne } from "../element/default";
 import sonner from "@/components/reuseable/sonner";
 import { ErrorInput } from "@/components/reuseable/error";
 import {
@@ -35,6 +35,8 @@ import {
   purposeItem,
 } from "@/components/dummy-data";
 import { InputTime } from "@/components/reuseable/timeInput";
+import { cleanObject } from "@/lib/function-utils";
+import { FromInput } from "@/components/reuseable/form-input";
 
 const initialState = {
   holistic: false,
@@ -54,8 +56,8 @@ export default function OnetoOneEdit({
   const [state, setState] = useModalState(initialState);
   const [selAccbility, setSelAccbility] = useState<string[]>([]);
   const [isDelivery, setIsDelivery] = useState<any>("offline");
-  const defaultValues = getValuesOne(isDelivery, "2") as any;
-  const defaultSchema = getSchemaEdit(isDelivery) as any;
+  const defaultValues = getValuesOne(isDelivery) as any;
+  const defaultSchema = getOneSchemaEdit(isDelivery) as any;
   const router = useRouter();
   const [progress, setProgress] = useState(0);
 
@@ -77,26 +79,28 @@ export default function OnetoOneEdit({
       event_description: event.event_description || "",
       holistic_discipline: event.holistic_discipline || [],
     };
-    const sametosame = {
-      ticket_quantity: "2",
-      min_person: "1",
-      max_person: "2",
-    };
+    // const sametosame = {
+    //   ticket_quantity: "2",
+    //   min_person: "1",
+    //   max_person: "2",
+    // };
     if (event?.delivery_type == delivary_t.offline) {
       //   === offline ===
       const offlineObj = {
         event_date: event.event_date?.[0] || "",
         event_time: event.event_time || [],
         event_duration: event.event_duration || "",
-        tags: event.tags || [],
+        tags: event?.tags || [],
         city: event.city || "",
         province: event.province || "",
         region: event.region || "",
         country: event.country || "",
         price: event?.price?.toString() || "",
         accessibility: event.accessibility || [],
+        ticket_quantity: event?.ticket_quantity?.toString() || "",
+        min_person: event?.min_person?.toString() || "",
+        max_person: event.max_person?.toString() || "",
         ...cloneobj,
-        ...sametosame,
       };
       from.reset(offlineObj);
       setSelAccbility(event.accessibility || []);
@@ -108,8 +112,10 @@ export default function OnetoOneEdit({
         event_time: event.event_time || [],
         tags: event.tags || [],
         price: event?.price?.toString() || "",
+        ticket_quantity: event?.ticket_quantity?.toString() || "",
+        min_person: event?.min_person?.toString() || "",
+        max_person: event.max_person?.toString() || "",
         ...cloneobj,
-        ...sametosame,
       };
       from.reset(onlineObj);
       setSelectedTimes(event.event_time || []);
@@ -147,16 +153,20 @@ export default function OnetoOneEdit({
   const [updateEvents, { isLoading }] = useUpdateEventsMutation();
 
   const handleSubmit = async (values: FieldValues) => {
-    const { ticket_quantity, max_person, min_person, img, ...rest } =
-      values || {};
+    const { img, ...rest } = values || {};
+    const valuedata = cleanObject({
+      ...rest
+    })
     const data = helpers.fromData({
       event_type: "onetoone",
-      ticket_quantity: "2",
-      min_person: "1",
-      max_person: "2",
+      // ticket_quantity: "2",
+      // min_person: "1",
+      // max_person: "2",
       ...(img ? { img: img } : {}),
-      ...rest,
+      ...valuedata,
     });
+
+    console.log(values)
 
     try {
       const res = await updateEvents({
@@ -213,6 +223,7 @@ export default function OnetoOneEdit({
                 />
                 {!get("img") && (
                   <ErrorInput
+                    className="text-red-400 text-sm"
                     error={from?.formState?.errors?.img?.message as string}
                   />
                 )}
@@ -226,6 +237,7 @@ export default function OnetoOneEdit({
                 />
                 {!get("img") && (
                   <ErrorInput
+                    className="text-red-400 text-sm"
                     error={from?.formState?.errors?.img?.message as string}
                   />
                 )}
@@ -272,10 +284,9 @@ export default function OnetoOneEdit({
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                     type="button"
                   >
                     {item.label}
@@ -317,6 +328,7 @@ export default function OnetoOneEdit({
 
                 {get("holistic_discipline")?.length == 0 && (
                   <ErrorInput
+                    className="text-red-400 text-sm"
                     error={
                       from?.formState?.errors?.holistic_discipline
                         ?.message as string
@@ -351,8 +363,8 @@ export default function OnetoOneEdit({
                   <SingleDateBox from={from} />
                   <MultipleTime from={from} setState={setState} />
                 </div>
-                <PersonLimit read={true} />
-                <TicketQuantity from={from} read={true} />
+                <PersonLimit />
+                <TicketQuantity from={from} />
                 <FromSelect2
                   items={durationOptions}
                   name="event_duration"
@@ -372,17 +384,29 @@ export default function OnetoOneEdit({
                   <SingleDateBox from={from} />
                   <MultipleTime from={from} setState={setState} />
                 </div>
-                <PersonLimit read={true} />
-                <TicketQuantity from={from} read={true} />
+                <PersonLimit />
+                <TicketQuantity from={from} />
                 <FromTagInput name="tags" label="Tags" className="py-2" />
               </>
             ) : (
               from.watch("delivery_type") === "ondemand" && (
                 <>
                   <LocationDroupDown />
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <SingleDateBox from={from} />
-                    <InputTime name="event_time" placeholder="select time" />
+                  <div>
+                    <div className="h-10 flex items-center justify-between px-2 border rounded-md">
+                      <span className="flex items-center">
+                        <FavIcon className="size-5" name="price22" />
+                        <span className="ml-1">Price</span>
+                      </span>
+                      <FromInput
+                        name="price"
+                        className="w-[300px] h-10 bg-transparent p-0"
+                        type="number"
+                        placeholder="Price here"
+                        err={false}
+                      />
+                    </div>
+                    <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.price?.message as string} />
                   </div>
                   <FromTagInput name="tags" label="Tags" className="py-2" />
                 </>
@@ -548,7 +572,7 @@ const SingleDateBox = ({ from }: any) => {
         className="h-10 text-black"
       />
       {!val && (
-        <ErrorInput error={from?.formState?.errors?.event_date?.message} />
+        <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.event_date?.message} />
       )}
     </div>
   );
@@ -564,10 +588,10 @@ const MultipleTime = ({ from, setState }: any) => {
         type="button"
         className="flex h-10 w-full  bg-transparent border text-black font-normal justify-between items-center"
       >
-        <span>Create time slot</span> <ChevronRight />
+        <span>{val?.length > 0 ? `${val?.length} time slot` : "Create time slot"}</span> <ChevronRight />
       </Button>
       {val?.length == 0 && (
-        <ErrorInput error={from?.formState?.errors?.event_time?.message} />
+        <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.event_time?.message} />
       )}
     </div>
   );

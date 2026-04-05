@@ -1,10 +1,16 @@
 import {
   group_demand_sc,
+  group_demand_sc_edit,
   group_offline_sc,
+  group_offline_sc_edit,
   group_online_sc,
+  group_online_sc_edit,
+  one2one_off_sc_edit,
   one2one_offline_sc,
+  one2one_on_sc_edit,
   one2one_online_sc,
   retreat_offline_sc,
+  retreat_offline_sc_edit,
 } from "@/schema";
 
 
@@ -25,11 +31,11 @@ export const getValuesOne = (type: string) => {
       event_time: [],
       min_person: '',
       max_person: '',
+      ticket_quantity: '',
       price: "",
       event_duration: "less_than_30_minutes",
       accessibility: [],
       tags: [],
-      ticket_quantity: '',
     };
   } else if (type === "offline_retreat") {
     return {
@@ -94,10 +100,10 @@ export const getOneSchema = (type: string) => {
 };
 
 
-export const getSchemaEdit = (isDelivery: string) => {
-  if (isDelivery === "offline") return '';
-  if (isDelivery === "online") return '';
-  if (isDelivery === "ondemand") return '';
+export const getOneSchemaEdit = (type: string) => {
+  if (type === "offline") return one2one_off_sc_edit;
+  if (type === "online") return one2one_on_sc_edit;
+  if (type === "ondemand") return group_demand_sc_edit;
 };
 
 //  ================ group events ================
@@ -186,6 +192,9 @@ export const getGroupSchema = (type: string) => {
   if (type === "ondemand") return group_demand_sc;
   if (type === "retreat") return retreat_offline_sc;
 };
-
-
-//  ================ retreat events ================
+export const getGroupSchemaEdit = (type: string) => {
+  if (type === "offline") return group_offline_sc_edit;
+  if (type === "online") return group_online_sc_edit;
+  if (type === "ondemand") return group_demand_sc_edit;
+  if (type === "retreat") return retreat_offline_sc_edit;
+};

@@ -17,7 +17,6 @@ import { useEffect, useState } from "react";
 import { UploadBtn } from "@/components/reuseable/btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getSchemaEdit, getValuesOne } from "../element/default";
 import TimeSelect from "../element/time-select";
 import MultiDate from "../element/multi-date";
 import PersonLimit from "../element/person-limit";
@@ -34,11 +33,11 @@ import {
 import { ErrorInput } from "@/components/reuseable/error";
 import sonner from "@/components/reuseable/sonner";
 import { InputTime } from "@/components/reuseable/timeInput";
-import { retreat_sc } from "@/schema";
+import { getGroupSchemaEdit, getValuesGroup } from "../element/default";
+import { cleanObject } from "@/lib/function-utils";
 
-const schema = retreat_sc.extend({
-  img: retreat_sc.shape.img.optional(),
-});
+
+
 
 const initialState = {
   holistic: false,
@@ -59,13 +58,13 @@ export default function RetreatEdit({
   const [selAccbility, setSelAccbility] = useState<string[]>([]);
   const [isDelivery, setIsDelivery] = useState<any>("offline");
   const [selectDate, setSelectDate] = useState<any>([]);
-  const defaultValues = getValuesOne(isDelivery, "200") as any;
-  const defaultSchema = getSchemaEdit(isDelivery) as any;
+  const defaultValues = getValuesGroup('retreat') as any;
+  const defaultSchema = getGroupSchemaEdit('retreat') as any;
   const [progress, setProgress] = useState(0);
   const router = useRouter();
 
   const from = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(defaultSchema),
     defaultValues: defaultValues,
     mode: "onChange",
   });
@@ -92,21 +91,19 @@ export default function RetreatEdit({
       country: event.country || "",
       price: event?.price?.toString() || "",
       accessibility: event.accessibility || [],
-      ticket_quantity: "200",
-      min_person: "1",
-      max_person: "200",
+      ticket_quantity: event?.ticket_quantity?.toString() || "",
+      min_person: event?.min_person?.toString() || "",
+      max_person: event.max_person?.toString() || "",
     });
     setSelAccbility(event.accessibility || []);
     setSelectedTimes(event.event_time || []);
     setIsDelivery(event.delivery_type);
   }, [events_all]);
 
-  // accept: "video/*",
-  //   multiple: false
+
   const get = (v: any) => from.watch(v);
-  const delivaryType = get("delivery_type") == delivary_t.ondemand;
   const [{ files }, { getInputProps, clearFiles }] = useFileUpload({
-    accept: delivaryType ? "video/*" : "image/*",
+    accept: "image/*",
   });
 
   useEffect(() => {
@@ -117,15 +114,13 @@ export default function RetreatEdit({
   const [updateEvents, { isLoading }] = useUpdateEventsMutation();
 
   const handleSubmit = async (values: FieldValues) => {
-    const { ticket_quantity, max_person, min_person, img, ...rest } =
-      values || {};
+    const { img, ...rest } = values || {};
+    const valuedata = cleanObject({
+      ...rest
+    })
     const data = helpers.fromData({
       event_type: "retreat",
-      ticket_quantity: "200",
-      min_person: "1",
-      max_person: "200",
-      ...(img ? { img: img } : {}),
-      ...rest,
+      ...valuedata,
     });
 
     try {
@@ -201,10 +196,9 @@ export default function RetreatEdit({
                         from.setValue("delivery_type", item.value);
                       }}
                       type="button"
-                      className={`font-normal transition-colors border bg-transparent text-figma-black ${
-                        item.value === get("delivery_type") &&
+                      className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
                         "bg-primary text-white"
-                      }`}
+                        }`}
                     >
                       <FavIcon
                         color={
@@ -232,10 +226,9 @@ export default function RetreatEdit({
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                     type="button"
                   >
                     {item.label}
@@ -307,8 +300,8 @@ export default function RetreatEdit({
               <SingleDateBox from={from} />
               <InputTime name="event_time" />
             </div>
-            <PersonLimit read={true} />
-            <TicketQuantity from={from} read={true} />
+            <PersonLimit />
+            <TicketQuantity from={from} />
             <FromSelect2
               items={durationOptions}
               name="event_duration"

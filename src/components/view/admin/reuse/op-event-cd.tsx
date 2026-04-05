@@ -42,19 +42,23 @@ export default function OpEvtCd({
 
   if (event_type === event_t.onetoone || event_type == event_t.retreat) {
     elementShow = (
-      <div className="flex  gap-2  items-center text-muted-foreground">
-        <Calendar className="size-5 text-primary" />
-        <span className="text-base text-primary">{event_date?.[0]}</span>
-      </div>
+      delivery_type != delivary_t.ondemand && (
+        <div className="flex  gap-2  items-center text-muted-foreground">
+          <Calendar className="size-5 text-primary" />
+          <span className="text-base text-primary">{event_date?.[0]}</span>
+        </div>
+      )
     );
   } else if (event_type === event_t.group) {
     elementShow = (
-      <div className="flex  gap-2  items-center text-muted-foreground">
-        <FavIcon className="size-5" name="ongoing_events" />
-        <span className="text-base text-primary">
-          {helpers.planTime(event_time?.[0])}
-        </span>
-      </div>
+      delivery_type != delivary_t.ondemand && (
+        <div className="flex  gap-2  items-center text-muted-foreground">
+          <FavIcon className="size-5" name="ongoing_events" />
+          <span className="text-base text-primary">
+            {helpers.planTime(event_time?.[0])}
+          </span>
+        </div>
+      )
     );
   }
 
@@ -94,9 +98,12 @@ export default function OpEvtCd({
                 {getDeliveryIcon(delivery_type, "#FFFFFF")}{" "}
                 {helpers.capitalize(delivery_type)}
               </Button>
-              <Button size="default" variant={helpers.lowerCase(status) as any}>
-                {helpers.capitalize(status)}
-              </Button>
+              {delivery_type != delivary_t.ondemand && (
+                <Button size="default" variant={helpers.lowerCase(status) as any}>
+                  {helpers.capitalize(status)}
+                </Button>
+              )}
+
             </div>
           </div>
         )}
@@ -157,13 +164,10 @@ export default function OpEvtCd({
           </div>
           <div className="[&_div]:flex  [&_div]:gap-2  [&_div]:items-center [&_div]:text-muted-foreground flex flex-col lg:flex-row lg:justify-between">
             {elementShow}
-            {/* --- ondemad not show -- */}
-            {delivery_type === delivary_t.ondemand ? null : (
-              <div className="flex  gap-2  items-center text-muted-foreground">
-                <FavIcon className="size-5" name="price22" />
-                <span className="text-base text-primary">{price || 0}</span>
-              </div>
-            )}
+            <div className="flex  gap-2  items-center text-muted-foreground">
+              <FavIcon className="size-5" name="price22" />
+              <span className="text-base text-primary">{price || 0}</span>
+            </div>
           </div>
         </div>
       </div>

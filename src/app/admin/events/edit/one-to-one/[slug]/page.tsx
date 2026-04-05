@@ -20,7 +20,7 @@ export default function EventEdit() {
         <div className="flex justify-between">
           <div className="flex items-center space-x-2">
             <BackBtn className="bg-white rounded-md" />
-            <h2>Editing Event</h2>
+            <h2>Editing  Event</h2>
           </div>
         </div>
       </SvgBox>
