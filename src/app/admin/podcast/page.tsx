@@ -28,6 +28,8 @@ import { audio_sc } from "@/schema";
 import { ErrorInput } from "@/components/reuseable/error";
 import sonner from "@/components/reuseable/sonner";
 import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+
 
 const initState = {
   isStore: false,
@@ -225,7 +227,7 @@ const PadcastStore = ({ setState }: any) => {
     }
     const previewUrl = URL.createObjectURL(file);
     updateGlobal("preview", previewUrl);
-    updateGlobal("idx", crypto.randomUUID());
+    updateGlobal("idx", uuidv4());
     from.setValue("audio", file as any, formOpts);
   };
 
@@ -367,7 +369,7 @@ const PadcastUpdate = ({ setState, details }: any) => {
     }
     const previewUrl = URL.createObjectURL(file);
     updateGlobal("preview", previewUrl);
-    updateGlobal("idx", crypto.randomUUID());
+    updateGlobal("idx", uuidv4());
     from.setValue("audio", file as any, formOpts);
   };
 

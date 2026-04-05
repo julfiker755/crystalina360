@@ -178,14 +178,12 @@ export default function EventAll() {
         )}
       </div>
 
-      {events?.data?.data?.length >= 10 && (
-        <div className="flex justify-center mt-10">
-          <Pagination
-            onPageChange={(v: any) => setPage(v)}
-            {...events?.data?.meta}
-          />
-        </div>
-      )}
+      <div className="flex justify-center mt-10">
+        <Pagination
+          onPageChange={(v: any) => setPage(v)}
+          {...events?.data?.meta}
+        />
+      </div>
     </div>
   );
 }
