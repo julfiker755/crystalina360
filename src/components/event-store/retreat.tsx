@@ -31,7 +31,6 @@ import { useRouter } from "next/navigation";
 import sonner from "../reuseable/sonner";
 import { disciplineOptions, durationOptions, purposeItem } from "../dummy-data";
 import { InputTime } from "../reuseable/timeInput";
-import { retreat_sc } from "@/schema";
 import { cleanObject } from "@/lib/function-utils";
 
 const initialState = {

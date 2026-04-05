@@ -18,10 +18,9 @@ import { useEffect, useState } from "react";
 import { UploadBtn } from "@/components/reuseable/btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getSchema, getValuesOne } from "./element/default";
+import { getOneSchema, getValuesOne } from "./element/default";
 import TimeSelect from "./element/time-select";
 import { ErrorInput } from "../reuseable/error";
-import { InputTime } from "../reuseable/timeInput";
 import PersonLimit from "./element/person-limit";
 import { LocationDroupDown } from "./element/location";
 import { AccessibilityBox } from "./element/accessibility";
@@ -37,6 +36,8 @@ import {
 } from "../dummy-data";
 import sonner from "../reuseable/sonner";
 import { useGetProfileQuery } from "@/redux/api/authApi";
+import { FromInput } from "../reuseable/form-input";
+import { cleanObject } from "@/lib/function-utils";
 
 const initialState = {
   holistic: false,
@@ -57,8 +58,8 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
     profile?.data?.user?.is_subscribed &&
     profile?.data?.user?.role === roleKey.operator;
 
-  const defaultValues = getValuesOne(isDelivery, "2") as any;
-  const defaultSchema = getSchema(isDelivery) as any;
+  const defaultValues = getValuesOne(isDelivery) as any;
+  const defaultSchema = getOneSchema(isDelivery) as any;
   const router = useRouter();
 
   const from = useForm({
@@ -90,7 +91,7 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
   }, [files, selAccbility]);
 
   const resetFrom = (deliveryType: string) => {
-    const values = getValuesOne(deliveryType, "2") as any;
+    const values = getValuesOne(deliveryType) as any;
     from.reset(values);
     setSelAccbility([]);
     setIsDelivery(deliveryType);
@@ -100,14 +101,12 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
   const [storeEvents, { isLoading }] = useStoreEventsMutation();
 
   const handleSubmit = async (values: FieldValues) => {
-    const { ticket_quantity, max_person, min_person, ...rest } = values || {};
+    const valuedata = cleanObject(values)
     const data = helpers.fromData({
       event_type: "onetoone",
-      ticket_quantity: "2",
-      min_person: "1",
-      max_person: "2",
-      ...rest,
+      ...valuedata,
     });
+
 
     try {
       const res = await storeEvents({
@@ -156,6 +155,7 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
                 <VideoBannerBox files={files} getInputProps={getInputProps} />
                 {!get("img") && (
                   <ErrorInput
+                    className="text-red-400 text-sm"
                     error={from?.formState?.errors?.img?.message as string}
                   />
                 )}
@@ -165,6 +165,7 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
                 <ImageBannerBox files={files} getInputProps={getInputProps} />
                 {!get("img") && (
                   <ErrorInput
+                    className="text-red-400 text-sm"
                     error={from?.formState?.errors?.img?.message as string}
                   />
                 )}
@@ -255,6 +256,7 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
 
                 {get("holistic_discipline")?.length == 0 && (
                   <ErrorInput
+                    className="text-red-400 text-sm"
                     error={
                       from?.formState?.errors?.holistic_discipline
                         ?.message as string
@@ -289,8 +291,8 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
                   <SingleDateBox from={from} />
                   <MultipleTime from={from} setState={setState} />
                 </div>
-                <PersonLimit read={true} />
-                <TicketQuantity from={from} read={true} />
+                <PersonLimit />
+                <TicketQuantity from={from} />
                 <FromSelect2
                   items={durationOptions}
                   name="event_duration"
@@ -311,17 +313,29 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
                   <SingleDateBox from={from} />
                   <MultipleTime from={from} setState={setState} />
                 </div>
-                <PersonLimit read={true} />
-                <TicketQuantity from={from} read={true} />
+                <PersonLimit />
+                <TicketQuantity from={from} />
                 <FromTagInput name="tags" label="Tags" className="py-2" />
               </>
             ) : (
               from.watch("delivery_type") === "ondemand" && (
                 <>
                   <LocationDroupDown />
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <SingleDateBox from={from} />
-                    <InputTime name="event_time" placeholder="select time" />
+                  <div>
+                    <div className="h-10 flex items-center justify-between px-2 border rounded-md">
+                      <span className="flex items-center">
+                        <FavIcon className="size-5" name="price22" />
+                        <span className="ml-1">Price</span>
+                      </span>
+                      <FromInput
+                        name="price"
+                        className="w-[300px] h-10 bg-transparent p-0"
+                        type="number"
+                        placeholder="Price here"
+                        err={false}
+                      />
+                    </div>
+                    <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.price?.message as string} />
                   </div>
                   <FromTagInput name="tags" label="Tags" className="py-2" />
                 </>
@@ -486,7 +500,7 @@ const SingleDateBox = ({ from }: any) => {
         className="h-10 text-black"
       />
       {!val && (
-        <ErrorInput error={from?.formState?.errors?.event_date?.message} />
+        <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.event_date?.message} />
       )}
     </div>
   );
@@ -502,10 +516,10 @@ const MultipleTime = ({ from, setState }: any) => {
         type="button"
         className="flex h-10 w-full  bg-transparent border text-black font-normal justify-between items-center"
       >
-        <span>Create time slot</span> <ChevronRight />
+        <span>{val?.length > 0 ? `${val?.length} time slot` : "Create time slot"}</span> <ChevronRight />
       </Button>
       {val?.length == 0 && (
-        <ErrorInput error={from?.formState?.errors?.event_time?.message} />
+        <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.event_time?.message} />
       )}
     </div>
   );

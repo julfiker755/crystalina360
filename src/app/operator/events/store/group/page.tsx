@@ -14,7 +14,7 @@ export default function GroupStoreBox() {
         <div className="flex justify-between">
           <div className="flex items-center space-x-2">
             <BackBtn className="bg-white rounded-md" />
-            <h2>Creating Retreat event</h2>
+            <h2>Creating group event</h2>
           </div>
           <AlertDiscard>
             <Button className="z-10" variant="destructive">

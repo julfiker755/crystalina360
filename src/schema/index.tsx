@@ -154,9 +154,9 @@ export const audio_sc = z.object({
 
 //  ============= event common schema ===========
 export const event = z.object({
-  delivery_type: z.string().nonempty("Delivery is required"),
-  event_purpose: z.string().nonempty("Purpose is required"),
-  holistic_discipline: z.array(z.string()).nonempty("Holistic is required"),
+  delivery_type: z.string().nonempty("velivery is required"),
+  event_purpose: z.string().nonempty("purpose is required"),
+  holistic_discipline: z.array(z.string()).nonempty("holistic is required"),
   event_title: z.string().nonempty("title is required"),
   event_description: z.string().nonempty("description is required"),
   min_person: z.string().nonempty("Minimum persons is required"),
@@ -184,12 +184,27 @@ const imgSchema = z.object({
   }),
 })
 
+//  ====== one to one event ========
+export const one2one_offline_sc = event.extend({
+  ...eventCountry.shape,
+  img: imgSchema.shape.image,
+  event_date: z.string().nonempty("time is required"),
+  event_time: z.array(z.string()).nonempty("time slot is required"),
+});
+
+export const one2one_online_sc = event.extend({
+  img: imgSchema.shape.image,
+  event_date: z.string().nonempty("time is required"),
+  event_time: z.array(z.string()).nonempty("time slot is required"),
+});
+
+
 // =====  groups events =====
 export const group_offline_sc = event.extend({
   ...eventCountry.shape,
   img: imgSchema.shape.image,
-  event_date: z.array(z.string()).nonempty("date slot is required"),
-  event_time: z.string().nonempty("time is required"),
+  event_date: z.array(z.string()).nonempty("date is required"),
+  event_time: z.string().nonempty("time slot is required"),
 });
 
 export const group_online_sc = event.extend({
@@ -216,177 +231,4 @@ export const retreat_offline_sc = event.extend({
   img: imgSchema.shape.image,
   event_date: z.string().nonempty("date is required"),
   event_time: z.string().nonempty("time is required"),
-});
-
-
-
-
-
-
-
-
-
-
-
-//  ------------------------------ x -------------------------------
-export const group_online_sc2 = event.extend({
-  city: z.string().nonempty("city is required"),
-  province: z.string().nonempty("province is required"),
-  region: z.string().nonempty("region is required"),
-  country: z.string().nonempty("country is required"),
-  event_date: z.array(z.string()).nonempty("date slot is required"),
-  event_time: z.string().nonempty("time is required"),
-});
-
-
-//  one to one
-export const online_sc = event.extend({
-  event_date: z.string().nonempty("date is required"),
-  event_time: z.array(z.string()).nonempty("time Slot is required"),
-});
-
-export const offline_sc = online_sc.extend({
-  city: z.string().nonempty("city is required"),
-  province: z.string().nonempty("province is required"),
-  region: z.string().nonempty("region is required"),
-  country: z.string().nonempty("country is required"),
-});
-
-// === retreat for single===
-export const on_sc = event.extend({
-  event_date: z.string().nonempty("date is required"),
-  event_time: z.string().nonempty("time is required"),
-});
-
-export const retreat_sc = on_sc.extend({
-  city: z.string().nonempty("city is required"),
-  province: z.string().nonempty("province is required"),
-  region: z.string().nonempty("region is required"),
-  country: z.string().nonempty("country is required"),
-});
-
-// === event group from  ==
-export const online_sc2 = event.extend({
-  event_date: z.array(z.string()).nonempty("Date Slot is required"),
-  event_time: z.string().nonempty("Time is required"),
-});
-
-export const offline_sc2 = online_sc2.extend({
-  city: z.string().nonempty("city is required"),
-  province: z.string().nonempty("province is required"),
-  region: z.string().nonempty("region is required"),
-  country: z.string().nonempty("country is required"),
-});
-
-//  ----------
-export const demand_sc = z.object({
-  img: z.any().refine((file) => file instanceof File, {
-    message: "Video is required",
-  }),
-  delivery_type: z.string().nonempty("Delivery is required"),
-  event_purpose: z.string().nonempty("Purpose is required"),
-  holistic_discipline: z.array(z.string()).nonempty("Holistic is required"),
-  event_title: z.string().nonempty("title is required"),
-  event_description: z.string().nonempty("description is required"),
-  city: z.string().nonempty("city is required"),
-  province: z.string().nonempty("province is required"),
-  region: z.string().nonempty("region is required"),
-  country: z.string().nonempty("country is required"),
-  event_date: z.string().nonempty("date is required"),
-  event_time: z.string().nonempty("time is required"),
-  tags: z.array(z.string()).nonempty("tags is required"),
-});
-//  ======= demand_sc2 ========
-export const demand_sc2 = z.object({
-  img: z.any().refine((file) => file instanceof File, {
-    message: "Video is required",
-  }),
-  delivery_type: z.string().nonempty("Delivery is required"),
-  event_purpose: z.string().nonempty("Purpose is required"),
-  holistic_discipline: z.array(z.string()).nonempty("Holistic is required"),
-  event_title: z.string().nonempty("title is required"),
-  event_description: z.string().nonempty("description is required"),
-  city: z.string().nonempty("city is required"),
-  province: z.string().nonempty("province is required"),
-  region: z.string().nonempty("region is required"),
-  country: z.string().nonempty("country is required"),
-  event_date: z.string().nonempty("date is required"),
-  event_time: z.string().nonempty("time is required"),
-  tags: z.array(z.string()).nonempty("tags is required"),
-});
-
-//  ====================================== event edit schema =============================
-export const event_edit = z.object({
-  img: z.any().optional(),
-  delivery_type: z.string().nonempty("Delivery is required"),
-  event_purpose: z.string().nonempty("Purpose is required"),
-  holistic_discipline: z.array(z.string()).nonempty("Holistic is required"),
-  event_title: z.string().nonempty("title is required"),
-  event_description: z.string().nonempty("description is required"),
-  min_person: z.string().optional(),
-  max_person: z.string().optional(),
-  price: z.string().nonempty("Price is required"),
-  event_duration: z.string().optional(),
-  tags: z.array(z.string()).nonempty("tags is required"),
-  ticket_quantity: z.string().nonempty("tiket is required"),
-  accessibility: z.array(z.string()).optional(),
-});
-
-//  one to one
-export const online_sc_edit = event_edit.extend({
-  event_date: z.string().optional(),
-  event_time: z.array(z.string()).nonempty("time Slot is required"),
-});
-
-export const offline_sc_edit = online_sc_edit.extend({
-  city: z.string().nonempty("city is required"),
-  province: z.string().nonempty("province is required"),
-  region: z.string().nonempty("region is required"),
-  country: z.string().nonempty("country is required"),
-});
-
-// === event group from  ==
-export const online_sc2_edit = event_edit.extend({
-  event_date: z.array(z.string()).nonempty("Date Slot is required"),
-  event_time: z.string().nonempty("Time is required"),
-});
-
-export const offline_sc2_edit = online_sc2_edit.extend({
-  city: z.string().nonempty("city is required"),
-  province: z.string().nonempty("province is required"),
-  region: z.string().nonempty("region is required"),
-  country: z.string().nonempty("country is required"),
-});
-
-//  ----------
-export const demand_sc_edit = z.object({
-  img: z.any().optional(),
-  delivery_type: z.string().nonempty("Delivery is required"),
-  event_purpose: z.string().nonempty("Purpose is required"),
-  holistic_discipline: z.array(z.string()).nonempty("Holistic is required"),
-  event_title: z.string().nonempty("title is required"),
-  event_description: z.string().nonempty("description is required"),
-  city: z.string().nonempty("city is required"),
-  province: z.string().nonempty("province is required"),
-  region: z.string().nonempty("region is required"),
-  country: z.string().nonempty("country is required"),
-  event_date: z.string().nonempty("date is required"),
-  event_time: z.string().nonempty("time is required"),
-  tags: z.array(z.string()).nonempty("tags is required"),
-});
-//  ======= demand_sc2 ========
-export const demand_sc2_edit = z.object({
-  img: z.any().optional(),
-  delivery_type: z.string().nonempty("Delivery is required"),
-  event_purpose: z.string().nonempty("Purpose is required"),
-  holistic_discipline: z.array(z.string()).nonempty("Holistic is required"),
-  event_title: z.string().nonempty("title is required"),
-  event_description: z.string().nonempty("description is required"),
-  city: z.string().nonempty("city is required"),
-  province: z.string().nonempty("province is required"),
-  region: z.string().nonempty("region is required"),
-  country: z.string().nonempty("country is required"),
-  event_date: z.string().nonempty("date is required"),
-  event_time: z.string().nonempty("time is required"),
-  tags: z.array(z.string()).nonempty("tags is required"),
 });

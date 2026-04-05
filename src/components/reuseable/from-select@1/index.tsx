@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui";
 import { cn } from "@/lib";
-import { Check, ChevronDown, ChevronsUpDown, CircleAlert } from "lucide-react";
+import { Check, ChevronDown, CircleAlert } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useFormContext, Controller, FieldValues } from "react-hook-form";
 
