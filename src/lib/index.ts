@@ -5,3 +5,4 @@ export * from "./api-response";
 export * from "./axiosBaseQuery";
 export * from "./envs";
 export * from "./language";
+export * from "./seo";
