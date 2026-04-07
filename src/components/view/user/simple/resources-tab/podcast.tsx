@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { AppAlert } from "../../reuse";
 import { ImgBox } from "@/components/reuseable/Img-box";
-import { RandomImg } from "@/lib";
 import MusicCard from "../../reuse/music-card";
 import { useGetPodcastQuery } from "@/redux/api/admin/podcastApi";
 import { Repeat } from "@/components/reuseable/repeat";
@@ -18,7 +17,7 @@ export function Podcast() {
         {/* Podcast Image */}
         <div>
           <ImgBox
-            src={RandomImg()}
+            src={"/podcast.jpg"}
             className="w-full lg:w-55 h-55 rounded-lg bg-muted overflow-hidden"
             alt="The OLISTAMI Podcast"
           />
@@ -33,7 +32,7 @@ export function Podcast() {
             Reconnect with your inner self through a unique blend of music
             therapy and relaxant Celebrate a weekend of diverse sounds and
             cultures with performances from artis Experience the thrill of live
-            music at our annual concert featuring top artists and......Join us
+            music at our annual concert featuring top artists and Join us
             for a deep dive into the latest music genres emerging this year.
             It's a celebrati..This event organize for the music lover peoples.
           </p>

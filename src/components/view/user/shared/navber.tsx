@@ -37,9 +37,10 @@ export default function Navber({ className }: any) {
 
   const navNoUserItems = [
     { name: "Home", href: "/" },
-    { name: "Explore", href: "#explore" },
-    { name: "Privacy Policy", href: "#privacy-Policy" },
-    { name: "Contact Us", href: "#contact-us" },
+    { name: "Explore", href: "/#explore" },
+    { name: "Blog", href: "/blog" },
+    { name: "Podcast", href: "/podcast" },
+    { name: "Contact Us", href: "/#contact-us" },
   ];
   const navUserItems = [
     { name: "Home", href: "/" },

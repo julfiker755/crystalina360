@@ -19,8 +19,9 @@ export default function UserHome() {
     <>
       <MissingInfo href={`/profile/update`} />
       <HeroSec role={user?.role} />
-      <KeyFeature role={user?.role} />
       <ExploreEvents />
+      <KeyFeature role={user?.role} />
+
       {user.role == roleKey.user ? (
         <>
           <Advertise />

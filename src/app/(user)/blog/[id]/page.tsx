@@ -25,9 +25,9 @@ export async function generateMetadata({ params }: IdParams): Promise<any> {
   const url = `${baseUrl}/blogs/${id}`;
 
   const tags = title
-    .split(/[,\s]+/)
-    .filter((word: string) => word.length > 2)
-    .map((word: string) => word.toLowerCase());
+    ?.split(/[,\s]+/)
+    ?.filter((word: string) => word.length > 2)
+    ?.map((word: string) => word.toLowerCase());
 
   return {
     title,

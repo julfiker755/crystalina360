@@ -37,7 +37,8 @@ export enum tagTypes {
   chatlist = "chat_list",
   region_list = "region_list",
   province_list = "province_list",
-  city_list = " city_list"
+  city_list = " city_list",
+  testimonials = "testimonials"
 }
 
 export const tagTypesList = [
@@ -79,5 +80,6 @@ export const tagTypesList = [
   tagTypes.chatlist,
   tagTypes.region_list,
   tagTypes.province_list,
-  tagTypes.city_list
+  tagTypes.city_list,
+  tagTypes.testimonials
 ];

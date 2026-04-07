@@ -1,5 +1,7 @@
+"use client"
 import Image from "next/image";
 import { RatingScore } from "@/components/reuseable/rating";
+import { useGetTestimonialsQuery } from "@/redux/api/user/testimonialsApi";
 
 const testimonials = [
   {
@@ -69,6 +71,8 @@ const testimonials = [
 ];
 
 export default function Testimonial() {
+  const { data: items } = useGetTestimonialsQuery({})
+  console.log(items)
   return (
     <div className="pt-16 container">
       <h1 className="mb-10">Testimonial</h1>
