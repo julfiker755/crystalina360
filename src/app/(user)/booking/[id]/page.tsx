@@ -229,7 +229,7 @@ export default function BookingDetails() {
             ),
           )}
           {delivery_type === delivary_t.online && (
-            <CopyBox icon={false} value={link} />
+            <CopyBox icon={true} value={link} />
           )}
 
           {NotOnDemand(
