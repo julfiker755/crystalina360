@@ -182,7 +182,10 @@ export default function EventDetails() {
         </div>
         {user.role == roleKey.user &&
           <>
-            {ShowOnDemand(<OnDemand id={id} />)}
+            {has_video_access === false && (
+              ShowOnDemand(<OnDemand id={id} />)
+            )}
+
             {NotOnDemand(
               ticket_status == "available" && (
                 <EventApply
