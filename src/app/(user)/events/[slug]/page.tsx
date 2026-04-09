@@ -6,6 +6,7 @@ import VideoPlayer from "@/components/reuseable/player";
 import { OlistamiLabel, StarBadge } from "@/components/reuseable/star-badge";
 import { AppAlert } from "@/components/view/user/reuse";
 import EventApply from "@/components/view/user/simple/event-apply";
+import OnDemand from "@/components/view/user/simple/on-demand";
 import FavIcon from "@/icon/favIcon";
 import { delivary_t, event_t, fakeZoom, helpers, roleKey } from "@/lib";
 import { useSingleEventsQuery } from "@/redux/api/operator/opratorApi";
@@ -37,10 +38,14 @@ export default function EventDetails() {
     ticket_status,
     link,
     organizer_label,
+    has_video_access
   } = events_all?.data?.event || {};
 
   const NotOnDemand = (item: any) => {
     return delivery_type === delivary_t.ondemand ? null : item;
+  };
+  const ShowOnDemand = (item: any) => {
+    return delivery_type === delivary_t.ondemand ? item : null;
   };
 
   let elementShow: any;
@@ -66,11 +71,21 @@ export default function EventDetails() {
       <div className="bg-[#FBFBFB] p-3 rounded-xs overflow-clip">
         <div>
           {delivery_type == delivary_t.ondemand ? (
-            <VideoPlayer
-              className="sm:w-full mx-auto xl:w-[60%]"
-              key={id}
-              src={img}
-            />
+            has_video_access ? (
+              <VideoPlayer
+                className="sm:w-full mx-auto xl:w-[60%]"
+                key={id}
+                src={img}
+              />
+            ) : (
+              <div className="relative h-100 max-w-4xl mx-auto overflow-hidden rounded-md ">
+                <img
+                  src={"/videoImg.png"}
+                  alt={event_title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )
           ) : (
             <div className="relative h-100 max-w-4xl mx-auto overflow-hidden rounded-md ">
               <img
@@ -133,14 +148,12 @@ export default function EventDetails() {
         </div>
         <p className="text-muted-foreground">{event_description}</p>
         <div className="space-y-2 text-sm mt-5 *:text-figma-black *:font-medium">
-          {NotOnDemand(
-            <div className="flex gap-2 items-center text-muted-foreground">
-              <Tag className="text-figma-black" size={23} />
-              <span className="text-base text-[#A6A996] font-medium">
-                {price}
-              </span>
-            </div>,
-          )}
+          <div className="flex gap-2 items-center text-muted-foreground">
+            <Tag className="text-figma-black" size={23} />
+            <span className="text-base text-[#A6A996] font-medium">
+              {price}
+            </span>
+          </div>
           {delivery_type === delivary_t.online ? (
             <CopyBox icon={false} value={fakeZoom} />
           ) : (
@@ -168,19 +181,24 @@ export default function EventDetails() {
           )}
         </div>
         {user.role == roleKey.user &&
-          NotOnDemand(
-            ticket_status == "available" && (
-              <EventApply
-                id={id}
-                organizer={organizer}
-                event_type={event_type}
-                event_time={event_time}
-                event_date={event_date}
-                available_tickets={available_tickets}
-                price={price}
-              />
-            ),
-          )}
+          <>
+            {ShowOnDemand(<OnDemand id={id} />)}
+            {NotOnDemand(
+              ticket_status == "available" && (
+                <EventApply
+                  id={id}
+                  organizer={organizer}
+                  event_type={event_type}
+                  event_time={event_time}
+                  event_date={event_date}
+                  available_tickets={available_tickets}
+                  price={price}
+                />
+              ),
+            )}
+          </>
+
+        }
       </div>
       <AppAlert className="mb-10" />
     </div>

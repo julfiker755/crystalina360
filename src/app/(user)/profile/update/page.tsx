@@ -14,17 +14,14 @@ import {
 } from "@/redux/api/authApi";
 import sonner from "@/components/reuseable/sonner";
 import {
-  cityOptions,
-  countryOptions,
   genderOptions,
-  provinceOptions,
-  regionOptions,
 } from "@/components/dummy-data";
 import { BackBtn } from "@/components/reuseable/back-btn";
 import { Switch } from "@/components/ui/switch";
 import { FromInput } from "@/components/reuseable/form-input";
 import { FormSelDropdown } from "@/components/reuseable/from-select@1";
 import { Label } from "@/components/ui";
+import { LocationDroupDownUser } from "@/components/view/user/reuse/location-user";
 
 const intAva = {
   file: null,
@@ -59,7 +56,7 @@ export default function ProfileEdit2() {
       name: "",
       email: "",
       gender: "",
-      residence_city: "",
+      residence_city: "Italy",
       residence_province: "",
       residence_region: "",
       residence_country: "",
@@ -81,7 +78,7 @@ export default function ProfileEdit2() {
       form.reset({
         name: name || "",
         email: email || "",
-        residence_city: residence_city || "",
+        residence_city: residence_city || "Italy",
         residence_province: residence_province || "",
         residence_region: residence_region || "",
         residence_country: residence_country || "",
@@ -141,7 +138,7 @@ export default function ProfileEdit2() {
 
   return (
     <Form
-      className="bg-figma-gray px-4 py-1 rounded-md"
+      className="bg-figma-gray px-4 py-1 rounded-md pb-6"
       from={form}
       onSubmit={handleSubmit}
     >
@@ -186,6 +183,7 @@ export default function ProfileEdit2() {
           </ImgUpload>
         </div>
         <div className="space-y-5 mt-6">
+          {/* ----------- */}
           <div className="lg:grid lg:grid-cols-2 gap-6 space-y-6 lg:space-y-0">
             <FromInput
               className="h-10"
@@ -200,50 +198,7 @@ export default function ProfileEdit2() {
               placeholder="Enter your email"
               readOnly={true}
             />
-            <div>
-              <Label className="text-blacks text-base font-medium  mb-1">
-                Country
-              </Label>
-              <FormSelDropdown
-                label="select city"
-                name="residence_country"
-                options={countryOptions}
-                className="bg-[#F4F4F4] border-none rounded-md"
-              />
-            </div>
-            <div>
-              <Label className="text-blacks text-base font-medium  mb-1">
-                Region
-              </Label>
-              <FormSelDropdown
-                label="select region"
-                name="residence_region"
-                options={regionOptions}
-                className="bg-[#F4F4F4] border-none rounded-md"
-              />
-            </div>
-            <div>
-              <Label className="text-blacks text-base font-medium  mb-1">
-                Province
-              </Label>
-              <FormSelDropdown
-                label="select province"
-                name="residence_province"
-                options={provinceOptions}
-                className="bg-[#F4F4F4] border-none rounded-md"
-              />
-            </div>
-            <div>
-              <Label className="text-blacks text-base font-medium  mb-1">
-                City
-              </Label>
-              <FormSelDropdown
-                label="select city"
-                name="residence_city"
-                options={cityOptions}
-                className="bg-[#F4F4F4] border-none rounded-md"
-              />
-            </div>
+            <LocationDroupDownUser />
             <div>
               <Label className="text-blacks text-base font-medium  mb-1">
                 Gender

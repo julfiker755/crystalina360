@@ -6,7 +6,6 @@ import { Skeleton } from "@/components/ui";
 import Avatars from "../avater";
 import CopyBox from "../copy-box";
 import { StarBadge } from "../star-badge";
-import { ImgBox } from "../Img-box";
 import Image from "next/image";
 
 interface EventCardProps {
@@ -32,6 +31,7 @@ export default function EventCard({ item, wish = false }: EventCardProps) {
     img,
     is_loved_by_user,
     organizer_label,
+    has_video_access
   } = item || {};
 
 
@@ -40,17 +40,22 @@ export default function EventCard({ item, wish = false }: EventCardProps) {
   let elementShow: any;
   if (event_type === event_t.onetoone || event_type == event_t.retreat) {
     elementShow = (
-      <div className="flex  gap-2  items-center text-muted-foreground">
-        <Calendar size={22} />
-        <span className="text-base">{event_date?.[0]}</span>
-      </div>
+      delivery_type != delivary_t.ondemand && (
+        <div className="flex  gap-2  items-center text-muted-foreground">
+          <Calendar size={22} />
+          <span className="text-base">{event_date?.[0]}</span>
+        </div>
+      )
+
     );
   } else if (event_type === event_t.group) {
     elementShow = (
-      <div className="flex  gap-2  items-center text-muted-foreground">
-        <FavIcon color="#7F7F7F" className="size-5" name="ongoing_events" />
-        <span className="text-base">{helpers.planTime(event_time?.[0])}</span>
-      </div>
+      delivery_type != delivary_t.ondemand && (
+        <div className="flex  gap-2  items-center text-muted-foreground">
+          <FavIcon color="#7F7F7F" className="size-5" name="ongoing_events" />
+          <span className="text-base">{helpers.planTime(event_time?.[0])}</span>
+        </div>
+      )
     );
   }
   //  ===========  store wish ================
@@ -70,23 +75,29 @@ export default function EventCard({ item, wish = false }: EventCardProps) {
     <div className="overflow-hidden  transition-shadow bg-figma-gray rounded-lg p-3">
       <div className="relative h-60 overflow-hidden rounded-md ">
         {delivery_type == delivary_t.ondemand ? (
-          <video
-            key={img}
-            autoPlay
-            loop
-            playsInline
-            muted
-            preload="auto"
-            style={{
-              width: "100%",
-              height: "240px",
-              objectFit: "cover",
-              borderRadius: "10px",
-            }}
-          >
-            <source src={img} />
-            Your browser does not support the video tag.
-          </video>
+          has_video_access ? (
+            <video
+              key={img}
+              autoPlay
+              loop
+              playsInline
+              muted
+              preload="auto"
+              style={{
+                width: "100%",
+                height: "240px",
+                objectFit: "cover",
+                borderRadius: "10px",
+              }}
+            >
+              <source src={img} />
+              Your browser does not support the video tag.
+            </video>
+          ) : (<img
+            src={"/videoImg.png"}
+            alt={"title"}
+            className="w-full h-full object-cover"
+          />)
         ) : (
           <div>
             <img
@@ -156,14 +167,10 @@ export default function EventCard({ item, wish = false }: EventCardProps) {
             )}
 
             {elementShow}
-            {delivery_type === delivary_t.ondemand ? (
-              <h5 className="text-gray-500 opacity-0">Not Show ondemand </h5>
-            ) : (
-              <div className="flex  gap-2  items-center text-muted-foreground">
-                <Tag size={20} />
-                <span className="text-base">{price}</span>
-              </div>
-            )}
+            <div className="flex  gap-2  items-center text-muted-foreground">
+              <Tag size={20} />
+              <span className="text-base">{price}</span>
+            </div>
           </div>
         </div>
       </div>

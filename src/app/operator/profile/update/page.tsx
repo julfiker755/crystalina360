@@ -26,6 +26,7 @@ import {
 import { BackBtn } from "@/components/reuseable/back-btn";
 import { Switch } from "@/components/ui/switch";
 import { FormProfileDropdown } from "@/components/reuseable/from-select@1/profile-input";
+import { LocationDroupDownOprator } from "@/components/view/oparator/reuse/location-oprator";
 
 const intAva = {
   file: null,
@@ -64,7 +65,7 @@ export default function ProfileEdit2() {
       bio: "",
       skills: [],
       gender: "",
-      residence_city: "",
+      residence_city: "Italy",
       residence_province: "",
       residence_region: "",
       residence_country: "",
@@ -88,7 +89,7 @@ export default function ProfileEdit2() {
         email: email || "",
         bio: bio || "",
         skills: skills || "",
-        residence_city: residence_city || "",
+        residence_city: residence_city || "Italy",
         residence_province: residence_province || "",
         residence_region: residence_region || "",
         residence_country: residence_country || "",
@@ -130,19 +131,24 @@ export default function ProfileEdit2() {
       company_province_code,
     });
 
-    const res = await updateProfile(data).unwrap();
-    if (res.status) {
-      form.reset();
-      await addCompany(companydata).unwrap();
-      sonner.success(
-        "Update Successful",
-        "Your profile has been updated successfully",
+
+    try {
+      const res = await updateProfile(data).unwrap();
+      if (res.status) {
+        form.reset();
+        await addCompany(companydata).unwrap();
+        sonner.success(
+          "Update Successful",
+          "Your profile has been updated successfully",
+          "bottom-right",
+        );
+      }
+    } catch (err: any) {
+      sonner.error(
+        "Update profile error",
+        err?.data?.error || "Update profile error",
         "bottom-right",
       );
-    }
-    try {
-    } catch (err: any) {
-      console.log("Update profile error:", err);
     }
   };
 
@@ -203,27 +209,7 @@ export default function ProfileEdit2() {
               placeholder="Enter your email"
               readOnly={true}
             />
-            <FormProfileDropdown
-              label="Country"
-              name="residence_country"
-              options={countryOptions}
-            />
-            <FormProfileDropdown
-              label="Region"
-              name="residence_region"
-              options={regionOptions}
-            />
-            <FormProfileDropdown
-              label="Province"
-              name="residence_province"
-              options={provinceOptions}
-            />
-
-            <FormProfileDropdown
-              label="City"
-              name="residence_city"
-              options={cityOptions}
-            />
+            <LocationDroupDownOprator />
             <FormProfileDropdown
               label="Gender"
               name="gender"

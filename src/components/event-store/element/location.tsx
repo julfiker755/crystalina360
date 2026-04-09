@@ -1,10 +1,11 @@
 "use client"
 import { FormSelDropdown } from "@/components/reuseable/from-select@1";
+import { cn } from "@/lib";
 import { useGetRegionListQuery, useLazyGetItalyCityListQuery, useLazyGetProvinceListQuery } from "@/redux/api/city/cityApi";
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
-export const LocationDroupDown = () => {
+export const LocationDroupDown = ({ className }: { className?: string }) => {
   const { getValues } = useFormContext();
   const { data: regionItem } = useGetRegionListQuery({})
   const [getProvinceList, { data: provinceItem }] = useLazyGetProvinceListQuery()
@@ -26,7 +27,7 @@ export const LocationDroupDown = () => {
   }, [defaultProvince, getItalyCityList, provinceItem]);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
+    <div className={cn("grid grid-cols-1 lg:grid-cols-4 gap-3", className)}>
       <FormSelDropdown
         label="-Country-"
         name="country"
@@ -53,12 +54,14 @@ export const LocationDroupDown = () => {
         setSelectValue={(item) => {
           getItalyCityList({ province: item.value })
         }}
+        disabled={!provinceItem?.data?.length}
       />
 
       <FormSelDropdown label="-City-" name="city"
         options={cityItem?.data?.map((item: any) => ({
           label: item.city, value: item.city
         }))}
+        disabled={!cityItem?.data?.length}
       />
     </div>
   );

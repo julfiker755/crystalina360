@@ -74,6 +74,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth!">
       <body className={`${montserrat.variable}`}>
         <Provider>{children}</Provider>
+
       </body>
     </html>
   );

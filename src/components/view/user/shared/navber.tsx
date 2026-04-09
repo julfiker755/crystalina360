@@ -9,11 +9,12 @@ import Modal2 from "@/components/reuseable/modal2";
 import AuthModalController from "../../common/auth-controller";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setSignupRole, toggleIsOpen } from "@/redux/features/authSlice";
-import { cn, roleKey, useGoogleTranslate } from "@/lib";
+import { cn, roleKey } from "@/lib";
 import { AppState } from "@/redux/store";
 import FavIcon from "@/icon/favIcon";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/reuseable/logo";
+import { LanguageSwitcher } from "../../common/language";
 
 export default function Navber({ className }: any) {
   const [isOpen, setIsOpen] = useState(false);
@@ -176,15 +177,7 @@ export default function Navber({ className }: any) {
   );
 }
 
-// ======== language switcher =========
-const LanguageSwitcher = () => {
-  const { toggleLanguage, isTranslating } = useGoogleTranslate('en');
-  return (
-    <Button variant={"none"} disabled={isTranslating.current} onClick={() => toggleLanguage()} className="cursor-pointer">
-      <FavIcon className="size-7" name="language" />
-    </Button>
-  )
-}
+
 
 //  ======= SignInButton ===========
 function SignInButton() {

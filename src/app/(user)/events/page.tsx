@@ -39,6 +39,8 @@ export default function ExploreAll() {
     setSortValue(value);
   };
 
+  console.log(eventsItem?.data)
+
   return (
     <div className="container">
       <ul className="flex justify-between flex-wrap items-center pt-10 pb-5">

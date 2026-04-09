@@ -9,11 +9,12 @@ import Modal2 from "@/components/reuseable/modal2";
 import AuthModalController from "../../common/auth-controller";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setSignupRole, toggleIsOpen } from "@/redux/features/authSlice";
-import { cn, RandomImg, roleKey, useGoogleTranslate } from "@/lib";
+import { cn, RandomImg, roleKey } from "@/lib";
 import { AppState } from "@/redux/store";
 import FavIcon from "@/icon/favIcon";
 import { usePathname } from "next/navigation";
 import Avatars from "@/components/reuseable/avater";
+import { LanguageSwitcher2 } from "../../common/language";
 
 export default function Navber({ className }: any) {
   const pathname = usePathname();
@@ -77,7 +78,7 @@ export default function Navber({ className }: any) {
 
             {/* Buttons */}
             <div className="flex items-center space-x-2">
-              <LanguageSwitcher />
+              <LanguageSwitcher2 />
               <SignInButton />
               <Button
                 size="icon-sm"
@@ -162,21 +163,7 @@ export default function Navber({ className }: any) {
   );
 }
 
-const LanguageSwitcher = () => {
-  const { toggleLanguage, isTranslating } = useGoogleTranslate('en');
-  return (
-    <Button
-      onClick={() => toggleLanguage()}
-      size="lg"
-      className="hidden md:block border disabled:opacity-100 has-[>svg]:px-2.5 bg-white text-figma-black"
-      disabled={isTranslating.current}
-    >
-      <FavIcon className="size-7" name="language" />
-    </Button >
 
-
-  )
-}
 
 
 function SignInButton() {

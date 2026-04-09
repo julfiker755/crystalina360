@@ -6,6 +6,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
+  Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -20,7 +21,7 @@ interface Option {
   label: string;
 }
 
-interface FormSelect2Props {
+interface selectDropdownOpratorProps {
   className?: string;
   name: string;
   options?: Option[];
@@ -31,11 +32,11 @@ interface FormSelect2Props {
   disabled?: boolean;
 }
 
-export const FormSelDropdown: React.FC<FormSelect2Props> = ({
+export const SelectDropdownOprator: React.FC<selectDropdownOpratorProps> = ({
   className,
   name,
   options = [],
-  placeholder = "Search here",
+  placeholder = "Select hare",
   setSelectValue,
   label,
   isSearch,
@@ -80,21 +81,33 @@ export const FormSelDropdown: React.FC<FormSelect2Props> = ({
           return (
             <Popover open={selectOpen} onOpenChange={setSelectOpen}>
               <PopoverTrigger asChild>
-                <Button
-                  disabled={disabled}
-                  ref={popoverRef}
-                  variant="outline"
-                  role="combobox"
-                  aria-expanded={selectOpen}
-                  className={cn(
-                    `w-full h-10 hover:bg-transparent font-normal shadow-none justify-between`,
-                    className,
-                  )}
-                  onClick={() => setSelectOpen(!selectOpen)}
-                >
-                  {selectedLabel || label}
-                  <ChevronDown />
-                </Button>
+                <div className="relative">
+                  <Button
+                    ref={popoverRef}
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={selectOpen}
+                    disabled={disabled}
+                    type="button"
+                    className={cn(
+                      `w-full h-10 hover:bg-transparent font-normal shadow-none justify-between`,
+                      className,
+                    )}
+                    onClick={() => setSelectOpen(!selectOpen)}
+                  >
+                    {selectedLabel || (
+                      <span className="text-figma-a_gray">{placeholder}</span>
+                    )}
+                    <ChevronDown />
+                  </Button>
+                  <Label
+                    className={
+                      "text-blacks text-base font-medium bg-background absolute -top-3 left-5  px-3"
+                    }
+                  >
+                    {label}
+                  </Label>
+                </div>
               </PopoverTrigger>
               <PopoverContent
                 className="p-0"

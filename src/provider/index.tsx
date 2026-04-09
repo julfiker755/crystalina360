@@ -32,7 +32,7 @@ export default function Provider({ children }: childrenProps) {
           />
         </ConfirmDialogProvider>
       </SuccessDialogProvider>
-      <div id="google_translate_element" className="hidden!" />
+
     </ReduxProvider>
   );
 }

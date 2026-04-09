@@ -10,6 +10,7 @@ export default function OperatorLayout({ children }: childrenProps) {
       <Navber />
       {children}
       <Footer />
+      <div id="google_translate_operator" className="hidden" />
     </>
   );
 }
