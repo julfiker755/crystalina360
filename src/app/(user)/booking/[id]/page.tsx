@@ -135,7 +135,7 @@ export default function BookingDetails() {
         </div>
         <div className="flex  gap-2  items-center text-muted-foreground">
           <Calendar className="text-figma-black" size={22} />
-          <span className="text-base">{bookings?.data?.event_date}</span>
+          <span className="text-base">{helpers.formatDate(bookings?.data?.event_date, "DD-MM-YYYY")}</span>
         </div>
       </>
     );
@@ -208,10 +208,12 @@ export default function BookingDetails() {
               </span>
             </div>,
           )}
-          <div className="flex gap-2 items-center  text-muted-foreground">
-            <MapPin className="text-figma-black" size={23} />
-            <span className="text-base font-medium">{`${city}, ${province}, ${region}, ${country}`}</span>
-          </div>
+          {bookings?.data?.events?.delivery_type != "online" && (
+            <div className="flex gap-2 items-center  text-muted-foreground">
+              <MapPin className="text-figma-black" size={23} />
+              <span className="text-base font-medium">{`${city}, ${province}, ${region}, ${country}`}</span>
+            </div>
+          )}
           {NotOnDemand(elementShow)}
           {NotOnDemand(
             parseInt(available_tickets) > 0 && (
@@ -229,7 +231,7 @@ export default function BookingDetails() {
             ),
           )}
           {delivery_type === delivary_t.online && (
-            <CopyBox icon={true} value={link} />
+            <CopyBox icon={true} value={link} valueStyle="text-base" />
           )}
 
           {NotOnDemand(

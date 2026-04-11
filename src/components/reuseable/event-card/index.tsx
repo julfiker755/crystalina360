@@ -11,9 +11,10 @@ import Image from "next/image";
 interface EventCardProps {
   item: any;
   wish: boolean;
+  zoomLink?: boolean;
 }
 
-export default function EventCard({ item, wish = false }: EventCardProps) {
+export default function EventCard({ item, wish, zoomLink = false }: EventCardProps) {
   const {
     id,
     organizer,
@@ -31,7 +32,8 @@ export default function EventCard({ item, wish = false }: EventCardProps) {
     img,
     is_loved_by_user,
     organizer_label,
-    has_video_access
+    has_video_access,
+    link,
   } = item || {};
 
 
@@ -157,7 +159,7 @@ export default function EventCard({ item, wish = false }: EventCardProps) {
           <div className="space-y-1 mt-3 text-sm">
             {delivery_type === delivary_t.online ? (
               <div className="flex  gap-2  items-center text-muted-foreground">
-                <CopyBox icon={false} value={fakeZoom} />
+                <CopyBox icon={zoomLink} value={zoomLink ? link : fakeZoom} />
               </div>
             ) : (
               <div className="flex  gap-2  items-center text-muted-foreground">

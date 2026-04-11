@@ -82,4 +82,10 @@ export const adminLinks = [
     act_io: "settings_i",
     to: "/admin/settings",
   },
+  {
+    label: "Aruba",
+    icon: "aruba",
+    act_io: "aruba_i",
+    to: "/admin/aruba",
+  },
 ];

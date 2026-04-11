@@ -10,29 +10,37 @@ import { AppAlert } from "@/components/view/user/reuse";
 import { useGetBookingsQuery } from "@/redux/api/user/bookingApi";
 import { TabsContent } from "@/components/ui";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Booking() {
-  const [isStatus, setIsStatus] = useState("ongoing");
+  const router = useRouter();
+  const params = useSearchParams();
+  const [isTab, setIsTab] = useState(params.get("tab") || "ongoing");
   const [page, setPage] = useState(1);
   const { data: booking, isLoading } = useGetBookingsQuery({
-    status: isStatus,
+    status: isTab,
+    per_page: 14,
     page: page,
   });
+
+  useEffect(() => {
+    setIsTab(params.get("tab") || "ongoing");
+  }, [params]);
+
 
   return (
     <div className="container">
       <TabBox
-        defaultValue="ongoing"
+        defaultValue={isTab}
         tabItem={["Ongoing", "Upcoming", "Completed"]}
         className="flex justify-start w-fit mt-8"
         tabStyle="border-b border-transparent text-lg data-[state=active]:border-primary! data-[state=active]:border-b! data-[state=active]:text-primary"
         onChange={(v: any) => {
           if (v == "completed") {
-            console.log("fdf");
-            setIsStatus("complete");
+            router.push(`?tab=complete`, { scroll: false });
           } else {
-            setIsStatus(v);
+            router.push(`?tab=${v}`, { scroll: false });
           }
         }}
       >
@@ -46,7 +54,7 @@ export default function Booking() {
               ) : booking?.data?.length > 0 ? (
                 booking?.data?.map((item: any) => (
                   <Link key={item.id} href={`/booking/${item?.id}`}>
-                    <EventCard wish={false} item={item} />
+                    <EventCard zoomLink={true} wish={false} item={item} />
                   </Link>
                 ))
               ) : (
@@ -68,7 +76,7 @@ export default function Booking() {
               ) : booking?.data?.length > 0 ? (
                 booking?.data?.map((item: any) => (
                   <Link key={item.id} href={`/booking/${item?.id}`}>
-                    <EventCard wish={false} item={item} />
+                    <EventCard zoomLink={true} wish={false} item={item} />
                   </Link>
                 ))
               ) : (
@@ -89,7 +97,7 @@ export default function Booking() {
             ) : booking?.data?.length > 0 ? (
               booking?.data?.map((item: any) => (
                 <Link key={item.id} href={`/booking/${item?.id}`}>
-                  <EventCard wish={false} item={item} />
+                  <EventCard zoomLink={true} wish={false} item={item} />
                 </Link>
               ))
             ) : (

@@ -184,7 +184,7 @@ const CouponStore = ({ setState }: any) => {
         from.reset();
         setState("isStore", false);
       }
-    } catch (err) {}
+    } catch (err) { }
   };
 
   return (
@@ -294,7 +294,7 @@ const CouponUpdate = ({ isDetails, setState }: any) => {
         from.reset();
         setState("isUpdate", false);
       }
-    } catch (err) {}
+    } catch (err) { }
   };
 
   const type = from.watch("coupon_type") || "flat";
