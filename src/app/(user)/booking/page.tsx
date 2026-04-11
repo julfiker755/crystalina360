@@ -10,10 +10,10 @@ import { AppAlert } from "@/components/view/user/reuse";
 import { useGetBookingsQuery } from "@/redux/api/user/bookingApi";
 import { TabsContent } from "@/components/ui";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function Booking() {
+function BookingChild() {
   const router = useRouter();
   const params = useSearchParams();
   const [isTab, setIsTab] = useState(params.get("tab") || "ongoing");
@@ -115,4 +115,15 @@ export default function Booking() {
       <AppAlert />
     </div>
   );
+}
+
+
+import React from 'react'
+
+export default function Booking() {
+  return (
+    <Suspense>
+      <BookingChild />
+    </Suspense>
+  )
 }
