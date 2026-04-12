@@ -263,8 +263,8 @@ const AddonEditForm = ({ setState, details }: any) => {
     const { primary_color, secondary_color, ...rest } = values;
     const data1 = {
       ...rest,
-      primary_color: primarycolor,
-      secondary_color: secondarycolor,
+      ...primarycolor?.length ? { primary_color: primarycolor } : { primary_color: "#6366F1" },
+      ...secondarycolor?.length ? { secondary_color: secondarycolor } : { secondary_color: "#C6C3F6" },
     };
 
     const data = helpers.fromData(data1);
