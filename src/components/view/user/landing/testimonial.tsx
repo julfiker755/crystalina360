@@ -1,108 +1,55 @@
 "use client"
-import Image from "next/image";
 import { RatingScore } from "@/components/reuseable/rating";
 import { useGetTestimonialsQuery } from "@/redux/api/user/testimonialsApi";
+import { Skeleton } from "@/components/ui";
+import { ImgBox } from "@/components/reuseable/Img-box";
+import { Repeat } from "@/components/reuseable/repeat";
 
-const testimonials = [
-  {
-    id: "1",
-    name: "Sourov Das Mithun",
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
-    rating: 3,
-    text: "This is a very nice event. I like the event so much. The we...",
-  },
-  {
-    id: "2",
-    name: "Riya Sharma",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
-    rating: 4,
-    text: "I had an amazing time at the festival. The atmosphere w...",
-  },
-  {
-    id: "3",
-    name: "Anik Dutta",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
-    rating: 2,
-    text: "The event featured some talented artists. Each p...",
-  },
-  {
-    id: "4",
-    name: "Priya Sen",
-    image:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop",
-    rating: 5,
-    text: "What a wonderful experience! The decorations added a m...",
-  },
-  {
-    id: "5",
-    name: "Sourov Das Mithun",
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
-    rating: 3,
-    text: "This is a very nice event. I like the event so much. The we...",
-  },
-  {
-    id: "6",
-    name: "Riya Sharma",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
-    rating: 1,
-    text: "I had an amazing time at the festival. The atmosphere w...",
-  },
-  {
-    id: "7",
-    name: "Anik Dutta",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
-    rating: 3,
-    text: "The event featured some talented artists. Each p...",
-  },
-  {
-    id: "8",
-    name: "Priya Sen",
-    image:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop",
-    rating: 3,
-    text: "What a wonderful experience! The decorations added a m...",
-  },
-];
 
 export default function Testimonial() {
-  const { data: items } = useGetTestimonialsQuery({})
-  console.log(items)
+  const { data: items, isLoading } = useGetTestimonialsQuery({})
+
+
+  if (items?.data?.length === 0) {
+    return null
+  }
+
   return (
     <div className="pt-16 container">
       <h1 className="mb-10">Testimonial</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {testimonials.map((testimonial) => (
-          <TestimonialCard key={testimonial.id} testimonial={testimonial} />
-        ))}
+        {isLoading ? (
+          <Repeat count={8}>
+            <div className="flex flex-col items-center text-center p-6  rounded-lg">
+              <Skeleton className="size-20 rounded-full" />
+              <Skeleton className="w-full h-4 mt-3" />
+              <Skeleton className="w-full h-4 mt-3" />
+              <Skeleton className="w-full h-4 mt-3" />
+            </div>
+          </Repeat>
+        ) : (
+          items?.data?.map((testimonial: any) => (
+            <TestimonialCard key={testimonial.id} {...testimonial} />
+          ))
+        )}
+
       </div>
     </div>
   );
 }
 
-function TestimonialCard({ testimonial }: any) {
+function TestimonialCard({ id, name, img, average_rating, comment }: any) {
   return (
     <div className="flex flex-col items-center text-center p-6 bg-[#FBFBFB] rounded-lg">
-      <Image
-        src={testimonial.image || "/placeholder.svg"}
-        alt={testimonial.name}
-        width={80}
-        height={80}
-        className="rounded-full mb-4 object-cover"
-      />
-      <h3 className="font-semibold text-figma-black text-lg mb-2">
-        {testimonial.name}
+      <ImgBox src={img} className="size-20 rounded-full" alt="img" />
+      <h3 className="font-semibold text-figma-black text-lg mb-2 mt-3">
+        {name}
       </h3>
       <div className="mb-3">
-        <RatingScore key={testimonial.id} value={testimonial.rating || 0} />
+        <RatingScore key={id} value={average_rating || 0} />
       </div>
       <p className="text-sm text-gray-600 line-clamp-3 px-8">
-        {testimonial.text}
+        {comment || "N/A"}
       </p>
     </div>
   );

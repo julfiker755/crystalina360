@@ -403,6 +403,14 @@ body {
   border: none !important;
   box-shadow: none !important;
 }
-.VIpgJd-ZVi9od-aZ2wEe-wOHMyf VIpgJd-ZVi9od-aZ2wEe-wOHMyf-ti6hGc {
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf .VIpgJd-ZVi9od-aZ2wEe-wOHMyf-ti6hGc {
   display: none !important;
+}
+
+.VIpgJd-ZVi9od-aZ2wEe {
+  display: none !important;
+}
+
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf {
+  opacity: 0 !important;
 }

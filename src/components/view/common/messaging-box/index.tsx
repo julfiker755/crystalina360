@@ -270,13 +270,17 @@ function MessagingAppChild({ className }: any) {
             <div ref={scrollRef} className="flex-1 overflow-y-auto scrollbar-hide p-4">
               <div ref={contentRef}>
                 {messages.length ? (
-                  messages.map((msg: any) => (
-                    <MessageBubble
-                      key={msg.id}
-                      message={msg}
-                      isMe={msg.sender_id === userId}
-                    />
-                  ))
+                  messages.map((msg: any) => {
+                    const isMe = String(msg.sender_id) === String(userId);
+
+                    return (
+                      <MessageBubble
+                        key={msg.id}
+                        message={msg}
+                        isMe={isMe}
+                      />
+                    );
+                  })
                 ) : (
                   <div className="text-center text-zinc-500 p-12">No messages yet</div>
                 )}

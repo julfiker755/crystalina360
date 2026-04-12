@@ -14,7 +14,7 @@ const metadataBase = new URL(envs.app_url as string);
 
 export const metadata: Metadata = {
   metadataBase,
-  title: "Plan Your Next Experience",
+  title: "Eventi di Benessere Olistico | Esperienze e Percorsi - Olistami",
   keywords: [
     "Stay connected events",
     "Event search and filter",
@@ -30,18 +30,18 @@ export const metadata: Metadata = {
     "Manage event schedule",
   ],
   description:
-    "Stay connected to the events that matter most to you. Easily search and filter by type, location, or price range. Book tickets in seconds with a smooth, reliable system. Track your bookings, invoices, and event updates effortlessly.",
+    "venti, percorsi ed esperienze di benessere olistico dal vivo, online e on- demand.Scopri proposte curate e prenota con un sistema semplice e affidabile",
   openGraph: {
-    title: "Plan Your Next Experience",
+    title: "Eventi di Benessere Olistico | Esperienze e Percorsi - Olistami",
     description:
-      "Stay connected to the events that matter most to you. Easily search and filter by type, location, or price range. Book tickets in seconds with a smooth, reliable system. Track your bookings, invoices, and event updates effortlessly.",
+      "venti, percorsi ed esperienze di benessere olistico dal vivo, online e on- demand.Scopri proposte curate e prenota con un sistema semplice e affidabile",
     url: envs.app_url,
     images: [
       {
         url: "/favImg.png",
         width: 800,
         height: 600,
-        alt: "Plan Your Next Experience",
+        alt: "Eventi di Benessere Olistico | Esperienze e Percorsi - Olistami",
       },
     ],
     type: "website",
@@ -51,15 +51,15 @@ export const metadata: Metadata = {
     facebook: [
       "website",
       envs.app_url as string,
-      "Plan Your Next Experience",
-      "Stay connected to the events that matter most to you. Easily search and filter by type, location, or price range. Book tickets in seconds with a smooth, reliable system. Track your bookings, invoices, and event updates effortlessly",
+      "Eventi di Benessere Olistico | Esperienze e Percorsi - Olistami",
+      "venti, percorsi ed esperienze di benessere olistico dal vivo, online e on- demand.Scopri proposte curate e prenota con un sistema semplice e affidabile",
       "/favImg.png",
     ],
     linkedin: [
       "website",
       envs.app_url as string,
-      "Plan Your Next Experience",
-      "Stay connected to the events that matter most to you. Easily search and filter by type, location, or price range. Book tickets in seconds with a smooth, reliable system. Track your bookings, invoices, and event updates effortlessly",
+      "Eventi di Benessere Olistico | Esperienze e Percorsi - Olistami",
+      "venti, percorsi ed esperienze di benessere olistico dal vivo, online e on- demand.Scopri proposte curate e prenota con un sistema semplice e affidabile",
       "/favImg.png",
     ],
   },
@@ -74,7 +74,6 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth!">
       <body className={`${montserrat.variable}`}>
         <Provider>{children}</Provider>
-
       </body>
     </html>
   );
