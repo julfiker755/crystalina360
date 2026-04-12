@@ -38,7 +38,7 @@ export const blogApi = baseApi.injectEndpoints({
         ContentType: "multipart/form-data",
         data,
       }),
-      invalidatesTags: [tagTypes.a_single_blog],
+      invalidatesTags: [tagTypes.a_single_blog, tagTypes.a_blog],
     }),
     deleteBlog: build.mutation({
       query: (id) => ({
