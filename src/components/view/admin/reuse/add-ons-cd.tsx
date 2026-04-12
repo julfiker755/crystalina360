@@ -51,7 +51,7 @@ export default function AddOnCd({
                   }}
                   className="text-lg font-bold"
                 >
-                  ${price}
+                  ${price || 0}
                 </p>
               </div>
             </div>

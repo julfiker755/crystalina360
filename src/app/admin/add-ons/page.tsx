@@ -57,7 +57,7 @@ export default function Addons() {
       />
       <div className="flex-between gap-10">
         <SearchBox onChange={(v: any) => updateGlobal("search", v)} />
-        <Button
+        {/* <Button
           onClick={() => setState("isStore", true)}
           type="button"
           size="lg"
@@ -65,7 +65,7 @@ export default function Addons() {
         >
           <Plus />
           <span className="hidden md:block">Add more</span>
-        </Button>
+        </Button> */}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 xl:grid-cols-3 pt-8">
         {isLoading ? (
@@ -222,8 +222,8 @@ const AddonStoreForm = ({ setState }: any) => {
 };
 //  ===================== Edit add on details ==================
 const AddonEditForm = ({ setState, details }: any) => {
-  const [primarycolor, setPrimaryColor] = useState<string>("");
-  const [secondarycolor, setSecondaryColor] = useState<string>("");
+  const [primarycolor, setPrimaryColor] = useState<string>("#6366F1");
+  const [secondarycolor, setSecondaryColor] = useState<string>("#C6C3F6");
 
   const id = details?.id;
 
@@ -238,6 +238,7 @@ const AddonEditForm = ({ setState, details }: any) => {
       secondary_color: "",
     },
   });
+  console.log(details);
 
   useEffect(() => {
     if (!details) return;
@@ -252,8 +253,8 @@ const AddonEditForm = ({ setState, details }: any) => {
       secondary_color: details?.secondary_color || "",
       benefits: benefits_id,
     });
-    setPrimaryColor(details?.primary_color);
-    setSecondaryColor(details?.secondary_color);
+    setPrimaryColor(details?.primary_color || "#6366F1")
+    setSecondaryColor(details?.secondary_color || "#C6C3F6")
   }, [details, from]);
 
   const [updateAddon, { isLoading }] = useUpdateAddonMutation();
@@ -265,7 +266,11 @@ const AddonEditForm = ({ setState, details }: any) => {
       primary_color: primarycolor,
       secondary_color: secondarycolor,
     };
+
     const data = helpers.fromData(data1);
+    // for (const [key, value] of data.entries()) {
+    //   console.log(key, value);
+    // }
     const res = await updateAddon({ id, data }).unwrap();
     if (res) {
       setState("isUpdate", false);

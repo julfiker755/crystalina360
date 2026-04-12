@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Popover,
   PopoverContent,
@@ -13,92 +12,61 @@ import {
   ColorPickerEyeDropper,
   ColorPickerFormat,
   ColorPickerHue,
+  ColorPickerOutput,
   ColorPickerSelection,
 } from "@/components/ui";
 
-type Props = {
-  label?: string;
-  color?: string;
-  setColor: (color: string) => void;
-  defaultColor?: string;
-};
-
-export default function FromColorPicker({
-  label = "Color",
-  color,
-  setColor,
-  defaultColor = "#A68B7C", // ✅ fallback default
-}: Props) {
+export default function FromColorPicker({ label, color, setColor }: any) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [width, setWidth] = useState<number>(0);
 
-  // ✅ internal state (always valid color)
-  const [internalColor, setInternalColor] = useState(
-    color || defaultColor
-  );
-
-  // ✅ sync when parent changes
+  // Dynamically get button width
   useEffect(() => {
-    if (color) {
-      setInternalColor(color);
+    if (buttonRef.current) {
+      setWidth(buttonRef.current.offsetWidth);
     }
-  }, [color]);
 
-  // ✅ dynamic width
-  useEffect(() => {
-    const updateWidth = () => {
+    const handleResize = () => {
       if (buttonRef.current) {
         setWidth(buttonRef.current.offsetWidth);
       }
     };
 
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ✅ handle color change
-  const handleChange = (newColor: string) => {
-    setInternalColor(newColor);
-    setColor(newColor);
-  };
-
   return (
-    <div className="space-y-2">
-      <h5 className="text-base font-medium">{label}</h5>
-
+    <div>
+      <h5 className="text-blacks text-base font-medium ml-2">{label}</h5>
       <Popover>
         <PopoverTrigger asChild>
           <Button
             ref={buttonRef}
             variant="outline"
-            className="w-full h-10 flex items-center justify-between px-3 rounded-md border"
-            style={{ backgroundColor: internalColor }}
-          >
-            {/* ✅ HEX preview */}
-            <span className="text-xs font-mono text-white/90 mix-blend-difference">
-              {internalColor}
-            </span>
-          </Button>
+            style={{
+              backgroundColor: color,
+            }}
+            className="w-full rounded-md border"
+          ></Button>
         </PopoverTrigger>
-
-        <PopoverContent className="overflow-hidden p-3" style={{ width }}>
+        <PopoverContent className="overflow-hidden" style={{ width }}>
           <ColorPicker
-            value={internalColor} // ✅ controlled
-            onChange={(c) => handleChange(c as string)}
+            onChange={(color) => {
+              setColor(color as any);
+            }}
             className="h-[300px] w-full"
+            defaultValue={color}
           >
             <ColorPickerSelection />
-
-            <div className="flex items-center gap-4 mt-2">
+            <div className="flex items-center gap-4">
               <ColorPickerEyeDropper />
               <div className="grid w-full gap-1">
                 <ColorPickerHue />
                 <ColorPickerAlpha />
               </div>
             </div>
-
-            <div className="flex items-center gap-2 mt-2">
+            <div className="flex items-center gap-2">
               <ColorPickerFormat />
             </div>
           </ColorPicker>
