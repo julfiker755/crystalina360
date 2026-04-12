@@ -238,7 +238,7 @@ const AddonEditForm = ({ setState, details }: any) => {
       secondary_color: "",
     },
   });
-  console.log(details);
+  // console.log(details);
 
   useEffect(() => {
     if (!details) return;
