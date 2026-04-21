@@ -16,7 +16,6 @@ export default function Userlayout({ children }: childrenProps) {
       {children}
       <Footer />
       <AIChatBox />
-      <div id="google_translate_user" className="hidden" />
     </>
   );
 }
