@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google"; // Importing Montserrat font
+import { Montserrat } from "next/font/google";
 import "./style/globals.css";
 import Provider from "@/provider";
 import { envs } from "@/lib";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 
 // Apply Montserrat font
 const montserrat = Montserrat({
-  variable: "--font-montserrat", // Font variable name
+  variable: "--font-montserrat",
   subsets: ["latin"],
 });
 
@@ -65,15 +67,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }>) {
+  const { locale } = await params;
+  const messages = await getMessages({ locale });
   return (
-    <html lang="en" className="scroll-smooth!">
+    <html lang={locale} className="scroll-smooth!">
       <body className={`${montserrat.variable}`}>
-        <Provider>{children}</Provider>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <Provider>{children}</Provider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

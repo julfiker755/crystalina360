@@ -1,0 +1,22 @@
+{
+  "navbar": {
+    "home": "Home",
+    "explore": "Esplora",
+    "blog": "Blog",
+    "podcast": "Podcast",
+    "contactUs": "Contattaci",
+    "booking": "Prenotazioni",
+    "resources": "Risorse",
+    "profile": "Profilo"
+  },
+  "footer": {
+    "title": "Gestisci tutti i tuoi eventi in un unico posto",
+    "description": "La dashboard dell'operatore consente ai gestori di eventi di creare, gestire e monitorare gli eventi con facilità, offrendo pieno controllo e approfondimenti chiari per un'esecuzione fluida.",
+    "quickLinks": "Link rapidi",
+    "followUs": "Seguici su"
+  },
+  "metadata": {
+    "title": "Eventi di Benessere Olistico | Esperienze e Percorsi - Olistami",
+    "description": "Eventi, percorsi ed esperienze di benessere olistico dal vivo, online e on-demand. Scopri proposte curate e prenota con un sistema semplice e affidabile"
+  }
+}

@@ -2,6 +2,10 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { authKey, roleKey } from "./lib";
 import { jwtDecode } from "jwt-decode";
+import createIntlMiddleware from "next-intl/middleware";
+import { routing } from "./i18n";
+
+const intlMiddleware = createIntlMiddleware(routing);
 
 const operatorRoutes = [
   "/operator/dashboard",
@@ -13,6 +17,7 @@ const operatorRoutes = [
   "/operator/profile",
   "/operator/conversation",
 ];
+
 const userRoutes = [
   "/events",
   "/booking",
@@ -23,61 +28,99 @@ const userRoutes = [
   "/conversation",
   "/favorite-events",
 ];
+
 const adminRoutes = ["/admin"];
 
 const matchRoute = (routes: string[], pathname: string) =>
   routes.some(
-    (route) => pathname === route || pathname.startsWith(`${route}/`),
+    (route) => pathname === route || pathname.startsWith(`${route}/`)
   );
+
+// ✔ remove locale
+const stripLocale = (pathname: string) => {
+  const hasLocale = routing.locales.some(
+    (locale) =>
+      pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+
+  return hasLocale ? pathname.replace(/^\/[^/]+/, "") || "/" : pathname;
+};
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // ✅ FIX 1: static files completely bypass
+  if (
+    pathname.startsWith("/img/") ||
+    pathname.startsWith("/icons/") ||
+    pathname.startsWith("/fonts/") ||
+    /\.(?:png|jpg|jpeg|gif|svg|ico|webp|woff|woff2)$/.test(pathname)
+  ) {
+    return NextResponse.next();
+  }
+
+  const cleanPath = stripLocale(pathname);
+
   const cookiesStore = await cookies();
   const token = cookiesStore.get(authKey)?.value;
 
+  // ================= NO TOKEN =================
   if (!token) {
-    cookiesStore.delete(authKey);
-    if (matchRoute(adminRoutes, pathname)) {
+    if (matchRoute(adminRoutes, cleanPath)) {
       return NextResponse.redirect(new URL("/", request.url));
     }
-    if (matchRoute(operatorRoutes, pathname)) {
+    if (matchRoute(operatorRoutes, cleanPath)) {
       return NextResponse.redirect(new URL("/operator", request.url));
     }
-    return NextResponse.next();
+
+    return intlMiddleware(request);
   }
-  // ================ role base access ================
+
+  // ================= ROLE CHECK =================
   const decoded: any = jwtDecode(token);
   const role = decoded?.role;
 
-  const isOperator = matchRoute(operatorRoutes, pathname);
-  const isUser = matchRoute(userRoutes, pathname);
-  const isAdmin = matchRoute(adminRoutes, pathname);
+  const isOperator = matchRoute(operatorRoutes, cleanPath);
+  const isUser = matchRoute(userRoutes, cleanPath);
+  const isAdmin = matchRoute(adminRoutes, cleanPath);
 
-  const userPath = pathname === "/";
-  const operatorPath = pathname === "/operator";
+  const userPath = cleanPath === "/";
+  const operatorPath = cleanPath === "/operator";
 
   if (role === roleKey.user) {
     if (isAdmin || isOperator || operatorPath) {
       return NextResponse.redirect(new URL("/", request.url));
     }
-    return NextResponse.next();
-  } else if (role === roleKey.operator) {
+    return intlMiddleware(request);
+  }
+
+  if (role === roleKey.operator) {
     if (isAdmin || isUser || userPath) {
       return NextResponse.redirect(new URL("/operator", request.url));
-    } else if (operatorPath) {
-      return NextResponse.redirect(new URL("/operator/dashboard", request.url));
     }
-    return NextResponse.next();
-  } else if (role === roleKey.admin) {
+    if (operatorPath) {
+      return NextResponse.redirect(
+        new URL("/operator/dashboard", request.url)
+      );
+    }
+    return intlMiddleware(request);
+  }
+
+  if (role === roleKey.admin) {
     if (isUser || isOperator || userPath || operatorPath) {
       return NextResponse.redirect(new URL("/admin", request.url));
     }
-    return NextResponse.next();
+    return intlMiddleware(request);
   }
 
   return NextResponse.redirect(new URL("/", request.url));
 }
+// export const config = {
+//   matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+// };
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon\\.ico).*)",
+  ],
 };

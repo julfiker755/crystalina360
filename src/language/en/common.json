@@ -1,0 +1,18 @@
+{
+  "navbar": {
+    "home": "Home",
+    "explore": "Explore",
+    "blog": "Blog",
+    "podcast": "Podcast",
+    "contactUs": "Contact Us",
+    "booking": "Booking",
+    "resources": "Resources",
+    "profile": "Profile"
+  },
+  "footer": {
+    "title": "Manage your all events in one place",
+    "description": "The operator dashboard lets event managers create, manage, and track events with ease, offering full control and clear insights for smooth execution.",
+    "quickLinks": "Quick links",
+    "followUs": "Follow us on"
+  }
+}
