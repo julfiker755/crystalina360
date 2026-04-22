@@ -5,19 +5,19 @@ import SearchBox from "@/components/reuseable/search-box";
 import AddOnCd from "@/components/view/admin/reuse/add-ons-cd";
 import { useGlobalState, useModalState } from "@/hooks";
 import { Button, Skeleton } from "@/components/ui";
-import { CircleAlert, Plus } from "lucide-react";
+import { CircleAlert } from "lucide-react";
 import Modal2 from "@/components/reuseable/modal2";
 import ModalHeading from "@/components/reuseable/modal-heading";
 import { FieldValues, useForm } from "react-hook-form";
 import Form from "@/components/reuseable/from";
 import { FromInput2 } from "@/components/reuseable/form-input2";
 import { FromTextarea2 } from "@/components/reuseable/from-textarea2";
-import FromDropdown from "@/components/reuseable/from-dropdown";
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { add_on } from "@/schema";
 import FromColorPicker from "@/components/reuseable/from-color";
 import {
+  useAddOnToggleMutation,
   useGetAddonQuery,
   useStoreAddOnMutation,
   useUpdateAddonMutation,
@@ -28,6 +28,7 @@ import sonner from "@/components/reuseable/sonner";
 import { useDebounce } from "use-debounce";
 import { Pagination } from "@/components/reuseable/pagination";
 import { Repeat } from "@/components/reuseable/repeat";
+import { Switch } from "@/components/ui/switch";
 
 const initState = {
   isStore: false,
@@ -42,12 +43,14 @@ const initGlobalSate = {
 export default function Addons() {
   const [state, setState] = useModalState(initState);
   const [global, updateGlobal] = useGlobalState(initGlobalSate);
+  const [loadingId, setLoadingId] = useState<string | null>(null);
   const [details, setIsDetails] = useState<any>({});
   const [value] = useDebounce(global.search, 1000);
   const { data: addon, isLoading } = useGetAddonQuery({
     page: global.page,
     ...(value && { search: value }),
   });
+  const [addOnToggle] = useAddOnToggleMutation();
 
   return (
     <div>
@@ -67,7 +70,7 @@ export default function Addons() {
           <span className="hidden md:block">Add more</span>
         </Button> */}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 xl:grid-cols-3 pt-8">
+      <div className="grid grid-cols-1  md:grid-cols-2 gap-10 xl:grid-cols-3 pt-8">
         {isLoading ? (
           <Repeat count={10}>
             <Skeleton className="w-full h-[400px]" />
@@ -76,6 +79,16 @@ export default function Addons() {
           addon?.data?.length > 0 &&
           addon?.data?.map((item: any, idx: any) => (
             <AddOnCd key={idx} {...item}>
+              <Switch disabled={loadingId === item.id} checked={item.isAvailable}
+                onCheckedChange={async (val) => {
+                  try {
+                    setLoadingId(item.id)
+                    const res = await addOnToggle(item.id)
+                    sonner.success(res.data.message, "", "bottom-right")
+                  } finally {
+                    setLoadingId(null)
+                  }
+                }} className="absolute top-3 right-4" id="airplane-mode" />
               <div className="flex space-x-3  justify-end mt-3">
                 <AEditbtn
                   onClick={() => {
