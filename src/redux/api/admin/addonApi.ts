@@ -16,6 +16,14 @@ export const addonApi = baseApi.injectEndpoints({
         return buildResponse(res);
       },
     }),
+    addOnToggle: build.mutation({
+      query: (id: any) => ({
+        url: `/makeAvailableAddsOn/${id}`,
+        method: "POST",
+        ContentType: "multipart/form-data",
+      }),
+      invalidatesTags: [tagTypes.a_add_on_get],
+    }),
     allBenefits: build.query({
       query: () => ({
         url: "/benefits",
@@ -50,4 +58,5 @@ export const {
   useAllBenefitsQuery,
   useStoreAddOnMutation,
   useUpdateAddonMutation,
+  useAddOnToggleMutation
 } = addonApi;

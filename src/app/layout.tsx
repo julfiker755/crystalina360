@@ -3,6 +3,7 @@ import { Montserrat } from "next/font/google"; // Importing Montserrat font
 import "./style/globals.css";
 import Provider from "@/provider";
 import { envs } from "@/lib";
+import { NextIntlClientProvider } from "next-intl";
 
 // Apply Montserrat font
 const montserrat = Montserrat({
@@ -73,7 +74,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth!">
       <body className={`${montserrat.variable}`}>
-        <Provider>{children}</Provider>
+        <NextIntlClientProvider>
+          <Provider>{children}</Provider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

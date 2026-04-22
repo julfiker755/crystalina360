@@ -22,7 +22,7 @@ export default function AddOnCd({
   return (
     <>
       <div
-        className="rounded-xl border-t-4 flex flex-col justify-between  bg-white px-8 pt-8 pb-6 shadow-md"
+        className="rounded-xl border-t-4 relative flex flex-col justify-between  bg-white px-8 pt-8 pb-6 shadow-md"
         style={{
           borderColor: primary_color,
         }}
