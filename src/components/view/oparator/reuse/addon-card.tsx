@@ -33,6 +33,7 @@ export default function AddOnCard({
     primary_color,
     secondary_color,
     slug,
+    isAvailable
   } = item || {};
   const router = useRouter();
   const [global, updateGlobal] = useGlobalState({
@@ -96,23 +97,33 @@ export default function AddOnCard({
             </div>
             {token &&
               (buy ? (
-                <Button
-                  style={{
-                    backgroundColor: primary_color,
-                  }}
-                  onClick={() => {
-                    if (ispayment) {
-                      handlePayment(id);
-                      return;
-                    }
-                    router.push(href);
-                  }}
-                  disabled={bugIsLoading}
-                  className="rounded-full text-white"
-                >
-                  <Lock className="w-4 h-4 mr-2" />
-                  Buy now
-                </Button>
+                isAvailable ? (
+                  <Button
+                    style={{
+                      backgroundColor: primary_color,
+                    }}
+                    onClick={() => {
+                      if (ispayment) {
+                        handlePayment(id);
+                        return;
+                      }
+                      router.push(href);
+                    }}
+                    disabled={bugIsLoading}
+                    className="rounded-full text-white"
+                  >
+                    <Lock className="w-4 h-4 mr-2" />
+                    Buy now
+                  </Button>
+                ) : (
+                  <Button
+                    variant="secondary"
+                    className="opacity-60 rounded-full cursor-not-allowed"
+                    disabled
+                  >
+                    Not Available
+                  </Button>
+                )
               ) : (
                 <Button
                   disabled={true}
@@ -221,16 +232,27 @@ export default function AddOnCard({
           </ul>
         </div>
         {token && buy && (
-          <Button
-            style={{
-              backgroundColor: global?.data?.primaryColor,
-            }}
-            onClick={() => router.push(href)}
-            className="rounded-full w-full text-white"
-          >
-            <Lock className="w-4 h-4 mr-2" />
-            Buy now
-          </Button>
+          isAvailable ? (
+            <Button
+              style={{
+                backgroundColor: global?.data?.primaryColor,
+              }}
+              onClick={() => router.push(href)}
+              className="rounded-full w-full text-white"
+            >
+              <Lock className="w-4 h-4 mr-2" />
+              Buy now
+            </Button>
+          ) : (
+            <Button
+              variant="secondary"
+              className="opacity-60 rounded-full  w-full cursor-not-allowed"
+              disabled
+            >
+              Not Available
+            </Button>
+          )
+
         )}
       </Modal2>
     </>
