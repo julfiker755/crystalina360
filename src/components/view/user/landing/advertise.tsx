@@ -14,9 +14,10 @@ import {
   useGetPromotionQuery,
   usePromotionCountMutation,
 } from "@/redux/api/admin/promotionApi";
+import { useTranslations } from "next-intl";
 
 export default function CarouselHero() {
-  // ✅ Strongly type the API
+  const t = useTranslations("user.home.advertise");
   const [api, setApi] = React.useState<CarouselApi | null>(null);
   const [current, setCurrent] = React.useState(0);
   const [count, setCount] = React.useState(0);
@@ -39,7 +40,7 @@ export default function CarouselHero() {
 
   return (
     <div className="pt-16 container mb-10">
-      <h1 className="mb-10">OLISTAMI Advertise</h1>
+      <h1 className="mb-10">{t("title")}</h1>
 
       <div>
         <Carousel
@@ -80,7 +81,7 @@ export default function CarouselHero() {
                       }}
                       size="lg"
                     >
-                      Open Link
+                      {t("open_link")}
                     </Button>
                   </a>
                 </div>
@@ -94,9 +95,8 @@ export default function CarouselHero() {
           {Array.from({ length: 10 }).map((_, index) => (
             <button
               key={index}
-              className={`h-2 rounded-full cursor-pointer transition-all duration-300 ${
-                current === index + 1 ? "w-6 bg-primary" : "w-2 bg-gray-300"
-              }`}
+              className={`h-2 rounded-full cursor-pointer transition-all duration-300 ${current === index + 1 ? "w-6 bg-primary" : "w-2 bg-gray-300"
+                }`}
               onClick={() => api?.scrollTo(index)}
               aria-label={`Go to slide ${index + 1}`}
             />

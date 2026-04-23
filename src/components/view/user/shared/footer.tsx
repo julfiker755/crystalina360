@@ -1,14 +1,17 @@
 import AppStore from "@/components/reuseable/app-store/app-store";
 import FavIcon from "@/icon/favIcon";
 import assets from "@/assets";
+import { useTranslations } from "next-intl";
+import Link from "next/link";
+
 
 export default function Footer() {
+  const t = useTranslations('user.home.footer')
   const socialMedia = [
     { name: "facebook", icon: "facebook" },
     { name: "youtube", icon: "youtube" },
     { name: "instagram", icon: "instagram" },
   ];
-
 
 
   return (
@@ -23,30 +26,39 @@ export default function Footer() {
             </div>
             <div>
               <h5 className="text-xl mb-2">
-                Manage your all events in one place
+                {t('title')}
               </h5>
               <p>
-                The operator dashboard lets event managers create, manage, and
-                track events with ease, offering full control and clear insights
-                for smooth execution.
+                {t('description')}
               </p>
             </div>
           </div>
           <div className="lg:ml-5">
             <h3 className="text-xl font-semibold text-white mb-3">
-              Quick links
+              {t('quick.title')}
             </h3>
             <ul className="space-y-1">
-              <li>Home</li>
-              <li>Explore</li>
-              <li>Booking</li>
-              <li>Contact Us</li>
-              <li>Profile</li>
+              <li>
+                <Link href="/">{t('quick.home')}</Link>
+              </li>
+              <li>
+                <Link href="/#explore">{t('quick.explore')}</Link>
+              </li>
+              <li>
+                <Link href="/blog">{t('quick.blog')}</Link>
+              </li>
+              <li>
+                <Link href="/podcast">{t('quick.podcast')}</Link>
+              </li>
+              <li>
+                <Link href="/#contact-us">{t('quick.contact_us')}</Link>
+              </li>
+
             </ul>
           </div>
           <div>
             <h3 className="text-xl font-semibold  mb-3 text-white">
-              Follow us on
+              {t('social.follow_us_on')}
             </h3>
             <div className="space-y-4">
               <ul className="flex items-center  space-x-3">

@@ -4,10 +4,7 @@ import { newsletSts } from "@/lib/constants";
 export const featuresData = [
   {
     id: 1,
-    title: "Personal Profile",
-    text: "Create a customize your account",
-    description:
-      "Create your own account and add personal details to customize your experience. Update your profile anytime, keep your information secure, and manage your preferences with ease. Your profile is the starting point for exploring and booking events tailored just for you.",
+    key: "profile",
     icon: assets.feature.profile,
     bgColor: "#F7FAFF",
     shadow:
@@ -15,10 +12,7 @@ export const featuresData = [
   },
   {
     id: 2,
-    title: "Event Discovery",
-    text: "Create a customize your account",
-    description:
-      "Explore a wide range of events — from online workshops to in-person conferences. Use advanced filters like location, type, and fee range to quickly find what you're looking for. Save your favorite events and never miss out on opportunities that matter most to you.",
+    key: "discovery",
     icon: assets.feature.discovery,
     bgColor: "#FFF5F6",
     iconBgColor: "bg-pink-100",
@@ -27,10 +21,7 @@ export const featuresData = [
   },
   {
     id: 3,
-    title: "Ticketing & Booking",
-    text: "Create a customize your account",
-    description:
-      "Book tickets seamlessly with a secure and reliable checkout process. Once your booking is complete, you'll receive automatic confirmations and receipts. Stay worry-free knowing your tickets are stored in your account and can be accessed anytime.",
+    key: "booking",
     icon: assets.feature.booking,
     bgColor: "#FDF6FF",
     shadow:
@@ -38,10 +29,7 @@ export const featuresData = [
   },
   {
     id: 4,
-    title: "Reviews & Ratings",
-    text: "Create a customize your account",
-    description:
-      "After attending events, share your honest feedback through ratings and reviews. Your input helps improve the platform and guides other users in choosing the best events. Build a community of trust by voicing your experience and recommendations.",
+    key: "rating",
     icon: assets.feature.rating,
     bgColor: "#FFFDF1",
     shadow:
@@ -49,10 +37,7 @@ export const featuresData = [
   },
   {
     id: 5,
-    title: "Payments & Invoices",
-    text: "Create a customize your account",
-    description:
-      "Manage all your event-related payments in one convenient place. Access detailed invoices, track your booking history, and download receipts whenever you need them. Enjoy transparency and clarity with every transaction you make.",
+    key: "payment",
     icon: assets.feature.payment,
     bgColor: "#F4FCFF",
     shadow:
@@ -60,10 +45,7 @@ export const featuresData = [
   },
   {
     id: 6,
-    title: "Subscriptions",
-    text: "Create a customize your account",
-    description:
-      "Stay updated by subscribing to event newsletters and notifications. Choose the types of updates you want to receive — from upcoming concerts to professional seminars. With customized subscriptions, you’ll always be in the loop without unnecessary clutter.",
+    key: "subscription",
     icon: assets.feature.subscrit,
     bgColor: "#F9FFEE",
     shadow:

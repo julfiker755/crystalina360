@@ -19,7 +19,6 @@ export default function UserHome() {
       <HeroSec role={user?.role} />
       <ExploreEvents />
       <KeyFeature role={user?.role} />
-
       {user.role == roleKey.user ? (
         <>
           <Advertise />

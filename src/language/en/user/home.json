@@ -4,5 +4,78 @@
     "description": "Stay Connected to the events that matter most to you. Easily search and filter by type, location, or date. Shop Best Events to connect with a smooth, reliable experience for your business, hobbies, and event solutions effortlessly.",
     "btn_find": "Find Events",
     "btn_explor": "Explore Events"
+  },
+  "ex_events": {
+    "title": "Explore Events",
+    "btn_account": "Create account to get access",
+    "btn_more": "Explore More"
+  },
+  "key_features": {
+    "title": "Key Features",
+    "btn_learn": "Learn More",
+    "features": {
+      "profile": {
+        "title": "Personal Profile",
+        "text": "Create a customize your account",
+        "description": "Create your own account and add personal details to customize your experience. Update your profile anytime, keep your information secure, and manage your preferences with ease. Your profile is the starting point for exploring and booking events tailored just for you."
+      },
+      "discovery": {
+        "title": "Event Discovery",
+        "text": "Create a customize your account",
+        "description": "Explore a wide range of events — from online workshops to in-person conferences. Use advanced filters like location, type, and fee range to quickly find what you're looking for. Save your favorite events and never miss out on opportunities that matter most to you."
+      },
+      "booking": {
+        "title": "Ticketing & Booking",
+        "text": "Create a customize your account",
+        "description": "Book tickets seamlessly with a secure and reliable checkout process. Once your booking is complete, you'll receive automatic confirmations and receipts. Stay worry-free knowing your tickets are stored in your account and can be accessed anytime."
+      },
+      "rating": {
+        "title": "Reviews & Ratings",
+        "text": "Create a customize your account",
+        "description": "After attending events, share your honest feedback through ratings and reviews. Your input helps improve the platform and guides other users in choosing the best events. Build a community of trust by voicing your experience and recommendations."
+      },
+      "payment": {
+        "title": "Payments & Invoices",
+        "text": "Create a customize your account",
+        "description": "Manage all your event-related payments in one convenient place. Access detailed invoices, track your booking history, and download receipts whenever you need them. Enjoy transparency and clarity with every transaction you make."
+      },
+      "subscription": {
+        "title": "Subscriptions",
+        "text": "Create a customize your account",
+        "description": "Stay updated by subscribing to event newsletters and notifications. Choose the types of updates you want to receive — from upcoming concerts to professional seminars. With customized subscriptions, you'll always be in the loop without unnecessary clutter."
+      }
+    }
+  },
+  "testimonial": {
+    "title": "Testimonial"
+  },
+  "advertise": {
+    "title": "OLISTAMI Advertise",
+    "open_link": "Open Link"
+  },
+  "privacy_policy": {
+    "title": "Privacy Policy",
+    "data_collection": "Data Collection",
+    "data_protection": "Data Protection",
+    "data_usage": "Data Usage",
+    "your_responsibilities": "Your Responsibilities"
+  },
+  "footer": {
+    "title": "Manage your all events in one place",
+    "description": "The operator dashboard lets event managers create, manage, and track events with ease, offering full control and clear insights for smooth execution",
+    "quick": {
+      "title": "Quick Links",
+      "home": "Home",
+      "explore": "Explore",
+      "blog": "Blog",
+      "podcast": "Podcast",
+      "contact_us": "Contact Us"
+    },
+    "social": {
+      "follow_us_on": "Follow us on",
+      "download_app": "Download Our App",
+      "play_store": "Play Store",
+      "app_store": "App Store"
+    }
   }
 }

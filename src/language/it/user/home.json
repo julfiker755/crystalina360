@@ -4,5 +4,78 @@
     "description": "Scopri e prenota esperienze e percorsi olistici, dal vivo, online e on-demand.Filtra per tipologia, luogo o fascia di prezzo con un sistema semplice,trasparente e affidabile",
     "btn_find": "Trovare eventi",
     "btn_explor": "Esplora eventi"
+  },
+  "ex_events": {
+    "title": "Esplora eventi",
+    "btn_account": "Crea un account per ottenere l'accesso",
+    "btn_more": "Esplora di più"
+  },
+  "key_features": {
+    "title": "Caratteristiche principali",
+    "btn_learn": "Scopri di più",
+    "features": {
+      "profile": {
+        "title": "Profilo personale",
+        "text": "Crea e personalizza il tuo account",
+        "description": "Crea il tuo account e aggiungi dettagli personali per personalizzare la tua esperienza. Aggiorna il tuo profilo in qualsiasi momento, mantieni le tue informazioni al sicuro e gestisci facilmente le tue preferenze. Il tuo profilo è il punto di partenza per esplorare e prenotare eventi su misura per te."
+      },
+      "discovery": {
+        "title": "Scoperta eventi",
+        "text": "Crea e personalizza il tuo account",
+        "description": "Esplora un'ampia gamma di eventi — dai workshop online alle conferenze in presenza. Utilizza filtri avanzati come posizione, tipo e fascia di prezzo per trovare rapidamente ciò che cerchi. Salva i tuoi eventi preferiti e non perdere mai le opportunità più importanti per te."
+      },
+      "booking": {
+        "title": "Biglietti e prenotazioni",
+        "text": "Crea e personalizza il tuo account",
+        "description": "Prenota i biglietti in modo semplice con un processo di pagamento sicuro e affidabile. Una volta completata la prenotazione, riceverai conferme e ricevute automatiche. Stai tranquillo sapendo che i tuoi biglietti sono salvati nel tuo account e accessibili in qualsiasi momento."
+      },
+      "rating": {
+        "title": "Recensioni e valutazioni",
+        "text": "Crea e personalizza il tuo account",
+        "description": "Dopo aver partecipato agli eventi, condividi il tuo feedback onesto tramite recensioni e valutazioni. Il tuo contributo aiuta a migliorare la piattaforma e guida altri utenti nella scelta dei migliori eventi. Costruisci una comunità basata sulla fiducia condividendo la tua esperienza e i tuoi consigli."
+      },
+      "payment": {
+        "title": "Pagamenti e fatture",
+        "text": "Crea e personalizza il tuo account",
+        "description": "Gestisci tutti i tuoi pagamenti relativi agli eventi in un unico posto comodo. Accedi a fatture dettagliate, monitora la cronologia delle prenotazioni e scarica le ricevute quando ne hai bisogno. Goditi trasparenza e chiarezza in ogni transazione."
+      },
+      "subscription": {
+        "title": "Abbonamenti",
+        "text": "Crea e personalizza il tuo account",
+        "description": "Rimani aggiornato iscrivendoti a newsletter e notifiche sugli eventi. Scegli i tipi di aggiornamenti che desideri ricevere — dai concerti imminenti ai seminari professionali. Con abbonamenti personalizzati, sarai sempre informato senza contenuti inutili."
+      }
+    }
+  },
+  "testimonial": {
+    "title": "Testimonianza"
+  },
+  "advertise": {
+    "title": "Pubblicità OLISTAMI",
+    "open_link": "Apri link"
+  },
+  "privacy_policy": {
+    "title": "Informativa sulla privacy",
+    "data_collection": "Raccolta dei dati",
+    "data_protection": "Protezione dei dati",
+    "data_usage": "Utilizzo dei dati",
+    "your_responsibilities": "Le tue responsabilità"
+  },
+  "footer": {
+    "title": "Gestisci tutti i tuoi eventi in un unico posto",
+    "description": "La dashboard operatore consente ai gestori di eventi di creare, gestire e monitorare gli eventi con facilità, offrendo pieno controllo e una visione chiara per un'esecuzione senza problemi",
+    "quick": {
+      "title": "Link rapidi",
+      "home": "Home",
+      "explore": "Esplora",
+      "blog": "Blog",
+      "podcast": "Podcast",
+      "contact_us": "Contattaci"
+    },
+    "social": {
+      "follow_us_on": "Seguici su",
+      "download_app": "Scarica la nostra app",
+      "play_store": "Play Store",
+      "app_store": "App Store"
+    }
   }
 }
