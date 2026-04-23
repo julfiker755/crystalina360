@@ -16,23 +16,25 @@ import CouponBox from "@/components/view/user/simple/coupon";
 import { useGetFqaQuery } from "@/redux/api/admin/fqaApi";
 import { useGetPrivacyQuery } from "@/redux/api/admin/privacyApi";
 import { useGetTermsQuery } from "@/redux/api/admin/termsApi";
+import { useTranslations } from "next-intl";
 
 export default function Profile() {
+  const t = useTranslations("user.profile.right");
   const { data: terms, isLoading: termsLoading } = useGetTermsQuery({});
   const { data: privacy, isLoading: privacyLoading } = useGetPrivacyQuery({});
   const { data: fqa, isLoading: fqaLoading } = useGetFqaQuery({});
 
   return (
     <div className="bg-figma-gray p-4 rounded-md space-y-6 h-full *:text-figma-black">
-      <SubTitle className="text-figma-black" text="Account Settings" />
+      <SubTitle className="text-figma-black" text={t("account_settings")} />
       <TabBox
         defaultValue="terms-&-conditions"
         tabItem={[
-          "Terms & conditions",
-          "Privacy Policy",
-          "FAQ",
-          "Coupons",
-          "Security",
+          { label: t("terms_conditions"), value: "Terms & conditions" },
+          { label: t("privacy_policy"), value: "Privacy Policy" },
+          { label: t("faq"), value: "FAQ" },
+          { label: t("coupons"), value: "Coupons" },
+          { label: t("security"), value: "Security" },
         ]}
         tabStyle="border-b border-transparent data-[state=active]:border-primary!  data-[state=active]:border-b!  data-[state=active]:text-primary"
       >

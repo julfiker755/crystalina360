@@ -25,8 +25,10 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { ErrorText } from "@/components/reuseable/error";
 import { AppState } from "@/redux/store";
 import sonner from "@/components/reuseable/sonner";
+import { useTranslations } from "next-intl";
 
 export default function SignIn() {
+  const t = useTranslations("user.auth.sign_in");
   const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
@@ -58,8 +60,8 @@ export default function SignIn() {
       // role base access
       if (resRole !== "admin" && resRole !== permition) {
         const roleErrorMap: Record<string, string> = {
-          [roleKey.user]: "You are a user. Go to User Website",
-          [roleKey.operator]: "You are an operator. Go to Operator Website",
+          [roleKey.user]: t("you_are_a_user"),
+          [roleKey.operator]: t("you_are_an_operator"),
         };
         setIsError(roleErrorMap[resRole]);
         return;
@@ -106,14 +108,15 @@ export default function SignIn() {
           }),
         );
         sonner.success(
-          "OTP sent successfully",
-          "Please check your email for the otp Apply",
+          t("alert_success.title"),
+          t("alert_success.description"),
         );
       }
     } finally {
       dispatch(setActiveModal(controlkey.emailVafi));
     }
   };
+
 
   return (
     <div>
@@ -124,15 +127,15 @@ export default function SignIn() {
               <FromInput2
                 className="h-10"
                 name="email"
-                label="Email"
-                placeholder="Enter your email"
+                label={t("email")}
+                placeholder={t("email_placeholder")}
               />
             </div>
             <FromInput2
               className="h-10"
               name="password"
-              label="Password"
-              placeholder="Enter your password"
+              label={t("password")}
+              placeholder={t("password_placeholder")}
               eye={true}
             />
           </>
@@ -142,8 +145,8 @@ export default function SignIn() {
               <FromInput
                 className="h-10"
                 name="email"
-                label="Email"
-                placeholder="Enter your email"
+                label={t("email")}
+                placeholder={t("email_placeholder")}
                 icon={
                   <FavIcon name="mail" className="size-4" color="#777777" />
                 }
@@ -152,8 +155,8 @@ export default function SignIn() {
             <FromInput
               className="h-10"
               name="password"
-              label="Password"
-              placeholder="Enter your Password"
+              label={t("password")}
+              placeholder={t("password_placeholder")}
               eye={true}
               icon={
                 <FavIcon name="password" className="size-5" color="#777777" />
@@ -165,13 +168,13 @@ export default function SignIn() {
         <div className="flex items-center mt-3 justify-between text-sm">
           <div className="flex items-center space-x-2">
             <Checkbox className="" id={rememberId} />
-            <Label htmlFor={rememberId}>Remember me</Label>
+            <Label htmlFor={rememberId}>{t("remember_me")}</Label>
           </div>
           <div
             className="text-primary cursor-pointer  hover:underline"
             onClick={() => dispatch(setActiveModal("forgot"))}
           >
-            Forgot Password?
+            {t("forgot_password")}
           </div>
         </div>
 
@@ -188,14 +191,14 @@ export default function SignIn() {
                 className="text-figma-green cursor-pointer text-sm underline ml-1.5"
               >
                 {" "}
-                Varify
+                {t("varify")}
               </span>
             </h5>
           )}
 
           <ErrorText error={error} className="mb-3" />
           <Button disabled={isLoading} className="w-full">
-            Sign in
+            {t("sign_in")}
           </Button>
         </div>
       </Form>

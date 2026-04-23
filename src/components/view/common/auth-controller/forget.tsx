@@ -1,7 +1,7 @@
 import { FromInput } from "@/components/reuseable/form-input";
 import Form from "@/components/reuseable/from";
 import { Button } from "@/components/ui";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import FavIcon from "@/icon/favIcon";
 import { ArrowLeft } from "lucide-react";
@@ -18,8 +18,10 @@ import { FromInput2 } from "@/components/reuseable/form-input2";
 import { useForgotPasswordMutation } from "@/redux/api/authApi";
 import { useState } from "react";
 import sonner from "@/components/reuseable/sonner";
+import { useTranslations } from "next-intl";
 
 export default function ForgetPassword() {
+  const t = useTranslations("user.auth");
   const dispatch = useDispatch();
   const pathname = usePathname();
   const [error, setIsError] = useState("");
@@ -45,8 +47,8 @@ export default function ForgetPassword() {
           }),
         );
         sonner.success(
-          "OTP sent successfully",
-          "Please check your email for the otp",
+          t("sign_in.alert_success.title"),
+          t("sign_in.alert_success.description"),
         );
       }
     } catch (err: any) {
@@ -64,7 +66,7 @@ export default function ForgetPassword() {
               className="text-figma-black ml-2 cursor-pointer"
             />{" "}
           </li>
-          <li className="text-xl font-bold">Forgot Password</li>
+          <li className="text-xl font-bold">{t("forgot_password.title")}</li>
           <li className="opacity-0">0</li>
         </ul>
       </div>
@@ -74,8 +76,7 @@ export default function ForgetPassword() {
             <FavIcon name="forget" />
           </h5>
           <p className="text-center px-10 pt-2">
-            Enter your registered email address and we will sent you a 6 digit
-            code to that email.
+            {t("forgot_password.description")}
           </p>
         </div>
         <Form className="space-y-4" from={from} onSubmit={handleSubmit}>
@@ -83,15 +84,15 @@ export default function ForgetPassword() {
             <FromInput2
               className="h-10"
               name="email"
-              label="Email"
-              placeholder="Enter your email"
+              label={t("sign_in.email")}
+              placeholder={t("sign_in.email_placeholder")}
             />
           ) : (
             <FromInput
               className="h-10"
               name="email"
-              label="Email"
-              placeholder="Enter your email"
+              label={t("sign_in.email")}
+              placeholder={t("sign_in.email_placeholder")}
               icon={<FavIcon name="mail" className="size-4" color="#777777" />}
             />
           )}
@@ -102,7 +103,7 @@ export default function ForgetPassword() {
               </h5>
             )}
             <Button disabled={isLoading} className="w-full">
-              Send Code
+              {t("forgot_password.send_code")}
             </Button>
           </div>
         </Form>

@@ -18,8 +18,10 @@ import { sign_Up } from "@/schema";
 import FavIcon from "@/icon/favIcon";
 import { useState } from "react";
 import sonner from "@/components/reuseable/sonner";
+import { useTranslations } from "next-intl";
 
 export default function SignUp() {
+  const t = useTranslations("user.auth.sign_up");
   const pathname = usePathname();
   const dynamicRole = useAppSelector((state) => state.auth.signupRole);
   const [register, { isLoading }] = useRegisterMutation();
@@ -49,8 +51,8 @@ export default function SignUp() {
       const res = await register(value).unwrap();
       if (res.status) {
         sonner.success(
-          "Sign up Successful",
-          "Please check your email for the otp verify",
+          t("sign_up_successful"),
+          t("please_check_your_email_for_otp_verify"),
         );
         dispatch(setActiveModal(controlkey.emailVafi));
         dispatch(
@@ -75,28 +77,28 @@ export default function SignUp() {
             <FromInput2
               className="h-10"
               name="name"
-              label="Full Name"
-              placeholder="Enter your Full Name"
+              label={t("full_name")}
+              placeholder={t("full_name_placeholder")}
             />
             <FromInput2
               className="h-10"
               name="email"
-              label="Email"
-              placeholder="Enter your email"
+              label={t("email")}
+              placeholder={t("email_placeholder")}
             />
 
             <FromInput2
               className="h-10"
               name="password"
-              label="Password"
-              placeholder="Enter Your Password"
+              label={t("password")}
+              placeholder={t("password_placeholder")}
               eye={true}
             />
             <FromInput2
               className="h-10"
               name="c_password"
-              label="Confirm password"
-              placeholder="Enter Your Confirm password"
+              label={t("confirm_password")}
+              placeholder={t("confirm_your_password")}
               eye={true}
             />
           </div>
@@ -106,23 +108,23 @@ export default function SignUp() {
             <FromInput
               className="h-10"
               name="name"
-              label="Full Name"
-              placeholder="Enter your Full Name"
+              label={t("full_name")}
+              placeholder={t("full_name_placeholder")}
               icon={<FavIcon name="user" className="size-4" color="#777777" />}
             />
             <FromInput
               className="h-10"
               name="email"
-              label="Email"
-              placeholder="Enter your email"
+              label={t("email")}
+              placeholder={t("email_placeholder")}
               icon={<FavIcon name="mail" className="size-4" color="#777777" />}
             />
 
             <FromInput
               className="h-10"
               name="password"
-              label="Password"
-              placeholder="Enter Your Password"
+              label={t("password")}
+              placeholder={t("password_placeholder")}
               eye={true}
               icon={
                 <FavIcon name="password" className="size-5" color="#777777" />
@@ -131,8 +133,8 @@ export default function SignUp() {
             <FromInput
               className="h-10"
               name="c_password"
-              label="Confirm password"
-              placeholder="Enter Your Confirm password"
+              label={t("confirm_password")}
+              placeholder={t("confirm_your_password")}
               eye={true}
               icon={
                 <FavIcon name="password" className="size-5" color="#777777" />
@@ -148,7 +150,7 @@ export default function SignUp() {
             </h5>
           )}
           <Button disabled={isLoading} className="w-full">
-            Sign Up
+            {t("sign_up")}
           </Button>
         </div>
       </Form>

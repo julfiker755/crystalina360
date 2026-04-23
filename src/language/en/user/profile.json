@@ -1,0 +1,19 @@
+{
+  "left": {
+    "basic_info": "Basic info",
+    "completed_events": "Completed events",
+    "total_cost": "Total cost",
+    "edit_profile": "Edit Profile",
+    "log_out": "Log Out",
+    "profile_completion": "Profile Completion",
+    "description": "Complete your profile to unlock more features and personalized recommendations"
+  },
+  "right": {
+    "account_settings": "Account Settings",
+    "terms_conditions": "Terms & conditions",
+    "privacy_policy": "Privacy Policy",
+    "faq": "FAQ",
+    "coupons": "Coupons",
+    "security": "Security"
+  }
+}

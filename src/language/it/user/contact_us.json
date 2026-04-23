@@ -1,0 +1,14 @@
+{
+  "title": "Contattaci",
+  "sub_title": "Contatta il team OLISTAMI",
+  "name_label": "Nome completo",
+  "name_placeholder": "Inserisci il tuo nome completo",
+  "email_label": "Email",
+  "email_placeholder": "Inserisci la tua email",
+  "description_label": "Descrizione",
+  "description_placeholder": "Descrivi brevemente il tuo problema",
+  "btn_send": "Invia",
+  "btn_sending": "Invio in corso...",
+  "success_title": "Successo!",
+  "success_msg": "Messaggio inviato con successo"
+}

@@ -28,7 +28,7 @@ export default function Provider({ children }: childrenProps) {
                 icon: "!text-green-300",
               },
             }}
-            position="top-right"
+            position="bottom-right"
           />
         </ConfirmDialogProvider>
       </SuccessDialogProvider>

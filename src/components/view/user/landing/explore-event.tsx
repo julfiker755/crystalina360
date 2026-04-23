@@ -60,7 +60,7 @@ export default function ExploreEvents() {
         mainStyle="!p-0"
         className="sm:max-w-xl"
       >
-        <AuthModalController title="Sign up as a User" />
+        <AuthModalController title={t("navber.sign_as_user")} />
       </Modal2>
     </div>
   );

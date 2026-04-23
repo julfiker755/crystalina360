@@ -13,6 +13,7 @@ import { useUpdatePassMutation } from "@/redux/api/authApi";
 import React from "react";
 import { ErrorText } from "../error";
 import sonner from "../sonner";
+import { useTranslations } from "next-intl";
 
 export default function UpdatePassword({
   btnStyle,
@@ -20,6 +21,7 @@ export default function UpdatePassword({
   className,
   inputStyle,
 }: any) {
+  const t = useTranslations("user.auth.change_password");
   const { user } = useAppSelector((state: AppState) => state.auth);
   const [updatePass, { isLoading }] = useUpdatePassMutation();
   const [error, setError] = React.useState("");
@@ -43,8 +45,8 @@ export default function UpdatePassword({
       const res = await updatePass(data).unwrap();
       if (res.status) {
         sonner.success(
-          "Password Updated",
-          "Your password has been updated successfully",
+          t("password_updated"),
+          t("password_updated_description"),
         );
         from2.reset();
       }
@@ -58,9 +60,9 @@ export default function UpdatePassword({
         {user.role === roleKey.user ? (
           <>
             <FromInput
-              label="Current Password"
+              label={t("current_password")}
               name="current_password"
-              placeholder="Enter current password"
+              placeholder={t("enter_current_password")}
               className="h-10"
               icon={
                 <FavIcon name="password" className="size-5" color="#777777" />
@@ -68,9 +70,9 @@ export default function UpdatePassword({
               eye={true}
             />
             <FromInput
-              label="New Password"
+              label={t("new_password")}
               name="new_password"
-              placeholder="Enter new password"
+              placeholder={t("enter_new_password")}
               className="h-10"
               icon={
                 <FavIcon name="password" className="size-5" color="#777777" />
@@ -78,9 +80,9 @@ export default function UpdatePassword({
               eye={true}
             />
             <FromInput
-              label="Retype New Password"
+              label={t("retype_new_password")}
               name="c_password"
-              placeholder="Enter retype new password"
+              placeholder={t("enter_retype_new_password")}
               className="h-10"
               icon={
                 <FavIcon name="password" className="size-5" color="#777777" />
@@ -91,23 +93,23 @@ export default function UpdatePassword({
         ) : (
           <>
             <FromInput2
-              label="Current Password"
+              label={t("current_password")}
               name="current_password"
-              placeholder="Enter current password"
+              placeholder={t("enter_current_password")}
               className={cn("h-10", inputStyle)}
               eye={true}
             />
             <FromInput2
-              label="New Password"
+              label={t("new_password")}
               name="new_password"
-              placeholder="Enter new password"
+              placeholder={t("enter_new_password")}
               className={cn("h-10", inputStyle)}
               eye={true}
             />
             <FromInput2
-              label="Retype New Password"
+              label={t("retype_new_password")}
               name="c_password"
-              placeholder="Enter retype new password"
+              placeholder={t("enter_retype_new_password")}
               className={cn("h-10", inputStyle)}
               eye={true}
             />
@@ -117,7 +119,7 @@ export default function UpdatePassword({
         <div className={btnStyle2}>
           <ErrorText error={error} className="mb-3" />
           <Button disabled={isLoading} className={cn("w-full", btnStyle)}>
-            Save Changes
+            {t("save_changes")}
           </Button>
         </div>
       </div>

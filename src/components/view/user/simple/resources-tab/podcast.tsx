@@ -7,8 +7,12 @@ import { useGetPodcastQuery } from "@/redux/api/admin/podcastApi";
 import { Repeat } from "@/components/reuseable/repeat";
 import { Skeleton } from "@/components/ui";
 import { Pagination } from "@/components/reuseable/pagination";
+import { useTranslations } from "next-intl";
+
+
 
 export function Podcast() {
+  const t = useTranslations("user.home.podcast");
   const [page, setIsPate] = useState(1);
   const { data: padcast, isLoading } = useGetPodcastQuery({ page });
   return (
@@ -26,15 +30,10 @@ export function Podcast() {
         {/* Podcast Info */}
         <div className="flex-1">
           <h2 className="text-foreground text-2xl mb-3">
-            The OLISTAMI Podcast
+            {t("title")}
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-6 max-w-2xl text-balance">
-            Reconnect with your inner self through a unique blend of music
-            therapy and relaxant Celebrate a weekend of diverse sounds and
-            cultures with performances from artis Experience the thrill of live
-            music at our annual concert featuring top artists and Join us
-            for a deep dive into the latest music genres emerging this year.
-            It's a celebrati..This event organize for the music lover peoples.
+            {t("description")}
           </p>
         </div>
       </div>

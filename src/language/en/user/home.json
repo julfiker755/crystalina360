@@ -1,4 +1,15 @@
 {
+  "navber": {
+    "home": "Home",
+    "explore": "Explore",
+    "blog": "Blog",
+    "podcast": "Podcast",
+    "contact_us": "Contact Us",
+    "booking": "Booking",
+    "resources": "Resources",
+    "profile": "Profile",
+    "sign_as_user": " Sign in as a User"
+  },
   "hero": {
     "title": "Plan Your Next Experience",
     "description": "Stay Connected to the events that matter most to you. Easily search and filter by type, location, or date. Shop Best Events to connect with a smooth, reliable experience for your business, hobbies, and event solutions effortlessly.",
@@ -60,6 +71,33 @@
     "data_usage": "Data Usage",
     "your_responsibilities": "Your Responsibilities"
   },
+  "how_works": {
+    "title": "How It Works",
+    "items": {
+      "account": {
+        "title": "Create an account",
+        "text": "Sign up in minutes and set up your profile."
+      },
+      "events": {
+        "title": "Discover Events",
+        "text": "Search and filter to find the perfect event for you."
+      },
+      "booking": {
+        "title": "Book Your Tickets",
+        "text": "Secure your spot with simple, safe checkout."
+      },
+      "invoice": {
+        "title": "Get Invoices",
+        "text": "Receive instant confirmations, reminders, and invoices."
+      }
+    }
+  },
+  "business": {
+    "title": "Grow Your Business",
+    "sub_title": "Expand Your Reach, Maximize Your Impact.",
+    "description": "Our platform helps operators easily publish events, accept bookings, and grow revenue. Join today and take your event business to the next level.",
+    "join_as_operator": "Join as a operator"
+  },
   "footer": {
     "title": "Manage your all events in one place",
     "description": "The operator dashboard lets event managers create, manage, and track events with ease, offering full control and clear insights for smooth execution",
@@ -77,5 +115,18 @@
       "play_store": "Play Store",
       "app_store": "App Store"
     }
-  }
+  },
+  "ai": {
+    "title": "Chat with AI",
+    "header": {
+      "title": "Olistami AI Assistant",
+      "text": "Online and ready to help"
+    },
+    "placeholder": "Ask me anything..."
+  },
+  "podcast": {
+    "title": "The OLISTAMI Podcast",
+    "description": "Reconnect with your inner self through a unique blend of music therapy and relaxant Celebrate a weekend of diverse sounds and cultures with performances from artis Experience the thrill of live music at our annual concert featuring top artists and Join us for a deep dive into the latest music genres emerging this year. It's a celebrati..This event organize for the music lover peoples."
+  },
+  "olistami_alert": "Olistami is a self-service platform where each user independently publishes content and services, assuming full legal responsibility. Holistic practices are complementary to official medicine and do not replace it."
 }

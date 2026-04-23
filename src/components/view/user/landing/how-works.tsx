@@ -1,37 +1,43 @@
 import assets from "@/assets";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
-const howItem = [
-  {
-    id: 1,
-    title: "Create an account",
-    text: "Sign up in minutes and set up your profile.",
-    img: assets.works.account,
-  },
-  {
-    id: 2,
-    title: "Discover Events",
-    text: "Search and filter to find the perfect event for you.",
-    img: assets.works.events,
-  },
-  {
-    id: 3,
-    title: "Book Your Tickets",
-    text: "Secure your spot with simple, safe checkout.",
-    img: assets.works.book,
-  },
-  {
-    id: 4,
-    title: "Get Invoices",
-    text: "Receive instant confirmations, reminders, and invoices.",
-    img: assets.works.get,
-  },
-];
+
 
 export default function HowWorks() {
+  const t = useTranslations('user.home.how_works')
+
+
+
+  const howItem = [
+    {
+      id: 1,
+      title: t('items.account.title'),
+      text: t('items.account.text'),
+      img: assets.works.account,
+    },
+    {
+      id: 2,
+      title: t('items.events.title'),
+      text: t('items.events.text'),
+      img: assets.works.events,
+    },
+    {
+      id: 3,
+      title: t('items.booking.title'),
+      text: t('items.booking.text'),
+      img: assets.works.book,
+    },
+    {
+      id: 4,
+      title: t('items.invoice.title'),
+      text: t('items.invoice.text'),
+      img: assets.works.get,
+    },
+  ];
   return (
     <div className="pt-16 container">
-      <h1 className="mb-10">How it Works</h1>
+      <h1 className="mb-10">{t('title')}</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
         {howItem.map((item, index) => (

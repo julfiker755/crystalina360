@@ -14,6 +14,7 @@ import { useAiChatMutation } from "@/redux/api/authApi";
 import Link from "next/link";
 import { helpers } from "@/lib";
 import { useAppSelector } from "@/redux/hooks";
+import { useTranslations } from "next-intl";
 
 // Message interface
 interface Message {
@@ -30,6 +31,7 @@ interface Event {
 }
 
 export default function AIChatBox() {
+  const t = useTranslations("user.home.ai");
   const { user } = useAppSelector((state: any) => state.auth);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatInput, setChatInput] = useState("");
@@ -169,6 +171,7 @@ export default function AIChatBox() {
     );
   };
 
+
   return (
     <div className="fixed bottom-6 right-6 z-50">
       <AnimatePresence>
@@ -186,8 +189,8 @@ export default function AIChatBox() {
                   <Bot size={20} />
                 </div>
                 <div>
-                  <h4 className="text-base font-bold">Olistami AI Assistant</h4>
-                  <p className="text-xs">Online and ready to help</p>
+                  <h4 className="text-base font-bold">{t("header.title")}</h4>
+                  <p className="text-xs">{t("header.text")}</p>
                 </div>
               </div>
               <button
@@ -224,7 +227,7 @@ export default function AIChatBox() {
                 type="text"
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
-                placeholder="Ask me anything..."
+                placeholder={t("placeholder")}
                 className="flex-1 bg-[#FDFBF9] border border-[#EAE2D9] rounded-xl px-4 py-2 text-sm outline-none transition-colors"
               />
               <button
@@ -250,7 +253,7 @@ export default function AIChatBox() {
             )}
           </div>
           <span className="font-bold text-sm hidden sm:block">
-            Chat with AI
+            {t("title")}
           </span>
         </button>
       )}

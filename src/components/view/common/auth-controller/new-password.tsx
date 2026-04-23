@@ -17,8 +17,10 @@ import { helpers, routeName } from "@/lib";
 import { useState } from "react";
 import FavIcon from "@/icon/favIcon";
 import { ArrowLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function NewPassword() {
+  const t = useTranslations("user.auth.sign_up");
   const pathname = usePathname();
   const from = useForm({
     resolver: zodResolver(new_Pass),
@@ -61,7 +63,7 @@ export default function NewPassword() {
               className="text-figma-black ml-2 cursor-pointer"
             />{" "}
           </li>
-          <li className="text-xl font-bold">Set New Password</li>
+          <li className="text-xl font-bold">{t("new_password.title")}</li>
           <li className="opacity-0">0</li>
         </ul>
       </div>
@@ -71,8 +73,7 @@ export default function NewPassword() {
             <FavIcon name="new_pass" />
           </h5>
           <p className="text-center px-10 pt-2">
-            Set your new password here. It must be 8 characters and combination
-            of special characters.
+            {t("new_password.description")}
           </p>
         </div>
         <Form className="space-y-4" from={from} onSubmit={handleSubmit}>
@@ -82,15 +83,15 @@ export default function NewPassword() {
               <FromInput2
                 className="h-10"
                 name="password"
-                label="Password"
-                placeholder="Enter Your Password"
+                label={t("password")}
+                placeholder={t("password_placeholder")}
                 eye={true}
               />
               <FromInput2
                 className="h-10"
                 name="c_password"
-                label="Confirm password"
-                placeholder="Enter Yopur Confirm password"
+                label={t("confirm_password")}
+                placeholder={t("confirm_your_password")}
                 eye={true}
               />
             </div>
@@ -99,8 +100,8 @@ export default function NewPassword() {
               <FromInput
                 className="h-10"
                 name="password"
-                label="Password"
-                placeholder="Enter Your Password"
+                label={t("password")}
+                placeholder={t("password_placeholder")}
                 eye={true}
                 icon={
                   <FavIcon name="password" className="size-5" color="#777777" />
@@ -109,8 +110,8 @@ export default function NewPassword() {
               <FromInput
                 className="h-10"
                 name="c_password"
-                label="Confirm password"
-                placeholder="Enter Yopur Confirm password"
+                label={t("confirm_password")}
+                placeholder={t("confirm_your_password")}
                 eye={true}
                 icon={
                   <FavIcon name="password" className="size-5" color="#777777" />
@@ -126,7 +127,7 @@ export default function NewPassword() {
             )}
 
             <Button disabled={isLoading} className="w-full">
-              Submit
+              {t("new_password.submit")}
             </Button>
           </div>
         </Form>

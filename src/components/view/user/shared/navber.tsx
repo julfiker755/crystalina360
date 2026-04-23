@@ -15,12 +15,15 @@ import FavIcon from "@/icon/favIcon";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/reuseable/logo";
 import { LanguageSwitcher } from "../../common/language";
+import { useTranslations } from "next-intl";
 
 export default function Navber({ className }: any) {
+  const t = useTranslations("user.home.navber");
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const { user } = useAppSelector((state: AppState) => state.auth);
+
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -37,19 +40,19 @@ export default function Navber({ className }: any) {
   }, []);
 
   const navNoUserItems = [
-    { name: "Home", href: "/" },
-    { name: "Explore", href: "/#explore" },
-    { name: "Blog", href: "/blog" },
-    { name: "Podcast", href: "/podcast" },
-    { name: "Contact Us", href: "/#contact-us" },
+    { name: t("home"), href: "/" },
+    { name: t("explore"), href: "/#explore" },
+    { name: t("blog"), href: "/blog" },
+    { name: t("podcast"), href: "/podcast" },
+    { name: t("contact_us"), href: "/#contact-us" },
   ];
   const navUserItems = [
-    { name: "Home", href: "/" },
-    { name: "Explore", href: "/events" },
-    { name: "Booking", href: "/booking" },
-    { name: "Contact Us", href: "/contact-us" },
-    { name: "Resources", href: "/resources" },
-    { name: "Profile", href: "/profile" },
+    { name: t("home"), href: "/" },
+    { name: t("explore"), href: "/events" },
+    { name: t("booking"), href: "/booking" },
+    { name: t("contact_us"), href: "/contact-us" },
+    { name: t("resources"), href: "/resources" },
+    { name: t("profile"), href: "/profile" },
   ];
 
   const navItems = user.role == roleKey.user ? navUserItems : navNoUserItems;
@@ -181,6 +184,7 @@ export default function Navber({ className }: any) {
 
 //  ======= SignInButton ===========
 function SignInButton() {
+  const t = useTranslations("user.home.navber");
   const dispatch = useAppDispatch();
   const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
 
@@ -218,7 +222,7 @@ function SignInButton() {
             onClick={() => handleOpenModal()}
             className="rounded-full text-figma-black bg-primary/30 hidden md:block"
           >
-            Sign in as User
+            {t("sign_as_user")}
           </Button>
           <Button
             onClick={() => handleOpenModal()}
@@ -233,7 +237,7 @@ function SignInButton() {
             mainStyle="!p-0"
             className="sm:max-w-xl"
           >
-            <AuthModalController title="Sign up as a User" />
+            <AuthModalController title={t("sign_as_user")} />
           </Modal2>
         </>
       )}

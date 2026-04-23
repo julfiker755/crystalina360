@@ -10,8 +10,10 @@ import { ChangeEvent, KeyboardEvent, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useOtpVarifyMutation } from "@/redux/api/authApi";
 import { helpers } from "@/lib";
+import { useTranslations } from "next-intl";
 
 export default function VarifyOtp() {
+  const t = useTranslations("user.auth.verify_code");
   const dispatch = useAppDispatch();
   const [code, setCode] = useState<string[]>(Array(6).fill(""));
   const [error, setError] = useState<string>("");
@@ -95,7 +97,7 @@ export default function VarifyOtp() {
               className="text-figma-black ml-2 cursor-pointer"
             />{" "}
           </li>
-          <li className="text-xl font-bold">Verify Code</li>
+          <li className="text-xl font-bold">{t("title")}</li>
           <li className="opacity-0">0</li>
         </ul>
       </div>
@@ -105,8 +107,7 @@ export default function VarifyOtp() {
             <FavIcon name="varify" className="size-6" />
           </h5>
           <p className="text-center px-10 pt-2">
-            {`  We've sent you a 6 digit code to ${otpInfo?.email || ""}. Please
-            verify that code to change your password.`}
+            {`${t("fast_des")} ${(otpInfo?.email || "")} ${t("sec_des")}`}
           </p>
         </div>
         <div>
@@ -141,7 +142,7 @@ export default function VarifyOtp() {
               className="w-full"
               onClick={handleVerify}
             >
-              Verify
+              {t("verify")}
             </Button>
           </div>
         </div>

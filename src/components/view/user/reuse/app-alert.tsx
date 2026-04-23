@@ -1,11 +1,13 @@
 import { cn } from "@/lib";
 import { CircleAlert } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface AppAlertProps {
   className?: string;
 }
 
 export function AppAlert({ className }: AppAlertProps) {
+  const t = useTranslations("user.home");
   return (
     <div
       className={cn(
@@ -16,10 +18,7 @@ export function AppAlert({ className }: AppAlertProps) {
       <CircleAlert className="text-primary rotate-180" />
       <p className="text-figma-black">
         {" "}
-        Olistami is a self-service platform where each user independently
-        publishes content and services, assuming full legal responsibility.
-        Holistic practices are complementary to official medicine and do not
-        replace it.”
+        {t("olistami_alert")}
       </p>
     </div>
   );

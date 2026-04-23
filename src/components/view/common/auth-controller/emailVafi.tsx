@@ -11,8 +11,10 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useOtpVarifyMutation } from "@/redux/api/authApi";
 import sonner from "@/components/reuseable/sonner";
 import { helpers } from "@/lib";
+import { useTranslations } from "next-intl";
 
 export default function EmailVarifyOtp() {
+  const t = useTranslations("user.auth.verify_code");
   const dispatch = useAppDispatch();
   const [code, setCode] = useState<string[]>(Array(6).fill(""));
   const [error, setError] = useState<string>("");
@@ -69,8 +71,8 @@ export default function EmailVarifyOtp() {
         if (res.status) {
           dispatch(setActiveModal(controlkey.signIn));
           sonner.success(
-            "Email Varify Successfull",
-            "Please log in to continue",
+            t("email_varify_successfull"),
+            t("please_log_in_to_continue"),
           );
           dispatch(clearOtpInfo());
           setCode([]);
@@ -96,7 +98,7 @@ export default function EmailVarifyOtp() {
               className="text-figma-black ml-2 cursor-pointer"
             />{" "}
           </li>
-          <li className="text-xl font-bold">Verification</li>
+          <li className="text-xl font-bold">{t("verification")}</li>
           <li className="opacity-0">0</li>
         </ul>
       </div>
@@ -106,7 +108,7 @@ export default function EmailVarifyOtp() {
             <FavIcon name="varify" className="size-6" />
           </h5>
           <p className="text-center px-10 pt-2">
-            {`  We've sent a 6-digit code to ${otpInfo.email}. Please verify your email using this code`}
+            {`${t("fast_des")} ${(otpInfo?.email || "")} ${t("sec_des")}`}
           </p>
         </div>
         <div>
@@ -141,7 +143,7 @@ export default function EmailVarifyOtp() {
               className="w-full"
               onClick={handleVerify}
             >
-              Verify
+              {t("verify")}
             </Button>
           </div>
         </div>

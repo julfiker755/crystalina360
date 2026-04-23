@@ -1,0 +1,14 @@
+{
+  "title": "Contact Us",
+  "sub_title": "Contact with OLISTAMI Team",
+  "name_label": "Full Name",
+  "name_placeholder": "Enter your Full Name",
+  "email_label": "Email",
+  "email_placeholder": "Enter your email",
+  "description_label": "Description",
+  "description_placeholder": "Briefly describe your issue",
+  "btn_send": "Send",
+  "btn_sending": "Sending...",
+  "success_title": "Success!",
+  "success_msg": "Message sent successfully"
+}

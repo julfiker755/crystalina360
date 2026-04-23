@@ -2,6 +2,7 @@ import { CloseIcon } from "../../btn-modal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAppDispatch } from "@/redux/hooks";
 import { toggleIsOpen } from "@/redux/features/authSlice";
+import { useTranslations } from "next-intl";
 import SignIn from "./sign-in";
 import SignUp from "./sign-up";
 import { useState } from "react";
@@ -9,6 +10,7 @@ import { useState } from "react";
 export default function Auth({ title }: any) {
   const dispatch = useAppDispatch();
   const [activeTab, setActiveTab] = useState("sign-in");
+  const t = useTranslations("user.auth");
 
   return (
     <>
@@ -26,13 +28,13 @@ export default function Auth({ title }: any) {
               value="sign-in"
               className="cursor-pointer   border-transparent data-[state=active]:border-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=inactive]:text-muted-foreground rounded-full bg-muted py-3"
             >
-              Sign In
+              {t("sign_in.title")}
             </TabsTrigger>
             <TabsTrigger
               value="sign-up"
               className="cursor-pointer  border-transparent data-[state=active]:border-primary rounded-full  data-[state=active]:bg-primary data-[state=active]:text-white data-[state=inactive]:text-muted-foreground bg-muted py-3"
             >
-              Sign Up
+              {t("sign_up.title")}
             </TabsTrigger>
           </TabsList>
           <TabsContent className="p-4" value="sign-in">

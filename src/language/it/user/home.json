@@ -1,4 +1,15 @@
 {
+  "navber": {
+    "home": "Home",
+    "explore": "Esplora",
+    "blog": "Blog",
+    "podcast": "Podcast",
+    "contact_us": "Contattaci",
+    "booking": "Prenotazioni",
+    "resources": "Risorse",
+    "profile": "Profilo",
+    "sign_as_user": "Accedi come utente"
+  },
   "hero": {
     "title": "Il tuo percorso nel benessere olistico inizia qui",
     "description": "Scopri e prenota esperienze e percorsi olistici, dal vivo, online e on-demand.Filtra per tipologia, luogo o fascia di prezzo con un sistema semplice,trasparente e affidabile",
@@ -60,6 +71,33 @@
     "data_usage": "Utilizzo dei dati",
     "your_responsibilities": "Le tue responsabilità"
   },
+  "how_works": {
+    "title": "Come funziona",
+    "items": {
+      "account": {
+        "title": "Crea un account",
+        "text": "Registrati in pochi minuti e configura il tuo profilo."
+      },
+      "events": {
+        "title": "Scopri eventi",
+        "text": "Cerca e filtra per trovare l'evento perfetto per te."
+      },
+      "booking": {
+        "title": "Prenota i tuoi biglietti",
+        "text": "Assicurati il tuo posto con un checkout semplice e sicuro."
+      },
+      "invoice": {
+        "title": "Ricevi le fatture",
+        "text": "Ricevi conferme, promemoria e fatture istantanee."
+      }
+    }
+  },
+  "business": {
+    "title": "Fai crescere la tua attività",
+    "sub_title": "Espandi la tua visibilità, massimizza il tuo impatto.",
+    "description": "La nostra piattaforma aiuta gli operatori a pubblicare facilmente eventi, accettare prenotazioni e aumentare i ricavi. Unisciti oggi e porta la tua attività di eventi al livello successivo.",
+    "join_as_operator": "Unisciti come operatore"
+  },
   "footer": {
     "title": "Gestisci tutti i tuoi eventi in un unico posto",
     "description": "La dashboard operatore consente ai gestori di eventi di creare, gestire e monitorare gli eventi con facilità, offrendo pieno controllo e una visione chiara per un'esecuzione senza problemi",
@@ -77,5 +115,18 @@
       "play_store": "Play Store",
       "app_store": "App Store"
     }
-  }
+  },
+  "ai": {
+    "title": "Chat con l'IA",
+    "header": {
+      "title": "Assistente IA Olistami",
+      "text": "Online e pronto ad aiutarti"
+    },
+    "placeholder": "Chiedimi qualsiasi cosa..."
+  },
+  "podcast": {
+    "title": "Il podcast OLISTAMI",
+    "description": "Riconnettiti con il tuo io interiore attraverso un mix unico di musicoterapia e relax. Celebra un weekend di suoni e culture diverse con performance di artisti. Vivi l’emozione della musica dal vivo nel nostro concerto annuale con i migliori artisti. Unisciti a noi per un’immersione nei nuovi generi musicali emergenti di quest’anno. È una celebrazione... Questo evento è organizzato per gli amanti della musica."
+  },
+  "olistami_alert": "Olistami è una piattaforma self-service in cui ogni utente pubblica contenuti e servizi in modo indipendente, assumendosi la piena responsabilità legale. Le pratiche olistiche sono complementari alla medicina ufficiale e non la sostituiscono."
 }

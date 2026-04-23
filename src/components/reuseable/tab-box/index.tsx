@@ -40,13 +40,13 @@ export default function TabBox({
         {tabItem?.map((tab: any, index: any) => (
           <TabsTrigger
             key={index}
-            value={helpers.slugify(tab)}
+            value={helpers.slugify(tab.value)}
             className={cn(
               "text-article text-base cursor-pointer data-[state=active]:bg-transparent data-[state=active]:shadow-none",
               tabStyle,
             )}
           >
-            {tab}
+            {tab.label}
           </TabsTrigger>
         ))}
       </TabsList>

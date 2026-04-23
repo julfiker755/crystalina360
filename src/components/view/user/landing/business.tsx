@@ -2,11 +2,13 @@ import { Button } from "@/components/ui";
 import business from "@/assets/user/businessImg.jpg";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function Business() {
+  const t = useTranslations('user.home.business');
   return (
     <div className="py-18 container">
-      <h1 className="mb-10">Grow Your Business</h1>
+      <h1 className="mb-10">{t("title")}</h1>
       <div className="container mx-auto relative rounded-xl">
         <Image
           src={business}
@@ -15,27 +17,22 @@ export default function Business() {
           loading="eager"
           className="object-cover z-0 rounded-xl"
         />
-        {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/35 rounded-xl backdrop-blur-[2px]" />
-
-        {/* Content */}
         <div className="relative py-4 md:py-16 md:px-10">
-          {/* Heading */}
+
           <h1 className="text-3xl text-left md:text-5xl  font-bold text-white mb-5 leading-tight">
-            Expand Your Reach, Maximize Your Impact.
+            {t("sub_title")}
           </h1>
 
-          {/* Description */}
+
           <p className="text-lg md:text-xl text-white/90 mb-8">
-            Our platform helps operators easily publish events, accept bookings,
-            and grow revenue. Join today and take your event business to the
-            next level.
+            {t("description")}
           </p>
 
           {/* CTA Button */}
           <Link href="/operator">
             <Button size="lg" className="bg-[#FFF] text-primary">
-              Join as a operator
+              {t("join_as_operator")}
             </Button>
           </Link>
         </div>

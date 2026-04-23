@@ -1,0 +1,19 @@
+{
+  "left": {
+    "basic_info": "Informazioni di base",
+    "completed_events": "Eventi completati",
+    "total_cost": "Costo totale",
+    "edit_profile": "Modifica profilo",
+    "log_out": "Disconnetti",
+    "profile_completion": "Completamento del profilo",
+    "description": "Completa il tuo profilo per sbloccare più funzionalità e raccomandazioni personalizzate"
+  },
+  "right": {
+    "account_settings": "Impostazioni account",
+    "terms_conditions": "Termini e condizioni",
+    "privacy_policy": "Informativa sulla privacy",
+    "faq": "FAQ",
+    "coupons": "Coupon",
+    "security": "Sicurezza"
+  }
+}
