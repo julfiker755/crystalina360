@@ -141,7 +141,7 @@ export default function PricingBox() {
                 </h2>
                 <div className="text-center mb-8">
                   <span className="text-3xl lg:text-4xl font-bold">
-                    {freePlan?.price}
+                    €{freePlan?.price}
                   </span>
                 </div>
                 <div>
@@ -168,7 +168,7 @@ export default function PricingBox() {
                 </h2>
                 <div className="text-center mb-8">
                   <span className="text-3xl lg:text-4xl font-bold">
-                    {pro_item?.price}
+                    €{pro_item?.price}
                   </span>
                 </div>
                 <div>

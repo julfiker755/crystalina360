@@ -207,7 +207,7 @@ export default function AddOnCard({
             }}
             className="text-lg font-bold"
           >
-            ${global?.data?.price}
+            €{global?.data?.price}
           </p>
         </div>
         <div className="my-6">

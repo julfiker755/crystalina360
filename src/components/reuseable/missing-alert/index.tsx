@@ -14,6 +14,7 @@ export default function MissingInfo({ path }: any) {
   const { user } = useAppSelector((state: AppState) => state.auth);
 
 
+
   const [isShow, setIsShow] = useState(false);
 
   useEffect(() => {
