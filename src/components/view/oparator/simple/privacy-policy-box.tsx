@@ -5,32 +5,34 @@ import { Skeleton } from "@/components/ui";
 import FavIcon from "@/icon/favIcon";
 import { useGetPrivacyQuery } from "@/redux/api/admin/privacyApi";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export default function PrivacyPolicyBox() {
   const { data: privacy, isLoading } = useGetPrivacyQuery({});
+  const t = useTranslations("oprator.home.privacy_policy");
 
   const privacyItem = [
     {
       id: 1,
-      title: "Data Collection",
+      title: t("data_collection"),
       description: privacy?.data?.data_collection,
       icon: "collection",
     },
     {
       id: 2,
-      title: "Data usage",
+      title: t("data_usage"),
       description: privacy?.data?.data_usage,
       icon: "event",
     },
     {
       id: 3,
-      title: "Data Protection",
+      title: t("data_protection"),
       description: privacy?.data?.data_protection,
       icon: "producation",
     },
     {
       id: 4,
-      title: "Your Responsibilities",
+      title: t("your_responsibilities"),
       description: privacy?.data?.your_responsibility,
       icon: "respon",
     },

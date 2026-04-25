@@ -30,7 +30,7 @@ export default function OnetoOne() {
         </div>
       </SvgBox>
 
-      <OnetoOneStore msg="Your event has been added successfully" />
+      <OnetoOneStore role="admin" msg="Your event has been added successfully" />
     </div>
   );
 }

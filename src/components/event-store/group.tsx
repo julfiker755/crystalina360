@@ -38,6 +38,9 @@ import {
 import { useGetProfileQuery } from "@/redux/api/authApi";
 import { FromInput } from "../reuseable/form-input";
 import { cleanObject } from "@/lib/function-utils";
+import { permissionBoth } from "./element/utils";
+import { toast } from "sonner";
+import Link from "next/link";
 
 const initialState = {
   holistic: false,
@@ -45,7 +48,7 @@ const initialState = {
   isDate: false,
 };
 
-export default function GroupStore({ msg }: { msg: string }) {
+export default function GroupStore({ msg, role }: { msg: string, role: string }) {
   const [searchText, setSearchText] = useState("");
   const [state, setState] = useModalState(initialState);
   const [selAccbility, setSelAccbility] = useState<string[]>([]);
@@ -56,9 +59,10 @@ export default function GroupStore({ msg }: { msg: string }) {
   const defaultValues = getValuesGroup(isDelivery) as any;
   const defaultSchema = getGroupSchema(isDelivery) as any;
   const { data: profile } = useGetProfileQuery({});
-  const videolimit =
-    profile?.data?.user?.is_subscribed &&
-    profile?.data?.user?.role === roleKey.operator;
+  const permission = permissionBoth({
+    role,
+    isSubscribed: profile?.data?.user?.is_subscribed,
+  })
 
   const from = useForm({
     resolver: zodResolver(defaultSchema),
@@ -69,15 +73,21 @@ export default function GroupStore({ msg }: { msg: string }) {
   const get = (v: any) => from.watch(v);
   const delivaryType = get("delivery_type") == delivary_t.ondemand;
   const maxVideoSize = 2 * 1024 * 1024 * 1024;
-  const maxApply = videolimit && delivaryType;
+  const maxApply = permission && delivaryType;
   const [{ files }, { getInputProps, clearFiles }] = useFileUpload({
     accept: delivaryType ? "video/*" : "image/*",
     maxSize: maxApply ? undefined : maxVideoSize,
     onError: () => {
-      sonner.error(
-        "Upload Limit Reached",
-        "Free plan supports videos up to 2GB. Please upgrade your plan.",
-        "bottom-right",
+      toast.success(
+        <div>
+          <p className="font-semibold">Upload Limit Reached</p>
+          <p>
+            Free plan supports videos up to 2GB. Please upgrade your plan.{" "}
+            <Link href="/operator/pricing" className="text-[#00ff22d5] underline">
+              Upgrade
+            </Link>
+          </p>
+        </div>
       );
     },
   });

@@ -1,0 +1,71 @@
+{
+  "navber": {
+    "home": "Home",
+    "pricing": "Pricing",
+    "privacy_policy": "Privacy Policy",
+    "faq": "FAQ",
+    "dashboard": "Dashboard",
+    "events": "Events",
+    "continue_as_user": "Continue as a user",
+    "sign_as_operator": "Sign in as operator",
+    "sign_up_as_operator": "Sign up as a operator",
+    "pricing_box": {
+      "title": "Pricing",
+      "description": "Purchase a plan and the freedom of managing events of whatever it's offline or online",
+      "monthly": "Monthly",
+      "annual": "Annual"
+    }
+  },
+  "hero": {
+    "title": "Your all in one event management system",
+    "sub_title": "Manage your all events in one place,"
+  },
+  "event_setp": {
+    "register": {
+      "title": "Register",
+      "description": "Register your operator account into this system. After that you can able to manage your events."
+    },
+    "create_event": {
+      "title": "Create event",
+      "description": "Create event by proving all necessary files, documents, information's and schedule them."
+    },
+    "monitor_manage": {
+      "title": "Monitor and manage",
+      "description": "Monitor your created events, the sold of tickets and manage them through this system easily"
+    }
+  },
+  "add_on": {
+    "title": "Add on services"
+  },
+  "privacy_policy": {
+    "title": "Privacy Policy",
+    "data_collection": "Data Collection",
+    "data_protection": "Data Protection",
+    "data_usage": "Data Usage",
+    "your_responsibilities": "Your Responsibilities"
+  },
+  "oprator_hero": {
+    "title": "Create, manage, monitor",
+    "description": "This operator dashboard is designed to give event managers complete control over their activities. From creating and scheduling events to monitoring registrations, managing attendees, and tracking performance, it provides a streamlined way to handle everything in one place. With a clear interface and actionable insights, operators can ensure smooth event execution and make data-driven decisions for better outcomes.",
+    "sign_in_as_operator": "Sign in as operator"
+  },
+  "footer": {
+    "title": "Manage your all events in one place",
+    "description": "The operator dashboard lets event managers create, manage, and track events with ease, offering full control and clear insights for smooth execution",
+    "quick": {
+      "quick_links": "Quick links",
+      "home": "Home",
+      "pricing": "Pricing",
+      "add_on": "Add On",
+      "privacy_policy": "Privacy Policy",
+      "faq": "FAQ",
+      "events": "Events"
+    },
+    "social": {
+      "follow_us_on": "Follow us on",
+      "download_app": "Download Our App",
+      "play_store": "Play Store",
+      "app_store": "App Store"
+    }
+  }
+}

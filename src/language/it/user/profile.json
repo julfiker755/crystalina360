@@ -15,5 +15,10 @@
     "faq": "FAQ",
     "coupons": "Coupon",
     "security": "Sicurezza"
+  },
+  "missing": {
+    "title": "Informazioni del profilo mancanti",
+    "description": "Il tuo profilo è incompleto. Vai alla sezione del profilo e compila tutte le informazioni richieste.",
+    "click_here": "Clicca qui"
   }
 }

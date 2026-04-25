@@ -15,5 +15,10 @@
     "faq": "FAQ",
     "coupons": "Coupons",
     "security": "Security"
+  },
+  "missing": {
+    "title": "Profile Information Missing",
+    "description": " Your profile is incomplete. Please go to your profile section and fill in all required information.",
+    "click_here": "Click here"
   }
 }

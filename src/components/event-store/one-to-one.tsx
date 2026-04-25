@@ -13,7 +13,7 @@ import Form from "@/components/reuseable/from";
 import Modal from "@/components/reuseable/modal";
 import { useModalState } from "@/hooks";
 import FavIcon from "@/icon/favIcon";
-import { delivary_t, helpers, roleKey } from "@/lib";
+import { delivary_t, helpers } from "@/lib";
 import { useEffect, useState } from "react";
 import { UploadBtn } from "@/components/reuseable/btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
@@ -38,6 +38,9 @@ import sonner from "../reuseable/sonner";
 import { useGetProfileQuery } from "@/redux/api/authApi";
 import { FromInput } from "../reuseable/form-input";
 import { cleanObject } from "@/lib/function-utils";
+import { permissionBoth } from "./element/utils";
+import Link from "next/link";
+import { toast } from "sonner";
 
 const initialState = {
   holistic: false,
@@ -45,7 +48,9 @@ const initialState = {
   isDate: false,
 };
 
-export default function OnetoOneStore({ msg }: { msg: string }) {
+
+
+export default function OnetoOneStore({ msg, role }: { msg: string, role: string }) {
   const [searchText, setSearchText] = useState("");
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
   const [state, setState] = useModalState(initialState);
@@ -54,9 +59,13 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
   const [progress, setProgress] = useState(0);
   const [emailAll, setAllEmail] = useState<string[]>([]);
   const { data: profile } = useGetProfileQuery({});
-  const videolimit =
-    profile?.data?.user?.is_subscribed &&
-    profile?.data?.user?.role === roleKey.operator;
+  const permission = permissionBoth({
+    role,
+    isSubscribed: profile?.data?.user?.is_subscribed,
+  })
+
+
+
 
   const defaultValues = getValuesOne(isDelivery) as any;
   const defaultSchema = getOneSchema(isDelivery) as any;
@@ -70,17 +79,23 @@ export default function OnetoOneStore({ msg }: { msg: string }) {
 
   const get = (v: any) => from.watch(v);
   const delivaryType = get("delivery_type") == delivary_t.ondemand;
-  const maxVideoSize = 2 * 1024 * 1024 * 1024;
-  const maxApply = videolimit && delivaryType;
+  const maxVideoSize = 2 * 1024 * 1024 * 1024; // 2gb
+  const maxApply = permission && delivaryType;
 
   const [{ files }, { getInputProps, clearFiles }] = useFileUpload({
     accept: delivaryType ? "video/*" : "image/*",
     maxSize: maxApply ? undefined : maxVideoSize,
     onError: () => {
-      sonner.error(
-        "Upload Limit Reached",
-        "Free plan supports videos up to 2GB. Please upgrade your plan.",
-        "bottom-right",
+      toast.success(
+        <div>
+          <p className="font-semibold">Upload Limit Reached</p>
+          <p>
+            Free plan supports videos up to 2GB. Please upgrade your plan.{" "}
+            <Link href="/operator/pricing" className="text-[#00ff22d5]  underline">
+              Upgrade
+            </Link>
+          </p>
+        </div>
       );
     },
   });

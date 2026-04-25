@@ -8,6 +8,7 @@ import {
   usePaymentInitOpMutation,
 } from "@/redux/api/operator/opratorApi";
 import { helpers } from "@/lib";
+import { useTranslations } from "next-intl";
 
 const freePlan = {
   id: "basic",
@@ -18,6 +19,7 @@ const freePlan = {
 };
 
 export default function PricingBox() {
+  const t = useTranslations("oprator.home.navber");
   const [isTab, setIsTab] = useState("MONTH");
   const { data: pricing } = useGetPricingQuery({
     pricing_for: "operator",
@@ -49,19 +51,17 @@ export default function PricingBox() {
         <div className="flex justify-center mt-5 mx-auto space-x-3 bg-figma-gray1 w-fit rounded-full">
           <button
             onClick={() => setIsTab("MONTH")}
-            className={`py-2 px-7 ${
-              isTab == "MONTH" && "bg-figma-primary  text-white!"
-            } rounded-full text-figma-black cursor-pointer`}
+            className={`py-2 px-7 ${isTab == "MONTH" && "bg-figma-primary  text-white!"
+              } rounded-full text-figma-black cursor-pointer`}
           >
-            Monthly
+            {t("pricing_box.monthly")}
           </button>
           <button
             onClick={() => setIsTab("YEAR")}
-            className={`py-2 px-7 ${
-              isTab === "YEAR" && "bg-figma-primary  text-white!"
-            } rounded-full text-figma-black cursor-pointer`}
+            className={`py-2 px-7 ${isTab === "YEAR" && "bg-figma-primary  text-white!"
+              } rounded-full text-figma-black cursor-pointer`}
           >
-            Annual
+            {t("pricing_box.annual")}
           </button>
         </div>
       </div>
@@ -77,7 +77,7 @@ export default function PricingBox() {
               </h2>
               <div className="text-center mb-8">
                 <span className="text-3xl lg:text-4xl font-bold">
-                  {freePlan?.price}
+                  €{freePlan?.price}
                 </span>
               </div>
               <div>
@@ -104,7 +104,7 @@ export default function PricingBox() {
               </h2>
               <div className="text-center mb-8">
                 <span className="text-3xl lg:text-4xl font-bold">
-                  {pro_item?.price}
+                  €{pro_item?.price}
                 </span>
               </div>
               <div>

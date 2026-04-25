@@ -23,7 +23,7 @@ type Sonner = {
 const sonner = {} as Sonner;
 
 toastTypes.forEach((type) => {
-  sonner[type] = (msg, description, pos = "top-right") => {
+  sonner[type] = (msg, description, pos = "bottom-right") => {
     toast[type](msg, {
       description,
       position: pos,

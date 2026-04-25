@@ -24,7 +24,7 @@ export default function GroupStoreBox() {
           </AlertDiscard>
         </div>
       </SvgBox>
-      <GroupStore msg="Your event is pending admin approval. Please wait" />
+      <GroupStore role="opertor" msg="Your event is pending admin approval. Please wait" />
     </div>
   );
 }

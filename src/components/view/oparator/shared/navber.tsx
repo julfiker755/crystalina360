@@ -15,8 +15,11 @@ import FavIcon from "@/icon/favIcon";
 import { usePathname } from "next/navigation";
 import Avatars from "@/components/reuseable/avater";
 import { LanguageSwitcher2 } from "../../common/language";
+import { useTranslations } from "next-intl";
+
 
 export default function Navber({ className }: any) {
+  const t = useTranslations("oprator.home.navber");
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useAppSelector((state: AppState) => state.auth);
@@ -28,17 +31,17 @@ export default function Navber({ className }: any) {
   }, []);
 
   const navNoUserItems = [
-    { name: "Home", href: "/operator" },
-    { name: "Pricing", href: "#pricing" },
-    { name: "Privacy Policy", href: "#privacy-Policy" },
-    { name: "FAQ", href: "#faq" },
+    { name: t("home"), href: "/operator" },
+    { name: t("pricing"), href: "/#pricing" },
+    { name: t("privacy_policy"), href: "/#privacy-Policy" },
+    { name: t("faq"), href: "/#faq" },
   ];
   const navUserItems = [
-    { name: "Dashboard", href: "/operator/dashboard" },
-    { name: "Events", href: "/operator/events" },
-    { name: "Pricing", href: "/operator/pricing" },
-    { name: "Privacy policy", href: "/operator/privacy-policy" },
-    { name: "FAQ", href: "/operator/faq" },
+    { name: t("dashboard"), href: "/operator/dashboard" },
+    { name: t("events"), href: "/operator/events" },
+    { name: t("pricing"), href: "/operator/pricing" },
+    { name: t("privacy_policy"), href: "/operator/privacy-policy" },
+    { name: t("faq"), href: "/operator/faq" },
   ];
 
   const navItems =
@@ -167,6 +170,7 @@ export default function Navber({ className }: any) {
 
 
 function SignInButton() {
+  const t = useTranslations("oprator.home.navber");
   const dispatch = useAppDispatch();
   const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
 
@@ -216,7 +220,7 @@ function SignInButton() {
               size="lg"
               className="hidden md:block border bg-white text-figma-black"
             >
-              Continue as a user
+              {t("continue_as_user")}
             </Button>
           </Link>
           <Button
@@ -224,7 +228,7 @@ function SignInButton() {
             size="lg"
             className="hidden md:block bg-primary"
           >
-            Sign in as operator
+            {t("sign_as_operator")}
           </Button>
           <Button
             onClick={() => handleOpenModal()}
@@ -239,7 +243,7 @@ function SignInButton() {
             mainStyle="!p-0"
             className="sm:max-w-xl"
           >
-            <AuthModalController title="Sign up as a operator" />
+            <AuthModalController title={t("sign_up_as_operator")} />
           </Modal2>
         </>
       )}

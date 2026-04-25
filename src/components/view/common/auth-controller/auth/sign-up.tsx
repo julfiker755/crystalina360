@@ -51,8 +51,8 @@ export default function SignUp() {
       const res = await register(value).unwrap();
       if (res.status) {
         sonner.success(
-          t("sign_up_successful"),
-          t("please_check_your_email_for_otp_verify"),
+          t("alert_success.sign_up_successful"),
+          t("alert_success.please_check_your_email_for_otp_verify"),
         );
         dispatch(setActiveModal(controlkey.emailVafi));
         dispatch(

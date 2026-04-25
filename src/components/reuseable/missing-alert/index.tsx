@@ -1,41 +1,39 @@
 "use client";
-import { useGetProfileQuery } from "@/redux/api/authApi";
 import { useEffect, useState } from "react";
-import { helpers } from "@/lib";
 import { useRouter } from "next/navigation";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui";
 import { InfoIcon, X } from "lucide-react";
 import Link from "next/link";
+import { useAppSelector } from "@/redux/hooks";
+import { AppState } from "@/redux/store";
+import { useTranslations } from "next-intl";
 
 export default function MissingInfo({ path }: any) {
-  const token = helpers.hasAuthToken();
+  const t = useTranslations("user.profile.missing");
   const router = useRouter();
+  const { user } = useAppSelector((state: AppState) => state.auth);
 
-  const { data: profile } = useGetProfileQuery({}, { skip: !token });
-
-  const isProfileComplete =
-    profile?.data?.user?.profile_status?.is_profile_complete;
 
   const [isShow, setIsShow] = useState(false);
 
   useEffect(() => {
-    if (!profile?.data?.user) return;
+    if (!user) return;
 
-    if (isProfileComplete === false) {
+    if (user?.is_profile_complete === false) {
       setIsShow(true);
     } else {
       setIsShow(false);
     }
-  }, [profile, isProfileComplete]);
+  }, [user]);
 
   const handleClose = () => {
     setIsShow(false);
 
     setTimeout(() => {
-      if (!profile?.data?.user) return;
+      if (!user) return;
 
       // 2 min later, show alert again if still incomplete
-      if (isProfileComplete === false) {
+      if (user?.is_profile_complete === false) {
         setIsShow(true);
         if (path) {
           router.push(path);
@@ -51,18 +49,17 @@ export default function MissingInfo({ path }: any) {
       <InfoIcon className="text-red-500" />
 
       <AlertTitle className="text-black">
-        Profile Information Missing
+        {t("title")}
       </AlertTitle>
 
       <AlertDescription className="flex items-center gap-1 text-black/70">
-        Your profile is incomplete. Please go to your profile section and fill in
-        all required information.
+        {t("description")}
 
         <Link
           href={path || ""}
           className="text-sm font-medium text-black hover:underline"
         >
-          Click here
+          {t("click_here")}
         </Link>
       </AlertDescription>
 

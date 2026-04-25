@@ -6,18 +6,20 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import Modal2 from "@/components/reuseable/modal2";
 import AuthModalController from "@/components/view/common/auth-controller";
 import { toggleIsOpen } from "@/redux/features/authSlice";
+import { useTranslations } from "next-intl";
 
 export default function Pricing() {
   const dispatch = useAppDispatch();
   const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
+  const t = useTranslations("oprator.home.navber");
 
   return (
     <div id="pricing" className="pt-20">
       <PricingBox />
       <div className="text-center space-y-3 pt-5">
         <p>
-          Purchase a plan and enjoy the freedom of managing events of whatever
-          it's offline or online
+          {t("pricing_box.description")}
+
         </p>
         {user.email ? null : (
           <Button
@@ -26,7 +28,7 @@ export default function Pricing() {
             className="text-white rounded-full"
           >
             {" "}
-            Sign in as operator
+            {t("sign_as_operator")}
           </Button>
         )}
       </div>
@@ -37,7 +39,7 @@ export default function Pricing() {
         mainStyle="!p-0"
         className="sm:max-w-xl"
       >
-        <AuthModalController title="Sign up as a operator" />
+        <AuthModalController title={t("sign_up_as_operator")} />
       </Modal2>
     </div>
   );

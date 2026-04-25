@@ -92,7 +92,7 @@ export default function AddOnCard({
               </div>
               <div>
                 <p className="text-sm font-medium text-foreground">{title}</p>
-                <p className="text-lg font-bold text-[#E07856]">${price}</p>
+                <p className="text-lg font-bold text-[#E07856]">€{price}</p>
               </div>
             </div>
             {token &&

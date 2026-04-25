@@ -1,0 +1,71 @@
+{
+  "navber": {
+    "home": "Home",
+    "pricing": "Prezzi",
+    "privacy_policy": "Informativa sulla privacy",
+    "faq": "FAQ",
+    "dashboard": "Dashboard",
+    "events": "Eventi",
+    "continue_as_user": "Continua come utente",
+    "sign_as_operator": "Accedi come operatore",
+    "sign_up_as_operator": "Registrati come operatore",
+    "pricing_box": {
+      "title": "Prezzi",
+      "description": "Acquista un piano e ottieni la libertà di gestire eventi sia offline che online",
+      "monthly": "Mensile",
+      "annual": "Annuale"
+    }
+  },
+  "hero": {
+    "title": "Il tuo sistema di gestione degli eventi olistici",
+    "sub_title": "Gestisci e vendi i tuoi eventi olistici in uno spazio dedicato"
+  },
+  "event_setp": {
+    "register": {
+      "title": "Registrati",
+      "description": "Registrati come operatore sulla piattaforma e accedi al pannello di gestione eventi."
+    },
+    "create_event": {
+      "title": "Crea evento",
+      "description": "Crea il tuo evento caricando contenuti, documenti e informazioni in pochi passaggi."
+    },
+    "monitor_manage": {
+      "title": "Monitora e gestisci",
+      "description": "Controlla eventi, vendite dei biglietti e gestisci tutto facilmente da un’unica dashboard."
+    }
+  },
+  "add_on": {
+    "title": "Servizi aggiuntivi"
+  },
+  "privacy_policy": {
+    "title": "Informativa sulla privacy",
+    "data_collection": "Raccolta dei dati",
+    "data_protection": "Protezione dei dati",
+    "data_usage": "Utilizzo dei dati",
+    "your_responsibilities": "Le tue responsabilità"
+  },
+  "oprator_hero": {
+    "title": "Crea, gestisci, monitora",
+    "description": "Questa dashboard per operatori è progettata per offrire ai gestori di eventi il controllo completo delle loro attività. Dalla creazione e pianificazione degli eventi al monitoraggio delle registrazioni, gestione dei partecipanti e analisi delle prestazioni, fornisce un modo semplificato per gestire tutto in un unico posto. Con un'interfaccia chiara e dati utili, gli operatori possono garantire un'esecuzione fluida degli eventi e prendere decisioni basate sui dati per risultati migliori.",
+    "sign_in_as_operator": "Accedi come operatore"
+  },
+  "footer": {
+    "title": "Gestisci tutti i tuoi eventi in un unico posto",
+    "description": "La dashboard operatore consente ai gestori di eventi di creare, gestire e monitorare eventi con facilità, offrendo pieno controllo e informazioni chiare per un'esecuzione fluida",
+    "quick": {
+      "quick_links": "Link rapidi",
+      "home": "Home",
+      "pricing": "Prezzi",
+      "add_on": "Servizi aggiuntivi",
+      "privacy_policy": "Informativa sulla privacy",
+      "faq": "FAQ",
+      "events": "Eventi"
+    },
+    "social": {
+      "follow_us_on": "Seguici su",
+      "download_app": "Scarica la nostra app",
+      "play_store": "Play Store",
+      "app_store": "App Store"
+    }
+  }
+}

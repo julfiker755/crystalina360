@@ -7,8 +7,16 @@ import { toggleIsOpen } from "@/redux/features/authSlice";
 import AuthModalController from "@/components/view/common/auth-controller";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
+import { useTranslations } from "next-intl";
+
+// "oprator_hero": {
+//   "title": "Create, manage, monitor",
+//   "description": "This operator dashboard is designed to give event managers complete control over their activities. From creating and scheduling events to monitoring registrations, managing attendees, and tracking performance, it provides a streamlined way to handle everything in one place. With a clear interface and actionable insights, operators can ensure smooth event execution and make data-driven decisions for better outcomes.",
+//   "sign_in_as_operator": "Sign in as operator"
+// },
 
 export default function Manage() {
+  const t = useTranslations("oprator.home");
   const dispatch = useAppDispatch();
   const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
   return (
@@ -23,22 +31,16 @@ export default function Manage() {
         />
         <div className="absolute top-0 left-0 w-full lg:w-1/2 bottom-0 bg-white/20 backdrop-blur-[50px] rounded-l-xl rounded-r-xl lg:rounded-r-none">
           <div className="absolute top-1/2 -translate-y-1/2 px-4 lg:px-16 space-y-3 lg:space-y-4">
-            <h1 className="text-left text-white">Create, manage, monitor</h1>
+            <h1 className="text-left text-white">{t("oprator_hero.title")}</h1>
             <p className="text-white">
-              This operator dashboard is designed to give event managers
-              complete control over their activities. From creating and
-              scheduling events to monitoring registrations, managing attendees,
-              and tracking performance, it provides a streamlined way to handle
-              everything in one place. With a clear interface and actionable
-              insights, operators can ensure smooth event execution and make
-              data-driven decisions for better outcomes.
+              {t("oprator_hero.description")}
             </p>
             <Button
               onClick={() => dispatch(toggleIsOpen())}
               size="lg"
               className="text-primary bg-white rounded-full"
             >
-              Sign in as operator
+              {t("oprator_hero.sign_in_as_operator")}
             </Button>
           </div>
         </div>
@@ -50,7 +52,7 @@ export default function Manage() {
         mainStyle="!p-0"
         className="sm:max-w-xl"
       >
-        <AuthModalController title="Sign up as a operator" />
+        <AuthModalController title={t("navber.sign_up_as_operator")} />
       </Modal2>
     </div>
   );

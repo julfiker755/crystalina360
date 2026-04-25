@@ -1,14 +1,17 @@
 import Partners from "../simple/partners";
+import { useTranslations } from "next-intl";
 
 export default function HomeSec() {
+  const t = useTranslations("oprator.home.hero");
+
   return (
     <div className="lg:h-[calc(100vh-80px)] flex flex-col items-center justify-between">
       <div className="mb-10 lg:mb-0 mt-14">
         <h1 className="font-semibold  lg:text-4xl">
-          Your all in one event management system
+          {t("title")}
         </h1>
         <p className="text-figma-black  text-center mt-2">
-          Manage your all events in one place
+          {t("sub_title")}
         </p>
       </div>
       <div className="w-full relative">

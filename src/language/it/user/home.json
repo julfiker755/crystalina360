@@ -94,13 +94,13 @@
   },
   "business": {
     "title": "Fai crescere la tua attività",
-    "sub_title": "Espandi la tua visibilità, massimizza il tuo impatto.",
-    "description": "La nostra piattaforma aiuta gli operatori a pubblicare facilmente eventi, accettare prenotazioni e aumentare i ricavi. Unisciti oggi e porta la tua attività di eventi al livello successivo.",
+    "sub_title": "Crea i tuoi eventi olistici. Fatti trovare da chi ti sta cercando",
+    "description": "Entra in Olistami e gestisci i tuoi eventi olistici e pratiche in un unico e semplice spazio. Tu porti le tue pratiche, noi ti aiutiamo a renderle visibili e a farle scoprire da chi sta cercando le esperienze di benessere che offri.",
     "join_as_operator": "Unisciti come operatore"
   },
   "footer": {
-    "title": "Gestisci tutti i tuoi eventi in un unico posto",
-    "description": "La dashboard operatore consente ai gestori di eventi di creare, gestire e monitorare gli eventi con facilità, offrendo pieno controllo e una visione chiara per un'esecuzione senza problemi",
+    "title": "Lo spazio per chi cerca e chi crea benessere",
+    "description": "Connettiamo chi crea eventi e pratiche olistiche con chi cerca esperienze di benessere, in un unico spazio pensato per rendere l’incontro più facile e accessibile per tutti",
     "quick": {
       "title": "Link rapidi",
       "home": "Home",
@@ -126,7 +126,7 @@
   },
   "podcast": {
     "title": "Il podcast OLISTAMI",
-    "description": "Riconnettiti con il tuo io interiore attraverso un mix unico di musicoterapia e relax. Celebra un weekend di suoni e culture diverse con performance di artisti. Vivi l’emozione della musica dal vivo nel nostro concerto annuale con i migliori artisti. Unisciti a noi per un’immersione nei nuovi generi musicali emergenti di quest’anno. È una celebrazione... Questo evento è organizzato per gli amanti della musica."
+    "description": "Un viaggio nel benessere dove corpo, mente e spirito si incontrano. Ogni episodio racconta storie autentiche di operatori olistici e persone trasformate da pratiche profonde, tra antiche saggezze e scoperte contemporanee. Un podcast che esplora connessioni interiori, ispira consapevolezza e accompagna eventi dedicati al benessere e alla magia quotidiana"
   },
   "olistami_alert": "Olistami è una piattaforma self-service in cui ogni utente pubblica contenuti e servizi in modo indipendente, assumendosi la piena responsabilità legale. Le pratiche olistiche sono complementari alla medicina ufficiale e non la sostituiscono."
 }
