@@ -28,11 +28,13 @@ import { AppAlert } from "@/components/view/user/reuse";
 import { helpers } from "@/lib";
 import { useFilterEventsMutation } from "@/redux/api/user/userEventsApi";
 import { ChevronDown, ChevronLeft, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
 export default function EventFilter() {
+  const t = useTranslations("user.explore.filter");
   const [searchText, setSearchText] = useState("");
   const [isHolistic, setIsHolistic] = useState(false);
   const [showEvent, setShowEvent] = useState(false);
@@ -109,7 +111,7 @@ export default function EventFilter() {
 
             <span className="text-xl font-medium">
               {" "}
-              Explore OLISTAMI Events
+              {t("explore_OLISTAMI_events")}
             </span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
@@ -122,7 +124,7 @@ export default function EventFilter() {
             ) : (
               <NoItemData
                 className="col-span-1 md:col-span-2 lg:col-span-3"
-                title="No events found. Try adjusting your search or filters"
+                title={t("no_event")}
               />
             )}
           </div>
@@ -131,7 +133,7 @@ export default function EventFilter() {
         <>
           <div className="mt-10 mb-5">
             <BackBtn2
-              label="Filter for Events"
+              label={t("filter_for_events")}
               labelStyle="font-semibold text-xl"
               className="relative -left-5"
             />
@@ -140,13 +142,13 @@ export default function EventFilter() {
             <FromInput
               className="h-10"
               name="name"
-              label="Partitioner's Name"
-              placeholder="Write the name of partitioner's"
+              label={t("partitioner's_name")}
+              placeholder={t("partitioner's_placeholder")}
             />
             <div className="flex flex-wrap items-center space-x-15">
               <div>
                 <Label className="text-blacks text-base mb-2 font-medium">
-                  Event Type
+                  {t("event_type")}
                 </Label>
                 <div className="space-y-2 lg:space-y-0 space-x-2">
                   {eventItem.map((item, idx) => (
@@ -154,10 +156,9 @@ export default function EventFilter() {
                       size="lg"
                       variant="secondary"
                       type="button"
-                      className={`${
-                        get("event_type") == item.value &&
+                      className={`${get("event_type") == item.value &&
                         "shadow-filter bg-white"
-                      }`}
+                        }`}
                       key={idx}
                       onClick={() => from.setValue("event_type", item.value)}
                     >
@@ -177,10 +178,9 @@ export default function EventFilter() {
                       size="lg"
                       variant="secondary"
                       type="button"
-                      className={`${
-                        get("delivery_type") == item.value &&
+                      className={`${get("delivery_type") == item.value &&
                         "shadow-filter bg-white"
-                      }`}
+                        }`}
                       key={idx}
                       onClick={() => from.setValue("delivery_type", item.value)}
                     >
@@ -200,10 +200,9 @@ export default function EventFilter() {
                       size="lg"
                       variant="secondary"
                       type="button"
-                      className={`${
-                        get("event_purpose") == item.value &&
+                      className={`${get("event_purpose") == item.value &&
                         "shadow-filter bg-white"
-                      }`}
+                        }`}
                       key={idx}
                       onClick={() => from.setValue("event_purpose", item.value)}
                     >

@@ -1,0 +1,24 @@
+{
+  "title": "Explore OLISTAMI Events",
+  "search_hare": "Search hare",
+  "sort_by": "Sort by",
+  "select_for_sort_events": "Select for sort events",
+  "search": "Search",
+  "close": "Close",
+  "recommendation": "Recommendation",
+  "olistami": "Olistami",
+  "asc_price": "Asc Price",
+  "desc_price": "Desc Price",
+  "seller": "Seller",
+  "reviews": "Reviews",
+  "date": "Date",
+  "last_spots": "Last spots",
+  "filter": {
+    "explore_OLISTAMI_events": "Explore OLISTAMI Events",
+    "no_event": "No events found. Try adjusting your search or filters",
+    "filter_for_events": "Filter for Events",
+    "partitioner's_name": "Partitioner's Name",
+    "partitioner's_placeholder": "Write the name of partitioner's",
+    "event_type": "Event Type"
+  }
+}

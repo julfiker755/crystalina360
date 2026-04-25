@@ -16,6 +16,7 @@ import { useDebounce } from "use-debounce";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui";
+import { useTranslations } from "next-intl";
 
 const intGlobalState = {
   page: 1,
@@ -23,6 +24,7 @@ const intGlobalState = {
 };
 
 export default function ExploreAll() {
+  const t = useTranslations("user.explore");
   const [isSort, setIsSort] = useState(false);
   const [global, updateGlobal] = useGlobalState(intGlobalState);
   const [value] = useDebounce(global.search, 1000);
@@ -39,16 +41,15 @@ export default function ExploreAll() {
     setSortValue(value);
   };
 
-  console.log(eventsItem?.data)
 
   return (
     <div className="container">
       <ul className="flex justify-between flex-wrap items-center pt-10 pb-5">
         <li>
-          <SubTitle text="Explore OLISTAMI Events" />
+          <SubTitle text={t("title")} />
         </li>
         <li className="flex items-center mt-3 md:mt-0 space-x-3">
-          <SearchBox onChange={(v: any) => updateGlobal("search", v)} />
+          <SearchBox placeholder={t("search_hare")} onChange={(v: any) => updateGlobal("search", v)} />
           <h1
             onClick={() => setIsSort(!isSort)}
             className="bg-figma-input icon"
@@ -94,7 +95,7 @@ export default function ExploreAll() {
             onClick={() => setIsSort(false)}
             className="w-full text-red-500 border  bg-transparent"
           >
-            Close
+            {t("close")}
           </Button>
         </SortBox>
       </Modal2>
