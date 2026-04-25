@@ -16,32 +16,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
 import { useState } from "react";
 
-const activityData = [
-  {
-    id: 1,
-    title: "Ticket booked",
-    timestamp: "5 Sep, 2025 at 10:30 AM",
-    icon: "tickets_i",
-  },
-  {
-    id: 2,
-    title: "New event posted",
-    timestamp: "5 Sep, 2025 at 10:30 AM",
-    icon: "events_i",
-  },
-  {
-    id: 3,
-    title: "New user registered",
-    timestamp: "5 Sep, 2025 at 10:30 AM",
-    icon: "users_i",
-  },
-  {
-    id: 4,
-    title: "New operator registered",
-    timestamp: "5 Sep, 2025 at 10:30 AM",
-    icon: "operators_i",
-  },
-];
+
 
 export default function HomePage() {
   const auth = useAppSelector((state: AppState) => state.auth.user);

@@ -20,7 +20,7 @@ export default function PricingCd({
       <ul>
         <li className="font-semibold text-center text-2xl">{title}</li>
         <li className="text-primary text-lg  text-center">
-          {price}/<sub>{getInterval[interval]}</sub>
+          €{price}/<sub>{getInterval[interval]}</sub>
         </li>
         <li className="mt-8">
           <ul className="space-y-1 ml-6 list-disc">

@@ -12,8 +12,11 @@ import { TabsContent } from "@/components/ui";
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import React from 'react'
+import { useTranslations } from "next-intl";
 
 function BookingChild() {
+  const t = useTranslations("user.resources");
   const router = useRouter();
   const params = useSearchParams();
   const [isTab, setIsTab] = useState(params.get("tab") || "ongoing");
@@ -28,12 +31,15 @@ function BookingChild() {
     setIsTab(params.get("tab") || "ongoing");
   }, [params]);
 
-
   return (
     <div className="container">
       <TabBox
         defaultValue={isTab}
-        tabItem={["Ongoing", "Upcoming", "Completed"]}
+        tabItem={[
+          { label: t("booking.ongoing"), value: "ongoing" },
+          { label: t("booking.upcoming"), value: "upcoming" },
+          { label: t("booking.completed"), value: "completed" },
+        ]}
         className="flex justify-start w-fit mt-8"
         tabStyle="border-b border-transparent text-lg data-[state=active]:border-primary! data-[state=active]:border-b! data-[state=active]:text-primary"
         onChange={(v: any) => {
@@ -60,7 +66,7 @@ function BookingChild() {
               ) : (
                 <NoItemData
                   className="col-span-1 md:col-span-2 lg:col-span-3"
-                  title="No ongoing events at this moment"
+                  title={`${t("booking.no_ongoing")}`}
                 />
               )}
             </div>
@@ -82,7 +88,7 @@ function BookingChild() {
               ) : (
                 <NoItemData
                   className="col-span-1 md:col-span-2 lg:col-span-3"
-                  title="No upcoming events at this moment"
+                  title={`${t("booking.no_upcoming")}`}
                 />
               )}
             </div>
@@ -103,7 +109,7 @@ function BookingChild() {
             ) : (
               <NoItemData
                 className="col-span-1 md:col-span-2 lg:col-span-3"
-                title="No Completed events at this moment"
+                title={`${t("booking.no_completed")}`}
               />
             )}
           </div>
@@ -118,7 +124,7 @@ function BookingChild() {
 }
 
 
-import React from 'react'
+
 
 export default function Booking() {
   return (

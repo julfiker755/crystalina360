@@ -1,0 +1,28 @@
+{
+  "blogs": "Blog",
+  "podcast": "Podcast",
+  "partnership": "Partnership",
+  "partner_text": {
+    "title": "Collabora con noi. Espandi la tua portata",
+    "text": "Che tu sia un sito di agriturismo, un videomaker o un erborista, connettiti con noi per esplorare opportunità di collaborazione su misura per la tua attività.",
+    "contact_us": "Contattaci",
+    "submit_answer": "Invia risposta",
+    "placeholder": "Inserisci la tua risposta",
+    "question1": "Cosa fai?",
+    "question2": "Che tipo di partnership desideri?",
+    "question3": "Come possiamo collaborare?",
+    "question4": "Il tuo sito web o link social?",
+    "success": {
+      "title": "Domanda inviata con successo",
+      "text": "Controlla la tua email, rispondi all'amministratore e rivedila qui"
+    }
+  },
+  "booking": {
+    "ongoing": "In corso",
+    "upcoming": "In arrivo",
+    "completed": "Completato",
+    "no_ongoing": "Nessun evento in corso al momento",
+    "no_upcoming": "Nessun evento in arrivo al momento",
+    "no_completed": "Nessun evento completato al momento"
+  }
+}

@@ -1,13 +1,12 @@
 "use client";
 import { Alert, AlertTitle, Skeleton } from "@/components/ui";
-import { AppAlert } from "@/components/view/user/reuse";
 import AddOnCard from "@/components/view/oparator/reuse/addon-card";
 import { BadgePercent, X } from "lucide-react";
-import { useState } from "react";
 import { useGetAddonQuery } from "@/redux/api/admin/addonApi";
 import { Pagination } from "@/components/reuseable/pagination";
 import { Repeat } from "@/components/reuseable/repeat";
 import { useAddsonCartQuery } from "@/redux/api/operator/opratorApi";
+import { useState } from "react";
 
 export default function AddOnsAll() {
   const [isAlert, setIsAlert] = useState(true);
@@ -85,7 +84,6 @@ export default function AddOnsAll() {
       <div className="flex justify-center my-10">
         <Pagination onPageChange={(v: any) => setPage(v)} {...addon?.meta} />
       </div>
-      <AppAlert />
     </div>
   );
 }

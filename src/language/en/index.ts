@@ -3,6 +3,7 @@ import contact_us from './user/contact_us.json';
 import auth from './user/auth.json';
 import profile from './user/profile.json';
 import opratorsHome from './oprators/home.json';
+import resources from "./user/resources.json"
 
 
 
@@ -11,7 +12,8 @@ export default {
         home,
         contact_us,
         auth,
-        profile
+        profile,
+        resources
     },
     oprator: {
         home: opratorsHome,

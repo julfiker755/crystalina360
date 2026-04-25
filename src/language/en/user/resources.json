@@ -1,0 +1,28 @@
+{
+  "blogs": "Blogs",
+  "podcast": "Podcast",
+  "partnership": "Partnership",
+  "partner_text": {
+    "title": "Partner With Us. Expand Your Reach",
+    "text": "Whether you're an agritourism site, videographer, or herbalist, connect with us to explore collaboration opportunities tailored to your business.",
+    "contact_us": "Contact Us",
+    "submit_answer": "Submit Answer",
+    "placeholder": "Enter your answer",
+    "question1": "What do you do?",
+    "question2": "What kind of partnership do you want?",
+    "question3": "How can we work together?",
+    "question4": "Your website or social link?",
+    "success": {
+      "title": "Question sent successfully",
+      "text": "Check your email, reply to the admin, and review it here"
+    }
+  },
+  "booking": {
+    "ongoing": "Ongoing",
+    "upcoming": "Upcoming",
+    "completed": "Completed",
+    "no_ongoing": "No ongoing events at this moment",
+    "no_upcoming": "No upcoming events at this moment",
+    "no_completed": "No Completed events at this moment"
+  }
+}

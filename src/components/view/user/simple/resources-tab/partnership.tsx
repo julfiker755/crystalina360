@@ -1,22 +1,35 @@
 "use client";
 import { Button, Input, Label } from "@/components/ui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AppAlert } from "../../reuse";
 import { helpers } from "@/lib";
 import sonner from "@/components/reuseable/sonner";
 import { useQuestionSendMutation } from "@/redux/api/user/contactApi";
+import { useTranslations } from "next-intl";
 
-const intQuestion = [
-  { question: "What do you do?", answer: "" },
-  { question: "What kind of partnership do you want?", answer: "" },
-  { question: "How can we work together?", answer: "" },
-  { question: "Your website or social link?", answer: "" },
-];
+
 
 export function Partnership() {
+  const t = useTranslations("user.resources");
   const [isShow, setIsShow] = useState(false);
-  const [question, setQuestion] = useState(intQuestion);
+
+
   const [questionSend, { isLoading }] = useQuestionSendMutation();
+
+  const intQuestion = () => [
+    { question: t("partner_text.question1"), answer: "" },
+    { question: t("partner_text.question2"), answer: "" },
+    { question: t("partner_text.question3"), answer: "" },
+    { question: t("partner_text.question4"), answer: "" },
+  ];
+
+  const [question, setQuestion] = useState(intQuestion());
+
+  useEffect(() => {
+    setQuestion(intQuestion());
+  }, [t]);
+
+
 
   const handleQuestion = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,8 +40,8 @@ export function Partnership() {
       await questionSend(data).unwrap();
       setQuestion(intQuestion);
       sonner.success(
-        "Question sent successfully",
-        "Check your email, reply to the admin, and review it here",
+        `${t("partner_text.success.title")}`,
+        `${t("partner_text.success.text")}`,
         "bottom-right",
       );
     } catch (err) {
@@ -56,12 +69,10 @@ export function Partnership() {
         ></div>
         <div className="space-y-4 z-10">
           <h1 className="text-white text-xl lg:text-4xl text-center">
-            Partner With Us. Expand Your Reach
+            {t("partner_text.title")}
           </h1>
           <p className="text-white text-center max-w-2xl">
-            Whether you're an agritourism site, videographer, or herbalist,
-            connect with us to explore collaboration opportunities tailored to
-            your business.
+            {t("partner_text.text")}
           </p>
           <div className="flex justify-center">
             <Button
@@ -69,7 +80,7 @@ export function Partnership() {
               className="bg-white m-auto text-primary rounded-md"
               onClick={() => setIsShow(!isShow)}
             >
-              Contact Us
+              {t("partner_text.contact_us")}
             </Button>
           </div>
         </div>
@@ -80,7 +91,7 @@ export function Partnership() {
             <div className="space-y-2" key={index}>
               <Label className="text-lg">{item.question}</Label>
               <Input
-                placeholder="Enter your answer"
+                placeholder={t("partner_text.placeholder")}
                 className="border-none bg-[#F4F4F4]"
                 value={item.answer}
                 onChange={(e) => handleAnswerChange(index, e.target.value)}
@@ -90,7 +101,7 @@ export function Partnership() {
           ))}
           <div className="flex justify-center mt-10">
             <Button disabled={isLoading} className="min-w-md">
-              Submit Answer
+              {t("partner_text.submit_answer")}
             </Button>
           </div>
         </form>
