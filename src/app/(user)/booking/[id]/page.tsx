@@ -17,6 +17,7 @@ import {
   useStoreRatingMutation,
 } from "@/redux/api/user/bookingApi";
 import { Calendar, Clock, MapPin, Tag } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
@@ -26,6 +27,7 @@ const intRathing = {
   comment: "",
 };
 export default function BookingDetails() {
+  const t = useTranslations('user.details');
   const { id } = useParams();
   const { data: bookings } = useBookingsDetailsQuery(id);
   const [isReview, setIsReview] = useState(false);
@@ -71,8 +73,8 @@ export default function BookingDetails() {
       }));
       setIsReview(false);
       sonner.success(
-        "Rating Successfully Added",
-        "Thank you! Your rating has been successfully recorded.",
+        t("rating_successfully_added"),
+        t("thank_you"),
         "bottom-right",
       );
     }
@@ -143,7 +145,7 @@ export default function BookingDetails() {
 
   return (
     <div className="container">
-      <BackBtn2 className="my-6" />
+      <BackBtn2 label={t("back")} className="my-6" />
       <div className="bg-[#FBFBFB] p-3 rounded-xs">
         <div>
           {delivery_type == delivary_t.ondemand ? (
@@ -236,7 +238,7 @@ export default function BookingDetails() {
 
           {NotOnDemand(
             <div>
-              <h5 className="text-xl font-medium">Quantity of tickets</h5>
+              <h5 className="text-xl font-medium">{t("quantity_of_tickets")}</h5>
               <h5 className="text-[#A6A996] text-xl ml-2">
                 {bookings?.data?.ticket_quantity}
               </h5>
@@ -247,12 +249,12 @@ export default function BookingDetails() {
         {status === "complete" ? (
           <div className="mt-20 mb-10">
             <ul className="flex items-center flex-wrap w-full justify-between mb-2">
-              <li className="text-xl font-medium">Rating</li>
+              <li className="text-xl font-medium">{t("rating")}</li>
               <li>
                 <div className="flex items-center space-x-2">
                   <Link href={`/conversation?group=${ids}`}>
                     <Button className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]">
-                      Send Message
+                      {t("send_message")}
                     </Button>
                   </Link>
                   {!is_rated && (
@@ -260,7 +262,7 @@ export default function BookingDetails() {
                       className="w-fit"
                       onClick={() => setIsReview(!isReview)}
                     >
-                      Review & Rating
+                      {t("review_rating")}
                     </Button>
                   )}
                 </div>
@@ -277,7 +279,7 @@ export default function BookingDetails() {
               </div>
             ) : (
               <div className="text-figma-a_gray">
-                No rating found for this event
+                {t("no_rating_found")}
               </div>
             )}
           </div>
@@ -285,7 +287,7 @@ export default function BookingDetails() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-10">
             <Link href={`/conversation?group=${ids}`}>
               <Button className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]">
-                Send Message
+                {t("send_message")}
               </Button>
             </Link>
             <Button
@@ -293,7 +295,7 @@ export default function BookingDetails() {
               onClick={() => handleDownload()}
               disabled={downlaodLoading}
             >
-              Download Invoice
+              {t("download_invoice")}
             </Button>
           </div>
         )}
@@ -306,13 +308,13 @@ export default function BookingDetails() {
         />
         <div className="mb-5">
           <h2 className="text-center text-xl lg:text-2xl text-figma-black font-bold">
-            Rating & Review
+            {t("review_rating")}
           </h2>
-          <p className="text-center">Please share your experience</p>
+          <p className="text-center">{t("please_share_experience")}</p>
         </div>
         <form onSubmit={handleSubmitRating} className="space-y-5">
           <div>
-            <h4 className="text-lg font-medium mb-1">Rating</h4>
+            <h4 className="text-lg font-medium mb-1">{t("rating")}</h4>
             <RatingScore
               width={160}
               onChange={(v: any) =>
@@ -326,7 +328,7 @@ export default function BookingDetails() {
           </div>
           <div>
             <h4 className="text-lg font-medium mb-1 text-figma-black">
-              Additional Review
+              {t("additional_review")}
             </h4>
             <Textarea
               placeholder="Any additional sentence for the event...."
@@ -342,14 +344,14 @@ export default function BookingDetails() {
           </div>
           <div className="space-y-2">
             <Button disabled={rathingLoading} className="w-full">
-              Submit
+              {t("submit")}
             </Button>
             <Button
               onClick={() => setIsReview(false)}
               className="w-full bg-transparent border"
               type="button"
             >
-              Cancel
+              {t("cancel")}
             </Button>
           </div>
         </form>

@@ -5,19 +5,24 @@ import profile from './user/profile.json';
 import opratorsHome from './oprators/home.json';
 import resources from "./user/resources.json"
 import explore from "./user/explore.json"
+import common from "./common.json"
+import details from "./user/slg-details.json"
 
 
 
 export default {
+    common,
     user: {
         home,
         contact_us,
         auth,
         profile,
         resources,
-        explore
+        explore,
+        details
     },
     oprator: {
         home: opratorsHome,
-    }
+    },
+
 };

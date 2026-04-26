@@ -13,9 +13,11 @@ import { useSingleEventsQuery } from "@/redux/api/operator/opratorApi";
 import { useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
 import { Calendar, Clock, MapPin, Tag } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 
 export default function EventDetails() {
+  const t = useTranslations('user.details');
   const { user } = useAppSelector((state: AppState) => state.auth);
   const { slug } = useParams();
   const { data: events_all, isLoading } = useSingleEventsQuery(slug);
@@ -67,7 +69,8 @@ export default function EventDetails() {
 
   return (
     <div className="container">
-      <BackBtn2 className="my-6" />
+      <BackBtn2 label={t("back")} className="my-6" />
+
       <div className="bg-[#FBFBFB] p-3 rounded-xs overflow-clip">
         <div>
           {delivery_type == delivary_t.ondemand ? (

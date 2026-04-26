@@ -128,5 +128,8 @@
     "title": "Il podcast OLISTAMI",
     "description": "Un viaggio nel benessere dove corpo, mente e spirito si incontrano. Ogni episodio racconta storie autentiche di operatori olistici e persone trasformate da pratiche profonde, tra antiche saggezze e scoperte contemporanee. Un podcast che esplora connessioni interiori, ispira consapevolezza e accompagna eventi dedicati al benessere e alla magia quotidiana"
   },
-  "olistami_alert": "Olistami è una piattaforma self-service in cui ogni utente pubblica contenuti e servizi in modo indipendente, assumendosi la piena responsabilità legale. Le pratiche olistiche sono complementari alla medicina ufficiale e non la sostituiscono."
+  "olistami_alert": "Olistami è una piattaforma self-service in cui ogni utente pubblica contenuti e servizi in modo indipendente, assumendosi la piena responsabilità legale. Le pratiche olistiche sono complementari alla medicina ufficiale e non la sostituiscono.",
+  "notification": "Notifiche",
+  "read_all": "Segna tutto come letto",
+  "favorite_events": "Eventi preferiti"
 }

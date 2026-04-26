@@ -28,15 +28,13 @@ export const AccessibilityBox = ({
           <span className="text-gray-600">No</span>
           <button
             onClick={() => setAccessibility(!accessibility)}
-            className={`relative inline-flex cursor-pointer h-6 w-11 items-center rounded-full transition-colors duration-300 ${
-              accessibility ? "bg-primary" : "bg-[#79747E]"
-            }`}
+            className={`relative inline-flex cursor-pointer h-6 w-11 items-center rounded-full transition-colors duration-300 ${accessibility ? "bg-primary" : "bg-[#79747E]"
+              }`}
             type="button"
           >
             <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ${
-                accessibility ? "translate-x-6" : "translate-x-1"
-              }`}
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ${accessibility ? "translate-x-6" : "translate-x-1"
+                }`}
             />
           </button>
           <span className="text-figma-black">Yes</span>
@@ -50,18 +48,18 @@ export const AccessibilityBox = ({
           </h5>
           <div className="overflow-hidden rounded-lg border bg-card p-6">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-              {accessibilityItem.map((option) => (
-                <div key={option} className="flex items-center space-x-2">
+              {accessibilityItem.map((option, idx: any) => (
+                <div key={idx} className="flex items-center space-x-2">
                   <Checkbox
-                    id={option}
-                    checked={selAccbility.includes(option)}
-                    onCheckedChange={() => handleToggle(option)}
+                    id={idx}
+                    checked={selAccbility.includes(option.label)}
+                    onCheckedChange={() => handleToggle(option.label)}
                   />
                   <label
-                    htmlFor={option}
+                    htmlFor={option.label}
                     className="text-sm font-medium leading-none cursor-pointer"
                   >
-                    {option}
+                    {option.label}
                   </label>
                 </div>
               ))}

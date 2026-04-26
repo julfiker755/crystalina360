@@ -17,11 +17,7 @@ import {
 } from "@/redux/api/authApi";
 import sonner from "@/components/reuseable/sonner";
 import {
-  cityOptions,
-  countryOptions,
   genderOptions,
-  provinceOptions,
-  regionOptions,
 } from "@/components/dummy-data";
 import { BackBtn } from "@/components/reuseable/back-btn";
 import { Switch } from "@/components/ui/switch";

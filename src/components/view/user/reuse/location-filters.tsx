@@ -6,15 +6,15 @@ import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
-export const LocationDroupDownUser = () => {
-  const t = useTranslations("user.profile.edit_profile");
+export const LocationDroupDownFiters = () => {
+  const t = useTranslations("user.explore.filter");
   const { getValues } = useFormContext();
   const { data: regionItem } = useGetRegionListQuery({})
   const [getProvinceList, { data: provinceItem }] = useLazyGetProvinceListQuery()
   const [getItalyCityList, { data: cityItem }] = useLazyGetItalyCityListQuery()
 
-  const defaultRegion = getValues("residence_region");
-  const defaultProvince = getValues("residence_province");
+  const defaultRegion = getValues("region");
+  const defaultProvince = getValues("province");
 
   useEffect(() => {
     if (regionItem && defaultRegion) {
@@ -30,68 +30,69 @@ export const LocationDroupDownUser = () => {
 
   return (
     <>
-
       <div>
-        <Label className="text-blacks text-base font-medium  mb-1">
-          {t("country")}
+        <Label className="text-blacks text-base mb-2 font-medium">
+          {t("select_country")}
         </Label>
         <FormSelDropdown
-          label={t("select_country")}
-          name="residence_country"
+          label={t("select_here")}
+          name="country"
+          className="border-none bg-[#F4F4F4] rounded-md"
           options={[
             { label: "Italy", value: "Italy" },
           ]}
-          className="bg-[#F4F4F4] border-none rounded-md"
         />
       </div>
       <div>
-        <Label className="text-blacks text-base font-medium  mb-1">
-          {t("region")}
+        <Label className="text-blacks text-base mb-2 font-medium">
+          {t("select_region")}
         </Label>
         <FormSelDropdown
-          label={t("select_region")}
-          name="residence_region"
+          label={t("select_here")}
+          name="region"
+          className="border-none bg-[#F4F4F4] rounded-md"
           options={regionItem?.data?.map((item: any) => ({
             label: item.region, value: item.region
           }))}
           setSelectValue={(item) => {
             getProvinceList({ region: item.value })
           }}
-          className="bg-[#F4F4F4] border-none rounded-md"
         />
       </div>
       <div>
-        <Label className="text-blacks text-base font-medium  mb-1">
-          {t("province")}
+        <Label className="text-blacks text-base mb-2 font-medium">
+          {t("select_province")}
         </Label>
         <FormSelDropdown
-          label={t("select_province")}
-          name="residence_province"
+          label={t("select_here")}
+          name="province"
+          className="border-none bg-[#F4F4F4] rounded-md"
           options={provinceItem?.data?.map((item: any) => ({
             label: item.province, value: item.province
           }))}
           setSelectValue={(item) => {
             getItalyCityList({ province: item.value })
           }}
-          className="bg-[#F4F4F4] border-none rounded-md"
           disabled={!provinceItem?.data?.length}
         />
       </div>
+
       <div>
-        <Label className="text-blacks text-base font-medium  mb-1">
-          {t("city")}
+        <Label className="text-blacks text-base mb-2 font-medium">
+          {t("select_city")}
         </Label>
+
         <FormSelDropdown
-          label={t("select_city")}
-          name="residence_city"
+          label={t("select_here")}
+          name="city"
+          className="border-none bg-[#F4F4F4] rounded-md"
           options={cityItem?.data?.map((item: any) => ({
             label: item.city, value: item.city
           }))}
-
-          className="bg-[#F4F4F4] border-none rounded-md"
           disabled={!cityItem?.data?.length}
         />
       </div>
+
     </>
   );
 };

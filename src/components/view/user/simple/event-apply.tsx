@@ -9,6 +9,7 @@ import { usePurchaseStoreMutation } from "@/redux/api/user/userEventsApi";
 import { usePaymentInitMutation } from "@/redux/api/user/paymetsApi";
 import clsx from "clsx";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function EventApply({
   id,
@@ -17,8 +18,8 @@ export default function EventApply({
   event_time,
   available_tickets,
   price,
-  organizer,
 }: any) {
+  const t = useTranslations('user.details');
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<any>([]);
   const [isDate, setIsDate] = useState(false);
@@ -202,7 +203,7 @@ export default function EventApply({
       <div className="flex items-center justify-between">
         <div>
           <Label className="mb-2 font-medium text-base">
-            Quantity of Tickets
+            {t("quantity_of_tickets")}
           </Label>
           <ul className="flex items-center">
             <li>
@@ -228,16 +229,16 @@ export default function EventApply({
             </li>
           </ul>
         </div>
-        <h5 className="font-medium text-base">Total:{total}</h5>
+        <h5 className="font-medium text-base">{t("total")}:{total}</h5>
       </div>
 
       {/* Coupon */}
       <form onSubmit={handleSubmitCoupon} className="mb-10">
-        <Label className="font-medium text-base">Coupon code</Label>
+        <Label className="font-medium text-base">{t("coupon_code")}</Label>
         <div className="flex items-center space-x-3">
           <div className="w-full relative">
             <Input
-              placeholder="Enter Your Coupon code"
+              placeholder={t("coupon_code_placeholder")}
               className="bg-figma-input border-none"
               value={from.formData.coupon}
               onChange={(e) => from.handleChange("coupon", e.target.value)}
@@ -252,7 +253,7 @@ export default function EventApply({
             disabled={couponValid}
             className="bg-transparent border border-primary text-primary"
           >
-            Apply
+            {t("apply")}
           </Button>
         </div>
       </form>
@@ -263,7 +264,7 @@ export default function EventApply({
             type="button"
             className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]"
           >
-            Send Message
+            {t("send_message")}
           </Button>
         </Link>
 
@@ -273,7 +274,7 @@ export default function EventApply({
           onClick={() => handlePurchase()}
           className="w-full"
         >
-          {paymentLoading ? "Waiting for payment..." : "Purchase Now"}
+          {paymentLoading ? t("waiting_for_payment") : t("purchase_now")}
         </Button>
       </div>
     </div>

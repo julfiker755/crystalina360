@@ -6,12 +6,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useFormContext, Controller } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 interface MultiSelectGridProps {
   label: string;
-  options: string[];
+  options: any[];
   className?: string;
   name: string;
+  translationKey: any
 }
 
 export function MultiSelectGrid({
@@ -19,7 +21,9 @@ export function MultiSelectGrid({
   options,
   name,
   className,
+  translationKey
 }: MultiSelectGridProps) {
+  const t1 = useTranslations("common");
   const [isOpen, setIsOpen] = useState(false);
   const { control } = useFormContext();
 
@@ -107,18 +111,19 @@ export function MultiSelectGrid({
                   )}
                 >
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-                    {options.map((option) => (
-                      <div key={option} className="flex items-center space-x-2">
+                    {options.map((option: any, idx: any) => (
+                      <div key={idx} className="flex items-center space-x-2">
                         <Checkbox
-                          id={option}
-                          checked={selected.includes(option)}
-                          onCheckedChange={() => handleToggle(option)}
+                          id={idx}
+                          checked={selected.includes(option.label)}
+                          onCheckedChange={() => handleToggle(option.label)}
                         />
                         <label
                           htmlFor={option}
                           className="text-sm font-medium leading-none cursor-pointer"
                         >
-                          {option}
+                          {t1(`${translationKey}.${option.value}`)}
+                          {/* {option.label} */}
                         </label>
                       </div>
                     ))}

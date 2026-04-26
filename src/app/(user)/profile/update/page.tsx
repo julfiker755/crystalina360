@@ -22,13 +22,16 @@ import { FromInput } from "@/components/reuseable/form-input";
 import { FormSelDropdown } from "@/components/reuseable/from-select@1";
 import { Label } from "@/components/ui";
 import { LocationDroupDownUser } from "@/components/view/user/reuse/location-user";
+import { useTranslations } from "next-intl";
 
 const intAva = {
   file: null,
   preview: "",
 };
 
+
 export default function ProfileEdit2() {
+  const t = useTranslations("user.profile.edit_profile");
   const [avatar, setAvatar] = React.useState<any>(intAva);
   const { data: profile } = useGetProfileQuery({});
   const [addCompany] = useAddCompanyMutation();
@@ -149,12 +152,12 @@ export default function ProfileEdit2() {
               iconStyle="w-5"
               className="bg-figma-delete size-10 2xl:size-10 rounded-md"
             />
-            <h2 className="font-bold text-2xl text-center">Edit Profile</h2>
+            <h2 className="font-bold text-2xl text-center">{t("title")}</h2>
           </li>
           <li>
             {" "}
             <Button disabled={isUpdating} className="w-fit">
-              Save Changes
+              {t("save_changes")}
             </Button>
           </li>
         </ul>
@@ -188,23 +191,23 @@ export default function ProfileEdit2() {
             <FromInput
               className="h-10"
               name="name"
-              label="Full Name"
-              placeholder="Enter your full name"
+              label={t("full_name")}
+              placeholder={t("full_name_placeholder")}
             />
             <FromInput
               className="h-10"
               name="email"
-              label="Email"
-              placeholder="Enter your email"
+              label={t("email")}
+              placeholder={t("email_placeholder")}
               readOnly={true}
             />
             <LocationDroupDownUser />
             <div>
               <Label className="text-blacks text-base font-medium  mb-1">
-                Gender
+                {t("gender")}
               </Label>
               <FormSelDropdown
-                label="select gender"
+                label={t("select_gender")}
                 name="gender"
                 options={genderOptions}
                 className="bg-[#F4F4F4] border-none rounded-md"
@@ -213,58 +216,58 @@ export default function ProfileEdit2() {
             <FromInput
               className="h-10"
               name="sdi_code"
-              label="Sdi Code"
-              placeholder="Enter your sdi code"
+              label={t("sdi_code")}
+              placeholder={t("sdi_code_placeholder")}
             />
             <FromInput
               className="h-10"
               name="code_fiscal"
-              label="Code Fiscal"
-              placeholder="Enter your code fiscal"
+              label={t("code_fiscal")}
+              placeholder={t("code_fiscal_placeholder")}
             />
             <FromInput
               className="h-10"
               name="province_code"
-              label="Province Code"
-              placeholder="Enter your province code"
+              label={t("province_code")}
+              placeholder={t("province_code_placeholder")}
             />
             <FromInput
               className="h-10"
               name="vat_number"
-              label="Vat Number"
-              placeholder="Enter your vat number"
+              label={t("vat_number")}
+              placeholder={t("vat_number_placeholder")}
             />
             {form?.watch("vat_number")?.length > 3 && (
               <>
                 <FromInput
                   className="h-10"
                   name="company_name"
-                  label="Company Name"
-                  placeholder="Enter your company name"
+                  label={t("company_name")}
+                  placeholder={t("company_name_placeholder")}
                 />
                 <FromInput
                   className="h-10"
                   name="company_address"
-                  label="Company Address"
-                  placeholder="Enter your company address"
+                  label={t("company_address")}
+                  placeholder={t("company_address_placeholder")}
                 />
                 <FromInput
                   className="h-10"
                   name="company_postal_code"
-                  label="Company Postal Code"
-                  placeholder="Enter your code"
+                  label={t("company_postal_code")}
+                  placeholder={t("company_postal_code_placeholder")}
                 />
                 <FromInput
                   className="h-10"
                   name="company_city"
-                  label="Company City"
-                  placeholder="Enter your company city"
+                  label={t("company_city")}
+                  placeholder={t("company_city_placeholder")}
                 />
                 <FromInput
                   className="h-10"
                   name="company_province_code"
-                  label="Company Province Code"
-                  placeholder="Enter your code"
+                  label={t("company_province_code")}
+                  placeholder={t("company_province_code_placeholder")}
                 />
               </>
             )}
@@ -276,11 +279,10 @@ export default function ProfileEdit2() {
                       htmlFor="marketing"
                       className="font-bold text-figma-black"
                     >
-                      Marketing Consent
+                      {t("marketing_consent")}
                     </label>
                     <p className="text-sm text-gray-500">
-                      Receive updates about new features, promotions, and
-                      personalized recommendations.
+                      {t("marketing_consent_text")}
                     </p>
                   </div>
                   <Switch

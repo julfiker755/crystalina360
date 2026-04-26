@@ -8,10 +8,12 @@ import { SubTitle } from "@/components/reuseable/sub-title";
 import { NoItemData } from "@/components/reuseable/table-no-item";
 import { AppAlert } from "@/components/view/user/reuse";
 import { useGetMyWishQuery } from "@/redux/api/user/userEventsApi";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useState } from "react";
 
 export default function FavoriteEvents() {
+  const t = useTranslations('user.home');
   const [page, setPage] = useState(1);
   const { data: wishItems, isLoading } = useGetMyWishQuery({
     page: page,
@@ -21,7 +23,7 @@ export default function FavoriteEvents() {
     <div className="container">
       <ul className="flex justify-between flex-wrap items-center pt-10 pb-5">
         <li>
-          <SubTitle text="Favorite Events" />
+          <SubTitle text={t("favorite_events")} />
         </li>
       </ul>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">

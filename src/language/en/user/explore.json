@@ -19,6 +19,60 @@
     "filter_for_events": "Filter for Events",
     "partitioner's_name": "Partitioner's Name",
     "partitioner's_placeholder": "Write the name of partitioner's",
-    "event_type": "Event Type"
+    "event_type": "Event Type",
+    "event_item": {
+      "1:1": "1:1",
+      "group": "group",
+      "retreat": "Retreat"
+    },
+    "delivery_mode": "Delivery Mode",
+    "delivery_item": {
+      "offline": "Offline",
+      "online": "Online",
+      "on_demand": "On demand"
+    },
+    "purpose": "Purpose",
+    "purpose_item": {
+      "educational": "Educational",
+      "experimental": "Experiential",
+      "mixed": "Mixed"
+    },
+    "event_duration": "Event Duration",
+    "duration_options": {
+      "less_than_30_minutes": "Less than 30 minutes",
+      "30_60_minutes": "30-60 minutes",
+      "1_2_hours": "1-2 hours",
+      "half_day": "Half day",
+      "one_day": "One day",
+      "two_days": "Two days",
+      "three_days": "Three days",
+      "four_days": "Four days",
+      "five_days": "Five days",
+      "one_week": "One week",
+      "more_than_one_week": "More than one week"
+    },
+    "max_price": "Max Price",
+    "max_price_placeholder": "Enter your max price",
+    "min_price": "Min Price",
+    "min_price_placeholder": "Enter your min price",
+    "select_country": "Select Country",
+    "select_region": "Select Region",
+    "select_province": "Select Province",
+    "select_city": "Select City",
+    "select_here": "Select here",
+    "near_me": "Near me",
+    "date_range": "Date Range",
+    "date_option": {
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "this_month": "This Month",
+      "next_month": "Next Month"
+    },
+    "holistic_discipline": "Holistic Discipline",
+    "select_holistic_discipline": "Select Holistic Discipline",
+    "accessibility": "Accessibility",
+    "tags": "Tags",
+    "reset_filters": "Reset filters",
+    "apply_filters": "Apply filters"
   }
 }

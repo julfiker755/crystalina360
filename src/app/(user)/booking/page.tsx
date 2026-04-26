@@ -12,23 +12,26 @@ import { TabsContent } from "@/components/ui";
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import React from 'react'
 import { useTranslations } from "next-intl";
+import React from 'react'
+
 
 function BookingChild() {
   const t = useTranslations("user.resources");
   const router = useRouter();
   const params = useSearchParams();
   const [isTab, setIsTab] = useState(params.get("tab") || "ongoing");
+  const [isStatus, setIsStatus] = useState(params.get("sta") || "ongoing");
   const [page, setPage] = useState(1);
   const { data: booking, isLoading } = useGetBookingsQuery({
-    status: isTab,
+    status: isStatus,
     per_page: 14,
     page: page,
   });
 
   useEffect(() => {
     setIsTab(params.get("tab") || "ongoing");
+    setIsStatus(params.get("sta") || "ongoing");
   }, [params]);
 
   return (
@@ -44,9 +47,9 @@ function BookingChild() {
         tabStyle="border-b border-transparent text-lg data-[state=active]:border-primary! data-[state=active]:border-b! data-[state=active]:text-primary"
         onChange={(v: any) => {
           if (v == "completed") {
-            router.push(`?tab=complete`, { scroll: false });
+            router.push(`?tab=completed&sta=complete`, { scroll: false });
           } else {
-            router.push(`?tab=${v}`, { scroll: false });
+            router.push(`?tab=${v}&sta=${v}`, { scroll: false });
           }
         }}
       >

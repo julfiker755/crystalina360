@@ -1,23 +1,18 @@
 "use client";
 import {
   accessibilityItem,
-  cityOptions,
-  countryOptions,
   dateOption,
   delivaryOptions,
   disciplineOptions,
   durationOptions,
   eventItem,
-  provinceOptions,
   purposeItem,
-  regionOptions,
   tagsOptions,
 } from "@/components/dummy-data";
 import { BackBtn2 } from "@/components/reuseable/back-btn";
 import EventCard from "@/components/reuseable/event-card";
 import { FromInput } from "@/components/reuseable/form-input";
 import Form from "@/components/reuseable/from";
-import { FormSelDropdown } from "@/components/reuseable/from-select@1";
 import Modal from "@/components/reuseable/modal";
 import { MultiSelectGrid } from "@/components/reuseable/mul-select-grid/page";
 import { MultipleCalendar } from "@/components/reuseable/multi-date";
@@ -25,6 +20,7 @@ import SearchBox from "@/components/reuseable/search-box";
 import { NoItemData } from "@/components/reuseable/table-no-item";
 import { Badge, Button, Checkbox, Label } from "@/components/ui";
 import { AppAlert } from "@/components/view/user/reuse";
+import { LocationDroupDownFiters } from "@/components/view/user/reuse/location-filters";
 import { helpers } from "@/lib";
 import { useFilterEventsMutation } from "@/redux/api/user/userEventsApi";
 import { ChevronDown, ChevronLeft, X } from "lucide-react";
@@ -35,6 +31,7 @@ import { FieldValues, useForm } from "react-hook-form";
 
 export default function EventFilter() {
   const t = useTranslations("user.explore.filter");
+  const t1 = useTranslations("common");
   const [searchText, setSearchText] = useState("");
   const [isHolistic, setIsHolistic] = useState(false);
   const [showEvent, setShowEvent] = useState(false);
@@ -52,7 +49,7 @@ export default function EventFilter() {
       city: "",
       province: "",
       region: "",
-      country: "",
+      country: "Italy",
       to_date: "",
       from_date: "",
       date_filter: "",
@@ -162,7 +159,7 @@ export default function EventFilter() {
                       key={idx}
                       onClick={() => from.setValue("event_type", item.value)}
                     >
-                      {item.label}
+                      {t(`event_item.${item?.key}`)}
                     </Button>
                   ))}
                 </div>
@@ -170,7 +167,7 @@ export default function EventFilter() {
               {/*   Delivery Mode */}
               <div>
                 <Label className="text-blacks text-base mb-2 font-medium">
-                  Delivery Mode
+                  {t("delivery_mode")}
                 </Label>
                 <div className="space-y-2 lg:space-y-0 space-x-2">
                   {delivaryOptions?.map((item, idx) => (
@@ -184,7 +181,7 @@ export default function EventFilter() {
                       key={idx}
                       onClick={() => from.setValue("delivery_type", item.value)}
                     >
-                      {item.label}
+                      {t(`delivery_item.${item?.key}`)}
                     </Button>
                   ))}
                 </div>
@@ -192,7 +189,7 @@ export default function EventFilter() {
               {/* Purpose */}
               <div>
                 <Label className="text-blacks text-base mb-2 font-medium">
-                  Purpose
+                  {t("purpose")}
                 </Label>
                 <div className="space-y-2 lg:space-y-0 space-x-2">
                   {purposeItem.map((item, idx) => (
@@ -206,7 +203,7 @@ export default function EventFilter() {
                       key={idx}
                       onClick={() => from.setValue("event_purpose", item.value)}
                     >
-                      {item.label}
+                      {t(`purpose_item.${item?.value}`)}
                     </Button>
                   ))}
                 </div>
@@ -214,7 +211,7 @@ export default function EventFilter() {
             </div>
             <div>
               <Label className="text-blacks text-base mb-2 font-medium">
-                Event Duration
+                {t("event_duration")}
               </Label>
               <div className="flex flex-wrap gap-2 items-center space-x-6">
                 {durationOptions.map((item, idx) => (
@@ -232,7 +229,7 @@ export default function EventFilter() {
                       htmlFor={item.value}
                       className="text-sm font-normal leading-none text-article cursor-pointer"
                     >
-                      {item.label}
+                      {t(`duration_options.${item.value}`)}
                     </label>
                   </div>
                 ))}
@@ -242,66 +239,20 @@ export default function EventFilter() {
               <FromInput
                 className="h-10"
                 name="max_price"
-                label="Max Price"
-                placeholder="Enter your max price"
+                label={t("max_price")}
+                placeholder={t("max_price_placeholder")}
                 type="number"
               />
               <FromInput
                 className="h-10"
                 name="min_price"
-                label="Min Price"
-                placeholder="Enter your min price"
+                label={t("min_price")}
+                placeholder={t("min_price_placeholder")}
                 type="number"
               />
             </div>
             <div className="grid  grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3">
-              <div>
-                <Label className="text-blacks text-base mb-2 font-medium">
-                  Select Country
-                </Label>
-                <FormSelDropdown
-                  label="Select here"
-                  name="country"
-                  className="border-none bg-[#F4F4F4] rounded-md"
-                  options={countryOptions}
-                />
-              </div>
-
-              <div>
-                <Label className="text-blacks text-base mb-2 font-medium">
-                  Select Region
-                </Label>
-                <FormSelDropdown
-                  label="Select here"
-                  name="region"
-                  className="border-none bg-[#F4F4F4] rounded-md"
-                  options={regionOptions}
-                />
-              </div>
-
-              <div>
-                <Label className="text-blacks text-base mb-2 font-medium">
-                  Select Province
-                </Label>
-                <FormSelDropdown
-                  label="Select here"
-                  name="province"
-                  className="border-none bg-[#F4F4F4] rounded-md"
-                  options={provinceOptions}
-                />
-              </div>
-              <div>
-                <Label className="text-blacks text-base mb-2 font-medium">
-                  Select City
-                </Label>
-
-                <FormSelDropdown
-                  label="Select here"
-                  name="city"
-                  className="border-none bg-[#F4F4F4] rounded-md"
-                  options={cityOptions}
-                />
-              </div>
+              <LocationDroupDownFiters />
               <div>
                 <h1 className="sr-only">fff</h1>
                 <h5 className="mt-10 ml-10">
@@ -314,13 +265,13 @@ export default function EventFilter() {
                       from.setValue("nearMe", "0");
                     }}
                   />{" "}
-                  Near me
+                  {t("near_me")}
                 </h5>
               </div>
             </div>
             <div>
               <Label className="text-blacks text-base mb-2 font-medium">
-                Date Range
+                {t("date_range")}
               </Label>
               <MultipleCalendar
                 className="border-none bg-[#F4F4F4] text-figma-black hover:text-figma-black rounded-md"
@@ -344,7 +295,7 @@ export default function EventFilter() {
                         from.setValue("date_filter", item.value)
                       }
                     />
-                    <span className="text-sm text-article">{item.label}</span>
+                    <span className="text-sm text-article">{t(`date_option.${item.value}`)}</span>
                   </label>
                 ))}
               </div>
@@ -352,7 +303,7 @@ export default function EventFilter() {
 
             <div>
               <Label className="text-blacks text-base mb-1 font-medium">
-                Holistic Discipline{" "}
+                {t("holistic_discipline")}
               </Label>
               <div
                 onClick={() => {
@@ -395,11 +346,12 @@ export default function EventFilter() {
             </div>
 
             <MultiSelectGrid
-              label="Accessibility "
+              label={t("accessibility")}
               name="accessibility"
               options={accessibilityItem}
+              translationKey="accessibility"
             />
-            <MultiSelectGrid label="Tags" name="tags" options={tagsOptions} />
+            <MultiSelectGrid translationKey="tags" label={t("tags")} name="tags" options={tagsOptions} />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               <Button
@@ -407,10 +359,10 @@ export default function EventFilter() {
                 className="w-full bg-white text-figma-black border"
                 onClick={() => from.reset()}
               >
-                Reset filters
+                {t("reset_filters")}
               </Button>
               <Button disabled={isLoading} className="w-full">
-                Apply filters
+                {t("apply_filters")}
               </Button>
             </div>
           </Form>
@@ -418,7 +370,7 @@ export default function EventFilter() {
           <Modal
             open={isHolistic}
             setIsOpen={setIsHolistic}
-            title="Select Holistic Discipline"
+            title={t("select_holistic_discipline")}
             className="sm:max-w-4xl"
             titleStyle="text-center"
           >
@@ -436,7 +388,7 @@ export default function EventFilter() {
                       checked={get("holistic_discipline").includes(item.value)}
                       onCheckedChange={() => toggleHolistic(item.value)}
                     />
-                    <span>{item.label}</span>
+                    <span>{t1(`holistic.${item.key}`)}</span>
                   </label>
                 ))}
             </div>

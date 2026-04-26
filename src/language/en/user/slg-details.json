@@ -1,0 +1,22 @@
+{
+  "back": "Back",
+  "organized_by_olistami": "Organized by OLISTAMI",
+  "send_message": "Send Message",
+  "purchase_now": "Purchase Now",
+  "waiting_for_payment": "Waiting for payment...",
+  "apply": "Apply",
+  "coupon_code": "Coupon code",
+  "coupon_code_placeholder": "Enter Your Coupon code",
+  "rating": "Rating",
+  "total": "Total",
+  "quantity_of_tickets": "Quantity of Tickets",
+  "review_rating": "Review & Rating",
+  "no_rating_found": "No rating found for this event",
+  "download_invoice": "download Invoice",
+  "please_share_experience": "Please share your experience",
+  "additional_review": "Additional Review",
+  "submit": "Submit",
+  "cancel": "Cancel",
+  "rating_successfully_added": "Rating Successfully Added",
+  "thank_you": "Thank you! Your rating has been successfully recorded."
+}
