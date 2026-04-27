@@ -2,10 +2,12 @@
 import { FormSelDropdown } from "@/components/reuseable/from-select@1";
 import { cn } from "@/lib";
 import { useGetRegionListQuery, useLazyGetItalyCityListQuery, useLazyGetProvinceListQuery } from "@/redux/api/city/cityApi";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
 export const LocationDroupDown = ({ className }: { className?: string }) => {
+  const t = useTranslations("oprator.evStoreAll.store");
   const { getValues } = useFormContext();
   const { data: regionItem } = useGetRegionListQuery({})
   const [getProvinceList, { data: provinceItem }] = useLazyGetProvinceListQuery()
@@ -29,14 +31,14 @@ export const LocationDroupDown = ({ className }: { className?: string }) => {
   return (
     <div className={cn("grid grid-cols-1 lg:grid-cols-4 gap-3", className)}>
       <FormSelDropdown
-        label="-Country-"
+        label={t("location.country")}
         name="country"
         options={[
           { label: "Italy", value: "Italy" },
         ]}
       />
 
-      <FormSelDropdown label="-Region-" name="region"
+      <FormSelDropdown label={t("location.region")} name="region"
         options={regionItem?.data?.map((item: any) => ({
           label: item.region, value: item.region
         }))}
@@ -46,7 +48,7 @@ export const LocationDroupDown = ({ className }: { className?: string }) => {
       />
 
       <FormSelDropdown
-        label="-Province-"
+        label={t("location.province")}
         name="province"
         options={provinceItem?.data?.map((item: any) => ({
           label: item.province, value: item.province
@@ -57,7 +59,7 @@ export const LocationDroupDown = ({ className }: { className?: string }) => {
         disabled={!provinceItem?.data?.length}
       />
 
-      <FormSelDropdown label="-City-" name="city"
+      <FormSelDropdown label={t("location.city")} name="city"
         options={cityItem?.data?.map((item: any) => ({
           label: item.city, value: item.city
         }))}

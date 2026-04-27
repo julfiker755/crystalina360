@@ -1,5 +1,5 @@
 import { getRequestConfig } from 'next-intl/server';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 
 import en from "../language/en";
 import it from "../language/it";
@@ -12,10 +12,15 @@ const messages: any = {
 
 export default getRequestConfig(async () => {
     const cookieStore = await cookies();
-    const locale = cookieStore.get('NEXT_LOCALE')?.value || 'it';
+
+    let locale = cookieStore.get('NEXT_LOCALE')?.value || "en";
+
+    if (cookieStore.get('request-pathname')?.value === "admin") {
+        locale = "en";
+    }
 
     return {
         locale,
-        messages: messages[locale],
+        messages: messages[locale] || messages.en,
     };
 });

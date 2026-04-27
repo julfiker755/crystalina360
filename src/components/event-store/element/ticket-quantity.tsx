@@ -1,22 +1,24 @@
 import { ErrorInput } from "@/components/reuseable/error";
 import { FromInput } from "@/components/reuseable/form-input";
 import FavIcon from "@/icon/favIcon";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 export default function TicketQuantity({ from }: any) {
+  const t = useTranslations("oprator.evStoreAll.store");
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div>
         <div className="h-10 flex items-center justify-between px-2 border rounded-md">
           <span className="flex items-center">
             <FavIcon className="size-5" name="tiket" />
-            <span className="ml-1"> Ticket quantity</span>
+            <span className="ml-1">{t("ticket_quantity")}</span>
           </span>
           <FromInput
             name="ticket_quantity"
             className="w-[100px] h-10  bg-transparent p-0"
             type="number"
-            placeholder="quantity hare"
+            placeholder={t("quantity_hare")}
             err={false}
           />
         </div>
@@ -26,13 +28,13 @@ export default function TicketQuantity({ from }: any) {
         <div className="h-10 flex items-center justify-between px-2 border rounded-md">
           <span className="flex items-center">
             <FavIcon className="size-5" name="price22" />
-            <span className="ml-1">Ticket Price</span>
+            <span className="ml-1">{t("ticket_price")}</span>
           </span>
           <FromInput
             name="price"
             className="w-[100px] h-10 bg-transparent p-0"
             type="number"
-            placeholder="Price here"
+            placeholder={t("price_hare")}
             err={false}
           />
         </div>

@@ -1,0 +1,84 @@
+{
+  "one_to_one": "Creazione evento uno a uno",
+  "group": "Creazione evento di gruppo",
+  "retreat": "Creazione evento retreat",
+  "event_approval_message": "Il tuo evento è in attesa di approvazione da parte dell'amministratore. Attendi per favore",
+  "discard": {
+    "title": "Sei sicuro di voler scartare?",
+    "text": "Nessuna modifica verrà salvata.",
+    "cancel_btn": "Annulla",
+    "discard_btn": "Scarta"
+  },
+  "store": {
+    "limit_message": {
+      "title": "Limite di caricamento raggiunto",
+      "text": "Il piano gratuito supporta video fino a 2GB. Per favore aggiorna il tuo piano",
+      "upgrade": "Aggiorna"
+    },
+    "event_added_success": "Evento aggiunto con successo",
+    "select_delivery_type": "Seleziona il tipo di erogazione",
+    "delivery_type": {
+      "online": "Online",
+      "offline": "Offline",
+      "ondemand": "On demand"
+    },
+    "select_event_purpose": "Seleziona lo scopo dell'evento",
+    "event_purpose": {
+      "educational": "Educativo",
+      "experimental": "Esperienziale",
+      "mixed": "Misto"
+    },
+    "holistic_discipline": "Disciplina olistica",
+    "select_or_more": "Seleziona uno o più",
+    "select_holistic_descipline": "Seleziona disciplina olistica",
+    "event_title": "Titolo dell'evento",
+    "enter_title_placeholder": "Inserisci il titolo",
+    "description": "Descrizione",
+    "description_placeholder": "Inserisci la descrizione",
+    "upload_event_banner_image": "Carica immagine banner evento",
+    "upload_pre_recorded_video": "Carica video preregistrato",
+    "create_time_slot": "Crea fascia oraria",
+    "time_slot": "Fascia oraria",
+    "selected_times": "Orari selezionati",
+    "no_times_selected_yet": "Nessun orario selezionato",
+    "cancel": "Annulla",
+    "save": "Salva",
+    "time_is_already_selected": "Questo orario è già selezionato",
+    "please_select_time": "Seleziona un orario",
+    "accessibilities": "Accessibilità",
+    "select_accessibilities": "Seleziona uno o più",
+    "yes": "Sì",
+    "no": "No",
+    "person_limit": {
+      "min_person_limit": "-limite minimo persone-",
+      "min_person_placeholder": "Minimo",
+      "max_person_limit": "-limite massimo persone-",
+      "max_person_placeholder": "Massimo"
+    },
+    "ticket_quantity": "Quantità biglietti",
+    "quantity_hare": "Quantità qui",
+    "price": "Prezzo",
+    "ticket_price": "Prezzo del biglietto",
+    "price_hare": "Prezzo qui",
+    "btn_waiting": "In attesa...",
+    "btn_submit": "Invia",
+    "tags": "Tag",
+    "type_and_hit_enter": "Digita e premi invio",
+    "recipient_email_placeholder": "Inserisci email destinatario qui",
+    "location": {
+      "country": "-Paese-",
+      "region": "-Regione-",
+      "province": "-Provincia-",
+      "city": "-Città-"
+    },
+    "date": {
+      "title": "Seleziona una data",
+      "date_is_already_selected": "Questa data è già selezionata",
+      "selected_dates": "Date selezionate",
+      "no_dates_selected_yet": "Nessuna data selezionata",
+      "cancel": "Annulla",
+      "save": "Salva",
+      "add": "Aggiungi"
+    }
+  }
+}

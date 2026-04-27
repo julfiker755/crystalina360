@@ -11,10 +11,11 @@ import {
 } from "@/components/ui/alert-dialog";
 import { childrenProps } from "@/types";
 import { X } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 
 export default function AlertDiscard({ children }: childrenProps) {
+  const t = useTranslations("oprator.evStoreAll.discard");
   const router = useRouter();
   return (
     <AlertDialog>
@@ -25,21 +26,21 @@ export default function AlertDiscard({ children }: childrenProps) {
             <X className="text-white" />
           </div>
           <AlertDialogTitle className="text-center text-2xl">
-            Are you sure to discard ?
+            {t("title")}
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center">
-            No changes will be saved.
+            {t("text")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="justify-center">
           <AlertDialogCancel className="bg-figma-delete hover:bg-figma-delete h-10">
-            Cancel
+            {t("cancel_btn")}
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={() => router.back()}
             className="bg-figma-danger text-white h-10"
           >
-            Discard
+            {t("discard_btn")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

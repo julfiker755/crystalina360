@@ -10,6 +10,7 @@ import {
 } from "react-hook-form";
 import { Badge, Button, Input, Label } from "@/components/ui";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface formInputProps {
   stylelabel?: string;
@@ -27,6 +28,7 @@ export function FromTagInput({
   stylelabel,
   className,
 }: formInputProps) {
+  const t = useTranslations("oprator.evStoreAll.store");
   const { control } = useFormContext();
   const [inputValue, setInputValue] = React.useState("");
 
@@ -106,7 +108,7 @@ export function FromTagInput({
                 <Input
                   id="tags-input"
                   type="text"
-                  placeholder="Type and hit enter"
+                  placeholder={t("type_and_hit_enter")}
                   value={inputValue}
                   onChange={handleInputChange}
                   onKeyDown={(e) => handleInputKeyDown(e, tags, field.onChange)}

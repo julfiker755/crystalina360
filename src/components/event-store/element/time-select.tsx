@@ -2,6 +2,7 @@
 import { Button, Input } from "@/components/ui";
 import { helpers } from "@/lib";
 import { X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 
 export default function TimeSelect({
@@ -10,6 +11,7 @@ export default function TimeSelect({
   setState,
   from,
 }: any) {
+  const t = useTranslations("oprator.evStoreAll.store");
   const [newTime, setNewTime] = useState("12:00");
   const [error, setError] = useState("");
 
@@ -21,12 +23,12 @@ export default function TimeSelect({
 
   const handleAddTime = () => {
     if (!newTime) {
-      setError("Please select a time");
+      setError(t("please_select_time"));
       return;
     }
 
     if (selectedTimes.includes(newTime)) {
-      setError("This time is already selected");
+      setError(t("time_is_already_selected"));
       return;
     }
 
@@ -67,7 +69,7 @@ export default function TimeSelect({
 
       <div className="mb-10">
         <h2 className="text-sm font-medium text-black mb-4">
-          Selected times ({selectedTimes.length})
+          {t("selected_times")} ({selectedTimes.length})
         </h2>
         {selectedTimes.length > 0 ? (
           <div className="flex flex-wrap gap-3">
@@ -90,7 +92,7 @@ export default function TimeSelect({
             ))}
           </div>
         ) : (
-          <p className="text-slate-500 text-sm italic">No times selected yet</p>
+          <p className="text-slate-500 text-sm italic">{t("no_times_selected_yet")}</p>
         )}
       </div>
 
@@ -101,9 +103,9 @@ export default function TimeSelect({
           className="bg-[#ededed] text-figma-black"
         >
           {" "}
-          Cancel
+          {t("cancel")}
         </Button>
-        <Button onClick={handleSave}>Save</Button>
+        <Button onClick={handleSave}>{t("save")}</Button>
       </div>
     </div>
   );

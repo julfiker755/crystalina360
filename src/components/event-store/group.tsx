@@ -12,7 +12,7 @@ import Form from "@/components/reuseable/from";
 import Modal from "@/components/reuseable/modal";
 import { useModalState } from "@/hooks";
 import FavIcon from "@/icon/favIcon";
-import { delivary_t, helpers, roleKey } from "@/lib";
+import { delivary_t, helpers } from "@/lib";
 import { useEffect, useState } from "react";
 import { UploadBtn } from "@/components/reuseable/btn";
 import { ImgBox } from "@/components/reuseable/Img-box";
@@ -41,6 +41,7 @@ import { cleanObject } from "@/lib/function-utils";
 import { permissionBoth } from "./element/utils";
 import { toast } from "sonner";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const initialState = {
   holistic: false,
@@ -49,6 +50,8 @@ const initialState = {
 };
 
 export default function GroupStore({ msg, role }: { msg: string, role: string }) {
+  const t = useTranslations("oprator.evStoreAll.store");
+  const t1 = useTranslations("common");
   const [searchText, setSearchText] = useState("");
   const [state, setState] = useModalState(initialState);
   const [selAccbility, setSelAccbility] = useState<string[]>([]);
@@ -80,11 +83,11 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
     onError: () => {
       toast.success(
         <div>
-          <p className="font-semibold">Upload Limit Reached</p>
+          <p className="font-semibold">{t("limit_message.title")}</p>
           <p>
-            Free plan supports videos up to 2GB. Please upgrade your plan.{" "}
+            {t("limit_message.text")}{" "}
             <Link href="/operator/pricing" className="text-[#00ff22d5] underline">
-              Upgrade
+              {t("upgrade")}
             </Link>
           </p>
         </div>
@@ -129,7 +132,7 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
       if (res.status) {
         resetFrom(get("delivery_type"));
         router.back();
-        sonner.success("Event Added Successfully", msg, "bottom-right");
+        sonner.success(t("event_added_success"), msg, "bottom-right");
         setProgress(0);
       }
     } catch (err: any) {
@@ -180,7 +183,7 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
             {/*  ------ Select Delivery Type --------  */}
             <div>
               <label className="block text-lg mb-2 font-semibold">
-                Select Delivery Type
+                {t("select_delivery_type")}
               </label>
               <div className="flex gap-3">
                 {delivaryOptions?.map((item) => (
@@ -201,7 +204,7 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
                       }
                       name={item.icon as any}
                     />
-                    {item.label}
+                    {t(`delivery_type.${item.value}`)}
                   </Button>
                 ))}
               </div>
@@ -209,7 +212,7 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
             {/* --------  Select Event Purpose --------- */}
             <div>
               <label className="block text-lg mb-2 font-semibold">
-                Select Event Purpose
+                {t("select_event_purpose")}
               </label>
               <div className="flex gap-3">
                 {purposeItem?.map((item) => (
@@ -223,7 +226,7 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
                       }`}
                     type="button"
                   >
-                    {item.label}
+                    {t(`event_purpose.${item.value}`)}
                   </Button>
                 ))}
               </div>
@@ -233,10 +236,10 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
             <div>
               <div className="flex justify-between items-center mb-2">
                 <label className="block text-lg font-semibold">
-                  Holistic Discipline
+                  {t("holistic_discipline")}
                 </label>
                 <button className="text-sm text-primary">
-                  Select 1 or more
+                  {t("select_or_more")}
                 </button>
               </div>
               <div>
@@ -249,7 +252,7 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
                         )}
                         onCheckedChange={() => toggleHolistic(item.value)}
                       />
-                      <span>{item.label}</span>
+                      <span>{t1(`holistic.${item.key}`)}</span>
                     </label>
                   ))}
                   <h5
@@ -277,15 +280,15 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
           <div className="space-y-6">
             <FromInput2
               name="event_title"
-              label="Event Title"
-              placeholder="Enter your title"
+              label={t("event_title")}
+              placeholder={t("enter_title_placeholder")}
               className="h-10"
             />
 
             <FromTextarea2
               name="event_description"
-              label="Description"
-              placeholder="Enter your description"
+              label={t("description")}
+              placeholder={t("description_placeholder")}
               className="min-h-30"
             />
             {/*  type  ------------ */}
@@ -309,7 +312,7 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
                   selAccbility={selAccbility}
                   setSelAccbility={setSelAccbility}
                 />
-                <FromTagInput name="tags" label="Tags" className="py-2" />
+                <FromTagInput name="tags" label={t("tags")} className="py-2" />
                 <EmailCollent emailAll={emailAll} setAllEmail={setAllEmail} />
               </>
             ) : from.watch("delivery_type") === "online" ? (
@@ -321,7 +324,7 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
                 </div>
                 <PersonLimit />
                 <TicketQuantity from={from} />
-                <FromTagInput name="tags" label="Tags" className="py-2" />
+                <FromTagInput name="tags" label={t("tags")} className="py-2" />
               </>
             ) : (
               from.watch("delivery_type") === "ondemand" && (
@@ -331,19 +334,19 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
                     <div className="h-10 flex items-center justify-between px-2 border rounded-md">
                       <span className="flex items-center">
                         <FavIcon className="size-5" name="price22" />
-                        <span className="ml-1">Price</span>
+                        <span className="ml-1">{t("price")}</span>
                       </span>
                       <FromInput
                         name="price"
                         className="w-[300px] h-10 bg-transparent p-0"
                         type="number"
-                        placeholder="Price here"
+                        placeholder={t("price_hare")}
                         err={false}
                       />
                     </div>
                     <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.price?.message as string} />
                   </div>
-                  <FromTagInput name="tags" label="Tags" className="py-2" />
+                  <FromTagInput name="tags" label={t("tags")} className="py-2" />
                 </>
               )
             )}
@@ -360,7 +363,7 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
                 }}
               ></div>
               <span className="relative z-10 ">
-                {isLoading ? "Waiting..." : "Submit"}
+                {isLoading ? t("btn_waiting") : t("btn_submit")}
               </span>
             </Button>
           </div>
@@ -370,7 +373,7 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
       <Modal
         open={state.holistic}
         setIsOpen={(v) => setState("holistic", v)}
-        title="Select Holistic Descipline"
+        title={t("select_holistic_descipline")}
         className="sm:max-w-4xl"
         titleStyle="text-center"
       >
@@ -393,7 +396,7 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
                     ?.includes(item.value as never)}
                   onCheckedChange={() => toggleHolistic(item.value)}
                 />
-                <span>{item.label}</span>
+                <span>{t1(`holistic.${item.key}`)}</span>
               </label>
             ))}
         </div>
@@ -402,7 +405,7 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
       <Modal
         open={state.isDate}
         setIsOpen={(v) => setState("isDate", v)}
-        title="Create Date Slot"
+        title={t("create_time_slot")}
         className="sm:max-w-xl"
         titleStyle="text-center"
       >
@@ -419,6 +422,7 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
 //  -------------------------------------------------------------- X ----------------------------------------------------------
 //  ================= image box ================
 const ImageBannerBox = ({ files, getInputProps }: any) => {
+  const t = useTranslations("oprator.evStoreAll.store");
   return (
     <Label
       htmlFor="image"
@@ -436,7 +440,7 @@ const ImageBannerBox = ({ files, getInputProps }: any) => {
         <>
           <FavIcon name="upload2" />
           <p className="text-center mt-2 text-figma-black">
-            Upload event banner image
+            {t("upload_event_banner_image")}
           </p>
         </>
       )}
@@ -451,6 +455,7 @@ const ImageBannerBox = ({ files, getInputProps }: any) => {
 };
 //  ================= video box ================
 const VideoBannerBox = ({ files, getInputProps }: any) => {
+  const t = useTranslations("oprator.evStoreAll.store");
   return (
     <Label
       htmlFor="image"
@@ -480,7 +485,7 @@ const VideoBannerBox = ({ files, getInputProps }: any) => {
         <>
           <FavIcon name="upload2" />
           <p className="text-center mt-2 text-figma-black">
-            Upload pre recorded video
+            {t("upload_pre_recorded_video")}
           </p>
         </>
       )}
@@ -498,6 +503,7 @@ const VideoBannerBox = ({ files, getInputProps }: any) => {
 //  ------------ multiple date ---------------------
 const MultipleDate = ({ from, setState }: any) => {
   const val = from.watch("event_date");
+  const t = useTranslations("oprator.evStoreAll.store");
   return (
     <div className="w-full">
       <Button
@@ -505,7 +511,7 @@ const MultipleDate = ({ from, setState }: any) => {
         type="button"
         className="flex h-10 w-full  bg-transparent border text-black font-normal justify-between items-center"
       >
-        <span>{val?.length > 0 ? `${val?.length} date slot` : "Create date slot"}</span> <ChevronRight />
+        <span>{val?.length > 0 ? `${val?.length} ${t("time_slot")}` : t("create_time_slot")}</span> <ChevronRight />
       </Button>
       {val?.length === 0 && (
         <ErrorInput className="text-sm text-red-400" error={from?.formState?.errors?.event_date?.message} />

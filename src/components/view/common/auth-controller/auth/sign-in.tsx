@@ -79,6 +79,7 @@ export default function SignIn() {
           );
         }
         if (resRole == roleKey.admin) {
+          helpers.setAuthCookie("request-pathname", "admin");
           router.push("/admin");
         } else if (resRole === roleKey.operator) {
           router.push("/operator/dashboard");

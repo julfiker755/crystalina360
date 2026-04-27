@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { helpers } from "@/lib";
 import { X } from "lucide-react";
 import { SingleCalendar } from "@/components/reuseable/single-date";
+import { useTranslations } from "next-intl";
 
 export default function MultiDate({
   selectDate,
@@ -11,17 +12,18 @@ export default function MultiDate({
   from,
   setState,
 }: any) {
+  const t = useTranslations("oprator.evStoreAll.store");
   const [error, setError] = useState<string>("");
   const [newDate, setNewDate] = useState<string>();
 
   const handleAddDate = () => {
     if (!newDate) {
-      setError("Please select a date");
+      setError(t("date.title"));
       return;
     }
 
     if (selectDate.includes(newDate)) {
-      setError("This date is already selected");
+      setError(t("date.date_is_already_selected"));
       return;
     }
 
@@ -54,7 +56,7 @@ export default function MultiDate({
                 className="h-10 text-black"
               />
             </div>
-            <Button onClick={handleAddDate}>Add</Button>
+            <Button onClick={handleAddDate}>{t("date.add")}</Button>
           </div>
           {error && <p className="text-red-400 text-sm mt-1">{error}</p>}
         </div>
@@ -62,7 +64,7 @@ export default function MultiDate({
 
       <div className="mb-10">
         <h2 className="text-sm font-medium text-black mb-4">
-          Selected dates ({selectDate.length})
+          {t("date.selected_dates")} ({selectDate.length})
         </h2>
         {selectDate.length > 0 ? (
           <div className="flex flex-wrap gap-3">
@@ -83,7 +85,7 @@ export default function MultiDate({
             ))}
           </div>
         ) : (
-          <p className="text-slate-500 text-sm italic">No dates selected yet</p>
+          <p className="text-slate-500 text-sm italic">{t("date.no_dates_selected_yet")}</p>
         )}
       </div>
 
@@ -93,9 +95,9 @@ export default function MultiDate({
           onClick={() => setState("isDate", false)}
           className="bg-[#ededed] text-figma-black"
         >
-          Cancel
+          {t("date.cancel")}
         </Button>
-        <Button onClick={handleSave}>Save</Button>
+        <Button onClick={handleSave}>{t("date.save")}</Button>
       </div>
     </div>
   );

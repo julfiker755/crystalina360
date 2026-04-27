@@ -32,6 +32,7 @@ import sonner from "../reuseable/sonner";
 import { disciplineOptions, durationOptions, purposeItem } from "../dummy-data";
 import { InputTime } from "../reuseable/timeInput";
 import { cleanObject } from "@/lib/function-utils";
+import { useTranslations } from "next-intl";
 
 const initialState = {
   holistic: false,
@@ -40,6 +41,8 @@ const initialState = {
 };
 
 export default function RetreatStore({ msg }: { msg: string }) {
+  const t = useTranslations("oprator.evStoreAll.store");
+  const t1 = useTranslations("common");
   const [searchText, setSearchText] = useState("");
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
   const [state, setState] = useModalState(initialState);
@@ -101,7 +104,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
       if (res.status) {
         resetFrom(get("delivery_type"));
         router.back();
-        sonner.success("Event Added Successfully", msg, "bottom-right");
+        sonner.success(t("event_added_success"), msg, "bottom-right");
         setProgress(0);
       }
     } catch (err: any) {
@@ -138,7 +141,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
             {/*  ------ Select Delivery Type --------  */}
             <div>
               <label className="block text-lg mb-2 font-semibold">
-                Select Delivery Type
+                {t("select_delivery_type")}
               </label>
               <div className="flex gap-3">
                 {[{ value: "offline", label: "Offline", icon: "offline" }]?.map(
@@ -162,7 +165,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
                         }
                         name={item.icon as any}
                       />
-                      {item.label}
+                      {t(`delivery_type.${item.value}`)}
                     </Button>
                   ),
                 )}
@@ -171,7 +174,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
             {/* --------  Select Event Purpose --------- */}
             <div>
               <label className="block text-lg mb-2 font-semibold">
-                Select Event Purpose
+                {t("select_event_purpose")}
               </label>
               <div className="flex gap-3">
                 {purposeItem?.map((item) => (
@@ -185,7 +188,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
                       }`}
                     type="button"
                   >
-                    {item.label}
+                    {t(`event_purpose.${item.value}`)}
                   </Button>
                 ))}
               </div>
@@ -195,10 +198,10 @@ export default function RetreatStore({ msg }: { msg: string }) {
             <div>
               <div className="flex justify-between items-center mb-2">
                 <label className="block text-lg font-semibold">
-                  Holistic Discipline
+                  {t("holistic_discipline")}
                 </label>
                 <button className="text-sm text-primary">
-                  Select 1 or more
+                  {t("select_or_more")}
                 </button>
               </div>
               <div>
@@ -211,7 +214,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
                         )}
                         onCheckedChange={() => toggleHolistic(item.value)}
                       />
-                      <span>{item.label}</span>
+                      <span>{t1(`holistic.${item.key}`)}</span>
                     </label>
                   ))}
                   <h5
@@ -239,15 +242,15 @@ export default function RetreatStore({ msg }: { msg: string }) {
           <div className="space-y-6">
             <FromInput2
               name="event_title"
-              label="Event Title"
-              placeholder="Enter your title"
+              label={t("event_title")}
+              placeholder={t("enter_title_placeholder")}
               className="h-10"
             />
 
             <FromTextarea2
               name="event_description"
-              label="Description"
-              placeholder="Enter your description"
+              label={t("description")}
+              placeholder={t("description_placeholder")}
               className="min-h-30"
             />
             <LocationDroupDown />
@@ -267,7 +270,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
               selAccbility={selAccbility}
               setSelAccbility={setSelAccbility}
             />
-            <FromTagInput name="tags" label="Tags" className="py-2" />
+            <FromTagInput name="tags" label={t("tags")} className="py-2" />
             <EmailCollent emailAll={emailAll} setAllEmail={setAllEmail} />
             <Button
               disabled={isLoading}
@@ -280,7 +283,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
                 }}
               ></div>
               <span className="relative z-10">
-                {isLoading ? "Waiting..." : "Submit"}
+                {isLoading ? t("btn_waiting") : t("btn_submit")}
               </span>
             </Button>
           </div>
@@ -290,7 +293,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
       <Modal
         open={state.holistic}
         setIsOpen={(v) => setState("holistic", v)}
-        title="Select Holistic Descipline"
+        title={t("select_holistic_descipline")}
         className="sm:max-w-4xl"
         titleStyle="text-center"
       >
@@ -313,7 +316,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
                     ?.includes(item.value as never)}
                   onCheckedChange={() => toggleHolistic(item.value)}
                 />
-                <span>{item.label}</span>
+                <span>{t1(`holistic.${item.key}`)}</span>
               </label>
             ))}
         </div>
@@ -322,7 +325,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
       <Modal
         open={state.istime}
         setIsOpen={(v) => setState("istime", v)}
-        title="Create Time Slot"
+        title={t("create_time_slot")}
         className="sm:max-w-xl"
         titleStyle="text-center"
       >
@@ -354,6 +357,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
 //  -------------------------------------------------------------- X ----------------------------------------------------------
 //  ================= image box ================
 const ImageBannerBox = ({ files, getInputProps }: any) => {
+  const t = useTranslations("oprator.evStoreAll.store");
   return (
     <Label
       htmlFor="image"
@@ -371,51 +375,7 @@ const ImageBannerBox = ({ files, getInputProps }: any) => {
         <>
           <FavIcon name="upload2" />
           <p className="text-center mt-2 text-figma-black">
-            Upload event banner image
-          </p>
-        </>
-      )}
-      <input
-        {...getInputProps()}
-        className="sr-only"
-        aria-label="Upload image file"
-        id="image"
-      />
-    </Label>
-  );
-};
-//  ================= video box ================
-const VideoBannerBox = ({ files, getInputProps }: any) => {
-  return (
-    <Label
-      htmlFor="image"
-      className="border-2 p-1 cursor-pointer border-dashed border-primary rounded-lg flex flex-col items-center justify-center h-60 overflow-hidden"
-    >
-      {files[0]?.preview ? (
-        <div className="relative w-full">
-          <video
-            key={files[0]?.preview}
-            autoPlay
-            loop
-            playsInline
-            muted
-            style={{
-              width: "100%",
-              height: "220px",
-              objectFit: "cover",
-              borderRadius: "10px",
-            }}
-          >
-            <source src={files[0]?.preview} />
-            Your browser does not support the video tag.
-          </video>
-          <UploadBtn />
-        </div>
-      ) : (
-        <>
-          <FavIcon name="upload2" />
-          <p className="text-center mt-2 text-figma-black">
-            Upload pre recorded video
+            {t("upload_event_banner_image")}
           </p>
         </>
       )}

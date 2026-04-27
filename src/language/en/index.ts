@@ -9,6 +9,7 @@ import common from "./common.json"
 import details from "./user/slg-details.json"
 import opratorsDashboard from "./oprators/dashboard.json"
 import opratorsProfile from "./oprators/profile.json"
+import evStoreAll from "./oprators/ev-store-all.json"
 
 
 
@@ -26,7 +27,8 @@ export default {
     oprator: {
         home: opratorsHome,
         dashboard: opratorsDashboard,
-        profile: opratorsProfile
+        profile: opratorsProfile,
+        evStoreAll: evStoreAll
     },
 
 };

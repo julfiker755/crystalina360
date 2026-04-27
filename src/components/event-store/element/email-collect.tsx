@@ -1,9 +1,11 @@
 import Avatars from "@/components/reuseable/avater";
 import { Button, Input } from "@/components/ui";
 import { X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React, { useState, useCallback } from "react";
 
 export default function EmailCollect({ emailAll, setAllEmail }: any) {
+  const t = useTranslations("oprator.evStoreAll.store");
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string>("");
 
@@ -74,7 +76,7 @@ export default function EmailCollect({ emailAll, setAllEmail }: any) {
             type="email"
             className="border-none flex-1"
             value={email}
-            placeholder="Type recipient email here"
+            placeholder={t("recipient_email_placeholder")}
             onChange={(e) => {
               setEmail(e.target.value);
               setError(""); // clear error while typing
@@ -89,7 +91,7 @@ export default function EmailCollect({ emailAll, setAllEmail }: any) {
         </div>
 
         <Button type="button" onClick={handleAddEmail}>
-          Add
+          {t("date.add")}
         </Button>
       </div>
 

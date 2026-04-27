@@ -1,5 +1,6 @@
 import { accessibilityItem } from "@/components/dummy-data";
 import { Checkbox } from "@/components/ui";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 interface accessibilityProps {
@@ -10,6 +11,8 @@ export const AccessibilityBox = ({
   selAccbility,
   setSelAccbility,
 }: accessibilityProps) => {
+  const t = useTranslations("oprator.evStoreAll.store");
+  const t1 = useTranslations("common");
   const [accessibility, setAccessibility] = useState(false);
 
   const handleToggle = (option: string) => {
@@ -23,9 +26,9 @@ export const AccessibilityBox = ({
   return (
     <div>
       <div className="flex items-center justify-between">
-        <label className="text-lg font-semibold">Accessibilities</label>
+        <label className="text-lg font-semibold">{t("accessibilities")}</label>
         <div className="flex items-center gap-3">
-          <span className="text-gray-600">No</span>
+          <span className="text-gray-600">{t("no")}</span>
           <button
             onClick={() => setAccessibility(!accessibility)}
             className={`relative inline-flex cursor-pointer h-6 w-11 items-center rounded-full transition-colors duration-300 ${accessibility ? "bg-primary" : "bg-[#79747E]"
@@ -37,14 +40,14 @@ export const AccessibilityBox = ({
                 }`}
             />
           </button>
-          <span className="text-figma-black">Yes</span>
+          <span className="text-figma-black">{t("yes")}</span>
         </div>
       </div>
 
       {accessibility && (
         <div className="mt-4 animate-in fade-in slide-in-from-top-2 duration-100">
           <h5 className="col-span-1 lg:col-span-2 text-primary text-end mb-1 text-sm">
-            Select 1 or more
+            {t("select_accessibilities")}
           </h5>
           <div className="overflow-hidden rounded-lg border bg-card p-6">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
@@ -59,6 +62,7 @@ export const AccessibilityBox = ({
                     htmlFor={option.label}
                     className="text-sm font-medium leading-none cursor-pointer"
                   >
+                    {t1(`accessibility.${option.value}`)}
                     {option.label}
                   </label>
                 </div>
