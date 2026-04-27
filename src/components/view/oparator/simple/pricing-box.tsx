@@ -46,7 +46,7 @@ export default function PricingBox() {
   return (
     <div className="pb-16">
       <div className="text-center container mb-12">
-        <h1>Pricing</h1>
+        <h1>{t("pricing_box.title")}</h1>
 
         <div className="flex justify-center mt-5 mx-auto space-x-3 bg-figma-gray1 w-fit rounded-full">
           <button

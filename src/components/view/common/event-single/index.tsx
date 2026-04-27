@@ -13,8 +13,10 @@ import { Calendar } from "lucide-react";
 import { useParams } from "next/navigation";
 import FavIcon from "@/icon/favIcon";
 import CopyBox from "@/components/reuseable/copy-box";
+import { useTranslations } from "next-intl";
 
 export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
+  const t = useTranslations("oprator.dashboard.events.single");
   const { id } = useParams();
   const headers = ["Attendee name", "Ticket booked", "Booking date", "Price"];
 
@@ -214,12 +216,12 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
       <div className="col-span-1 lg:col-span-4">
         <div className="col-span-2">
           <h1 className="text-2xl font-semibold text-left text-figma-black mb-3">
-            Ticket Sold Statistics
+            {t("ticket_sold_statistics")}
           </h1>
           <TicketChart data={ticket_sold_stats} className="h-[300px]" />
         </div>
         <h4 className="text-figma-black text-xl font-semibold relative mt-10">
-          Attendee List
+          {t("attendee_list")}
         </h4>
         <div className="relative -top-6">
           <CustomTable headers={headers}>
@@ -262,7 +264,7 @@ export default function EvnetSingle({ admin = false }: { admin?: boolean }) {
             ) : (
               <TableNoItem
                 colSpan={headers?.length}
-                title="No users are currently available for this ticket"
+                title={t("no_attee")}
                 tdStyle="!bg-background"
               />
             )}

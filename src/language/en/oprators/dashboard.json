@@ -1,0 +1,44 @@
+{
+  "overview": "Overview",
+  "from": "From",
+  "to": "To",
+  "total_revenue": "Total revenue",
+  "total_events": "Total events",
+  "total_bookings": "Total bookings",
+  "ticket_sold": "Ticket sold",
+  "ticket_sold_statistics": "Ticket Sold Statistics",
+  "total_booking_statistics": "Total Booking Statistics",
+  "events": {
+    "total_events": "Total events",
+    "ongoing_events": "Ongoing events",
+    "upcoming_events": "Upcoming events",
+    "pending_events": "Pending events",
+    "completed_events": "Completed events",
+    "create_new_event": "Create New Event",
+    "next": "Next",
+    "select_event_type": "Select Event Type",
+
+    "filter": {
+      "1:1": "1:1",
+      "group": "Group",
+      "retreat": "Retreat"
+    },
+    "event_requests": "Event Requests",
+    "no_events": "No Events Items Available at the Moment",
+    "ev_option": {
+      "onetoone": "One to One",
+      "onetoone_text": "A private event designed for personal interaction and focused discussion between two individuals.",
+      "group": "Group",
+      "group_text": "An exclusive gathering with a set number of participants, ensuring closer connections and meaningful engagement.",
+      "retreat": "Retreat",
+      "retreat_text": "An immersive event. It can only be o line (therefore, it cannot be online or on demand)."
+    },
+    "single": {
+      "ticket_sold_statistics": "Ticket Sold Statistics",
+      "attendee_list": "Attendee List",
+      "no_attee": "No users are currently available for this ticket"
+    }
+  },
+  "privacy_policy": "Privacy Policy",
+  "pricing": "Pricing"
+}

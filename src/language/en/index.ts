@@ -7,6 +7,8 @@ import resources from "./user/resources.json"
 import explore from "./user/explore.json"
 import common from "./common.json"
 import details from "./user/slg-details.json"
+import opratorsDashboard from "./oprators/dashboard.json"
+import opratorsProfile from "./oprators/profile.json"
 
 
 
@@ -23,6 +25,8 @@ export default {
     },
     oprator: {
         home: opratorsHome,
+        dashboard: opratorsDashboard,
+        profile: opratorsProfile
     },
 
 };

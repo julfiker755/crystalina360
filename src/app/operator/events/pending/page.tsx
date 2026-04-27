@@ -8,8 +8,10 @@ import { usePendingEventOpertorQuery } from "@/redux/api/operator/opratorApi";
 import { NoItemData } from "@/components/reuseable/table-no-item";
 import { Repeat } from "@/components/reuseable/repeat";
 import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function PendingEvents() {
+  const t = useTranslations("oprator.dashboard.events");
   const [activeButton, setActiveButton] = useState<string>("");
   const { data: pendingEvent, isLoading } = usePendingEventOpertorQuery({
     search: activeButton,
@@ -20,7 +22,7 @@ export default function PendingEvents() {
       <SvgBox className="mt-6">
         <div className="flex items-center space-x-2">
           <BackBtn className="bg-white rounded-md" />
-          <h2>Event Requests</h2>
+          <h2>{t("event_requests")}</h2>
         </div>
       </SvgBox>
       <div className="my-4 flex justify-end">
@@ -37,7 +39,7 @@ export default function PendingEvents() {
               }
               onClick={() => setActiveButton(btn.value)}
             >
-              {btn.label}
+              {t(`filter.${btn.key}`)}
             </Button>
           ))}
         </ButtonGroup>
@@ -55,7 +57,7 @@ export default function PendingEvents() {
           ) : (
             <NoItemData
               className="col-span-1 lg:col-span-3"
-              title="No Events Items Available at the Moment"
+              title={t("no_events")}
             />
           )}
         </div>

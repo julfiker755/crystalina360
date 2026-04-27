@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface eventButtonProps {
   selectEvent: any;
@@ -22,6 +23,7 @@ export default function EventButton({
   className,
   eventOptions,
 }: eventButtonProps) {
+  const t = useTranslations("oprator.dashboard.events");
   const [isStore, setIsStore] = useState(false);
   const [isPath, setIsPath] = useState("");
   const router = useRouter();
@@ -33,11 +35,11 @@ export default function EventButton({
         size="lg"
       >
         {icon && <Plus />}
-        Create New Event
+        {t("create_new_event")}
       </Button>
       {/*  ============ modal =========== */}
       <Modal
-        title="Select Event Type"
+        title={t("select_event_type")}
         titleStyle="text-center"
         open={isStore}
         setIsOpen={setIsStore}
@@ -83,7 +85,7 @@ export default function EventButton({
           }}
           disabled={selectEvent === ""}
         >
-          Next
+          {t("next")}
         </Button>
       </Modal>
     </div>

@@ -10,10 +10,12 @@ import SvgBox from "@/components/view/oparator/reuse/svg-box";
 import FavIcon from "@/icon/favIcon";
 import { useGetEventsQuery } from "@/redux/api/operator/opratorApi";
 import { ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useState } from "react";
 
 export default function EventAll() {
+  const t = useTranslations("oprator.dashboard.events");
   const [activeButton, setActiveButton] = useState<string>("");
   const [selectEvent, setSelectEvent] = useState("");
   const [page, setPage] = useState(1);
@@ -25,17 +27,17 @@ export default function EventAll() {
   const overviewItem = [
     {
       icon: "events",
-      title: "Total events",
+      title: t("total_events"),
       count: events?.info.total_events,
     },
     {
       icon: "ongoing_events",
-      title: "Ongoing events",
+      title: t("ongoing_events"),
       count: events?.info?.ongoing_events,
     },
     {
       icon: "up_events",
-      title: "Upcoming events",
+      title: t("upcoming_events"),
       count: events?.info?.upcoming_events,
     },
   ];
@@ -43,23 +45,20 @@ export default function EventAll() {
   const eventOptions = [
     {
       id: "onetoone",
-      title: "One to One",
-      description:
-        "A private event designed for personal interaction and focused discussion between two individuals.",
+      title: t("ev_option.onetoone"),
+      description: t("ev_option.onetoone_text"),
       path: "/operator/events/store/one-to-one",
     },
     {
       id: "group",
-      title: "Group",
-      description:
-        "An exclusive gathering with a set number of participants, ensuring closer connections and meaningful engagement.",
+      title: t("ev_option.group"),
+      description: t("ev_option.group_text"),
       path: "/operator/events/store/group",
     },
     {
       id: "retreat",
-      title: "Retreat",
-      description:
-        "An immersive event. It can only be o line (therefore, it cannot be online or on demand). ",
+      title: t("ev_option.retreat"),
+      description: t("ev_option.retreat_text"),
       path: "/operator/events/store/retreat",
     },
   ];
@@ -93,7 +92,7 @@ export default function EventAll() {
             <Link href={`/operator/events/pending`}>
               <div className="bg-white z-50! rounded-md flex items-center space-x-2 py-2 px-4 xl:px-6">
                 <FavIcon name="pending_events" />
-                <span>Pending events</span>
+                <span>{t("pending_events")}</span>
                 <ArrowRight className="size-5" />
               </div>
             </Link>
@@ -120,7 +119,7 @@ export default function EventAll() {
               }
               onClick={() => setActiveButton(btn.value)}
             >
-              {btn.label}
+              {t(`filter.${btn.key}`)}
             </Button>
           ))}
         </ButtonGroup>
@@ -135,11 +134,11 @@ export default function EventAll() {
         ) : (
           <>
             {events?.data?.data?.length === 0 && (
-              <NoItemData title="No Events Items Available at the Moment" />
+              <NoItemData title={t("no_events")} />
             )}
             {ongoingItem?.length > 0 && (
               <div className="mt-10">
-                <h2 className="text-2xl text-black mb-2">Ongoing Events</h2>
+                <h2 className="text-2xl text-black mb-2">{t("ongoing_events")}</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {ongoingItem?.map((item: any, idx: any) => (
                     <Link key={idx} href={`/operator/events/${item.id}`}>
@@ -152,7 +151,7 @@ export default function EventAll() {
 
             {upcommingItem?.length > 0 && (
               <div className="mt-10">
-                <h2 className="text-2xl text-black mb-2">Upcoming Events</h2>
+                <h2 className="text-2xl text-black mb-2">{t("upcoming_events")}</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {upcommingItem.map((item: any, idx: any) => (
                     <Link key={idx} href={`/operator/events/${item?.id}`}>
@@ -164,7 +163,7 @@ export default function EventAll() {
             )}
             {completeItem?.length > 0 && (
               <div className="mt-10">
-                <h2 className="text-2xl text-black mb-3">Completed Events</h2>
+                <h2 className="text-2xl text-black mb-3">{t("completed_events")}</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {completeItem.map((item: any, idx: any) => (
                     <Link key={idx} href={`/operator/events/${item?.id}`}>

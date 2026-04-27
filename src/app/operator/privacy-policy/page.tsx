@@ -1,8 +1,10 @@
 import PrivacyPolicyBox from "@/components/view/oparator/simple/privacy-policy-box";
 import privacyImg from "@/assets/user/privacy.jpg";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export default function PrivacyPolicy() {
+  const t = useTranslations("oprator.dashboard");
   return (
     <div className="container py-10">
       <div className="container h-[200px] mx-auto relative mb-10  rounded-xl">
@@ -23,7 +25,7 @@ export default function PrivacyPolicy() {
         />
         <div className="relative h-full flex flex-col items-center justify-center">
           <h1 className="text-3xl  md:text-5xl text-center  font-bold text-white  leading-tight">
-            Privacy Policy
+            {t("privacy_policy")}
           </h1>
         </div>
       </div>

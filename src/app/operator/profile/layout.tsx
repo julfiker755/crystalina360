@@ -10,8 +10,10 @@ import { useRouter } from "next/navigation";
 import { getInterval } from "@/lib/function-utils";
 import { baseApi } from "@/redux/api/baseApi";
 import { childrenProps } from "@/types";
+import { useTranslations } from "next-intl";
 
 export default function OperatorsProfileLayout({ children }: childrenProps) {
+  const t = useTranslations("oprator.profile.left");
   const { data: profile, isLoading } = useGetProfileQuery({});
   const { img, name, email, subscribed_plans } = profile?.data?.user || {};
 
@@ -22,13 +24,13 @@ export default function OperatorsProfileLayout({ children }: childrenProps) {
     {
       id: 1,
       icon: "completed",
-      title: "Total Events",
+      title: t("total_events"),
       count: profile?.data?.total_events,
     },
     {
       id: 2,
       icon: "cost",
-      title: "Total revenue",
+      title: t("total_revenue"),
       count: profile?.data?.total_revenue,
     },
   ];
@@ -55,7 +57,7 @@ export default function OperatorsProfileLayout({ children }: childrenProps) {
                   <div className="flex items-center">
                     <FavIcon name="a_plans" />{" "}
                     <span className="ml-2 text-base font-normal">
-                      Active plan:
+                      {t("active_plan")}:
                     </span>
                   </div>
                   <div className="font-medium text-lg">
@@ -89,7 +91,7 @@ export default function OperatorsProfileLayout({ children }: childrenProps) {
                 <FavIcon className="size-6" name="ongoing_events" />
               </div>
               <div>
-                <p className="text-figma-black">Joined since</p>
+                <p className="text-figma-black">{t("joined_since")}</p>
                 <h2>{profile?.data?.user?.joined_date}</h2>
               </div>
             </div>
@@ -107,14 +109,14 @@ export default function OperatorsProfileLayout({ children }: childrenProps) {
                 className="w-fit"
               >
                 <FavIcon className="size-5" name="logout" />
-                Logout
+                {t("log_out")}
               </Button>
             </div>
           </div>
           {!isLoading && !profile?.data?.user?.profile_status?.is_profile_complete && (
             <div className="bg-figma-delete h-fit p-4 rounded-md">
               <div className="flex justify-between items-center mb-4">
-                <h4 className="font-semibold text-figma-black">Profile Completion</h4>
+                <h4 className="font-semibold text-figma-black">{t("profile_completion")}</h4>
                 <span className="text-[#9C8474] font-bold">{profile?.data?.user?.profile_status?.completion_percentage || '0%'}</span>
               </div>
               <div className="w-full bg-[#F5EBE0] h-3 rounded-full overflow-hidden">
@@ -126,7 +128,7 @@ export default function OperatorsProfileLayout({ children }: childrenProps) {
                 />
               </div>
               <p className="text-xs text-[#8B7361] mt-3">
-                Complete your profile to unlock more features and personalized recommendations
+                {t("description")}
               </p>
             </div>
           )}

@@ -6,8 +6,10 @@ import { useGetDashboardQuery } from "@/redux/api/admin/dashboardApi";
 import FavIcon from "@/icon/favIcon";
 import { useState } from "react";
 import { helpers } from "@/lib";
+import { useTranslations } from "next-intl";
 
 export default function DashboardHome() {
+  const t = useTranslations("oprator.dashboard");
   const [tempDate, setTempDate] = useState({
     start_date: "",
     end_date: "",
@@ -26,25 +28,25 @@ export default function DashboardHome() {
   const statsItem = [
     {
       id: 1,
-      title: "Total revenue",
+      title: t("total_revenue"),
       value: totalRevenue,
       icon: "revenue",
     },
     {
       id: 2,
-      title: "Total events",
+      title: t("total_events"),
       value: totalEvents,
       icon: "events",
     },
     {
       id: 3,
-      title: "Total bookings",
+      title: t("total_bookings"),
       value: totalBookings,
       icon: "bookings",
     },
     {
       id: 4,
-      title: "Ticket sold",
+      title: t("ticket_sold"),
       value: totalSold,
       icon: "ticket",
     },
@@ -59,10 +61,10 @@ export default function DashboardHome() {
     <div className="container lg:h-[calc(100vh-80px)]">
       <div className="mt-10">
         <div className="flex flex-wrap space-y-2 lg:space-y-0 items-center justify-between mb-5">
-          <h1 className="text-2xl text-left text-figma-black">Overview</h1>
+          <h1 className="text-2xl text-left text-figma-black">{t("overview")}</h1>
           <div className="flex flex-wrap items-center space-x-5 space-y-2 lg:space-y-0">
             <div className="flex items-center space-x-2">
-              <h2 className="text-lg">From:</h2>
+              <h2 className="text-lg">{t("from")}: </h2>
               <SingleCalendar
                 onChange={(start_date: any) =>
                   setTempDate((prev) => ({
@@ -73,7 +75,7 @@ export default function DashboardHome() {
               />
             </div>
             <div className="flex items-center space-x-2">
-              <h2 className="text-lg">To:</h2>
+              <h2 className="text-lg">{t("to")}: </h2>
               <SingleCalendar
                 onChange={(end_date: any) =>
                   setTempDate((prev) => ({
@@ -108,13 +110,13 @@ export default function DashboardHome() {
       <div className="grid gap-6 lg:grid-cols-3 my-8">
         <div className="col-span-2">
           <h1 className="text-2xl text-left text-figma-black mb-4">
-            Ticket Sold Statistics
+            {t("ticket_sold_statistics")}
           </h1>
           <TicketChart data={monthlyStatistics} />
         </div>
         <div>
           <h1 className="text-2xl text-left text-figma-black mb-4">
-            Total Booking Statistics
+            {t("total_booking_statistics")}
           </h1>
           <PieCharts data={dailyStatistics} />
         </div>

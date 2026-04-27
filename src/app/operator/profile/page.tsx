@@ -15,8 +15,10 @@ import Image from "next/image";
 import { useConnectPaypalMutation } from "@/redux/api/operator/opratorApi";
 import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
+import { useTranslations } from "next-intl";
 
 export default function Profile() {
+  const t = useTranslations("oprator.profile.edit_profile");
   const { data: profile } = useGetProfileQuery({});
   const {
     name,
@@ -64,57 +66,57 @@ export default function Profile() {
                 <Button>
                   {" "}
                   <FavIcon color="#fff" name="edit2" />
-                  Edit profile
+                  {t("title")}
                 </Button>
               </Link>
 
               <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-                <InputShow label="Your full name" value={name || "N/A"} />
-                <InputShow label="Email" value={email || "N/A"} />
-                <InputShow label="City" value={residence_city || "N/A"} />
+                <InputShow label={t("full_name")} value={name || "N/A"} />
+                <InputShow label={t("email")} value={email || "N/A"} />
+                <InputShow label={t("city")} value={residence_city || "N/A"} />
                 <InputShow
-                  label="Province"
+                  label={t("province")}
                   value={residence_province || "N/A"}
                 />
-                <InputShow label="Region" value={residence_region || "N/A"} />
-                <InputShow label="Country" value={residence_country || "N/A"} />
-                <InputShow label="Gender" value={gender || "N/A"} />
-                <InputShow label="Sdi Code" value={sdi_code || "N/A"} />
-                <InputShow label="Code Fiscal" value={code_fiscal || "N/A"} />
+                <InputShow label={t("region")} value={residence_region || "N/A"} />
+                <InputShow label={t("country")} value={residence_country || "N/A"} />
+                <InputShow label={t("gender")} value={gender || "N/A"} />
+                <InputShow label={t("sdi_code")} value={sdi_code || "N/A"} />
+                <InputShow label={t("code_fiscal")} value={code_fiscal || "N/A"} />
                 <InputShow
-                  label="Province Code"
+                  label={t("province_code")}
                   value={province_code || "N/A"}
                 />
-                <InputShow label="Vat Number" value={vat_number || "N/A"} />
+                <InputShow label={t("vat_number")} value={vat_number || "N/A"} />
                 {vat_number?.length > 0 && (
                   <>
                     <InputShow
-                      label="Company Name"
+                      label={t("company_name")}
                       value={company?.company_name || "N/A"}
                     />
                     <InputShow
-                      label="Cmpany Address"
+                      label={t("company_address")}
                       value={company?.company_address || "N/A"}
                     />
                     <InputShow
-                      label="Company Postal Code"
+                      label={t("company_postal_code")}
                       value={company?.company_postal_code || "N/A"}
                     />
                     <InputShow
-                      label="Company City"
+                      label={t("company_city")}
                       value={company?.company_city || "N/A"}
                     />
                     <InputShow
-                      label="Company Province Code"
+                      label={t("company_province_code")}
                       value={company?.company_province_code || "N/A"}
                     />
                   </>
                 )}
                 <div className="lg:col-span-2">
-                  <TextAreaShow label="Your bio" value={bio || "N/A"} />
+                  <TextAreaShow label={t("your_bio")} value={bio || "N/A"} />
                 </div>
                 <div className="lg:col-span-2">
-                  <BadgeShow label="Your skills" items={skills || []} />
+                  <BadgeShow label={t("skills")} items={skills || []} />
                 </div>
                 <div className="bg-gray-50/50 col-span-2 rounded-2xl p-6 border border-gray-100">
                   <div className="flex items-center justify-between gap-4">
@@ -123,11 +125,10 @@ export default function Profile() {
                         htmlFor="marketing"
                         className="font-bold text-figma-black"
                       >
-                        Marketing Consent
+                        {t("marketing_consent")}
                       </label>
                       <p className="text-sm text-gray-500">
-                        Receive updates about new features, promotions, and
-                        personalized recommendations.
+                        {t("marketing_consent_text")}
                       </p>
                     </div>
                     <Switch id="airplane-mode" checked={marketing_consent} />
@@ -137,10 +138,7 @@ export default function Profile() {
 
               <div className="border p-3 rounded-md flex-col lg:flex-row lg:flex items-center justify-center gap-10">
                 <div>
-                  To collect and receive revenue generated from events, you will
-                  need to connect your PayPal account to the system. This will
-                  allow payments to be processed and transferred to you smoothly
-                  and securely
+                  {t("paypal_text")}
                 </div>
                 {/* PayPal connected */}
                 {profile?.data?.user?.paypal_merchant_id?.length > 0 ? (
@@ -154,7 +152,7 @@ export default function Profile() {
                       height={20}
                       alt="img"
                     />
-                    PayPal Connected
+                    {t("paypal_btn")}
                   </Button>
                 ) : (
                   <Button

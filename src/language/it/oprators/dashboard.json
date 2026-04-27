@@ -1,0 +1,43 @@
+{
+  "overview": "Panoramica",
+  "from": "Da",
+  "to": "A",
+  "total_revenue": "Entrate totali",
+  "total_events": "Eventi totali",
+  "total_bookings": "Prenotazioni totali",
+  "ticket_sold": "Biglietti venduti",
+  "ticket_sold_statistics": "Statistiche dei biglietti venduti",
+  "total_booking_statistics": "Statistiche delle prenotazioni totali",
+  "events": {
+    "total_events": "Eventi totali",
+    "ongoing_events": "Eventi in corso",
+    "upcoming_events": "Eventi imminenti",
+    "pending_events": "Eventi in sospeso",
+    "completed_events": "Eventi completati",
+    "create_new_event": "Crea nuovo evento",
+    "select_event_type": "Seleziona il tipo di evento",
+    "next": "Avanti",
+    "filter": {
+      "1:1": "1:1",
+      "group": "Gruppo",
+      "retreat": "Ritiro"
+    },
+    "event_requests": "Richieste di eventi",
+    "no_events": "Nessun evento disponibile al momento",
+    "ev_option": {
+      "onetoone": "Uno a uno",
+      "onetoone_text": "Un evento privato progettato per un'interazione personale e una discussione mirata tra due individui.",
+      "group": "Gruppo",
+      "group_text": "Un incontro esclusivo con un numero limitato di partecipanti, che favorisce connessioni più strette e un coinvolgimento significativo.",
+      "retreat": "Ritiro",
+      "retreat_text": "Un evento immersivo. Può svolgersi solo offline (pertanto non può essere online o on demand)."
+    },
+    "single": {
+      "ticket_sold_statistics": "Statistiche dei biglietti venduti",
+      "attendee_list": "Elenco dei partecipanti",
+      "no_attee": "Nessun utente disponibile attualmente per questo biglietto"
+    }
+  },
+  "privacy_policy": "Informativa sulla privacy",
+  "pricing": "Prezzi"
+}
