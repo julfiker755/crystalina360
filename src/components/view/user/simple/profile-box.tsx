@@ -102,7 +102,7 @@ export default function ProfileBox() {
               }}
             />
           </div>
-          <p className="text-xs text-[#8B7361] mt-3">
+          <p className="text-sm text-figma-black mt-3">
             {t("description")}
           </p>
         </div>

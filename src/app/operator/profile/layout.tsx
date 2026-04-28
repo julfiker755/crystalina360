@@ -35,6 +35,8 @@ export default function OperatorsProfileLayout({ children }: childrenProps) {
     },
   ];
 
+
+
   return (
     <div className="container py-10">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
@@ -127,9 +129,16 @@ export default function OperatorsProfileLayout({ children }: childrenProps) {
                   }}
                 />
               </div>
-              <p className="text-xs text-[#8B7361] mt-3">
+              <p className="text-sm text-figma-black mt-3">
                 {t("description")}
               </p>
+
+              {profile?.data?.user?.profile_status?.missing_fields?.includes("paypal_merchant_id") && (
+                <p className="text-sm text-[#FF4E4E] backdrop-blur-md mt-1">
+                  The PayPal account is not connected. Please ensure that a PayPal account is connected
+                </p>
+              )}
+
             </div>
           )}
         </div>

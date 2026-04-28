@@ -26,7 +26,7 @@ import { FormProfileDropdown } from "@/components/reuseable/from-select@1/profil
 import { LocationDroupDownOprator } from "@/components/view/oparator/reuse/location-oprator";
 import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/redux/hooks";
-import { setUser } from "@/redux/features/authSlice";
+
 
 const intAva = {
   file: null,
