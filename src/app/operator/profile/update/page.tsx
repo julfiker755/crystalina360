@@ -11,6 +11,7 @@ import { FromInput2 } from "@/components/reuseable/form-input2";
 import { FromTextarea2 } from "@/components/reuseable/from-textarea2";
 import { FromTagInput } from "@/components/reuseable/from-tag";
 import {
+  authApi,
   useAddCompanyMutation,
   useGetProfileQuery,
   useUpdateProfileMutation,
@@ -24,6 +25,8 @@ import { Switch } from "@/components/ui/switch";
 import { FormProfileDropdown } from "@/components/reuseable/from-select@1/profile-input";
 import { LocationDroupDownOprator } from "@/components/view/oparator/reuse/location-oprator";
 import { useTranslations } from "next-intl";
+import { useAppDispatch } from "@/redux/hooks";
+import { setUser } from "@/redux/features/authSlice";
 
 const intAva = {
   file: null,
@@ -35,6 +38,7 @@ export default function ProfileEdit2() {
   const [avatar, setAvatar] = React.useState<any>(intAva);
   const { data: profile } = useGetProfileQuery({});
   const [addCompany] = useAddCompanyMutation();
+  const dispatch = useAppDispatch()
   const {
     img,
     name,
@@ -63,10 +67,10 @@ export default function ProfileEdit2() {
       bio: "",
       skills: [],
       gender: "",
-      residence_city: "Italy",
+      residence_city: "",
       residence_province: "",
       residence_region: "",
-      residence_country: "",
+      residence_country: "Italy",
       marketing_consent: null,
       sdi_code: "",
       code_fiscal: "",
@@ -85,12 +89,12 @@ export default function ProfileEdit2() {
       form.reset({
         name: name || "",
         email: email || "",
-        bio: bio || "",
+        bio: bio || "N/A",
         skills: skills || "",
-        residence_city: residence_city || "Italy",
+        residence_country: residence_country || "Italy",
+        residence_city: residence_city || "",
         residence_province: residence_province || "",
         residence_region: residence_region || "",
-        residence_country: residence_country || "",
         marketing_consent: marketing_consent || "",
         gender: gender || "",
         sdi_code: sdi_code || "",
@@ -132,7 +136,11 @@ export default function ProfileEdit2() {
 
     try {
       const res = await updateProfile(data).unwrap();
+
       if (res.status) {
+        if (res?.data?.profile_status?.completion_percentage === "100%") {
+          dispatch(authApi.endpoints.getProfile.initiate({}, { forceRefetch: true }));
+        }
         form.reset();
         await addCompany(companydata).unwrap();
         sonner.success(

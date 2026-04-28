@@ -285,18 +285,19 @@ export default function BookingDetails() {
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-10">
+            <div className="opacity-0">tt</div>
             <Link href={`/conversation?group=${ids}`}>
               <Button className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]">
                 {t("send_message")}
               </Button>
             </Link>
-            <Button
+            {/* <Button
               className="w-full"
               onClick={() => handleDownload()}
               disabled={downlaodLoading}
             >
               {t("download_invoice")}
-            </Button>
+            </Button> */}
           </div>
         )}
       </div>

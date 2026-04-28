@@ -8,7 +8,7 @@ import { SubTitle } from "@/components/reuseable/sub-title";
 import TabBox from "@/components/reuseable/tab-box";
 import UpdatePassword from "@/components/reuseable/update-password";
 import { Button, TabsContent } from "@/components/ui";
-import { useGetProfileQuery } from "@/redux/api/authApi";
+import { authApi, useGetProfileQuery } from "@/redux/api/authApi";
 import FavIcon from "@/icon/favIcon";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
@@ -16,8 +16,10 @@ import { useConnectPaypalMutation } from "@/redux/api/operator/opratorApi";
 import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
 import { useTranslations } from "next-intl";
+import { useAppDispatch } from "@/redux/hooks";
 
 export default function Profile() {
+  const dispatch = useAppDispatch();
   const t = useTranslations("oprator.profile.edit_profile");
   const { data: profile } = useGetProfileQuery({});
   const {
@@ -43,6 +45,7 @@ export default function Profile() {
   const collectPaypal = async () => {
     const res = await connectPaypal({}).unwrap();
     if (res.status) {
+      dispatch(authApi.endpoints.getProfile.initiate({}, { forceRefetch: true }));
       window.location.href = res?.data;
     }
   };

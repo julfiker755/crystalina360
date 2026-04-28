@@ -8,6 +8,7 @@ import ImgUpload from "@/components/reuseable/img-upload";
 import { Upload } from "lucide-react";
 import Image from "next/image";
 import {
+  authApi,
   useAddCompanyMutation,
   useGetProfileQuery,
   useUpdateProfileMutation,
@@ -23,6 +24,7 @@ import { FormSelDropdown } from "@/components/reuseable/from-select@1";
 import { Label } from "@/components/ui";
 import { LocationDroupDownUser } from "@/components/view/user/reuse/location-user";
 import { useTranslations } from "next-intl";
+import { useAppDispatch } from "@/redux/hooks";
 
 const intAva = {
   file: null,
@@ -35,6 +37,7 @@ export default function ProfileEdit2() {
   const [avatar, setAvatar] = React.useState<any>(intAva);
   const { data: profile } = useGetProfileQuery({});
   const [addCompany] = useAddCompanyMutation();
+  const dispatch = useAppDispatch();
   const {
     img,
     name,
@@ -59,10 +62,10 @@ export default function ProfileEdit2() {
       name: "",
       email: "",
       gender: "",
-      residence_city: "Italy",
+      residence_city: "",
       residence_province: "",
       residence_region: "",
-      residence_country: "",
+      residence_country: "Italy",
       marketing_consent: "",
       sdi_code: "",
       code_fiscal: "",
@@ -81,10 +84,10 @@ export default function ProfileEdit2() {
       form.reset({
         name: name || "",
         email: email || "",
-        residence_city: residence_city || "Italy",
+        residence_city: residence_city || "",
         residence_province: residence_province || "",
         residence_region: residence_region || "",
-        residence_country: residence_country || "",
+        residence_country: residence_country || "Italy",
         marketing_consent: marketing_consent || "",
         gender: gender || "",
         sdi_code: sdi_code || "",
@@ -125,6 +128,9 @@ export default function ProfileEdit2() {
 
     const res = await updateProfile(data).unwrap();
     if (res.status) {
+      if (res?.data?.profile_status?.completion_percentage === "100%") {
+        dispatch(authApi.endpoints.getProfile.initiate({}, { forceRefetch: true }));
+      }
       form.reset();
       await addCompany(companydata).unwrap();
       sonner.success(
