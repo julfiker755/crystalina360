@@ -8,7 +8,7 @@
   "coupon_code": "Coupon code",
   "coupon_code_placeholder": "Enter Your Coupon code",
   "rating": "Rating",
-  "total": "Total",
+  "total_price": "Total Price",
   "quantity_of_tickets": "Quantity of Tickets",
   "review_rating": "Review & Rating",
   "no_rating_found": "No rating found for this event",

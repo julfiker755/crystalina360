@@ -229,7 +229,7 @@ export default function EventApply({
             </li>
           </ul>
         </div>
-        <h5 className="font-medium text-base">{t("total")}:{total}</h5>
+        <h5 className="font-medium text-base">{t("total_price")}:{total}</h5>
       </div>
 
       {/* Coupon */}

@@ -8,7 +8,7 @@
   "coupon_code": "Codice coupon",
   "coupon_code_placeholder": "Inserisci il tuo codice coupon",
   "rating": "Valutazione",
-  "total": "Totale",
+  "total_price": "Prezzo totale",
   "quantity_of_tickets": "Quantità di biglietti",
   "review_rating": "Recensione e valutazione",
   "no_rating_found": "Nessuna valutazione trovata per questo evento",
