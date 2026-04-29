@@ -37,7 +37,7 @@ export default function EvnetSingleBox() {
         title="Manage events"
         subTitle="Manage all of the events from this section."
       />
-      <SvgBox>
+      <SvgBox className="mb-3">
         <div className="flex justify-between">
           <div className="flex items-center space-x-2">
             <BackBtn className="bg-white rounded-md" />

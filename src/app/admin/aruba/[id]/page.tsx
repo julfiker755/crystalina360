@@ -9,7 +9,8 @@ import {
     Code2,
     Download,
     Receipt,
-    Banknote
+    Banknote,
+    ArrowRight
 } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -23,6 +24,8 @@ import NavTitle from "@/components/reuseable/nav-title";
 import { useInvoicesDetailsQuery } from "@/redux/api/admin/invoicesApi";
 import { useParams } from "next/navigation";
 import { Skeleton } from "@/components/ui";
+import Link from "next/link";
+import { event_t } from "@/lib";
 
 
 
@@ -32,6 +35,10 @@ export default function InvoiceDetailsPage() {
     const { id } = useParams()
     const { data: invoiceDetails, isLoading } = useInvoicesDetailsQuery(id)
     const invoice = invoiceDetails?.data || {}
+
+    console.log(invoice.events)
+
+
 
     return (
         <div>
@@ -86,10 +93,14 @@ export default function InvoiceDetailsPage() {
                                 className="grid grid-cols-1 lg:grid-cols-3 gap-8"
                             >
                                 <Card className="lg:col-span-2 border overflow-hidden shadow-none">
-                                    <CardHeader className="bg-white border-b border-slate-100 pb-6">
+                                    <CardHeader className="bg-white  border-b border-slate-100 pb-6">
                                         <div className="flex items-center justify-between">
                                             <CardTitle className="text-2xl font-bold text-slate-900">Billing Overview</CardTitle>
+                                            <Link href={`/admin/events/${invoice?.events?.id}`}>
+                                                <div className="text-figma-primary underline cursor-pointer flex items-center">Event Details <ArrowRight className="size-4" /></div>
+                                            </Link>
                                         </div>
+
                                     </CardHeader>
                                     <CardContent className="p-0">
                                         <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-100">

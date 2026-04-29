@@ -77,7 +77,7 @@ export default function Aruba() {
                             </TableCell>
 
                             <TableCell>
-                                <h5>{item.event.slice(0, 500) + " ..." || ""}</h5>
+                                <h5 className='w-[140px] truncate'>{item.event}</h5>
                             </TableCell>
                             <TableCell>
                                 <h5>{item.invoice_no || ""}</h5>
