@@ -10,15 +10,9 @@ import {
 import { helpers } from "@/lib";
 import { useTranslations } from "next-intl";
 
-const freePlan = {
-  id: "basic",
-  title: "Free Plan",
-  price: "0.00",
-  description: "Benefits you will get",
-  service: ["limited visibility", "no monthly costs"],
-};
 
-export default function PricingBox() {
+
+export default function PricingBox({ order }: { order?: string }) {
   const t = useTranslations("oprator.home.navber");
   const [isTab, setIsTab] = useState("MONTH");
   const { data: pricing } = useGetPricingQuery({
@@ -42,6 +36,24 @@ export default function PricingBox() {
   };
 
   const Ids = profile?.data?.user?.subscribed_plans?.id;
+
+
+  const freePlan = {
+    id: "basic",
+    title: t("pricing_box.sub_title"),
+    price: "0.00",
+    description: t("pricing_box.benefits_you_will_get"),
+    service: [
+      t("pricing_box.freeOptions.0"),
+      t("pricing_box.freeOptions.1"),
+      t("pricing_box.freeOptions.2"),
+      t("pricing_box.freeOptions.3"),
+      t("pricing_box.freeOptions.4"),
+      t("pricing_box.freeOptions.5"),
+      t("pricing_box.freeOptions.6")
+    ],
+  };
+
 
   return (
     <div className="pb-16">
@@ -68,7 +80,7 @@ export default function PricingBox() {
       <div className="relative">
         {isTab === "MONTH" ? (
           <div className="grid md:grid-cols-2 gap-6 mb-12 w-11/12 lg:max-w-4xl mx-auto">
-            {/*  === free plan == */}
+            {/*  ===================== free plan =============== */}
             <div
               className={`rounded-2xl p-8  flex flex-col relative bg-[#EDEDED]`}
             >
@@ -81,8 +93,9 @@ export default function PricingBox() {
                 </span>
               </div>
               <div>
+
                 <p className={`text-xl mb-2 font-semibold text-figma-black`}>
-                  Benefits you will get
+                  {t("pricing_box.benefits_you_will_get")}
                 </p>
                 <ul className="space-y-2 mb-7">
                   {freePlan?.service?.map((item: any) => (
@@ -95,7 +108,7 @@ export default function PricingBox() {
               </div>
               <FreeButton status={profile?.status} Ids={Ids} />
             </div>
-            {/* == paid plan == */}
+            {/* ================ paid plan ==================== */}
             <div
               className={`rounded-2xl p-8  flex flex-col relative bg-[#EDEDED]`}
             >
@@ -109,7 +122,7 @@ export default function PricingBox() {
               </div>
               <div>
                 <p className={`text-xl mb-2 font-semibold text-figma-black`}>
-                  Benefits you will get
+                  {t("pricing_box.benefits_you_will_get")}
                 </p>
                 <ul className="space-y-2 mb-7">
                   {pro_item?.service?.map((item: any) => (
@@ -132,7 +145,7 @@ export default function PricingBox() {
         ) : (
           isTab === "YEAR" && (
             <div className="grid md:grid-cols-2 gap-6 mb-12 w-11/12 lg:max-w-4xl mx-auto">
-              {/*  === free plan == */}
+              {/*  ================= free plan ================ */}
               <div
                 className={`rounded-2xl p-8  flex flex-col relative bg-[#EDEDED]`}
               >
@@ -146,7 +159,7 @@ export default function PricingBox() {
                 </div>
                 <div>
                   <p className={`text-xl mb-2 font-semibold text-figma-black`}>
-                    Benefits you will get
+                    {t("pricing_box.benefits_you_will_get")}
                   </p>
                   <ul className="space-y-2 mb-7">
                     {freePlan?.service?.map((item: any) => (
@@ -159,7 +172,7 @@ export default function PricingBox() {
                 </div>
                 <FreeButton status={profile?.status} Ids={Ids} />
               </div>
-              {/* == paid plan == */}
+              {/* ===============  paid plan ================== */}
               <div
                 className={`rounded-2xl p-8  flex flex-col relative bg-[#EDEDED]`}
               >
@@ -173,7 +186,7 @@ export default function PricingBox() {
                 </div>
                 <div>
                   <p className={`text-xl mb-2 font-semibold text-figma-black`}>
-                    Benefits you will get
+                    {t("pricing_box.benefits_you_will_get")}
                   </p>
                   <ul className="space-y-2 mb-7">
                     {pro_item?.service?.map((item: any) => (
@@ -200,6 +213,7 @@ export default function PricingBox() {
 }
 
 const FreeButton = ({ status, Ids }: any) => {
+  const t = useTranslations("oprator.home.navber");
   return (
     status &&
     (Ids ? (
@@ -209,7 +223,7 @@ const FreeButton = ({ status, Ids }: any) => {
           disabled={true}
           className="w-fit px-10! disabled:opacity-100 cursor-default border-5 pricingShadow bg-[#D9D9D9] text-white border-white py-6! rounded-full"
         >
-          Purchase plan
+          {t("pricing_box.purchase_plan")}
         </Button>
       </div>
     ) : (
@@ -218,13 +232,14 @@ const FreeButton = ({ status, Ids }: any) => {
           variant="primary"
           className="w-fit px-10! cursor-default border-5 pricingShadow border-white py-6! rounded-full"
         >
-          Purchase plan
+          {t("pricing_box.purchase_plan")}
         </Button>
       </div>
     ))
   );
 };
 const PaidButton = ({ status, Ids, isLoading, onClick }: any) => {
+  const t = useTranslations("oprator.home.navber");
   return (
     status &&
     (Ids ? (
@@ -234,7 +249,7 @@ const PaidButton = ({ status, Ids, isLoading, onClick }: any) => {
           disabled={true}
           className="w-fit px-10! disabled:opacity-100 cursor-default border-5 pricingShadow bg-[#D9D9D9] text-white border-white py-6! rounded-full"
         >
-          Purchase plan
+          {t("pricing_box.purchase_plan")}
         </Button>
       </div>
     ) : (
@@ -245,7 +260,7 @@ const PaidButton = ({ status, Ids, isLoading, onClick }: any) => {
           variant="primary"
           className="w-fit px-10! cursor-default border-5 pricingShadow border-white py-6! rounded-full"
         >
-          Purchase plan
+          {t("pricing_box.purchase_plan")}
         </Button>
       </div>
     ))

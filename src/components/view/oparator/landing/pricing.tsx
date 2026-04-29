@@ -13,9 +13,11 @@ export default function Pricing() {
   const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
   const t = useTranslations("oprator.home.navber");
 
+
+
   return (
     <div id="pricing" className="pt-20">
-      <PricingBox />
+      <PricingBox order="landing" />
       <div className="text-center space-y-3 pt-5">
         <p>
           {t("pricing_box.description")}

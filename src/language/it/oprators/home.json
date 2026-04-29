@@ -11,9 +11,21 @@
     "sign_up_as_operator": "Registrati come operatore",
     "pricing_box": {
       "title": "Prezzi",
+      "sub_title": "Piano Gratuito",
       "description": "Acquista un piano e ottieni la libertà di gestire eventi sia offline che online",
       "monthly": "Mensile",
-      "annual": "Annuale"
+      "annual": "Annuale",
+      "benefits_you_will_get": "Vantaggi che otterrai",
+      "purchase_plan": "Acquista il piano",
+      "freeOptions": [
+        "Commissione sulle vendite: 15%",
+        "Vendi senza costi mensili",
+        "VVisibilità su sito specializz ato",
+        "Accesso immediat o alla piatt aforma",
+        "Chat diret ta con i client i",
+        "Creaz ione di eventi registrati",
+        "Supporto tecnico incluso"
+      ]
     }
   },
   "hero": {
