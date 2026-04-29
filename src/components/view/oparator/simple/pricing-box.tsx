@@ -9,10 +9,12 @@ import {
 } from "@/redux/api/operator/opratorApi";
 import { helpers } from "@/lib";
 import { useTranslations } from "next-intl";
+import RestrictedAccessModal from "../../common/not-access";
 
 
 
 export default function PricingBox({ order }: { order?: string }) {
+  const [open, setOpen] = useState(false);
   const t = useTranslations("oprator.home.navber");
   const [isTab, setIsTab] = useState("MONTH");
   const { data: pricing } = useGetPricingQuery({
@@ -54,9 +56,12 @@ export default function PricingBox({ order }: { order?: string }) {
     ],
   };
 
+  console.log(open)
+
 
   return (
     <div className="pb-16">
+      <RestrictedAccessModal open={open} setOpen={setOpen} />
       <div className="text-center container mb-12">
         <h1>{t("pricing_box.title")}</h1>
 
@@ -106,7 +111,7 @@ export default function PricingBox({ order }: { order?: string }) {
                   ))}
                 </ul>
               </div>
-              <FreeButton status={profile?.status} Ids={Ids} />
+              <FreeButton setOpen={setOpen} status={profile?.status} Ids={Ids} />
             </div>
             {/* ================ paid plan ==================== */}
             <div
@@ -135,6 +140,7 @@ export default function PricingBox({ order }: { order?: string }) {
               </div>
 
               <PaidButton
+                setOpen={setOpen}
                 isLoading={isLoading}
                 status={profile?.status}
                 Ids={Ids}
@@ -170,7 +176,7 @@ export default function PricingBox({ order }: { order?: string }) {
                     ))}
                   </ul>
                 </div>
-                <FreeButton status={profile?.status} Ids={Ids} />
+                <FreeButton setOpen={setOpen} status={profile?.status} Ids={Ids} />
               </div>
               {/* ===============  paid plan ================== */}
               <div
@@ -198,6 +204,7 @@ export default function PricingBox({ order }: { order?: string }) {
                   </ul>
                 </div>
                 <PaidButton
+                  setOpen={setOpen}
                   isLoading={isLoading}
                   status={profile?.status}
                   Ids={Ids}
@@ -212,57 +219,81 @@ export default function PricingBox({ order }: { order?: string }) {
   );
 }
 
-const FreeButton = ({ status, Ids }: any) => {
+const FreeButton = ({ setOpen, status, Ids }: any) => {
   const t = useTranslations("oprator.home.navber");
   return (
-    status &&
-    (Ids ? (
-      <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
-        <Button
-          variant="primary"
-          disabled={true}
-          className="w-fit px-10! disabled:opacity-100 cursor-default border-5 pricingShadow bg-[#D9D9D9] text-white border-white py-6! rounded-full"
-        >
-          {t("pricing_box.purchase_plan")}
-        </Button>
-      </div>
+    status ? (
+      (Ids ? (
+        <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
+          <Button
+            variant="primary"
+            disabled={true}
+            className="w-fit px-10! disabled:opacity-100 cursor-default border-5 pricingShadow bg-[#D9D9D9] text-white border-white py-6! rounded-full"
+          >
+            {t("pricing_box.purchase_plan")}
+          </Button>
+        </div>
+      ) : (
+        <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
+          <Button
+
+            variant="primary"
+            className="w-fit px-10! cursor-default border-5 pricingShadow border-white py-6! rounded-full"
+          >
+            {t("pricing_box.purchase_plan")}
+          </Button>
+        </div>
+      ))
     ) : (
       <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
         <Button
+          onClick={() => setOpen(true)}
           variant="primary"
-          className="w-fit px-10! cursor-default border-5 pricingShadow border-white py-6! rounded-full"
+          className="w-fit px-10! cursor-pointer border-5 pricingShadow border-white py-6! rounded-full"
         >
           {t("pricing_box.purchase_plan")}
         </Button>
       </div>
-    ))
-  );
+    )
+  )
 };
-const PaidButton = ({ status, Ids, isLoading, onClick }: any) => {
+const PaidButton = ({ setOpen, status, Ids, isLoading, onClick }: any) => {
   const t = useTranslations("oprator.home.navber");
   return (
-    status &&
-    (Ids ? (
-      <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
-        <Button
-          variant="primary"
-          disabled={true}
-          className="w-fit px-10! disabled:opacity-100 cursor-default border-5 pricingShadow bg-[#D9D9D9] text-white border-white py-6! rounded-full"
-        >
-          {t("pricing_box.purchase_plan")}
-        </Button>
-      </div>
+    status ? (
+      (Ids ? (
+        <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
+          <Button
+            variant="primary"
+            disabled={true}
+            className="w-fit px-10! disabled:opacity-100 cursor-default border-5 pricingShadow bg-[#D9D9D9] text-white border-white py-6! rounded-full"
+          >
+            {t("pricing_box.purchase_plan")}
+          </Button>
+        </div>
+      ) : (
+        <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
+          <Button
+            disabled={isLoading}
+            onClick={onClick}
+            variant="primary"
+            className="w-fit px-10! cursor-default border-5 pricingShadow border-white py-6! rounded-full"
+          >
+            {t("pricing_box.purchase_plan")}
+          </Button>
+        </div>
+      ))
     ) : (
       <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
         <Button
-          disabled={isLoading}
-          onClick={onClick}
+          onClick={() => setOpen(true)}
           variant="primary"
-          className="w-fit px-10! cursor-default border-5 pricingShadow border-white py-6! rounded-full"
+          className="w-fit px-10! cursor-pointer border-5 pricingShadow border-white py-6! rounded-full"
         >
           {t("pricing_box.purchase_plan")}
         </Button>
       </div>
-    ))
+    )
+
   );
 };

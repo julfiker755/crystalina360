@@ -26,6 +26,12 @@
         "Creaz ione di eventi registrati",
         "Supporto tecnico incluso"
       ]
+    },
+    "restricted": {
+      "title": "Accesso limitato",
+      "description": "Per acquistare un abbonamento devi aver effettuato l’accesso al tuo account. Accedi prima e poi riprova per continuare con l’acquisto.",
+      "sign_in": "Accedi",
+      "cancel": "Annulla"
     }
   },
   "hero": {

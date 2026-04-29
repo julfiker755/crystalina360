@@ -26,11 +26,17 @@
         "Creation of registered events",
         "Technical support included"
       ]
+    },
+    "restricted": {
+      "title": "Restricted Access",
+      "description": "To purchase a subscription, you must be logged in to your account. Please sign in first and then try again to continue with your purchase",
+      "sign_in": "Sign In",
+      "cancel": "Cancel"
     }
   },
   "hero": {
     "title": "Your all in one event management system",
-    "sub_title": "Manage your all events in one place,"
+    "sub_title": "Manage your all events in one place"
   },
   "event_setp": {
     "register": {
