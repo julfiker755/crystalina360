@@ -21,6 +21,7 @@ import {
   useStoreQuestionMutation,
 } from "@/redux/api/operator/opratorApi";
 import { AlertCircle, Check, ChevronDown, FileText } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import React, { useState, useCallback, useEffect, useRef } from "react";
 
@@ -58,6 +59,7 @@ const initFrom = {
 };
 
 export default function AddOnQuestion() {
+  const t = useTranslations("oprator.question");
   const { id } = useParams();
   const { data: addson } = useGetSlgAddOnQuery(id);
   const [isloading, setIsLoading] = useState(false);
@@ -84,34 +86,34 @@ export default function AddOnQuestion() {
     const newErrors: FormErrors = {};
 
     if (!formData.first_name.trim()) {
-      newErrors.first_name = "First name is required";
+      newErrors.first_name = t("right.frist_name_error")
     }
 
     if (!formData.surname.trim()) {
-      newErrors.surname = "Surname is required";
+      newErrors.surname = t("right.surname_error");
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = t("right.email_error");
     } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = t("right.email_invalid_error");
     }
 
     if (!formData.event_id) {
-      newErrors.event_id = "Event selection is required";
+      newErrors.event_id = t("right.event_error");
     }
 
     if (!formData.disciplines_covered.trim()) {
-      newErrors.disciplines_covered = "Disciplines covered is required";
+      newErrors.disciplines_covered = t("right.disciplines_error");
     }
     if (isExclusivePost) {
       if (!formData.sponsorship_subject) {
-        newErrors.sponsorship_subject = "Sponsorship is required";
+        newErrors.sponsorship_subject = t("right.sponsorship_required_error");
       }
     }
     if (isPodcastSpotlight) {
       if (!formData.indicate) {
-        newErrors.indicate = "Guest preference is required";
+        newErrors.indicate = t("right.guest_preference_required_error");
       }
     }
     //    optional fields validation
@@ -119,19 +121,19 @@ export default function AddOnQuestion() {
       formData.website_link?.trim() &&
       !/^https?:\/\/\S+$/.test(formData.website_link.trim())
     ) {
-      newErrors.website_link = "Enter a valid website URL";
+      newErrors.website_link = t("right.website_link_error");
     }
 
     if (
       formData.social_links?.trim() &&
       !/^https?:\/\/\S+$/.test(formData.social_links.trim())
     ) {
-      newErrors.social_links = "Enter a valid social link URL";
+      newErrors.social_links = t("right.social_links_error");
     }
 
     // 🔥 TERMS VALIDATION
     if (!terms) {
-      newErrors.terms = "You must accept the terms and conditions";
+      newErrors.terms = t("right.terms_error");
     }
 
     setErrors(newErrors);
@@ -208,19 +210,17 @@ export default function AddOnQuestion() {
           <div className="lg:col-span-5 space-y-10">
             <div>
               <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest rounded-full mb-6">
-                Service Request
+                {t("left.service_request")}
               </span>
               <h1 className="text-5xl font-light text-stone-900 leading-[1.1] tracking-tight mb-6">
-                Partner with <br />
+                {t("left.partner_with")} <br />
                 <span className="font-medium text-primary italic">
-                  Olistami
+                  {t("left.olistami")}
                 </span>
+
               </h1>
               <p className="text-lg text-stone-500 mt-5 leading-relaxed text-center">
-                Please fill out the following questionnaire; the information
-                collected will be necessary and used to forward the service
-                request to Olistami. Where an asterisk is present, the field is
-                mandatory
+                {t("left.text")}
               </p>
             </div>
 
@@ -231,11 +231,10 @@ export default function AddOnQuestion() {
                 </div>
                 <div>
                   <h3 className="text-sm font-semibold text-stone-800 mb-1">
-                    Compulsory Fields
+                    {t("left.compulsory_fields")}
                   </h3>
                   <p className="text-xs text-stone-500 leading-relaxed">
-                    Fields marked with an asterisk (*) are required for
-                    processing.
+                    {t("left.company_fields_text")}
                   </p>
                 </div>
               </div>
@@ -246,11 +245,10 @@ export default function AddOnQuestion() {
                 </div>
                 <div>
                   <h3 className="text-sm font-semibold text-stone-800 mb-1">
-                    Data Privacy
+                    {t("left.data_privacy")}
                   </h3>
                   <p className="text-xs text-stone-500 leading-relaxed">
-                    Your data is handled securely in accordance with our general
-                    terms.
+                    {t("left.data_privacy_text")}
                   </p>
                 </div>
               </div>
@@ -264,67 +262,67 @@ export default function AddOnQuestion() {
                 <div className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
-                      label="First name"
+                      label={t("right.first_name")}
                       name="first_name"
                       value={formData.first_name}
                       onChange={handleChange}
-                      placeholder="John"
+                      placeholder={t("right.frist_name_placeholder")}
                       required
                       error={errors.first_name}
                     />
                     <FormField
-                      label="Surname"
+                      label={t("right.surname")}
                       name="surname"
                       value={formData.surname}
                       onChange={handleChange}
-                      placeholder="Doe"
+                      placeholder={t("right.surname_placeholder")}
                       error={errors.surname}
                     />
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
-                      label="Company name"
+                      label={t("right.company_name")}
                       name="company_name"
                       value={formData.company_name}
                       onChange={handleChange}
-                      placeholder="Optional"
+                      placeholder={t("right.optional")}
                     />
 
                     <FormField
-                      label="Email"
+                      label={t("right.email")}
                       name="email"
                       type="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="john@example.com"
+                      placeholder={t("right.email_placeholder")}
                       required
                       error={errors.email}
                     />
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
-                      label="Website link"
+                      label={t("right.website_link")}
                       name="website_link"
                       value={formData.website_link}
                       onChange={handleChange}
-                      placeholder="Optional"
+                      placeholder={t("right.optional")}
                       error={errors.website_link}
                       type="url"
                     />
                     <FormField
-                      label="Primary Social Link"
+                      label={t("right.primary_social_link")}
                       name="social_links"
                       value={formData.social_links}
                       onChange={handleChange}
                       error={errors.social_links}
-                      placeholder="Optional"
+                      placeholder={t("right.optional")}
                       type="url"
                     />
                   </div>
                 </div>
                 <div className="space-y-6">
                   <FormField
-                    label="Olistami Event Link"
+                    label={t("right.olistami_event_link")}
                     name="event_id"
                     value={formData.event_id}
                     onChange={handleChange}
@@ -334,7 +332,7 @@ export default function AddOnQuestion() {
                   />
 
                   <FormField
-                    label="Disciplines Covered"
+                    label={t("right.disciplines_covered")}
                     name="disciplines_covered"
                     value={formData.disciplines_covered}
                     onChange={handleChange}
@@ -344,18 +342,18 @@ export default function AddOnQuestion() {
                   />
                   {isExclusivePost && (
                     <FormField
-                      label="Sponsorship Subject"
+                      label={t("right.sponsorship_subject")}
                       name="sponsorship_subject"
                       value={formData.sponsorship_subject as any}
                       onChange={handleChange}
                       target="select"
                       options={[
                         {
-                          label: "Myself",
+                          label: t("right.myself"),
                           value: "myself",
                         },
                         {
-                          label: "A Specific Event on the Olistami Website",
+                          label: t("right.a_specific_event"),
                           value: "A Specific Event on the Olistami Website",
                         },
                       ]}
@@ -364,18 +362,18 @@ export default function AddOnQuestion() {
                   )}
                   {isPodcastSpotlight && (
                     <FormField
-                      label="Guest Preference"
+                      label={t("right.guest_preference")}
                       name="indicate"
                       value={formData.indicate as any}
                       onChange={handleChange}
                       target="select"
                       options={[
                         {
-                          label: "Yes, I want to participate personally",
+                          label: t("right.participate_personally"),
                           value: "Yes, I want to participate personally",
                         },
                         {
-                          label: "No, I prefer you handle it yourselves",
+                          label: t("right.no_i_prefer_you_placeholder"),
                           value: "No, I prefer you handle it yourselves",
                         },
                       ]}
@@ -384,11 +382,11 @@ export default function AddOnQuestion() {
                   )}
 
                   <FormField
-                    label="Additional Notes"
+                    label={t("right.additional_notes")}
                     name="notes"
                     value={formData.notes}
                     onChange={handleChange}
-                    placeholder="Tell us more about your requirements (optional)"
+                    placeholder={t("right.tell_us_more")}
                     target="textarea"
                     maxLength={400}
                     error={errors.notes}
@@ -419,19 +417,14 @@ export default function AddOnQuestion() {
                       </div>
 
                       <label
-                        className={`leading-relaxed cursor-pointer select-none ${
-                          errors.terms ? "text-red-400" : "text-stone-500"
-                        }`}
+                        className={`leading-relaxed cursor-pointer select-none ${errors.terms ? "text-red-400" : "text-stone-500"
+                          }`}
                       >
-                        I declare that I have read and accepted the general
-                        terms and conditions of contract, and I authorise
-                        Olistami as per the text reported above.
+                        {t("right.terms_title")}{" "}
                       </label>
                     </div>
                     <p className="mt-4 text-sm text-stone-400 italic leading-relaxed border-t border-stone-200/50 pt-4">
-                      By submitting, you authorise Olistami srl to manage the
-                      content in accordance with an obligation of means.
-                      Submission implies full acceptance of these terms.
+                      {t("right.terms_text")}
                     </p>
                   </div>
                 </div>
@@ -439,7 +432,7 @@ export default function AddOnQuestion() {
                 {/* Submit */}
                 <div className="pt-2">
                   <Button disabled={isloading} className="w-full h-12">
-                    Submit
+                    {t("right.submit")}
                   </Button>
                 </div>
               </form>
@@ -479,6 +472,7 @@ const FormField = ({
   maxLength,
   options = [],
 }: FormFieldProps) => {
+  const t = useTranslations("oprator.question");
   const baseStyle = `
         w-full px-4 py-3 bg-stone-50/50 border rounded-2xl transition-all duration-200 outline-none
         border-stone-200 focus:border-primary/60 focus:ring-4 focus:ring-primary/5
@@ -535,7 +529,7 @@ const FormField = ({
                   {selectedOption ? (
                     <span className="text-black">{selectedOption.label}</span>
                   ) : (
-                    "Select an option"
+                    t("right.select_an_option")
                   )}
                 </div>
                 <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -561,9 +555,8 @@ const FormField = ({
                         onSelect={() => handleSelect(item.value)}
                       >
                         <Check
-                          className={`mr-2 h-4 w-4 ${
-                            value === item.value ? "opacity-100" : "opacity-0"
-                          }`}
+                          className={`mr-2 h-4 w-4 ${value === item.value ? "opacity-100" : "opacity-0"
+                            }`}
                         />
                         {item.label}
                       </CommandItem>

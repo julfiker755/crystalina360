@@ -11,7 +11,7 @@ import { cn, helpers } from "@/lib";
 import { CalendarDays } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-export function SingleCalendar({ onChange, className, defaultDate }: any) {
+export function SingleCalendar({ onChange, className, placeholderText, defaultDate }: any) {
   const t = useTranslations("oprator.dashboard");
   const [open, setOpen] = React.useState(false);
   const [startDate, setStartDate] = React.useState<Date | undefined>(undefined);
@@ -40,7 +40,7 @@ export function SingleCalendar({ onChange, className, defaultDate }: any) {
             <span>
               {startDate
                 ? helpers.formatDate(startDate, "YYYY-MM-DD")
-                : defaultDate || t("select_date")}
+                : defaultDate || placeholderText || t("select_date")}
             </span>
             <span className="bg-white p-1.5  rounded-full ml-2 lg:ml-10">
               <CalendarDays className="text-primary size-5" />

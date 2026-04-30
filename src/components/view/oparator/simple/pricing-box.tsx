@@ -14,6 +14,7 @@ import { helpers } from "@/lib";
 import { useTranslations } from "next-intl";
 import RestrictedAccessModal from "../../common/not-access";
 import sonner from "@/components/reuseable/sonner";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function PricingBox({ order }: { order?: string }) {
   const [open, setOpen] = useState(false);
@@ -40,14 +41,16 @@ export default function PricingBox({ order }: { order?: string }) {
     }
   };
 
-  const Ids = profile?.data?.user?.subscribed_plans?.subscription_id;
+  const Ids = profile?.data?.user?.subscribed_plans?.status === "active"
+  const slgId = profile?.data?.user?.subscribed_plans?.subscription_id
+  // const isPlan = profile?.data?.user?.subscribed_plans?.status === "cancelled"
 
   const cancelSubscription = async () => {
     const data = helpers.fromData({
       reason: "I don't like the service",
     });
 
-    const res = await cancelPlan({ id: Ids, data }).unwrap();
+    const res = await cancelPlan({ id: slgId, data }).unwrap();
     if (res.status) {
       sonner.success(
         t("pricing_box.alert_cancel_title"),
@@ -302,9 +305,9 @@ const PaidButton = ({
           disabled={isCancelLoading}
           onClick={cancelClick}
           variant="primary"
-          className="w-fit px-10! bg-[#f46666] cursor-pointer border-5 pricingShadow border-white py-6! rounded-full"
+          className="w-fit px-10!  bg-[#f46666] disabled:opacity-75 cursor-pointer border-5 pricingShadow border-white py-6! rounded-full"
         >
-          {t("pricing_box.cancel_plan")}
+          {isCancelLoading ? <> <Spinner /> {t("pricing_box.canceling_plan")}</> : t("pricing_box.cancel_plan")}
         </Button>
       </div>
     ) : (
@@ -313,7 +316,7 @@ const PaidButton = ({
           disabled={isLoading}
           onClick={onClick}
           variant="primary"
-          className="w-fit px-10! cursor-default border-5 pricingShadow border-white py-6! rounded-full"
+          className="w-fit px-10!    cursor-pointer border-5 pricingShadow border-white py-6! rounded-full"
         >
           {t("pricing_box.purchase_plan")}
         </Button>
@@ -324,7 +327,7 @@ const PaidButton = ({
       <Button
         onClick={() => setOpen(true)}
         variant="primary"
-        className="w-fit px-10! cursor-pointer border-5 pricingShadow border-white py-6! rounded-full"
+        className="w-fit px-10!  cursor-pointer border-5 pricingShadow border-white py-6! rounded-full"
       >
         {t("pricing_box.purchase_plan")}
       </Button>
