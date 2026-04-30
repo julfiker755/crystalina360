@@ -50,8 +50,8 @@ export default function PricingBox({ order }: { order?: string }) {
     const res = await cancelPlan({ id: Ids, data }).unwrap();
     if (res.status) {
       sonner.success(
-        t("alert_cancel_title"),
-        t("alert_cancel_text"),
+        t("pricing_box.alert_cancel_title"),
+        t("pricing_box.alert_cancel_text"),
         "bottom-right",
       );
     }
