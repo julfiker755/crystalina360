@@ -1,7 +1,11 @@
-"use client"
+"use client";
 import { FormSelDropdown } from "@/components/reuseable/from-select@1";
 import { Label } from "@/components/ui";
-import { useGetRegionListQuery, useLazyGetItalyCityListQuery, useLazyGetProvinceListQuery } from "@/redux/api/city/cityApi";
+import {
+  useGetRegionListQuery,
+  useLazyGetItalyCityListQuery,
+  useLazyGetProvinceListQuery,
+} from "@/redux/api/city/cityApi";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
@@ -9,9 +13,10 @@ import { useFormContext } from "react-hook-form";
 export const LocationDroupDownUser = () => {
   const t = useTranslations("user.profile.edit_profile");
   const { getValues } = useFormContext();
-  const { data: regionItem } = useGetRegionListQuery({})
-  const [getProvinceList, { data: provinceItem }] = useLazyGetProvinceListQuery()
-  const [getItalyCityList, { data: cityItem }] = useLazyGetItalyCityListQuery()
+  const { data: regionItem } = useGetRegionListQuery({});
+  const [getProvinceList, { data: provinceItem }] =
+    useLazyGetProvinceListQuery();
+  const [getItalyCityList, { data: cityItem }] = useLazyGetItalyCityListQuery();
 
   const defaultRegion = getValues("residence_region");
   const defaultProvince = getValues("residence_province");
@@ -30,7 +35,6 @@ export const LocationDroupDownUser = () => {
 
   return (
     <>
-
       <div>
         <Label className="text-blacks text-base font-medium  mb-1">
           {t("country")}
@@ -38,9 +42,7 @@ export const LocationDroupDownUser = () => {
         <FormSelDropdown
           label={t("select_country")}
           name="residence_country"
-          options={[
-            { label: "Italy", value: "Italy" },
-          ]}
+          options={[{ label: "Italy", value: "Italy" }]}
           className="bg-[#F4F4F4] border-none rounded-md"
         />
       </div>
@@ -52,10 +54,11 @@ export const LocationDroupDownUser = () => {
           label={t("select_region")}
           name="residence_region"
           options={regionItem?.data?.map((item: any) => ({
-            label: item.region, value: item.region
+            label: item.region,
+            value: item.region,
           }))}
           setSelectValue={(item) => {
-            getProvinceList({ region: item.value })
+            getProvinceList({ region: item.value });
           }}
           className="bg-[#F4F4F4] border-none rounded-md"
         />
@@ -68,10 +71,11 @@ export const LocationDroupDownUser = () => {
           label={t("select_province")}
           name="residence_province"
           options={provinceItem?.data?.map((item: any) => ({
-            label: item.province, value: item.province
+            label: item.province,
+            value: item.province,
           }))}
           setSelectValue={(item) => {
-            getItalyCityList({ province: item.value })
+            getItalyCityList({ province: item.value });
           }}
           className="bg-[#F4F4F4] border-none rounded-md"
           disabled={!provinceItem?.data?.length}
@@ -85,9 +89,9 @@ export const LocationDroupDownUser = () => {
           label={t("select_city")}
           name="residence_city"
           options={cityItem?.data?.map((item: any) => ({
-            label: item.city, value: item.city
+            label: item.city,
+            value: item.city,
           }))}
-
           className="bg-[#F4F4F4] border-none rounded-md"
           disabled={!cityItem?.data?.length}
         />

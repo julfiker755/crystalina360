@@ -4,15 +4,13 @@ import assets from "@/assets";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 
-
 export default function Footer() {
-  const t = useTranslations('user.home.footer')
+  const t = useTranslations("user.home.footer");
   const socialMedia = [
     { name: "facebook", icon: "facebook" },
     { name: "youtube", icon: "youtube" },
     { name: "instagram", icon: "instagram" },
   ];
-
 
   return (
     <div className="bg-figma-black py-10 lg:py-16 *:text-white">
@@ -25,40 +23,35 @@ export default function Footer() {
               </picture>
             </div>
             <div>
-              <h5 className="text-xl mb-2">
-                {t('title')}
-              </h5>
-              <p>
-                {t('description')}
-              </p>
+              <h5 className="text-xl mb-2">{t("title")}</h5>
+              <p>{t("description")}</p>
             </div>
           </div>
           <div className="lg:ml-5">
             <h3 className="text-xl font-semibold text-white mb-3">
-              {t('quick.title')}
+              {t("quick.title")}
             </h3>
             <ul className="space-y-1">
               <li>
-                <Link href="/">{t('quick.home')}</Link>
+                <Link href="/">{t("quick.home")}</Link>
               </li>
               <li>
-                <Link href="/#explore">{t('quick.explore')}</Link>
+                <Link href="/#explore">{t("quick.explore")}</Link>
               </li>
               <li>
-                <Link href="/blog">{t('quick.blog')}</Link>
+                <Link href="/blog">{t("quick.blog")}</Link>
               </li>
               <li>
-                <Link href="/podcast">{t('quick.podcast')}</Link>
+                <Link href="/podcast">{t("quick.podcast")}</Link>
               </li>
               <li>
-                <Link href="/#contact-us">{t('quick.contact_us')}</Link>
+                <Link href="/#contact-us">{t("quick.contact_us")}</Link>
               </li>
-
             </ul>
           </div>
           <div>
             <h3 className="text-xl font-semibold  mb-3 text-white">
-              {t('social.follow_us_on')}
+              {t("social.follow_us_on")}
             </h3>
             <div className="space-y-4">
               <ul className="flex items-center  space-x-3">

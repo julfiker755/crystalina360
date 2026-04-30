@@ -155,8 +155,8 @@ export default function OnetoOneEdit({
   const handleSubmit = async (values: FieldValues) => {
     const { img, ...rest } = values || {};
     const valuedata = cleanObject({
-      ...rest
-    })
+      ...rest,
+    });
     const data = helpers.fromData({
       event_type: "onetoone",
       // ticket_quantity: "2",
@@ -166,7 +166,7 @@ export default function OnetoOneEdit({
       ...valuedata,
     });
 
-    console.log(values)
+    console.log(values);
 
     try {
       const res = await updateEvents({
@@ -284,9 +284,10 @@ export default function OnetoOneEdit({
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
+                      item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                      }`}
+                    }`}
                     type="button"
                   >
                     {item.label}
@@ -406,7 +407,10 @@ export default function OnetoOneEdit({
                         err={false}
                       />
                     </div>
-                    <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.price?.message as string} />
+                    <ErrorInput
+                      className="text-red-400 text-sm"
+                      error={from?.formState?.errors?.price?.message as string}
+                    />
                   </div>
                   <FromTagInput name="tags" label="Tags" className="py-2" />
                 </>
@@ -572,7 +576,10 @@ const SingleDateBox = ({ from }: any) => {
         className="h-10 text-black"
       />
       {!val && (
-        <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.event_date?.message} />
+        <ErrorInput
+          className="text-red-400 text-sm"
+          error={from?.formState?.errors?.event_date?.message}
+        />
       )}
     </div>
   );
@@ -588,10 +595,16 @@ const MultipleTime = ({ from, setState }: any) => {
         type="button"
         className="flex h-10 w-full  bg-transparent border text-black font-normal justify-between items-center"
       >
-        <span>{val?.length > 0 ? `${val?.length} time slot` : "Create time slot"}</span> <ChevronRight />
+        <span>
+          {val?.length > 0 ? `${val?.length} time slot` : "Create time slot"}
+        </span>{" "}
+        <ChevronRight />
       </Button>
       {val?.length == 0 && (
-        <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.event_time?.message} />
+        <ErrorInput
+          className="text-red-400 text-sm"
+          error={from?.formState?.errors?.event_time?.message}
+        />
       )}
     </div>
   );

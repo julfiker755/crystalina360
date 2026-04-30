@@ -17,10 +17,7 @@ interface ContactUsProps {
   className?: string;
 }
 
-export default function ContactUs({
-  title,
-  className,
-}: ContactUsProps) {
+export default function ContactUs({ title, className }: ContactUsProps) {
   const t = useTranslations("user.contact_us");
   const from = useForm({
     resolver: zodResolver(contact_us),

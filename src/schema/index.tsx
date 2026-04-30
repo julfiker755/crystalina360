@@ -173,7 +173,7 @@ const eventCountry = z.object({
   province: z.string().nonempty("province is required"),
   region: z.string().nonempty("region is required"),
   country: z.string().nonempty("country is required"),
-})
+});
 
 const imgSchema = z.object({
   image: z.any().refine((file) => file instanceof File, {
@@ -182,7 +182,7 @@ const imgSchema = z.object({
   video: z.any().refine((file) => file instanceof File, {
     message: "Video is required",
   }),
-})
+});
 
 //  ====== one to one event ========
 export const one2one_offline_sc = event.extend({
@@ -209,7 +209,6 @@ export const one2one_on_sc_edit = event.extend({
   event_date: z.string().nonempty("time is required"),
   event_time: z.array(z.string()).nonempty("time slot is required"),
 });
-
 
 // =====  groups events =====
 export const group_offline_sc = event.extend({
@@ -241,18 +240,17 @@ const group_demand = event.omit({
   max_person: true,
   event_duration: true,
   ticket_quantity: true,
-  accessibility: true
-})
+  accessibility: true,
+});
 
 export const group_demand_sc = group_demand.extend({
   ...eventCountry.shape,
   img: imgSchema.shape.video,
-})
+});
 export const group_demand_sc_edit = group_demand.extend({
   ...eventCountry.shape,
   img: z.any().optional(),
-})
-
+});
 
 //  ================= retreat event ================
 export const retreat_offline_sc = event.extend({

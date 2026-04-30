@@ -15,14 +15,14 @@ import { roleKey } from "@/lib";
 import { useTranslations } from "next-intl";
 
 export default function ExploreEvents() {
-  const t = useTranslations('user.home');
+  const t = useTranslations("user.home");
   const dispatch = useAppDispatch();
   const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
   const { data: eventsItem, isLoading } = useGetPublicEventsQuery({});
 
   return (
     <div id="explore" className="pt-17  container">
-      <h1 className="mb-10">{t('ex_events.title')}</h1>
+      <h1 className="mb-10">{t("ex_events.title")}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {isLoading ? (
           <Repeat count={6}>
@@ -40,7 +40,7 @@ export default function ExploreEvents() {
         {user.role == roleKey.user ? (
           <Link href="/events">
             <Button size="lg" className="mt-10">
-              {t('ex_events.btn_more')}
+              {t("ex_events.btn_more")}
             </Button>
           </Link>
         ) : (
@@ -49,7 +49,7 @@ export default function ExploreEvents() {
             size="lg"
             className="mt-10"
           >
-            {t('ex_events.btn_account')}
+            {t("ex_events.btn_account")}
           </Button>
         )}
       </div>

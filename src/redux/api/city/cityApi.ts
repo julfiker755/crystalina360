@@ -1,8 +1,6 @@
 import { tagTypes } from "@/redux/tag-types";
 import { baseApi } from "../baseApi";
 
-
-
 export const cityApi = baseApi.injectEndpoints({
   overrideExisting: true,
   endpoints: (build) => ({
@@ -30,12 +28,11 @@ export const cityApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.city_list],
     }),
-
   }),
 });
 
 export const {
   useGetRegionListQuery,
   useLazyGetProvinceListQuery,
-  useLazyGetItalyCityListQuery
-} = cityApi
+  useLazyGetItalyCityListQuery,
+} = cityApi;

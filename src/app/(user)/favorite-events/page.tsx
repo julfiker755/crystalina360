@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function FavoriteEvents() {
-  const t = useTranslations('user.home');
+  const t = useTranslations("user.home");
   const [page, setPage] = useState(1);
   const { data: wishItems, isLoading } = useGetMyWishQuery({
     page: page,

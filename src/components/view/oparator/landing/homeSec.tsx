@@ -7,12 +7,8 @@ export default function HomeSec() {
   return (
     <div className="lg:h-[calc(100vh-80px)] flex flex-col items-center justify-between">
       <div className="mb-10 lg:mb-0 mt-14">
-        <h1 className="font-semibold  lg:text-4xl">
-          {t("title")}
-        </h1>
-        <p className="text-figma-black  text-center mt-2">
-          {t("sub_title")}
-        </p>
+        <h1 className="font-semibold  lg:text-4xl">{t("title")}</h1>
+        <p className="text-figma-black  text-center mt-2">{t("sub_title")}</p>
       </div>
       <div className="w-full relative">
         <div className="absolute lg-hidden right-0 -top-5 w-[350px] h-[300px] bg-[url('/img/h-r.png')] bg-cover bg-no-repeat z-0" />

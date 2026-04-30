@@ -22,8 +22,6 @@ export const getInterval: Record<any, string> = {
   YEAR: "Year",
 };
 
-
-
 export function cleanObject<T extends Record<string, any>>(obj: T): Partial<T> {
   const result: Partial<T> = {};
   for (const key in obj) {

@@ -16,10 +16,7 @@ export function AppAlert({ className }: AppAlertProps) {
       )}
     >
       <CircleAlert className="text-primary rotate-180" />
-      <p className="text-figma-black">
-        {" "}
-        {t("olistami_alert")}
-      </p>
+      <p className="text-figma-black"> {t("olistami_alert")}</p>
     </div>
   );
 }

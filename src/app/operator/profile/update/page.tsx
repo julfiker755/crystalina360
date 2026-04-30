@@ -17,16 +17,13 @@ import {
   useUpdateProfileMutation,
 } from "@/redux/api/authApi";
 import sonner from "@/components/reuseable/sonner";
-import {
-  genderOptions,
-} from "@/components/dummy-data";
+import { genderOptions } from "@/components/dummy-data";
 import { BackBtn } from "@/components/reuseable/back-btn";
 import { Switch } from "@/components/ui/switch";
 import { FormProfileDropdown } from "@/components/reuseable/from-select@1/profile-input";
 import { LocationDroupDownOprator } from "@/components/view/oparator/reuse/location-oprator";
 import { useTranslations } from "next-intl";
 import { useAppDispatch } from "@/redux/hooks";
-
 
 const intAva = {
   file: null,
@@ -38,7 +35,7 @@ export default function ProfileEdit2() {
   const [avatar, setAvatar] = React.useState<any>(intAva);
   const { data: profile } = useGetProfileQuery({});
   const [addCompany] = useAddCompanyMutation();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const {
     img,
     name,
@@ -133,21 +130,18 @@ export default function ProfileEdit2() {
       company_province_code,
     });
 
-
     try {
       const res = await updateProfile(data).unwrap();
 
       if (res.status) {
         if (res?.data?.profile_status?.completion_percentage === "100%") {
-          dispatch(authApi.endpoints.getProfile.initiate({}, { forceRefetch: true }));
+          dispatch(
+            authApi.endpoints.getProfile.initiate({}, { forceRefetch: true }),
+          );
         }
         form.reset();
         await addCompany(companydata).unwrap();
-        sonner.success(
-          t("succcess_title"),
-          t("success_text"),
-          "bottom-right",
-        );
+        sonner.success(t("succcess_title"), t("success_text"), "bottom-right");
       }
     } catch (err: any) {
       sonner.error(

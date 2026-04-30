@@ -107,7 +107,7 @@ export default function VarifyOtp() {
             <FavIcon name="varify" className="size-6" />
           </h5>
           <p className="text-center px-10 pt-2">
-            {`${t("fast_des")} ${(otpInfo?.email || "")} ${t("sec_des")}`}
+            {`${t("fast_des")} ${otpInfo?.email || ""} ${t("sec_des")}`}
           </p>
         </div>
         <div>

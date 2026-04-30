@@ -8,13 +8,8 @@ interface SeoProps {
   image: string;
 }
 
-export function Seo({
-  title,
-  description,
-  url,
-  image,
-}: SeoProps): Metadata {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL as string
+export function Seo({ title, description, url, image }: SeoProps): Metadata {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL as string;
   const fullUrl = new URL(url, baseUrl)?.toString();
   const fullImageUrl = new URL(image, baseUrl)?.toString();
 

@@ -6,10 +6,7 @@ export default function ContactMe() {
   const t = useTranslations("user.contact_us");
   return (
     <div>
-      <ContactUs
-        title={t("sub_title")}
-        className="mt-20 max-w-5xl"
-      />
+      <ContactUs title={t("sub_title")} className="mt-20 max-w-5xl" />
       <div className="container mb-10">
         <AppAlert />
       </div>

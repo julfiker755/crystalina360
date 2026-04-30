@@ -35,8 +35,6 @@ export default function OperatorsProfileLayout({ children }: childrenProps) {
     },
   ];
 
-
-
   return (
     <div className="container py-10">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
@@ -115,32 +113,40 @@ export default function OperatorsProfileLayout({ children }: childrenProps) {
               </Button>
             </div>
           </div>
-          {!isLoading && !profile?.data?.user?.profile_status?.is_profile_complete && (
-            <div className="bg-figma-delete h-fit p-4 rounded-md">
-              <div className="flex justify-between items-center mb-4">
-                <h4 className="font-semibold text-figma-black">{t("profile_completion")}</h4>
-                <span className="text-[#9C8474] font-bold">{profile?.data?.user?.profile_status?.completion_percentage || '0%'}</span>
-              </div>
-              <div className="w-full bg-[#F5EBE0] h-3 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-[#9C8474] rounded-full"
-                  style={{
-                    width: `${profile?.data?.user?.profile_status?.completion_percentage}`,
-                  }}
-                />
-              </div>
-              <p className="text-sm text-figma-black mt-3">
-                {t("description")}
-              </p>
-
-              {profile?.data?.user?.profile_status?.missing_fields?.includes("paypal_merchant_id") && (
-                <p className="text-sm text-[#FF4E4E] backdrop-blur-md mt-1">
-                  The PayPal account is not connected. Please ensure that a PayPal account is connected
+          {!isLoading &&
+            !profile?.data?.user?.profile_status?.is_profile_complete && (
+              <div className="bg-figma-delete h-fit p-4 rounded-md">
+                <div className="flex justify-between items-center mb-4">
+                  <h4 className="font-semibold text-figma-black">
+                    {t("profile_completion")}
+                  </h4>
+                  <span className="text-[#9C8474] font-bold">
+                    {profile?.data?.user?.profile_status
+                      ?.completion_percentage || "0%"}
+                  </span>
+                </div>
+                <div className="w-full bg-[#F5EBE0] h-3 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-[#9C8474] rounded-full"
+                    style={{
+                      width: `${profile?.data?.user?.profile_status?.completion_percentage}`,
+                    }}
+                  />
+                </div>
+                <p className="text-sm text-figma-black mt-3">
+                  {t("description")}
                 </p>
-              )}
 
-            </div>
-          )}
+                {profile?.data?.user?.profile_status?.missing_fields?.includes(
+                  "paypal_merchant_id",
+                ) && (
+                  <p className="text-sm text-[#FF4E4E] backdrop-blur-md mt-1">
+                    The PayPal account is not connected. Please ensure that a
+                    PayPal account is connected
+                  </p>
+                )}
+              </div>
+            )}
         </div>
 
         <div className="col-span-1 lg:col-span-2">{children}</div>

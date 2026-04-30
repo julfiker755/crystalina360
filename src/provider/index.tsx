@@ -8,7 +8,6 @@ import { store } from "@/redux/store";
 import { initAuth } from "@/redux/features/authSlice";
 import { useEffect } from "react";
 
-
 export default function Provider({ children }: childrenProps) {
   return (
     <ReduxProvider store={store}>
@@ -32,7 +31,6 @@ export default function Provider({ children }: childrenProps) {
           />
         </ConfirmDialogProvider>
       </SuccessDialogProvider>
-
     </ReduxProvider>
   );
 }

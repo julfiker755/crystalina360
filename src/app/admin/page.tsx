@@ -16,8 +16,6 @@ import { useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
 import { useState } from "react";
 
-
-
 export default function HomePage() {
   const auth = useAppSelector((state: AppState) => state.auth.user);
   const [filter, setIsFilter] = useState<any>("monthly");
@@ -56,8 +54,6 @@ export default function HomePage() {
       icon: "doller",
     },
   ];
-
-
 
   return (
     <div>

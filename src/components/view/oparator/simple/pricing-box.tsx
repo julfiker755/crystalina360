@@ -1,7 +1,10 @@
 "use client";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useGetPricingQuery } from "@/redux/api/admin/pricingApi";
+import {
+  useCancelPlanMutation,
+  useGetPricingQuery,
+} from "@/redux/api/admin/pricingApi";
 import { useGetProfileQuery } from "@/redux/api/authApi";
 import {
   useBuyPlanMutation,
@@ -10,20 +13,20 @@ import {
 import { helpers } from "@/lib";
 import { useTranslations } from "next-intl";
 import RestrictedAccessModal from "../../common/not-access";
-
-
+import sonner from "@/components/reuseable/sonner";
 
 export default function PricingBox({ order }: { order?: string }) {
   const [open, setOpen] = useState(false);
   const t = useTranslations("oprator.home.navber");
   const [isTab, setIsTab] = useState("MONTH");
-  const { data: pricing } = useGetPricingQuery({
+  const { data: pricing, isLoading: pricingIsLoading } = useGetPricingQuery({
     pricing_for: "operator",
   });
   const [buyPlan, { isLoading }] = useBuyPlanMutation();
   const pro_item = pricing?.data?.find((item: any) => item.interval === isTab);
   const { data: profile } = useGetProfileQuery({});
   const [paymentInitOp] = usePaymentInitOpMutation();
+  const [cancelPlan, { isLoading: cancelLoading }] = useCancelPlanMutation();
   const bugPlanSubmit = async (id: string) => {
     const data = helpers.fromData({
       plan_id: id,
@@ -37,8 +40,22 @@ export default function PricingBox({ order }: { order?: string }) {
     }
   };
 
-  const Ids = profile?.data?.user?.subscribed_plans?.id;
+  const Ids = profile?.data?.user?.subscribed_plans?.subscription_id;
 
+  const cancelSubscription = async () => {
+    const data = helpers.fromData({
+      reason: "I don't like the service",
+    });
+
+    const res = await cancelPlan({ id: Ids, data }).unwrap();
+    if (res.status) {
+      sonner.success(
+        t("alert_cancel_title"),
+        t("alert_cancel_text"),
+        "bottom-right",
+      );
+    }
+  };
 
   const freePlan = {
     id: "basic",
@@ -52,12 +69,11 @@ export default function PricingBox({ order }: { order?: string }) {
       t("pricing_box.freeOptions.3"),
       t("pricing_box.freeOptions.4"),
       t("pricing_box.freeOptions.5"),
-      t("pricing_box.freeOptions.6")
+      t("pricing_box.freeOptions.6"),
     ],
   };
 
-  console.log(open)
-
+  console.log(open);
 
   return (
     <div className="pb-16">
@@ -98,7 +114,6 @@ export default function PricingBox({ order }: { order?: string }) {
                 </span>
               </div>
               <div>
-
                 <p className={`text-xl mb-2 font-semibold text-figma-black`}>
                   {t("pricing_box.benefits_you_will_get")}
                 </p>
@@ -111,18 +126,24 @@ export default function PricingBox({ order }: { order?: string }) {
                   ))}
                 </ul>
               </div>
-              <FreeButton setOpen={setOpen} status={profile?.status} Ids={Ids} />
+              {!pricingIsLoading && (
+                <FreeButton
+                  setOpen={setOpen}
+                  status={profile?.status}
+                  Ids={Ids}
+                />
+              )}
             </div>
             {/* ================ paid plan ==================== */}
             <div
               className={`rounded-2xl p-8  flex flex-col relative bg-[#EDEDED]`}
             >
               <h2 className="text-2xl text-figma-black font-bold mb-4 text-center">
-                {pro_item?.title}
+                {pro_item?.title || "N/A"}
               </h2>
               <div className="text-center mb-8">
                 <span className="text-3xl lg:text-4xl font-bold">
-                  €{pro_item?.price}
+                  €{pro_item?.price || 0}
                 </span>
               </div>
               <div>
@@ -138,14 +159,17 @@ export default function PricingBox({ order }: { order?: string }) {
                   ))}
                 </ul>
               </div>
-
-              <PaidButton
-                setOpen={setOpen}
-                isLoading={isLoading}
-                status={profile?.status}
-                Ids={Ids}
-                onClick={() => bugPlanSubmit(pro_item.id)}
-              />
+              {!pricingIsLoading && (
+                <PaidButton
+                  setOpen={setOpen}
+                  isLoading={isLoading}
+                  status={profile?.status}
+                  Ids={Ids}
+                  onClick={() => bugPlanSubmit(pro_item.id)}
+                  cancelClick={() => cancelSubscription()}
+                  isCancelLoading={cancelLoading}
+                />
+              )}
             </div>
           </div>
         ) : (
@@ -176,7 +200,11 @@ export default function PricingBox({ order }: { order?: string }) {
                     ))}
                   </ul>
                 </div>
-                <FreeButton setOpen={setOpen} status={profile?.status} Ids={Ids} />
+                <FreeButton
+                  setOpen={setOpen}
+                  status={profile?.status}
+                  Ids={Ids}
+                />
               </div>
               {/* ===============  paid plan ================== */}
               <div
@@ -203,13 +231,17 @@ export default function PricingBox({ order }: { order?: string }) {
                     ))}
                   </ul>
                 </div>
-                <PaidButton
-                  setOpen={setOpen}
-                  isLoading={isLoading}
-                  status={profile?.status}
-                  Ids={Ids}
-                  onClick={() => bugPlanSubmit(pro_item.id)}
-                />
+                {!pricingIsLoading && (
+                  <PaidButton
+                    setOpen={setOpen}
+                    isLoading={isLoading}
+                    status={profile?.status}
+                    Ids={Ids}
+                    onClick={() => bugPlanSubmit(pro_item.id)}
+                    cancelClick={() => cancelSubscription()}
+                    isCancelLoading={cancelLoading}
+                  />
+                )}
               </div>
             </div>
           )
@@ -221,79 +253,81 @@ export default function PricingBox({ order }: { order?: string }) {
 
 const FreeButton = ({ setOpen, status, Ids }: any) => {
   const t = useTranslations("oprator.home.navber");
-  return (
-    status ? (
-      (Ids ? (
-        <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
-          <Button
-            variant="primary"
-            disabled={true}
-            className="w-fit px-10! disabled:opacity-100 cursor-default border-5 pricingShadow bg-[#D9D9D9] text-white border-white py-6! rounded-full"
-          >
-            {t("pricing_box.purchase_plan")}
-          </Button>
-        </div>
-      ) : (
-        <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
-          <Button
-
-            variant="primary"
-            className="w-fit px-10! cursor-default border-5 pricingShadow border-white py-6! rounded-full"
-          >
-            {t("pricing_box.purchase_plan")}
-          </Button>
-        </div>
-      ))
+  return status ? (
+    Ids ? (
+      <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
+        <Button
+          variant="primary"
+          className="w-fit px-10! bg-[#f46666] cursor-not-allowed border-5 pricingShadow border-white py-6! rounded-full"
+        >
+          {t("pricing_box.cancel_plan")}
+        </Button>
+      </div>
     ) : (
       <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
         <Button
-          onClick={() => setOpen(true)}
           variant="primary"
-          className="w-fit px-10! cursor-pointer border-5 pricingShadow border-white py-6! rounded-full"
+          className="w-fit px-10! cursor-default border-5 pricingShadow border-white py-6! rounded-full"
         >
           {t("pricing_box.purchase_plan")}
         </Button>
       </div>
     )
-  )
+  ) : (
+    <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
+      <Button
+        onClick={() => setOpen(true)}
+        variant="primary"
+        className="w-fit px-10! cursor-pointer border-5 pricingShadow border-white py-6! rounded-full"
+      >
+        {t("pricing_box.purchase_plan")}
+      </Button>
+    </div>
+  );
 };
-const PaidButton = ({ setOpen, status, Ids, isLoading, onClick }: any) => {
+const PaidButton = ({
+  setOpen,
+  status,
+  Ids,
+  isLoading,
+  onClick,
+  cancelClick,
+  isCancelLoading,
+}: any) => {
   const t = useTranslations("oprator.home.navber");
-  return (
-    status ? (
-      (Ids ? (
-        <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
-          <Button
-            variant="primary"
-            disabled={true}
-            className="w-fit px-10! disabled:opacity-100 cursor-default border-5 pricingShadow bg-[#D9D9D9] text-white border-white py-6! rounded-full"
-          >
-            {t("pricing_box.purchase_plan")}
-          </Button>
-        </div>
-      ) : (
-        <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
-          <Button
-            disabled={isLoading}
-            onClick={onClick}
-            variant="primary"
-            className="w-fit px-10! cursor-default border-5 pricingShadow border-white py-6! rounded-full"
-          >
-            {t("pricing_box.purchase_plan")}
-          </Button>
-        </div>
-      ))
+  return status ? (
+    Ids ? (
+      <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
+        <Button
+          disabled={isCancelLoading}
+          onClick={cancelClick}
+          variant="primary"
+          className="w-fit px-10! bg-[#f46666] cursor-pointer border-5 pricingShadow border-white py-6! rounded-full"
+        >
+          {t("pricing_box.cancel_plan")}
+        </Button>
+      </div>
     ) : (
       <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
         <Button
-          onClick={() => setOpen(true)}
+          disabled={isLoading}
+          onClick={onClick}
           variant="primary"
-          className="w-fit px-10! cursor-pointer border-5 pricingShadow border-white py-6! rounded-full"
+          className="w-fit px-10! cursor-default border-5 pricingShadow border-white py-6! rounded-full"
         >
           {t("pricing_box.purchase_plan")}
         </Button>
       </div>
     )
-
+  ) : (
+    <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
+      <Button
+        onClick={() => setOpen(true)}
+        variant="primary"
+        className="w-fit px-10! cursor-pointer border-5 pricingShadow border-white py-6! rounded-full"
+      >
+        {t("pricing_box.purchase_plan")}
+      </Button>
+    </div>
   );
 };

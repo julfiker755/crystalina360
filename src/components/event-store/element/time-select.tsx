@@ -92,7 +92,9 @@ export default function TimeSelect({
             ))}
           </div>
         ) : (
-          <p className="text-slate-500 text-sm italic">{t("no_times_selected_yet")}</p>
+          <p className="text-slate-500 text-sm italic">
+            {t("no_times_selected_yet")}
+          </p>
         )}
       </div>
 

@@ -17,7 +17,7 @@ import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 
 export default function EventDetails() {
-  const t = useTranslations('user.details');
+  const t = useTranslations("user.details");
   const { user } = useAppSelector((state: AppState) => state.auth);
   const { slug } = useParams();
   const { data: events_all, isLoading } = useSingleEventsQuery(slug);
@@ -40,7 +40,7 @@ export default function EventDetails() {
     ticket_status,
     link,
     organizer_label,
-    has_video_access
+    has_video_access,
   } = events_all?.data?.event || {};
 
   const NotOnDemand = (item: any) => {
@@ -183,11 +183,9 @@ export default function EventDetails() {
             ),
           )}
         </div>
-        {user.role == roleKey.user &&
+        {user.role == roleKey.user && (
           <>
-            {has_video_access === false && (
-              ShowOnDemand(<OnDemand id={id} />)
-            )}
+            {has_video_access === false && ShowOnDemand(<OnDemand id={id} />)}
 
             {NotOnDemand(
               ticket_status == "available" && (
@@ -203,8 +201,7 @@ export default function EventDetails() {
               ),
             )}
           </>
-
-        }
+        )}
       </div>
       <AppAlert className="mb-10" />
     </div>

@@ -49,7 +49,13 @@ const initialState = {
   isDate: false,
 };
 
-export default function GroupStore({ msg, role }: { msg: string, role: string }) {
+export default function GroupStore({
+  msg,
+  role,
+}: {
+  msg: string;
+  role: string;
+}) {
   const t = useTranslations("oprator.evStoreAll.store");
   const t1 = useTranslations("common");
   const [searchText, setSearchText] = useState("");
@@ -65,7 +71,7 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
   const permission = permissionBoth({
     role,
     isSubscribed: profile?.data?.user?.is_subscribed,
-  })
+  });
 
   const from = useForm({
     resolver: zodResolver(defaultSchema),
@@ -86,11 +92,14 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
           <p className="font-semibold">{t("limit_message.title")}</p>
           <p>
             {t("limit_message.text")}{" "}
-            <Link href="/operator/pricing" className="text-[#00ff22d5] underline">
+            <Link
+              href="/operator/pricing"
+              className="text-[#00ff22d5] underline"
+            >
               {t("upgrade")}
             </Link>
           </p>
-        </div>
+        </div>,
       );
     },
   });
@@ -111,7 +120,7 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
   const [storeEvents, { isLoading }] = useStoreEventsMutation();
 
   const handleSubmit = async (values: FieldValues) => {
-    const valuedata = cleanObject(values)
+    const valuedata = cleanObject(values);
     const data = helpers.fromData({
       event_type: "group",
       ...valuedata,
@@ -140,7 +149,6 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
       setProgress(0);
     }
   };
-
 
   const toggleHolistic = (value: any) => {
     const current = from.getValues("holistic_discipline") || [];
@@ -194,9 +202,10 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
                       from.setValue("delivery_type", item.value);
                     }}
                     type="button"
-                    className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
+                    className={`font-normal transition-colors border bg-transparent text-figma-black ${
+                      item.value === get("delivery_type") &&
                       "bg-primary text-white"
-                      }`}
+                    }`}
                   >
                     <FavIcon
                       color={
@@ -221,9 +230,10 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
+                      item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                      }`}
+                    }`}
                     type="button"
                   >
                     {t(`event_purpose.${item.value}`)}
@@ -344,9 +354,16 @@ export default function GroupStore({ msg, role }: { msg: string, role: string })
                         err={false}
                       />
                     </div>
-                    <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.price?.message as string} />
+                    <ErrorInput
+                      className="text-red-400 text-sm"
+                      error={from?.formState?.errors?.price?.message as string}
+                    />
                   </div>
-                  <FromTagInput name="tags" label={t("tags")} className="py-2" />
+                  <FromTagInput
+                    name="tags"
+                    label={t("tags")}
+                    className="py-2"
+                  />
                 </>
               )
             )}
@@ -499,7 +516,6 @@ const VideoBannerBox = ({ files, getInputProps }: any) => {
   );
 };
 
-
 //  ------------ multiple date ---------------------
 const MultipleDate = ({ from, setState }: any) => {
   const val = from.watch("event_date");
@@ -511,10 +527,18 @@ const MultipleDate = ({ from, setState }: any) => {
         type="button"
         className="flex h-10 w-full  bg-transparent border text-black font-normal justify-between items-center"
       >
-        <span>{val?.length > 0 ? `${val?.length} ${t("time_slot")}` : t("create_time_slot")}</span> <ChevronRight />
+        <span>
+          {val?.length > 0
+            ? `${val?.length} ${t("time_slot")}`
+            : t("create_time_slot")}
+        </span>{" "}
+        <ChevronRight />
       </Button>
       {val?.length === 0 && (
-        <ErrorInput className="text-sm text-red-400" error={from?.formState?.errors?.event_date?.message} />
+        <ErrorInput
+          className="text-sm text-red-400"
+          error={from?.formState?.errors?.event_date?.message}
+        />
       )}
     </div>
   );

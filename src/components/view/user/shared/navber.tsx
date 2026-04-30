@@ -24,7 +24,6 @@ export default function Navber({ className }: any) {
   const pathname = usePathname();
   const { user } = useAppSelector((state: AppState) => state.auth);
 
-
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
@@ -59,7 +58,6 @@ export default function Navber({ className }: any) {
 
   return (
     <>
-
       <motion.div
         initial={{ y: 0, opacity: 1 }}
         animate={{
@@ -68,7 +66,8 @@ export default function Navber({ className }: any) {
         }}
         transition={{ type: "spring", stiffness: 100, damping: 20 }}
         className={cn(
-          `w-[95%] absolute top-5 md:w-full h-14 container rounded-full px-3 content-center bg-[#000000]/10 backdrop-blur-xl z-50 ${scrolled && "fixed! top-4 left-1/2 -translate-x-1/2"
+          `w-[95%] absolute top-5 md:w-full h-14 container rounded-full px-3 content-center bg-[#000000]/10 backdrop-blur-xl z-50 ${
+            scrolled && "fixed! top-4 left-1/2 -translate-x-1/2"
           }`,
           className,
         )}
@@ -85,8 +84,9 @@ export default function Navber({ className }: any) {
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className={`text-base! text-article font-medium ${pathname == item?.href ? "text-primary" : ""
-                    } hover:text-primary transition-colors`}
+                  className={`text-base! text-article font-medium ${
+                    pathname == item?.href ? "text-primary" : ""
+                  } hover:text-primary transition-colors`}
                 >
                   {item.name}
                 </Link>
@@ -179,8 +179,6 @@ export default function Navber({ className }: any) {
     </>
   );
 }
-
-
 
 //  ======= SignInButton ===========
 function SignInButton() {

@@ -41,24 +41,20 @@ export default function OpEvtCd({
   let elementShow: any;
 
   if (event_type === event_t.onetoone || event_type == event_t.retreat) {
-    elementShow = (
-      delivery_type != delivary_t.ondemand && (
-        <div className="flex  gap-2  items-center text-muted-foreground">
-          <Calendar className="size-5 text-primary" />
-          <span className="text-base text-primary">{event_date?.[0]}</span>
-        </div>
-      )
+    elementShow = delivery_type != delivary_t.ondemand && (
+      <div className="flex  gap-2  items-center text-muted-foreground">
+        <Calendar className="size-5 text-primary" />
+        <span className="text-base text-primary">{event_date?.[0]}</span>
+      </div>
     );
   } else if (event_type === event_t.group) {
-    elementShow = (
-      delivery_type != delivary_t.ondemand && (
-        <div className="flex  gap-2  items-center text-muted-foreground">
-          <FavIcon className="size-5" name="ongoing_events" />
-          <span className="text-base text-primary">
-            {helpers.planTime(event_time?.[0])}
-          </span>
-        </div>
-      )
+    elementShow = delivery_type != delivary_t.ondemand && (
+      <div className="flex  gap-2  items-center text-muted-foreground">
+        <FavIcon className="size-5" name="ongoing_events" />
+        <span className="text-base text-primary">
+          {helpers.planTime(event_time?.[0])}
+        </span>
+      </div>
     );
   }
 
@@ -99,11 +95,13 @@ export default function OpEvtCd({
                 {helpers.capitalize(delivery_type)}
               </Button>
               {delivery_type != delivary_t.ondemand && (
-                <Button size="default" variant={helpers.lowerCase(status) as any}>
+                <Button
+                  size="default"
+                  variant={helpers.lowerCase(status) as any}
+                >
                   {helpers.capitalize(status)}
                 </Button>
               )}
-
             </div>
           </div>
         )}

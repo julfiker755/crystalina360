@@ -153,9 +153,10 @@ export default function EventFilter() {
                       size="lg"
                       variant="secondary"
                       type="button"
-                      className={`${get("event_type") == item.value &&
+                      className={`${
+                        get("event_type") == item.value &&
                         "shadow-filter bg-white"
-                        }`}
+                      }`}
                       key={idx}
                       onClick={() => from.setValue("event_type", item.value)}
                     >
@@ -175,9 +176,10 @@ export default function EventFilter() {
                       size="lg"
                       variant="secondary"
                       type="button"
-                      className={`${get("delivery_type") == item.value &&
+                      className={`${
+                        get("delivery_type") == item.value &&
                         "shadow-filter bg-white"
-                        }`}
+                      }`}
                       key={idx}
                       onClick={() => from.setValue("delivery_type", item.value)}
                     >
@@ -197,9 +199,10 @@ export default function EventFilter() {
                       size="lg"
                       variant="secondary"
                       type="button"
-                      className={`${get("event_purpose") == item.value &&
+                      className={`${
+                        get("event_purpose") == item.value &&
                         "shadow-filter bg-white"
-                        }`}
+                      }`}
                       key={idx}
                       onClick={() => from.setValue("event_purpose", item.value)}
                     >
@@ -295,7 +298,9 @@ export default function EventFilter() {
                         from.setValue("date_filter", item.value)
                       }
                     />
-                    <span className="text-sm text-article">{t(`date_option.${item.value}`)}</span>
+                    <span className="text-sm text-article">
+                      {t(`date_option.${item.value}`)}
+                    </span>
                   </label>
                 ))}
               </div>
@@ -351,7 +356,12 @@ export default function EventFilter() {
               options={accessibilityItem}
               translationKey="accessibility"
             />
-            <MultiSelectGrid translationKey="tags" label={t("tags")} name="tags" options={tagsOptions} />
+            <MultiSelectGrid
+              translationKey="tags"
+              label={t("tags")}
+              name="tags"
+              options={tagsOptions}
+            />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               <Button

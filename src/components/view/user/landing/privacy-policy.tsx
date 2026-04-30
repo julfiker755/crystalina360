@@ -7,13 +7,13 @@ import { Repeat } from "@/components/reuseable/repeat";
 import { useTranslations } from "next-intl";
 
 export default function PrivacyPolicy() {
-  const t = useTranslations('user.home.privacy_policy')
+  const t = useTranslations("user.home.privacy_policy");
   const { data: privacy, isLoading } = useGetPrivacyQuery({});
 
   const privacyItem = [
     {
       id: 1,
-      title: t('data_collection'),
+      title: t("data_collection"),
       description: privacy?.data?.data_collection,
       icon: "collection",
       bgColor: "#F7FAFF",
@@ -22,7 +22,7 @@ export default function PrivacyPolicy() {
     },
     {
       id: 2,
-      title: t('data_usage'),
+      title: t("data_usage"),
       description: privacy?.data?.data_usage,
       icon: "event",
       bgColor: "#FFF5F6",
@@ -31,7 +31,7 @@ export default function PrivacyPolicy() {
     },
     {
       id: 3,
-      title: t('data_protection'),
+      title: t("data_protection"),
       description: privacy?.data?.data_protection,
       icon: "producation",
       bgColor: "#FDF6FF",
@@ -40,7 +40,7 @@ export default function PrivacyPolicy() {
     },
     {
       id: 4,
-      title: t('your_responsibilities'),
+      title: t("your_responsibilities"),
       description: privacy?.data?.your_responsibility,
       icon: "respon",
       bgColor: "#FFFDF1",
@@ -49,11 +49,9 @@ export default function PrivacyPolicy() {
     },
   ];
 
-
-
   return (
     <div id="privacy-Policy" className="pt-16 container">
-      <h1 className="mb-10">{t('title')}</h1>
+      <h1 className="mb-10">{t("title")}</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 ">
         <div className="space-y-10 mb-10 md:mb-0">
           {privacyItem.slice(0, 2).map((card) => (

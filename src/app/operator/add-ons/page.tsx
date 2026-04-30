@@ -7,8 +7,10 @@ import { Pagination } from "@/components/reuseable/pagination";
 import { Repeat } from "@/components/reuseable/repeat";
 import { useAddsonCartQuery } from "@/redux/api/operator/opratorApi";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function AddOnsAll() {
+  const t = useTranslations("oprator.home");
   const [isAlert, setIsAlert] = useState(true);
   const [page, setPage] = useState(1);
   const { data: addon, isLoading } = useGetAddonQuery({
@@ -18,7 +20,7 @@ export default function AddOnsAll() {
 
   return (
     <div className="py-10 container">
-      <h5 className="text-center h1 pb-8">Add-ons</h5>
+      <h5 className="text-center h1 pb-8">{t("add_on.title")}</h5>
       {isAlert && (
         <div className="pb-8">
           <Alert
@@ -39,8 +41,7 @@ export default function AddOnsAll() {
                 {" "}
                 <BadgePercent size={20} />
               </span>
-              Automatic 5% discount at checkout when purchasing two or more
-              add-ons
+              {t("add_on.sub_title")}
             </AlertTitle>
           </Alert>
         </div>
@@ -48,7 +49,9 @@ export default function AddOnsAll() {
 
       {myAddOn?.data?.length > 0 && (
         <div className="mb-20">
-          <h5 className="text-lg font-medium mb-5">Purchased add-ons</h5>
+          <h5 className="text-lg font-medium mb-5">
+            {t("add_on.purchased_add_ons")}
+          </h5>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 2xl:gap-20">
             {addOnLoading ? (
               <Repeat count={10}>
@@ -64,7 +67,7 @@ export default function AddOnsAll() {
       )}
 
       <div>
-        <h5 className="text-lg font-medium mb-5">More add-ons</h5>
+        <h5 className="text-lg font-medium mb-5">{t("add_on.more_add_ons")}</h5>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 2xl:gap-20">
           {isLoading ? (
             <Repeat count={10}>

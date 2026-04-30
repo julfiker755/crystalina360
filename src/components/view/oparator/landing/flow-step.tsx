@@ -41,7 +41,9 @@ export default function FlowStep() {
           />
           <div className="mt-4">
             <h3 className="font-semibold text-2xl">{t(`${step.key}.title`)}</h3>
-            <p className="text-sm text-figma-black">{t(`${step.key}.description`)}</p>
+            <p className="text-sm text-figma-black">
+              {t(`${step.key}.description`)}
+            </p>
           </div>
         </div>
       ))}

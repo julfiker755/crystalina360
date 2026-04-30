@@ -37,7 +37,6 @@ import { FromInput } from "@/components/reuseable/form-input";
 import MultiDate from "../element/multi-date";
 import { cleanObject } from "@/lib/function-utils";
 
-
 const initialState = {
   holistic: false,
   istime: false,
@@ -69,8 +68,6 @@ export default function GroupEdit({
 
   const id = events_all?.data?.event?.id;
 
-
-
   //  ================= default value set =============
   useEffect(() => {
     if (!events_all?.data?.event) return;
@@ -100,7 +97,6 @@ export default function GroupEdit({
         min_person: event?.min_person?.toString() || "",
         max_person: event.max_person?.toString() || "",
         ...cloneobj,
-
       };
       from.reset(offlineObj);
       setSelAccbility(event.accessibility || []);
@@ -150,15 +146,13 @@ export default function GroupEdit({
     from.setValue("accessibility", selAccbility || []);
   }, [files, selAccbility]);
 
-
   const [updateEvents, { isLoading }] = useUpdateEventsMutation();
 
   const handleSubmit = async (values: FieldValues) => {
-    const { img, ...rest } =
-      values || {};
+    const { img, ...rest } = values || {};
     const valuedata = cleanObject({
-      ...rest
-    })
+      ...rest,
+    });
     const data = helpers.fromData({
       event_type: "group",
       ...(img ? { img: img } : {}),
@@ -193,8 +187,6 @@ export default function GroupEdit({
     }
   };
 
-
-
   const toggleHolistic = (value: any) => {
     const current = from.getValues("holistic_discipline") || [];
     if (current.includes(value as never)) {
@@ -217,7 +209,8 @@ export default function GroupEdit({
                 <VideoBannerBox
                   files={files}
                   getInputProps={getInputProps}
-                  img={events_all?.data?.event?.img} />
+                  img={events_all?.data?.event?.img}
+                />
                 {!get("img") && (
                   <ErrorInput
                     className="text-red-400 text-sm"
@@ -230,7 +223,8 @@ export default function GroupEdit({
                 <ImageBannerBox
                   files={files}
                   getInputProps={getInputProps}
-                  img={events_all?.data?.event?.img} />
+                  img={events_all?.data?.event?.img}
+                />
                 {!get("img") && (
                   <ErrorInput
                     className="text-red-400 text-sm"
@@ -280,9 +274,10 @@ export default function GroupEdit({
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
+                      item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                      }`}
+                    }`}
                     type="button"
                   >
                     {item.label}
@@ -402,7 +397,10 @@ export default function GroupEdit({
                         err={false}
                       />
                     </div>
-                    <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.price?.message as string} />
+                    <ErrorInput
+                      className="text-red-400 text-sm"
+                      error={from?.formState?.errors?.price?.message as string}
+                    />
                   </div>
                   <FromTagInput name="tags" label="Tags" className="py-2" />
                 </>
@@ -555,7 +553,6 @@ const VideoBannerBox = ({ files, getInputProps, img }: any) => {
   );
 };
 
-
 //  ------------ multiple date ---------------------
 const MultipleDate = ({ from, setState }: any) => {
   const val = from.watch("event_date");
@@ -566,10 +563,16 @@ const MultipleDate = ({ from, setState }: any) => {
         type="button"
         className="flex h-10 w-full  bg-transparent border text-black font-normal justify-between items-center"
       >
-        <span>{val?.length > 0 ? `${val?.length} date slot` : "Create date slot"}</span> <ChevronRight />
+        <span>
+          {val?.length > 0 ? `${val?.length} date slot` : "Create date slot"}
+        </span>{" "}
+        <ChevronRight />
       </Button>
       {val?.length === 0 && (
-        <ErrorInput className="text-sm text-red-400" error={from?.formState?.errors?.event_date?.message} />
+        <ErrorInput
+          className="text-sm text-red-400"
+          error={from?.formState?.errors?.event_date?.message}
+        />
       )}
     </div>
   );

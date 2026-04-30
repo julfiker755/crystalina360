@@ -32,9 +32,7 @@ export default function Manage() {
         <div className="absolute top-0 left-0 w-full lg:w-1/2 bottom-0 bg-white/20 backdrop-blur-[50px] rounded-l-xl rounded-r-xl lg:rounded-r-none">
           <div className="absolute top-1/2 -translate-y-1/2 px-4 lg:px-16 space-y-3 lg:space-y-4">
             <h1 className="text-left text-white">{t("oprator_hero.title")}</h1>
-            <p className="text-white">
-              {t("oprator_hero.description")}
-            </p>
+            <p className="text-white">{t("oprator_hero.description")}</p>
             <Button
               onClick={() => dispatch(toggleIsOpen())}
               size="lg"

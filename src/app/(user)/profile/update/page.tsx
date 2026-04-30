@@ -14,9 +14,7 @@ import {
   useUpdateProfileMutation,
 } from "@/redux/api/authApi";
 import sonner from "@/components/reuseable/sonner";
-import {
-  genderOptions,
-} from "@/components/dummy-data";
+import { genderOptions } from "@/components/dummy-data";
 import { BackBtn } from "@/components/reuseable/back-btn";
 import { Switch } from "@/components/ui/switch";
 import { FromInput } from "@/components/reuseable/form-input";
@@ -30,7 +28,6 @@ const intAva = {
   file: null,
   preview: "",
 };
-
 
 export default function ProfileEdit2() {
   const t = useTranslations("user.profile.edit_profile");
@@ -129,7 +126,9 @@ export default function ProfileEdit2() {
     const res = await updateProfile(data).unwrap();
     if (res.status) {
       if (res?.data?.profile_status?.completion_percentage === "100%") {
-        dispatch(authApi.endpoints.getProfile.initiate({}, { forceRefetch: true }));
+        dispatch(
+          authApi.endpoints.getProfile.initiate({}, { forceRefetch: true }),
+        );
       }
       form.reset();
       await addCompany(companydata).unwrap();

@@ -27,6 +27,14 @@ export const pricingsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.a_pricing],
     }),
+    cancelPlan: build.mutation({
+      query: ({ id, data }) => ({
+        url: `/subscription/cancel/${id}`,
+        method: "POST",
+        data,
+      }),
+      invalidatesTags: [tagTypes.profile, tagTypes.a_pricing],
+    }),
   }),
 });
 
@@ -34,4 +42,5 @@ export const {
   useGetPricingQuery,
   useUpdatePricingMutation,
   useStorePricingMutation,
+  useCancelPlanMutation,
 } = pricingsApi;

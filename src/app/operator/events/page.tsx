@@ -138,7 +138,9 @@ export default function EventAll() {
             )}
             {ongoingItem?.length > 0 && (
               <div className="mt-10">
-                <h2 className="text-2xl text-black mb-2">{t("ongoing_events")}</h2>
+                <h2 className="text-2xl text-black mb-2">
+                  {t("ongoing_events")}
+                </h2>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {ongoingItem?.map((item: any, idx: any) => (
                     <Link key={idx} href={`/operator/events/${item.id}`}>
@@ -151,7 +153,9 @@ export default function EventAll() {
 
             {upcommingItem?.length > 0 && (
               <div className="mt-10">
-                <h2 className="text-2xl text-black mb-2">{t("upcoming_events")}</h2>
+                <h2 className="text-2xl text-black mb-2">
+                  {t("upcoming_events")}
+                </h2>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {upcommingItem.map((item: any, idx: any) => (
                     <Link key={idx} href={`/operator/events/${item?.id}`}>
@@ -163,7 +167,9 @@ export default function EventAll() {
             )}
             {completeItem?.length > 0 && (
               <div className="mt-10">
-                <h2 className="text-2xl text-black mb-3">{t("completed_events")}</h2>
+                <h2 className="text-2xl text-black mb-3">
+                  {t("completed_events")}
+                </h2>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {completeItem.map((item: any, idx: any) => (
                     <Link key={idx} href={`/operator/events/${item?.id}`}>

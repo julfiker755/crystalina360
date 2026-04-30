@@ -24,7 +24,7 @@ export interface AuthState {
     avatar: string;
     role: string;
     token: string;
-    is_profile_complete: boolean
+    is_profile_complete: boolean;
   };
   otpInfo: { email: string; otp: string };
   signupRole: string;

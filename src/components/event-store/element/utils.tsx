@@ -1,13 +1,13 @@
 export const permissionBoth = ({
-    role,
-    isSubscribed,
+  role,
+  isSubscribed,
 }: {
-    role?: string;
-    isSubscribed?: boolean;
+  role?: string;
+  isSubscribed?: boolean;
 }) => {
-    if (role === "admin") {
-        return true
-    } else if (role === "opertor") {
-        return isSubscribed
-    }
+  if (role === "admin") {
+    return true;
+  } else if (role === "opertor") {
+    return isSubscribed;
+  }
 };

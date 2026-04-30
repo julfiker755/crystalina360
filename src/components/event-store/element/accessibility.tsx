@@ -31,13 +31,15 @@ export const AccessibilityBox = ({
           <span className="text-gray-600">{t("no")}</span>
           <button
             onClick={() => setAccessibility(!accessibility)}
-            className={`relative inline-flex cursor-pointer h-6 w-11 items-center rounded-full transition-colors duration-300 ${accessibility ? "bg-primary" : "bg-[#79747E]"
-              }`}
+            className={`relative inline-flex cursor-pointer h-6 w-11 items-center rounded-full transition-colors duration-300 ${
+              accessibility ? "bg-primary" : "bg-[#79747E]"
+            }`}
             type="button"
           >
             <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ${accessibility ? "translate-x-6" : "translate-x-1"
-                }`}
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ${
+                accessibility ? "translate-x-6" : "translate-x-1"
+              }`}
             />
           </button>
           <span className="text-figma-black">{t("yes")}</span>

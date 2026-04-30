@@ -36,9 +36,6 @@ import { InputTime } from "@/components/reuseable/timeInput";
 import { getGroupSchemaEdit, getValuesGroup } from "../element/default";
 import { cleanObject } from "@/lib/function-utils";
 
-
-
-
 const initialState = {
   holistic: false,
   istime: false,
@@ -58,8 +55,8 @@ export default function RetreatEdit({
   const [selAccbility, setSelAccbility] = useState<string[]>([]);
   const [isDelivery, setIsDelivery] = useState<any>("offline");
   const [selectDate, setSelectDate] = useState<any>([]);
-  const defaultValues = getValuesGroup('retreat') as any;
-  const defaultSchema = getGroupSchemaEdit('retreat') as any;
+  const defaultValues = getValuesGroup("retreat") as any;
+  const defaultSchema = getGroupSchemaEdit("retreat") as any;
   const [progress, setProgress] = useState(0);
   const router = useRouter();
 
@@ -100,7 +97,6 @@ export default function RetreatEdit({
     setIsDelivery(event.delivery_type);
   }, [events_all]);
 
-
   const get = (v: any) => from.watch(v);
   const [{ files }, { getInputProps, clearFiles }] = useFileUpload({
     accept: "image/*",
@@ -116,8 +112,8 @@ export default function RetreatEdit({
   const handleSubmit = async (values: FieldValues) => {
     const { img, ...rest } = values || {};
     const valuedata = cleanObject({
-      ...rest
-    })
+      ...rest,
+    });
     const data = helpers.fromData({
       event_type: "retreat",
       ...valuedata,
@@ -196,9 +192,10 @@ export default function RetreatEdit({
                         from.setValue("delivery_type", item.value);
                       }}
                       type="button"
-                      className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
+                      className={`font-normal transition-colors border bg-transparent text-figma-black ${
+                        item.value === get("delivery_type") &&
                         "bg-primary text-white"
-                        }`}
+                      }`}
                     >
                       <FavIcon
                         color={
@@ -226,9 +223,10 @@ export default function RetreatEdit({
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
+                      item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                      }`}
+                    }`}
                     type="button"
                   >
                     {item.label}

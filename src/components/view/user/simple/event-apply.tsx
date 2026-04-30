@@ -19,7 +19,7 @@ export default function EventApply({
   available_tickets,
   price,
 }: any) {
-  const t = useTranslations('user.details');
+  const t = useTranslations("user.details");
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<any>([]);
   const [isDate, setIsDate] = useState(false);
@@ -138,10 +138,6 @@ export default function EventApply({
     }
   };
 
-
-
-
-
   return (
     <div className="space-y-5 pt-10">
       <div className="w-full">
@@ -229,7 +225,9 @@ export default function EventApply({
             </li>
           </ul>
         </div>
-        <h5 className="font-medium text-base">{t("total_price")}:{total}</h5>
+        <h5 className="font-medium text-base">
+          {t("total_price")}:{total}
+        </h5>
       </div>
 
       {/* Coupon */}
@@ -267,7 +265,6 @@ export default function EventApply({
             {t("send_message")}
           </Button>
         </Link>
-
 
         <Button
           disabled={isBooking?.date?.length > 0 ? false : true}

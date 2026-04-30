@@ -85,7 +85,9 @@ export default function MultiDate({
             ))}
           </div>
         ) : (
-          <p className="text-slate-500 text-sm italic">{t("date.no_dates_selected_yet")}</p>
+          <p className="text-slate-500 text-sm italic">
+            {t("date.no_dates_selected_yet")}
+          </p>
         )}
       </div>
 

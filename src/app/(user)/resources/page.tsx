@@ -7,7 +7,6 @@ import {
 } from "@/components/view/user/simple/resources-tab";
 import { useTranslations } from "next-intl";
 
-
 export default function Resources() {
   const t = useTranslations("user.resources");
   return (

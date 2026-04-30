@@ -41,7 +41,6 @@ export default function ExploreAll() {
     setSortValue(value);
   };
 
-
   return (
     <div className="container">
       <ul className="flex justify-between flex-wrap items-center pt-10 pb-5">
@@ -49,7 +48,10 @@ export default function ExploreAll() {
           <SubTitle text={t("title")} />
         </li>
         <li className="flex items-center mt-3 md:mt-0 space-x-3">
-          <SearchBox placeholder={t("search_hare")} onChange={(v: any) => updateGlobal("search", v)} />
+          <SearchBox
+            placeholder={t("search_hare")}
+            onChange={(v: any) => updateGlobal("search", v)}
+          />
           <h1
             onClick={() => setIsSort(!isSort)}
             className="bg-figma-input icon"

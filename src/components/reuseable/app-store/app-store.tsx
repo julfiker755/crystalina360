@@ -8,7 +8,7 @@ interface AppStoreProps {
 }
 
 const AppStore = ({ className, titleStyle, mainStyle }: AppStoreProps) => {
-  const t = useTranslations('user.home.footer')
+  const t = useTranslations("user.home.footer");
   return (
     <div className={cn("w-full", className)}>
       <h3
@@ -17,7 +17,7 @@ const AppStore = ({ className, titleStyle, mainStyle }: AppStoreProps) => {
           titleStyle,
         )}
       >
-        {t('social.download_app')}
+        {t("social.download_app")}
       </h3>
 
       {/* Responsive layout */}
@@ -48,7 +48,7 @@ const AppStore = ({ className, titleStyle, mainStyle }: AppStoreProps) => {
               />
             </svg>
             <h1 className="text-base sm:text-lg font-bold text-white ml-3">
-              {t('social.play_store')}
+              {t("social.play_store")}
             </h1>
           </div>
         </a>
@@ -75,7 +75,7 @@ const AppStore = ({ className, titleStyle, mainStyle }: AppStoreProps) => {
             </svg>
 
             <h1 className="text-base sm:text-lg font-bold text-white ml-3">
-              {t('social.app_store')}
+              {t("social.app_store")}
             </h1>
           </div>
         </a>

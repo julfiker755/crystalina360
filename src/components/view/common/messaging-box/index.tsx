@@ -4,17 +4,20 @@ import { useStickToBottom } from "use-stick-to-bottom";
 import { Button, Input } from "@/components/ui";
 import Avatars from "@/components/reuseable/avater";
 import { useGetProfileQuery } from "@/redux/api/authApi";
-import { useGetChatListQuery, useMessageListQuery, useMessageStoreMutation } from "@/redux/api/chat/chatApi";
+import {
+  useGetChatListQuery,
+  useMessageListQuery,
+  useMessageStoreMutation,
+} from "@/redux/api/chat/chatApi";
 import { useSocket } from "@/lib/useSocket";
 import { cn, helpers, limitWords } from "@/lib";
 import { useSearchParams } from "next/navigation";
-import { useDebounce } from 'use-debounce';
+import { useDebounce } from "use-debounce";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
-
 function MessagingAppChild({ className }: any) {
-  const params = useSearchParams()
-  const in_top = params.get("group")
+  const params = useSearchParams();
+  const in_top = params.get("group");
   const [msgId, setMsgId] = useState<any>(null);
   const prevMsgId = useRef<any>(null);
   const [search, setSearch] = useState("");
@@ -23,16 +26,16 @@ function MessagingAppChild({ className }: any) {
   const [messages, setMessages] = useState<any[]>([]);
   const [typingUsers, setTypingUsers] = useState<string[]>([]);
   const typingTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [isShow, setIsShow] = useState(false)
-  const isMobile = useIsMobile()
+  const [isShow, setIsShow] = useState(false);
+  const isMobile = useIsMobile();
 
   const { data: profile } = useGetProfileQuery({});
   const { data: chatlist } = useGetChatListQuery({
     search: in_top,
-    event_title_search: value
+    event_title_search: value,
   });
   const { scrollRef, contentRef } = useStickToBottom();
-  const [messageStore] = useMessageStoreMutation()
+  const [messageStore] = useMessageStoreMutation();
 
   const userId = profile?.data?.user?.id;
 
@@ -53,12 +56,13 @@ function MessagingAppChild({ className }: any) {
     const handleGroupMessage = (payload: any) => {
       if (payload.eventId !== String(msgId.group_event.event_id)) return;
 
-      console.log(payload)
+      console.log(payload);
 
-      messageRefetch()
+      messageRefetch();
 
       setMessages((prev) => {
-        if (payload.msgId && prev.some((m) => m.id === payload.msgId)) return prev;
+        if (payload.msgId && prev.some((m) => m.id === payload.msgId))
+          return prev;
         return [
           ...prev,
           {
@@ -73,7 +77,9 @@ function MessagingAppChild({ className }: any) {
     };
 
     socket.on("group_message", handleGroupMessage);
-    return () => { socket.off("group_message", handleGroupMessage) };
+    return () => {
+      socket.off("group_message", handleGroupMessage);
+    };
   }, [socket, msgId?.group_event?.event_id]);
 
   // ─── 3. Listen for typing indicators ──────────────────────────────────────
@@ -85,14 +91,18 @@ function MessagingAppChild({ className }: any) {
 
       setTypingUsers((prev) => {
         if (payload.isTyping) {
-          return prev.includes(payload.userId) ? prev : [...prev, payload.userId];
+          return prev.includes(payload.userId)
+            ? prev
+            : [...prev, payload.userId];
         }
         return prev.filter((u) => u !== payload.userId);
       });
     };
 
     socket.on("typing", handleTyping);
-    return () => { socket.off("typing", handleTyping) };
+    return () => {
+      socket.off("typing", handleTyping);
+    };
   }, [socket, msgId?.group_event?.event_id]);
 
   // ─── 4. Join / leave rooms on chat switch ─────────────────────────────────
@@ -126,7 +136,7 @@ function MessagingAppChild({ className }: any) {
     if (messagelist?.data) {
       const sorted = [...messagelist.data].sort(
         (a: any, b: any) =>
-          new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime()
+          new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime(),
       );
       setMessages(sorted);
     }
@@ -138,7 +148,7 @@ function MessagingAppChild({ className }: any) {
       if (!msgId) return;
       sendTyping(String(msgId.group_event.event_id), isTyping);
     },
-    [msgId, sendTyping]
+    [msgId, sendTyping],
   );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -174,27 +184,28 @@ function MessagingAppChild({ className }: any) {
       id: msgId?.group_event?.event_id,
       data: helpers.fromData({
         message: msgText,
-      })
-    })
+      }),
+    });
 
-    console.log(restRes)
+    console.log(restRes);
 
     // if (restRes?.data?.status) {
 
-    const res = await sendGroupMessage(String(msgId?.group_event?.event_id), msgText, tempId);
+    const res = await sendGroupMessage(
+      String(msgId?.group_event?.event_id),
+      msgText,
+      tempId,
+    );
     // }
 
     // console.log(res)
-
-
   }, [msgText, msgId, userId, profile, emitTyping, sendGroupMessage]);
 
   useEffect(() => {
     if (!isMobile) {
-      setIsShow(false)
+      setIsShow(false);
     }
-  }, [isMobile])
-
+  }, [isMobile]);
 
   return (
     <div className={cn("flex overflow-hidden font-sans gap-x-4", className)}>
@@ -203,7 +214,10 @@ function MessagingAppChild({ className }: any) {
         <aside className="flex flex-col w-full md:w-[380px] border rounded-xl border-[#C4ACA4]/20">
           <div className="p-3 border-b border-zinc-100">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
+              <Search
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                size={18}
+              />
               <Input
                 placeholder="Search conversations..."
                 className="pl-10 bg-zinc-100 border-none rounded-xl py-5"
@@ -217,11 +231,13 @@ function MessagingAppChild({ className }: any) {
               <ContactItem
                 key={item?.group_event_id}
                 contact={item}
-                isSelected={msgId?.group_event?.event_id === item?.group_event?.event_id}
+                isSelected={
+                  msgId?.group_event?.event_id === item?.group_event?.event_id
+                }
                 onClick={() => {
-                  setMsgId(item)
+                  setMsgId(item);
                   if (isMobile) {
-                    setIsShow(true)
+                    setIsShow(true);
                   }
                 }}
               />
@@ -236,9 +252,11 @@ function MessagingAppChild({ className }: any) {
           <>
             <header className="h-20 border-b border-zinc-100 flex items-center justify-between px-6 sticky top-0 z-10">
               <div className="flex items-center gap-2 lg:gap-4">
-                <div onClick={() => setIsShow(false)} className="size-10 lg:hidden cursor-pointer bg-figma-gray1 grid place-items-center rounded-full">
+                <div
+                  onClick={() => setIsShow(false)}
+                  className="size-10 lg:hidden cursor-pointer bg-figma-gray1 grid place-items-center rounded-full"
+                >
                   <ChevronLeft className="relative rounded-full" />{" "}
-
                 </div>
 
                 <Avatars
@@ -260,29 +278,32 @@ function MessagingAppChild({ className }: any) {
                       {isConnected ? "Connected" : "Reconnecting…"}
                     </p>
                   )} */}
-                  <p className={`text-xs font-medium ${isConnected ? "text-emerald-500" : "text-zinc-400"}`}>
+                  <p
+                    className={`text-xs font-medium ${isConnected ? "text-emerald-500" : "text-zinc-400"}`}
+                  >
                     {isConnected ? "Connected" : "Reconnecting…"}
                   </p>
                 </div>
               </div>
             </header>
 
-            <div ref={scrollRef} className="flex-1 overflow-y-auto scrollbar-hide p-4">
+            <div
+              ref={scrollRef}
+              className="flex-1 overflow-y-auto scrollbar-hide p-4"
+            >
               <div ref={contentRef}>
                 {messages.length ? (
                   messages.map((msg: any) => {
                     const isMe = String(msg.sender_id) === String(userId);
 
                     return (
-                      <MessageBubble
-                        key={msg.id}
-                        message={msg}
-                        isMe={isMe}
-                      />
+                      <MessageBubble key={msg.id} message={msg} isMe={isMe} />
                     );
                   })
                 ) : (
-                  <div className="text-center text-zinc-500 p-12">No messages yet</div>
+                  <div className="text-center text-zinc-500 p-12">
+                    No messages yet
+                  </div>
                 )}
               </div>
             </div>
@@ -301,7 +322,10 @@ function MessagingAppChild({ className }: any) {
                     }
                   }}
                 />
-                <Button onClick={handleSendMessage} disabled={!msgText.trim() || !isConnected}>
+                <Button
+                  onClick={handleSendMessage}
+                  disabled={!msgText.trim() || !isConnected}
+                >
                   <Send size={20} />
                 </Button>
               </div>
@@ -317,8 +341,14 @@ function MessagingAppChild({ className }: any) {
   );
 }
 
-function ContactItem({ contact, isSelected, onClick }: {
-  contact: any; isSelected: boolean; onClick: () => void;
+function ContactItem({
+  contact,
+  isSelected,
+  onClick,
+}: {
+  contact: any;
+  isSelected: boolean;
+  onClick: () => void;
 }) {
   return (
     <button
@@ -326,13 +356,20 @@ function ContactItem({ contact, isSelected, onClick }: {
       className={`w-full flex items-center gap-4 p-4 transition-all hover:bg-zinc-50 ${isSelected ? "bg-zinc-100" : ""}`}
     >
       <div className="relative">
-        <Avatars src={contact?.group_event?.event?.img} fallback={"T"} alt="img" className="h-12 w-12" />
+        <Avatars
+          src={contact?.group_event?.event?.img}
+          fallback={"T"}
+          alt="img"
+          className="h-12 w-12"
+        />
         {contact.status === "online" && (
           <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-emerald-500" />
         )}
       </div>
       <div className="flex-1 text-left min-w-0">
-        <span className="font-semibold text-zinc-900 truncate block">{limitWords({ str: contact?.group_event?.name })}</span>
+        <span className="font-semibold text-zinc-900 truncate block">
+          {limitWords({ str: contact?.group_event?.name })}
+        </span>
         <p className="text-sm text-zinc-500 truncate">We convened yesterday.</p>
       </div>
     </button>
@@ -343,25 +380,36 @@ function MessageBubble({ message, isMe }: { message: any; isMe: boolean }) {
   return (
     <div className={`flex ${isMe ? "justify-end" : "justify-start"} mb-4`}>
       {!isMe && (
-        <Avatars src={message?.sender?.img} fallback={"T"} alt="img" className="size-10 2xl:size-10" />
+        <Avatars
+          src={message?.sender?.img}
+          fallback={"T"}
+          alt="img"
+          className="size-10 2xl:size-10"
+        />
       )}
-      <div className={`max-w-[80%] md:max-w-[70%] px-4 py-2 rounded-2xl ${isMe ? "bg-[#F7F3EB] text-white mr-2" : "bg-[#F6F6F6] text-zinc-900 ml-2"}`}>
-        <p className="text-sm font-medium text-[#454545] leading-relaxed">{message.msg}</p>
+      <div
+        className={`max-w-[80%] md:max-w-[70%] px-4 py-2 rounded-2xl ${isMe ? "bg-[#F7F3EB] text-white mr-2" : "bg-[#F6F6F6] text-zinc-900 ml-2"}`}
+      >
+        <p className="text-sm font-medium text-[#454545] leading-relaxed">
+          {message.msg}
+        </p>
       </div>
       {isMe && (
-        <Avatars src={message?.sender?.img} fallback={"T"} alt="img" className="size-10 2xl:size-10" />
+        <Avatars
+          src={message?.sender?.img}
+          fallback={"T"}
+          alt="img"
+          className="size-10 2xl:size-10"
+        />
       )}
     </div>
   );
 }
-
-
-
 
 export default function MessagingApp({ className }: any) {
   return (
     <Suspense>
       <MessagingAppChild className={className} />
     </Suspense>
-  )
+  );
 }

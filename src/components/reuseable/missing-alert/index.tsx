@@ -13,7 +13,6 @@ export default function MissingInfo({ path }: any) {
   const router = useRouter();
   const { user } = useAppSelector((state: AppState) => state.auth);
 
-
   const [isShow, setIsShow] = useState(false);
 
   useEffect(() => {
@@ -29,17 +28,20 @@ export default function MissingInfo({ path }: any) {
   const handleClose = () => {
     setIsShow(false);
 
-    setTimeout(() => {
-      if (!user) return;
+    setTimeout(
+      () => {
+        if (!user) return;
 
-      // 2 min later, show alert again if still incomplete
-      if (user?.is_profile_complete === false) {
-        setIsShow(true);
-        if (path) {
-          router.push(path);
+        // 2 min later, show alert again if still incomplete
+        if (user?.is_profile_complete === false) {
+          setIsShow(true);
+          if (path) {
+            router.push(path);
+          }
         }
-      }
-    }, 2 * 60 * 1000);
+      },
+      2 * 60 * 1000,
+    );
   };
 
   if (!isShow) return null;
@@ -48,9 +50,7 @@ export default function MissingInfo({ path }: any) {
     <Alert className="relative rounded-none border-none bg-[#99796F]/50">
       <InfoIcon className="text-red-500" />
 
-      <AlertTitle className="text-black">
-        {t("title")}
-      </AlertTitle>
+      <AlertTitle className="text-black">{t("title")}</AlertTitle>
 
       <AlertDescription className="flex items-center gap-1 text-black/70">
         {t("description")}

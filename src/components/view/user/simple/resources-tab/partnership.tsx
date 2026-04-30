@@ -7,12 +7,9 @@ import sonner from "@/components/reuseable/sonner";
 import { useQuestionSendMutation } from "@/redux/api/user/contactApi";
 import { useTranslations } from "next-intl";
 
-
-
 export function Partnership() {
   const t = useTranslations("user.resources");
   const [isShow, setIsShow] = useState(false);
-
 
   const [questionSend, { isLoading }] = useQuestionSendMutation();
 
@@ -28,8 +25,6 @@ export function Partnership() {
   useEffect(() => {
     setQuestion(intQuestion());
   }, [t]);
-
-
 
   const handleQuestion = async (e: React.FormEvent) => {
     e.preventDefault();

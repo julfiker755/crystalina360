@@ -6,17 +6,19 @@
     "faq": "FAQ",
     "dashboard": "Dashboard",
     "events": "Events",
+    "add_on": "Add On",
     "continue_as_user": "Continue as a user",
     "sign_as_operator": "Sign in as operator",
     "sign_up_as_operator": "Sign up as a operator",
     "pricing_box": {
       "title": "Pricing",
       "sub_title": "Free Plan",
-      "description": "Purchase a plan and the freedom of managing events of whatever it's offline or online",
+      "description": "Please sign in to access the Buy button and complete your payment smoothly",
       "monthly": "Monthly",
       "annual": "Annual",
       "benefits_you_will_get": "Benefits you will get",
       "purchase_plan": "Purchase plan",
+      "cancel_plan": "Cancel Plan",
       "freeOptions": [
         "Sales commission: 15%",
         "Sell with no monthly costs",
@@ -25,7 +27,9 @@
         "Direct chat with clients",
         "Creation of registered events",
         "Technical support included"
-      ]
+      ],
+      "alert_cancel_title": "Subscription Cancelled",
+      "alert_cancel_text": "Your subscription has been cancelled successfully"
     },
     "restricted": {
       "title": "Restricted Access",
@@ -53,7 +57,17 @@
     }
   },
   "add_on": {
-    "title": "Add on services"
+    "title": "Add on services",
+    "sub_title": "Automatic 5% discount at checkout when purchasing two or more add-ons",
+    "buy_now": "Buy now",
+    "more_details": "More details",
+    "purchased_add_ons": "Purchased add-ons",
+    "more_add_ons": "More add-ons",
+    "not_available": "Not Available",
+    "purchased": "Purchased",
+    "key_benefits": "Key benefits",
+    "alert_title": "Payment Successful",
+    "alert_message": "Your add-on is ready. Time to enJay!"
   },
   "privacy_policy": {
     "title": "Privacy Policy",

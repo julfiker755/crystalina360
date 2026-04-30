@@ -28,71 +28,66 @@ export default function EventInfo({
   let elementShow: any;
   const onetoOne = details.event_type === event_t.onetoone;
   if (onetoOne || details?.event_type == event_t.retreat) {
-    elementShow = (
-      details?.delivery_type != delivary_t.ondemand && (
-        <div className="space-y-3">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Calendar className="size-6 text-primary" />
-            <div className="flex flex-col">
-              <span className="text-base text-figma-black">Date</span>
-              <span className="text-base text-figma-black font-medium">
-                {details?.event_date?.[0]}
-              </span>
-            </div>
+    elementShow = details?.delivery_type != delivary_t.ondemand && (
+      <div className="space-y-3">
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <Calendar className="size-6 text-primary" />
+          <div className="flex flex-col">
+            <span className="text-base text-figma-black">Date</span>
+            <span className="text-base text-figma-black font-medium">
+              {details?.event_date?.[0]}
+            </span>
           </div>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <FavIcon className="size-6" name="ongoing_events" />
-            <div className="flex flex-col">
-              <span className="text-base text-figma-black">
-                Time{onetoOne && "s"}
-              </span>
-              <div className="space-x-3">
-                {details?.event_time?.map((item: any, idx: any) => (
-                  <span
-                    key={idx}
-                    className={`text-base ${onetoOne && "bg-figma-delete px-3 font-normal!  py-0.5"} font-medium rounded-full text-figma-black`}
-                  >
-                    {helpers.planTime(item)}
-                  </span>
-                ))}
-              </div>
+        </div>
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <FavIcon className="size-6" name="ongoing_events" />
+          <div className="flex flex-col">
+            <span className="text-base text-figma-black">
+              Time{onetoOne && "s"}
+            </span>
+            <div className="space-x-3">
+              {details?.event_time?.map((item: any, idx: any) => (
+                <span
+                  key={idx}
+                  className={`text-base ${onetoOne && "bg-figma-delete px-3 font-normal!  py-0.5"} font-medium rounded-full text-figma-black`}
+                >
+                  {helpers.planTime(item)}
+                </span>
+              ))}
             </div>
           </div>
         </div>
-      )
-
+      </div>
     );
   } else if (details?.event_type === event_t.group) {
-    elementShow = (
-      details?.delivery_type != delivary_t.ondemand && (
-        <div className="space-y-3">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <FavIcon className="size-6" name="ongoing_events" />
-            <div className="flex flex-col">
-              <span className="text-base text-figma-black">Time</span>
-              <span className="text-base bg-figma-delete px-3 rounded-full text-figma-black">
-                {helpers.planTime(details?.event_time?.[0])}
-              </span>
-            </div>
+    elementShow = details?.delivery_type != delivary_t.ondemand && (
+      <div className="space-y-3">
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <FavIcon className="size-6" name="ongoing_events" />
+          <div className="flex flex-col">
+            <span className="text-base text-figma-black">Time</span>
+            <span className="text-base bg-figma-delete px-3 rounded-full text-figma-black">
+              {helpers.planTime(details?.event_time?.[0])}
+            </span>
           </div>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Calendar className="size-6 text-primary" />
-            <div className="flex flex-col">
-              <span className="text-base text-figma-black">Dates</span>
-              <div className="space-x-3">
-                {details?.event_date?.map((item: any, idx: any) => (
-                  <span
-                    key={idx}
-                    className="text-base bg-figma-delete px-3  py-0.5 rounded-full text-figma-black"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
+        </div>
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <Calendar className="size-6 text-primary" />
+          <div className="flex flex-col">
+            <span className="text-base text-figma-black">Dates</span>
+            <div className="space-x-3">
+              {details?.event_date?.map((item: any, idx: any) => (
+                <span
+                  key={idx}
+                  className="text-base bg-figma-delete px-3  py-0.5 rounded-full text-figma-black"
+                >
+                  {item}
+                </span>
+              ))}
             </div>
           </div>
         </div>
-      )
+      </div>
     );
   }
 
@@ -133,8 +128,9 @@ export default function EventInfo({
                 <ShowBox
                   icon="tiket"
                   name="Ticket sold"
-                  text={`${details?.sold_tickets || 0} /${details?.ticket_quantity
-                    }`}
+                  text={`${details?.sold_tickets || 0} /${
+                    details?.ticket_quantity
+                  }`}
                 />
                 <ShowBox
                   icon="price22"
@@ -171,14 +167,15 @@ export default function EventInfo({
             <div className="grid grid-cols-2">
               {details?.delivery_type === "online" ? (
                 <div>
-                  <span className="text-base text-figma-black ml-7">Zoom link</span>
+                  <span className="text-base text-figma-black ml-7">
+                    Zoom link
+                  </span>
                   <CopyBox
                     value={details?.link}
                     valueStyle="text-figma-black font-medium text-base!"
                     linkStyle="text-primary relative bottom-2"
                   />
                 </div>
-
               ) : (
                 <ShowBox
                   icon="location"

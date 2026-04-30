@@ -1,14 +1,19 @@
-"use client"
+"use client";
 import { SelectDropdownOprator } from "@/components/reuseable/from-select@1/select-droup-profile";
-import { useGetRegionListQuery, useLazyGetItalyCityListQuery, useLazyGetProvinceListQuery } from "@/redux/api/city/cityApi";
+import {
+  useGetRegionListQuery,
+  useLazyGetItalyCityListQuery,
+  useLazyGetProvinceListQuery,
+} from "@/redux/api/city/cityApi";
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
 export const LocationDroupDownOprator = () => {
   const { getValues } = useFormContext();
-  const { data: regionItem } = useGetRegionListQuery({})
-  const [getProvinceList, { data: provinceItem }] = useLazyGetProvinceListQuery()
-  const [getItalyCityList, { data: cityItem }] = useLazyGetItalyCityListQuery()
+  const { data: regionItem } = useGetRegionListQuery({});
+  const [getProvinceList, { data: provinceItem }] =
+    useLazyGetProvinceListQuery();
+  const [getItalyCityList, { data: cityItem }] = useLazyGetItalyCityListQuery();
 
   const defaultRegion = getValues("residence_region");
   const defaultProvince = getValues("residence_province");
@@ -30,28 +35,28 @@ export const LocationDroupDownOprator = () => {
       <SelectDropdownOprator
         label="Country"
         name="residence_country"
-        options={[
-          { label: "Italy", value: "Italy" },
-        ]}
+        options={[{ label: "Italy", value: "Italy" }]}
       />
       <SelectDropdownOprator
         label="Region"
         name="residence_region"
         options={regionItem?.data?.map((item: any) => ({
-          label: item.region, value: item.region
+          label: item.region,
+          value: item.region,
         }))}
         setSelectValue={(item) => {
-          getProvinceList({ region: item.value })
+          getProvinceList({ region: item.value });
         }}
       />
       <SelectDropdownOprator
         label="Province"
         name="residence_province"
         options={provinceItem?.data?.map((item: any) => ({
-          label: item.province, value: item.province
+          label: item.province,
+          value: item.province,
         }))}
         setSelectValue={(item) => {
-          getItalyCityList({ province: item.value })
+          getItalyCityList({ province: item.value });
         }}
         disabled={!provinceItem?.data?.length}
       />
@@ -60,7 +65,8 @@ export const LocationDroupDownOprator = () => {
         label="City"
         name="residence_city"
         options={cityItem?.data?.map((item: any) => ({
-          label: item.city, value: item.city
+          label: item.city,
+          value: item.city,
         }))}
         disabled={!cityItem?.data?.length}
       />

@@ -1,7 +1,8 @@
 // lib/io.ts
 import { io, Socket } from "socket.io-client";
 
-const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || "http://10.10.10.90:3000";
+const SOCKET_URL =
+  process.env.NEXT_PUBLIC_SOCKET_URL || "http://10.10.10.90:3000";
 
 let socket: Socket | null = null;
 
@@ -24,7 +25,7 @@ export function connectIo(userId?: string): Socket {
     reconnectionDelay: 1000,
     autoConnect: true,
     query: {
-      userId: userId ?? "",   // 👈 server reads this as socket.handshake.query.userId
+      userId: userId ?? "", // 👈 server reads this as socket.handshake.query.userId
     },
   });
 

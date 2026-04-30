@@ -23,7 +23,7 @@ export const useLogout = () => {
         redirect("/");
       }
     } finally {
-      helpers.removeAuthCookie("request-pathname")
+      helpers.removeAuthCookie("request-pathname");
       helpers.removeAuthCookie(authKey);
       dispatch(clearAuth());
       dispatch(baseApi.util.resetApiState());

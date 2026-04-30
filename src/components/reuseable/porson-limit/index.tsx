@@ -54,11 +54,17 @@ export function PersionLimit({
         fieldState: ControllerFieldState;
       }) => (
         <div>
-          <div className={cn("relative h-10 flex items-center justify-between px-2 border rounded-md", mainStyle)}>
+          <div
+            className={cn(
+              "relative h-10 flex items-center justify-between px-2 border rounded-md",
+              mainStyle,
+            )}
+          >
             <Input
               id={inputId}
               className={cn(
-                `w-[100px] h-10 border-none bg-transparent  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${icon ? "pl-10" : "pl-4"
+                `w-[100px] h-10 border-none bg-transparent  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+                  icon ? "pl-10" : "pl-4"
                 } ${eye ? "pr-10" : "pr-3"} text-blacks`,
                 className,
               )}

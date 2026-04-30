@@ -6,17 +6,19 @@
     "faq": "FAQ",
     "dashboard": "Dashboard",
     "events": "Eventi",
+    "add_on": "Componente aggiuntivo",
     "continue_as_user": "Continua come utente",
     "sign_as_operator": "Accedi come operatore",
     "sign_up_as_operator": "Registrati come operatore",
     "pricing_box": {
       "title": "Prezzi",
       "sub_title": "Piano Gratuito",
-      "description": "Acquista un piano e ottieni la libertà di gestire eventi sia offline che online",
+      "description": "Per accedere al pulsante Acquista e completare il pagamento senza problemi, effettua prima l'accesso",
       "monthly": "Mensile",
       "annual": "Annuale",
       "benefits_you_will_get": "Vantaggi che otterrai",
       "purchase_plan": "Acquista il piano",
+      "cancel_plan": "Annulla piano",
       "freeOptions": [
         "Commissione sulle vendite: 15%",
         "Vendi senza costi mensili",
@@ -25,7 +27,9 @@
         "Chat diret ta con i client i",
         "Creaz ione di eventi registrati",
         "Supporto tecnico incluso"
-      ]
+      ],
+      "alert_cancel_title": "Abbonamento annullato",
+      "alert_cancel_text": "Il tuo abbonamento è stato annullato con successo"
     },
     "restricted": {
       "title": "Accesso limitato",
@@ -53,7 +57,17 @@
     }
   },
   "add_on": {
-    "title": "Servizi aggiuntivi"
+    "title": "Servizi aggiuntivi",
+    "sub_title": "Sconto automatico del 5% al momento del pagamento acquistando due o più componenti aggiuntivi",
+    "buy_now": "Acquista ora",
+    "more_details": "Maggiori dettagli",
+    "purchased_add_ons": "Componenti aggiuntivi acquistati",
+    "more_add_ons": "Altri componenti aggiuntivi",
+    "not_available": "Non disponibile",
+    "purchased": "Acquistato",
+    "key_benefits": "Vantaggi principali",
+    "alert_title": "Pagamento riuscito",
+    "alert_message": "Il tuo componente aggiuntivo è pronto. È il momento di divertirti!"
   },
   "privacy_policy": {
     "title": "Informativa sulla privacy",

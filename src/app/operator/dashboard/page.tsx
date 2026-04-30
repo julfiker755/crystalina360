@@ -61,7 +61,9 @@ export default function DashboardHome() {
     <div className="container lg:h-[calc(100vh-80px)]">
       <div className="mt-10">
         <div className="flex flex-wrap space-y-2 lg:space-y-0 items-center justify-between mb-5">
-          <h1 className="text-2xl text-left text-figma-black">{t("overview")}</h1>
+          <h1 className="text-2xl text-left text-figma-black">
+            {t("overview")}
+          </h1>
           <div className="flex flex-wrap items-center space-x-5 space-y-2 lg:space-y-0">
             <div className="flex items-center space-x-2">
               <h2 className="text-lg">{t("from")}: </h2>

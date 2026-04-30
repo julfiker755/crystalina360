@@ -17,7 +17,6 @@ import Avatars from "@/components/reuseable/avater";
 import { LanguageSwitcher2 } from "../../common/language";
 import { useTranslations } from "next-intl";
 
-
 export default function Navber({ className }: any) {
   const t = useTranslations("oprator.home.navber");
   const pathname = usePathname();
@@ -32,16 +31,17 @@ export default function Navber({ className }: any) {
 
   const navNoUserItems = [
     { name: t("home"), href: "/operator" },
-    { name: t("pricing"), href: "/#pricing" },
-    { name: t("privacy_policy"), href: "/#privacy-Policy" },
-    { name: t("faq"), href: "/#faq" },
+    { name: t("pricing"), href: "/operator/#pricing" },
+    { name: t("add_on"), href: "/operator/#add-ons" },
+    { name: t("faq"), href: "/operator/#faq" },
   ];
   const navUserItems = [
     { name: t("dashboard"), href: "/operator/dashboard" },
     { name: t("events"), href: "/operator/events" },
     { name: t("pricing"), href: "/operator/pricing" },
-    { name: t("privacy_policy"), href: "/operator/privacy-policy" },
-    { name: t("faq"), href: "/operator/faq" },
+    { name: t("add_on"), href: "/operator/add-ons" },
+    // { name: t("privacy_policy"), href: "/operator/privacy-policy" },
+    // { name: t("faq"), href: "/operator/faq" },
   ];
 
   const navItems =
@@ -69,8 +69,9 @@ export default function Navber({ className }: any) {
               {navItems.map((item) => (
                 <li
                   key={item.name}
-                  className={`py-2 text-base!  font-medium ${pathname == item?.href ? "text-white! bg-primary" : ""
-                    }   text-figma-black rounded-md  px-10`}
+                  className={`py-2 text-base!  font-medium ${
+                    pathname == item?.href ? "text-white! bg-primary" : ""
+                  }   text-figma-black rounded-md  px-10`}
                 >
                   <Link href={item.href} className="transition-colors">
                     {item.name}
@@ -165,9 +166,6 @@ export default function Navber({ className }: any) {
     </>
   );
 }
-
-
-
 
 function SignInButton() {
   const t = useTranslations("oprator.home.navber");

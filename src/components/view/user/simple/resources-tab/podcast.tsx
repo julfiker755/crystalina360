@@ -9,8 +9,6 @@ import { Skeleton } from "@/components/ui";
 import { Pagination } from "@/components/reuseable/pagination";
 import { useTranslations } from "next-intl";
 
-
-
 export function Podcast() {
   const t = useTranslations("user.home.podcast");
   const [page, setIsPate] = useState(1);
@@ -29,9 +27,7 @@ export function Podcast() {
 
         {/* Podcast Info */}
         <div className="flex-1">
-          <h2 className="text-foreground text-2xl mb-3">
-            {t("title")}
-          </h2>
+          <h2 className="text-foreground text-2xl mb-3">{t("title")}</h2>
           <p className="text-muted-foreground leading-relaxed mb-6 max-w-2xl text-balance">
             {t("description")}
           </p>

@@ -25,7 +25,4 @@ export const invoicesApi = baseApi.injectEndpoints({
   }),
 });
 
-export const {
-  useGetInvoicesQuery,
-  useInvoicesDetailsQuery
-} = invoicesApi
+export const { useGetInvoicesQuery, useInvoicesDetailsQuery } = invoicesApi;

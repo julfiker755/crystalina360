@@ -17,7 +17,7 @@ export function StarBadge({ is_subscribed, is_top_seller }: StarBadgeProps) {
 }
 
 export function OlistamiLabel({ className }: any) {
-  const t = useTranslations('user.details');
+  const t = useTranslations("user.details");
   return (
     <div className="flex items-center">
       <Image src="/fav_logo.png" width={30} height={10} alt="img" />

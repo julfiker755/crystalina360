@@ -79,16 +79,21 @@ export default function Addons() {
           addon?.data?.length > 0 &&
           addon?.data?.map((item: any, idx: any) => (
             <AddOnCd key={idx} {...item}>
-              <Switch disabled={loadingId === item.id} checked={item.isAvailable}
+              <Switch
+                disabled={loadingId === item.id}
+                checked={item.isAvailable}
                 onCheckedChange={async (val) => {
                   try {
-                    setLoadingId(item.id)
-                    const res = await addOnToggle(item.id)
-                    sonner.success(res.data.message, "", "bottom-right")
+                    setLoadingId(item.id);
+                    const res = await addOnToggle(item.id);
+                    sonner.success(res.data.message, "", "bottom-right");
                   } finally {
-                    setLoadingId(null)
+                    setLoadingId(null);
                   }
-                }} className="absolute top-3 right-4" id="airplane-mode" />
+                }}
+                className="absolute top-3 right-4"
+                id="airplane-mode"
+              />
               <div className="flex space-x-3  justify-end mt-3">
                 <AEditbtn
                   onClick={() => {
@@ -266,8 +271,8 @@ const AddonEditForm = ({ setState, details }: any) => {
       secondary_color: details?.secondary_color || "",
       benefits: benefits_id,
     });
-    setPrimaryColor(details?.primary_color || "#6366F1")
-    setSecondaryColor(details?.secondary_color || "#C6C3F6")
+    setPrimaryColor(details?.primary_color || "#6366F1");
+    setSecondaryColor(details?.secondary_color || "#C6C3F6");
   }, [details, from]);
 
   const [updateAddon, { isLoading }] = useUpdateAddonMutation();
@@ -276,8 +281,12 @@ const AddonEditForm = ({ setState, details }: any) => {
     const { primary_color, secondary_color, ...rest } = values;
     const data1 = {
       ...rest,
-      ...primarycolor?.length ? { primary_color: primarycolor } : { primary_color: "#6366F1" },
-      ...secondarycolor?.length ? { secondary_color: secondarycolor } : { secondary_color: "#C6C3F6" },
+      ...(primarycolor?.length
+        ? { primary_color: primarycolor }
+        : { primary_color: "#6366F1" }),
+      ...(secondarycolor?.length
+        ? { secondary_color: secondarycolor }
+        : { secondary_color: "#C6C3F6" }),
     };
 
     const data = helpers.fromData(data1);

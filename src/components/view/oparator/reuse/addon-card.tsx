@@ -12,6 +12,9 @@ import sonner from "@/components/reuseable/sonner";
 import FavIcon from "@/icon/favIcon";
 import { addOns, helpers } from "@/lib";
 import { useRouter } from "next/navigation";
+import { AppState } from "@/redux/store";
+import { useAppSelector } from "@/redux/hooks";
+import { useTranslations } from "next-intl";
 
 interface AddOnCardProps {
   item: any;
@@ -33,16 +36,18 @@ export default function AddOnCard({
     primary_color,
     secondary_color,
     slug,
-    isAvailable
+    isAvailable,
   } = item || {};
   const router = useRouter();
   const [global, updateGlobal] = useGlobalState({
     show: false,
     data: {} as any,
   });
+  const t = useTranslations("oprator.home.add_on");
   const [buyPlan, { isLoading: bugIsLoading }] = useBuyPlanMutation();
   const [paymentInitOp] = usePaymentInitOpMutation();
-  const token = helpers.hasAuthToken();
+  const { user } = useAppSelector((state: AppState) => state.auth);
+  // const token = helpers.hasAuthToken();
 
   const exclusiveTypes = [addOns.miniPdfCourse, addOns.videoMasterclass];
   const ispayment = exclusiveTypes.includes(slug);
@@ -58,11 +63,7 @@ export default function AddOnCard({
       window.location.href = res1?.data?.data;
     }
     if (res.status) {
-      sonner.success(
-        "Payment Successful",
-        "Your add-on is ready. Time to enJay!",
-        "bottom-right",
-      );
+      sonner.success(t("alert_title"), t("alert_message"), "bottom-right");
     }
   };
 
@@ -95,8 +96,8 @@ export default function AddOnCard({
                 <p className="text-lg font-bold text-[#E07856]">€{price}</p>
               </div>
             </div>
-            {token &&
-              (buy ? (
+            {user?.email ? (
+              buy ? (
                 isAvailable ? (
                   <Button
                     style={{
@@ -113,7 +114,7 @@ export default function AddOnCard({
                     className="rounded-full text-white"
                   >
                     <Lock className="w-4 h-4 mr-2" />
-                    Buy now
+                    {t("buy_now")}
                   </Button>
                 ) : (
                   <Button
@@ -121,7 +122,7 @@ export default function AddOnCard({
                     className="opacity-60 rounded-full cursor-not-allowed"
                     disabled
                   >
-                    Not Available
+                    {t("not_available")}
                   </Button>
                 )
               ) : (
@@ -130,14 +131,27 @@ export default function AddOnCard({
                   className="rounded-full disabled:opacity-100 bg-[#009F05] text-white"
                 >
                   <FavIcon className="size-5" name="check_circle" />
-                  Purchased
+                  {t("purchased")}
                 </Button>
-              ))}
+              )
+            ) : (
+              // not clickable button for non-logged in users
+              <Button
+                style={{
+                  backgroundColor: primary_color,
+                }}
+                disabled={true}
+                className="rounded-full text-white"
+              >
+                <Lock className="w-4 h-4 mr-2" />
+                {t("buy_now")}
+              </Button>
+            )}
           </div>
           <p className="text-sm text-muted-foreground mb-6">{bio}</p>
           <div className="mb-6">
             <h3 className="text-sm font-semibold text-[#E07856] mb-3">
-              Key benefits
+              {t("key_benefits")}
             </h3>
             <ul className="space-y-2">
               {benefits?.map((item: any, idx: any) => (
@@ -166,7 +180,7 @@ export default function AddOnCard({
             }}
             className="rounded-full"
           >
-            More details
+            {t("more_details")}
           </Button>
         </div>
       </div>
@@ -180,7 +194,7 @@ export default function AddOnCard({
           className="top-3 right-4"
           onClose={() => updateGlobal("show", false)}
         />
-        <h2 className="font-bold text-center mb-2">More Details</h2>
+        <h2 className="font-bold text-center mb-2">{t("more_details")}</h2>
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center space-x-1">
             <div
@@ -217,7 +231,7 @@ export default function AddOnCard({
             }}
             className="text-sm font-semibold text-[#E07856] mb-3"
           >
-            Key benefits
+            {t("key_benefits")}
           </h3>
           <ul className="space-y-2">
             {benefits?.map((item: any, index: any) => (
@@ -231,8 +245,9 @@ export default function AddOnCard({
             ))}
           </ul>
         </div>
-        {token && buy && (
-          isAvailable ? (
+        {user?.email ? (
+          buy &&
+          (isAvailable ? (
             <Button
               style={{
                 backgroundColor: global?.data?.primaryColor,
@@ -241,7 +256,7 @@ export default function AddOnCard({
               className="rounded-full w-full text-white"
             >
               <Lock className="w-4 h-4 mr-2" />
-              Buy now
+              {t("buy_now")}
             </Button>
           ) : (
             <Button
@@ -249,10 +264,20 @@ export default function AddOnCard({
               className="opacity-60 rounded-full  w-full cursor-not-allowed"
               disabled
             >
-              Not Available
+              {t("not_available")}
             </Button>
-          )
-
+          ))
+        ) : (
+          <Button
+            style={{
+              backgroundColor: global?.data?.primaryColor,
+            }}
+            disabled={true}
+            className="rounded-full w-full text-white"
+          >
+            <Lock className="w-4 h-4 mr-2" />
+            {t("buy_now")}
+          </Button>
         )}
       </Modal2>
     </>

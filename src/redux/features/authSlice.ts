@@ -17,7 +17,14 @@ export type SignKey = keyof typeof controlkey;
 const token = helpers.getAuthCookie(authKey);
 // profile_status?.is_profile_complete
 const initialState: AuthState = {
-  user: { name: "", email: "", avatar: "", role: "", token: token || "", is_profile_complete: true },
+  user: {
+    name: "",
+    email: "",
+    avatar: "",
+    role: "",
+    token: token || "",
+    is_profile_complete: true,
+  },
   otpInfo: { email: "", otp: "" },
   signupRole: "",
   activeModal: "signIn",
@@ -76,7 +83,8 @@ const authSlice = createSlice({
             email: payload?.data?.user?.email || "",
             role: payload?.data?.user?.role || "",
             avatar: payload?.data?.user?.img || "",
-            is_profile_complete: payload?.data?.user?.profile_status?.is_profile_complete
+            is_profile_complete:
+              payload?.data?.user?.profile_status?.is_profile_complete,
           };
           state.isLogged = !!state.user.token;
           state.isProfileLoading = false;

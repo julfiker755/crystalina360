@@ -27,12 +27,8 @@ export default function Footer() {
               </picture>
             </div>
             <div>
-              <h5 className="text-xl mb-2">
-                {t("title")}
-              </h5>
-              <p>
-                {t("description")}
-              </p>
+              <h5 className="text-xl mb-2">{t("title")}</h5>
+              <p>{t("description")}</p>
             </div>
           </div>
 
@@ -40,7 +36,7 @@ export default function Footer() {
             <h3 className="text-xl font-semibold mb-3 text-white">
               {t("quick.quick_links")}
             </h3>
-            { }
+            {}
             {user?.email ? (
               <ul className="space-y-1">
                 <li>
@@ -53,7 +49,9 @@ export default function Footer() {
                   <Link href={"/operator/events"}>{t("quick.events")}</Link>
                 </li>
                 <li>
-                  <Link href={"/operator/privacy-policy"}>{t("quick.privacy_policy")}</Link>
+                  <Link href={"/operator/privacy-policy"}>
+                    {t("quick.privacy_policy")}
+                  </Link>
                 </li>
                 <li>
                   <Link href={"/operator/faq"}>{t("quick.faq")}</Link>
@@ -71,7 +69,9 @@ export default function Footer() {
                   <Link href="/operator/#add-on">{t("quick.add_on")}</Link>
                 </li>
                 <li>
-                  <Link href="/operator/#privacy-Policy">{t("quick.privacy_policy")}</Link>
+                  <Link href="/operator/#privacy-Policy">
+                    {t("quick.privacy_policy")}
+                  </Link>
                 </li>
                 <li>
                   <Link href="/operator/#faq">{t("quick.faq")}</Link>

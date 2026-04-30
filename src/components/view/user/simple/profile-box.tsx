@@ -76,7 +76,9 @@ export default function ProfileBox() {
         <div className="space-y-3">
           <div>
             <Link href={`/profile/update`}>
-              <Button className="w-full text-white!">{t("edit_profile")}</Button>
+              <Button className="w-full text-white!">
+                {t("edit_profile")}
+              </Button>
             </Link>
           </div>
           <Button
@@ -88,26 +90,29 @@ export default function ProfileBox() {
           </Button>
         </div>
       </div>
-      {!isLoading && !profile?.data?.user?.profile_status?.is_profile_complete && (
-        <div className="bg-figma-gray h-fit p-4 rounded-md">
-          <div className="flex justify-between items-center mb-4">
-            <h4 className="font-semibold text-figma-black">{t("profile_completion")}</h4>
-            <span className="text-[#9C8474] font-bold">{profile?.data?.user?.profile_status?.completion_percentage || '0%'}</span>
+      {!isLoading &&
+        !profile?.data?.user?.profile_status?.is_profile_complete && (
+          <div className="bg-figma-gray h-fit p-4 rounded-md">
+            <div className="flex justify-between items-center mb-4">
+              <h4 className="font-semibold text-figma-black">
+                {t("profile_completion")}
+              </h4>
+              <span className="text-[#9C8474] font-bold">
+                {profile?.data?.user?.profile_status?.completion_percentage ||
+                  "0%"}
+              </span>
+            </div>
+            <div className="w-full bg-[#F5EBE0] h-3 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-[#9C8474] rounded-full"
+                style={{
+                  width: `${profile?.data?.user?.profile_status?.completion_percentage}`,
+                }}
+              />
+            </div>
+            <p className="text-sm text-figma-black mt-3">{t("description")}</p>
           </div>
-          <div className="w-full bg-[#F5EBE0] h-3 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-[#9C8474] rounded-full"
-              style={{
-                width: `${profile?.data?.user?.profile_status?.completion_percentage}`,
-              }}
-            />
-          </div>
-          <p className="text-sm text-figma-black mt-3">
-            {t("description")}
-          </p>
-        </div>
-      )}
-
+        )}
     </div>
   );
 }

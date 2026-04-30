@@ -13,7 +13,6 @@ import {
   retreat_offline_sc_edit,
 } from "@/schema";
 
-
 export const getValuesOne = (type: string) => {
   if (type == "offline") {
     return {
@@ -29,9 +28,9 @@ export const getValuesOne = (type: string) => {
       city: "",
       event_date: "",
       event_time: [],
-      min_person: '',
-      max_person: '',
-      ticket_quantity: '',
+      min_person: "",
+      max_person: "",
+      ticket_quantity: "",
       price: "",
       event_duration: "less_than_30_minutes",
       accessibility: [],
@@ -52,12 +51,12 @@ export const getValuesOne = (type: string) => {
       event_date: "",
       event_time: "",
       min_person: "1",
-      max_person: '',
+      max_person: "",
       price: "",
       event_duration: "less_than_30_minutes",
       accessibility: [],
       tags: [],
-      ticket_quantity: '',
+      ticket_quantity: "",
     };
   } else if (type == "online") {
     return {
@@ -70,10 +69,10 @@ export const getValuesOne = (type: string) => {
       event_date: "",
       event_time: [],
       min_person: "",
-      max_person: '',
+      max_person: "",
       price: "",
       tags: [],
-      ticket_quantity: '',
+      ticket_quantity: "",
     };
   } else if (type == "ondemand") {
     return {
@@ -87,7 +86,7 @@ export const getValuesOne = (type: string) => {
       region: "",
       province: "",
       city: "",
-      price: '',
+      price: "",
       tags: [],
     };
   }
@@ -98,7 +97,6 @@ export const getOneSchema = (type: string) => {
   if (type === "online") return one2one_online_sc;
   if (type === "ondemand") return group_demand_sc;
 };
-
 
 export const getOneSchemaEdit = (type: string) => {
   if (type === "offline") return one2one_off_sc_edit;
@@ -128,7 +126,7 @@ export const getValuesGroup = (type: string) => {
       event_duration: "less_than_30_minutes",
       accessibility: [],
       tags: [],
-      ticket_quantity: '',
+      ticket_quantity: "",
     };
   } else if (type == "online") {
     return {
@@ -141,10 +139,10 @@ export const getValuesGroup = (type: string) => {
       event_date: [],
       event_time: "",
       min_person: "",
-      max_person: '',
+      max_person: "",
       price: "",
       tags: [],
-      ticket_quantity: ''
+      ticket_quantity: "",
     };
   } else if (type == "ondemand") {
     return {
@@ -181,8 +179,8 @@ export const getValuesGroup = (type: string) => {
       event_duration: "less_than_30_minutes",
       accessibility: [],
       tags: [],
-      ticket_quantity: '',
-    }
+      ticket_quantity: "",
+    };
   }
 };
 

@@ -14,7 +14,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 export default function UserOpratorNofi() {
-  const t = useTranslations('user.home');
+  const t = useTranslations("user.home");
   const [page, setIsPage] = useState(1);
   const { data: noti, isLoading } = useGetNotiQuery({ page: page });
   const [markNoti, { isLoading: markloading }] = useMarkNotiMutation();
@@ -57,8 +57,9 @@ export default function UserOpratorNofi() {
             noti?.data?.map((item: any, index: any) => (
               <div
                 key={index}
-                className={`flex items-center ${item.is_read && "bg-[#FBFBFB]"
-                  }  py-2 px-2 rounded-md justify-between space-x-2`}
+                className={`flex items-center ${
+                  item.is_read && "bg-[#FBFBFB]"
+                }  py-2 px-2 rounded-md justify-between space-x-2`}
                 onClick={() => {
                   if (!markloading) {
                     handleRead(item.id);
@@ -72,15 +73,17 @@ export default function UserOpratorNofi() {
                     alt={item.username}
                   />
                   <p
-                    className={`text-article ${item?.active && "text-figma-black"
-                      }`}
+                    className={`text-article ${
+                      item?.active && "text-figma-black"
+                    }`}
                   >
                     {item?.data?.title}
                   </p>
                 </div>
                 <p
-                  className={`text-article ${item?.is_read && "text-figma-black"
-                    }`}
+                  className={`text-article ${
+                    item?.is_read && "text-figma-black"
+                  }`}
                 >
                   {helpers.formatDate(item?.created_at)}
                 </p>

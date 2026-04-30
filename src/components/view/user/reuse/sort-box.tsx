@@ -14,8 +14,6 @@ type FilterOption =
   | "date"
   | "last_spots";
 
-
-
 interface sortBoxProps extends childrenProps {
   handleSubmit: (filters: string) => void;
 }
@@ -34,7 +32,6 @@ export function SortBox({ children, handleSubmit }: sortBoxProps) {
     { id: "date", label: t("date") },
     { id: "last_spots", label: t("last_spots") },
   ];
-
 
   return (
     <>

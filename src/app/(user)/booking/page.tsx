@@ -13,8 +13,7 @@ import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import React from 'react'
-
+import React from "react";
 
 function BookingChild() {
   const t = useTranslations("user.resources");
@@ -126,13 +125,10 @@ function BookingChild() {
   );
 }
 
-
-
-
 export default function Booking() {
   return (
     <Suspense>
       <BookingChild />
     </Suspense>
-  )
+  );
 }

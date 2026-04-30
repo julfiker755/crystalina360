@@ -22,7 +22,10 @@ export default function TicketQuantity({ from }: any) {
             err={false}
           />
         </div>
-        <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.ticket_quantity?.message} />
+        <ErrorInput
+          className="text-red-400 text-sm"
+          error={from?.formState?.errors?.ticket_quantity?.message}
+        />
       </div>
       <div>
         <div className="h-10 flex items-center justify-between px-2 border rounded-md">
@@ -38,7 +41,10 @@ export default function TicketQuantity({ from }: any) {
             err={false}
           />
         </div>
-        <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.price?.message} />
+        <ErrorInput
+          className="text-red-400 text-sm"
+          error={from?.formState?.errors?.price?.message}
+        />
       </div>
     </div>
   );

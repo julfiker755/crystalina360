@@ -5,7 +5,7 @@ import FeatureCard from "@/components/view/user/reuse/feature-card";
 import { useTranslations } from "next-intl";
 
 export default function Features() {
-  const t = useTranslations('user.home.key_features')
+  const t = useTranslations("user.home.key_features");
   return (
     <div className="container">
       <BackBtn2 className="mt-10 mb-2" />

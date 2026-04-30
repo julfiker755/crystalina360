@@ -52,8 +52,8 @@ export default function RetreatStore({ msg }: { msg: string }) {
   const [progress, setProgress] = useState(0);
   const router = useRouter();
   const [emailAll, setAllEmail] = useState<string[]>([]);
-  const defaultValues = getValuesGroup('retreat') as any;
-  const defaultSchema = getGroupSchema('retreat') as any;
+  const defaultValues = getValuesGroup("retreat") as any;
+  const defaultSchema = getGroupSchema("retreat") as any;
 
   const from = useForm({
     resolver: zodResolver(defaultSchema),
@@ -71,7 +71,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
   }, [files]);
 
   const resetFrom = (deliveryType: string) => {
-    const values = getValuesGroup('retreat') as any;
+    const values = getValuesGroup("retreat") as any;
     from.reset(values);
     setSelAccbility([]);
     setSelectDate([]);
@@ -83,7 +83,7 @@ export default function RetreatStore({ msg }: { msg: string }) {
   const [storeEvents, { isLoading }] = useStoreEventsMutation();
 
   const handleSubmit = async (values: FieldValues) => {
-    const valuedata = cleanObject(values)
+    const valuedata = cleanObject(values);
     const data = helpers.fromData({
       event_type: "retreat",
       ...valuedata,
@@ -153,9 +153,10 @@ export default function RetreatStore({ msg }: { msg: string }) {
                         from.setValue("delivery_type", item.value);
                       }}
                       type="button"
-                      className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
+                      className={`font-normal transition-colors border bg-transparent text-figma-black ${
+                        item.value === get("delivery_type") &&
                         "bg-primary text-white"
-                        }`}
+                      }`}
                     >
                       <FavIcon
                         color={
@@ -183,9 +184,10 @@ export default function RetreatStore({ msg }: { msg: string }) {
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
+                      item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                      }`}
+                    }`}
                     type="button"
                   >
                     {t(`event_purpose.${item.value}`)}
@@ -401,7 +403,10 @@ const SingleDateBox = ({ from }: any) => {
         className="h-10 text-black"
       />
       {!val && (
-        <ErrorInput className="text-red-400 text-sm" error={from?.formState?.errors?.event_date?.message} />
+        <ErrorInput
+          className="text-red-400 text-sm"
+          error={from?.formState?.errors?.event_date?.message}
+        />
       )}
     </div>
   );

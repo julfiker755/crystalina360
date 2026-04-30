@@ -58,5 +58,5 @@ export const {
   useAllBenefitsQuery,
   useStoreAddOnMutation,
   useUpdateAddonMutation,
-  useAddOnToggleMutation
+  useAddOnToggleMutation,
 } = addonApi;

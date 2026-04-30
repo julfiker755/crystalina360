@@ -6,11 +6,11 @@ import { featuresData } from "@/components/dummy-data";
 import { useTranslations } from "next-intl";
 
 export default function KeyFeature({ role }: any) {
-  const t = useTranslations('user.home.key_features')
+  const t = useTranslations("user.home.key_features");
 
   return (
     <div className="pt-16  container">
-      <h1 className="mb-10">{t('title')}</h1>
+      <h1 className="mb-10">{t("title")}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {featuresData.map((feature) => (
           <FeatureCard
@@ -28,7 +28,7 @@ export default function KeyFeature({ role }: any) {
         <div className="flex justify-center">
           <Link href="/feature">
             <Button size="lg" className="mt-10">
-              {t('btn_learn')}
+              {t("btn_learn")}
             </Button>
           </Link>
         </div>

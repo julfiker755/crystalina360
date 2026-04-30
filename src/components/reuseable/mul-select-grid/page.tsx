@@ -13,7 +13,7 @@ interface MultiSelectGridProps {
   options: any[];
   className?: string;
   name: string;
-  translationKey: any
+  translationKey: any;
 }
 
 export function MultiSelectGrid({
@@ -21,7 +21,7 @@ export function MultiSelectGrid({
   options,
   name,
   className,
-  translationKey
+  translationKey,
 }: MultiSelectGridProps) {
   const t1 = useTranslations("common");
   const [isOpen, setIsOpen] = useState(false);

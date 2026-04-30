@@ -45,7 +45,9 @@ export default function Profile() {
   const collectPaypal = async () => {
     const res = await connectPaypal({}).unwrap();
     if (res.status) {
-      dispatch(authApi.endpoints.getProfile.initiate({}, { forceRefetch: true }));
+      dispatch(
+        authApi.endpoints.getProfile.initiate({}, { forceRefetch: true }),
+      );
       window.location.href = res?.data;
     }
   };
@@ -81,16 +83,28 @@ export default function Profile() {
                   label={t("province")}
                   value={residence_province || "N/A"}
                 />
-                <InputShow label={t("region")} value={residence_region || "N/A"} />
-                <InputShow label={t("country")} value={residence_country || "N/A"} />
+                <InputShow
+                  label={t("region")}
+                  value={residence_region || "N/A"}
+                />
+                <InputShow
+                  label={t("country")}
+                  value={residence_country || "N/A"}
+                />
                 <InputShow label={t("gender")} value={gender || "N/A"} />
                 <InputShow label={t("sdi_code")} value={sdi_code || "N/A"} />
-                <InputShow label={t("code_fiscal")} value={code_fiscal || "N/A"} />
+                <InputShow
+                  label={t("code_fiscal")}
+                  value={code_fiscal || "N/A"}
+                />
                 <InputShow
                   label={t("province_code")}
                   value={province_code || "N/A"}
                 />
-                <InputShow label={t("vat_number")} value={vat_number || "N/A"} />
+                <InputShow
+                  label={t("vat_number")}
+                  value={vat_number || "N/A"}
+                />
                 {vat_number?.length > 0 && (
                   <>
                     <InputShow
@@ -140,9 +154,7 @@ export default function Profile() {
               </div>
 
               <div className="border p-3 rounded-md flex-col lg:flex-row lg:flex items-center justify-center gap-10">
-                <div>
-                  {t("paypal_text")}
-                </div>
+                <div>{t("paypal_text")}</div>
                 {/* PayPal connected */}
                 {profile?.data?.user?.paypal_merchant_id?.length > 0 ? (
                   <Button

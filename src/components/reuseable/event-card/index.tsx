@@ -14,7 +14,11 @@ interface EventCardProps {
   zoomLink?: boolean;
 }
 
-export default function EventCard({ item, wish, zoomLink = false }: EventCardProps) {
+export default function EventCard({
+  item,
+  wish,
+  zoomLink = false,
+}: EventCardProps) {
   const {
     id,
     organizer,
@@ -36,28 +40,21 @@ export default function EventCard({ item, wish, zoomLink = false }: EventCardPro
     link,
   } = item || {};
 
-
-
   const [wishEvents, { isLoading }] = useWishEventsMutation();
   let elementShow: any;
   if (event_type === event_t.onetoone || event_type == event_t.retreat) {
-    elementShow = (
-      delivery_type != delivary_t.ondemand && (
-        <div className="flex  gap-2  items-center text-muted-foreground">
-          <Calendar size={22} />
-          <span className="text-base">{event_date?.[0]}</span>
-        </div>
-      )
-
+    elementShow = delivery_type != delivary_t.ondemand && (
+      <div className="flex  gap-2  items-center text-muted-foreground">
+        <Calendar size={22} />
+        <span className="text-base">{event_date?.[0]}</span>
+      </div>
     );
   } else if (event_type === event_t.group) {
-    elementShow = (
-      delivery_type != delivary_t.ondemand && (
-        <div className="flex  gap-2  items-center text-muted-foreground">
-          <FavIcon color="#7F7F7F" className="size-5" name="ongoing_events" />
-          <span className="text-base">{helpers.planTime(event_time?.[0])}</span>
-        </div>
-      )
+    elementShow = delivery_type != delivary_t.ondemand && (
+      <div className="flex  gap-2  items-center text-muted-foreground">
+        <FavIcon color="#7F7F7F" className="size-5" name="ongoing_events" />
+        <span className="text-base">{helpers.planTime(event_time?.[0])}</span>
+      </div>
     );
   }
   //  ===========  store wish ================
@@ -95,11 +92,13 @@ export default function EventCard({ item, wish, zoomLink = false }: EventCardPro
               <source src={img} />
               Your browser does not support the video tag.
             </video>
-          ) : (<img
-            src={"/videoImg.png"}
-            alt={"title"}
-            className="w-full h-full object-cover"
-          />)
+          ) : (
+            <img
+              src={"/videoImg.png"}
+              alt={"title"}
+              className="w-full h-full object-cover"
+            />
+          )
         ) : (
           <div>
             <img

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { RatingScore } from "@/components/reuseable/rating";
 import { useGetTestimonialsQuery } from "@/redux/api/user/testimonialsApi";
 import { Skeleton } from "@/components/ui";
@@ -6,19 +6,17 @@ import { ImgBox } from "@/components/reuseable/Img-box";
 import { Repeat } from "@/components/reuseable/repeat";
 import { useTranslations } from "next-intl";
 
-
 export default function Testimonial() {
-  const t = useTranslations('user.home.testimonial')
-  const { data: items, isLoading } = useGetTestimonialsQuery({})
-
+  const t = useTranslations("user.home.testimonial");
+  const { data: items, isLoading } = useGetTestimonialsQuery({});
 
   if (items?.data?.length === 0) {
-    return null
+    return null;
   }
 
   return (
     <div className="pt-16 container">
-      <h1 className="mb-10">{t('title')}</h1>
+      <h1 className="mb-10">{t("title")}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {isLoading ? (
           <Repeat count={8}>
@@ -34,7 +32,6 @@ export default function Testimonial() {
             <TestimonialCard key={testimonial.id} {...testimonial} />
           ))
         )}
-
       </div>
     </div>
   );

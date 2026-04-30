@@ -27,7 +27,7 @@ const intRathing = {
   comment: "",
 };
 export default function BookingDetails() {
-  const t = useTranslations('user.details');
+  const t = useTranslations("user.details");
   const { id } = useParams();
   const { data: bookings } = useBookingsDetailsQuery(id);
   const [isReview, setIsReview] = useState(false);
@@ -107,7 +107,7 @@ export default function BookingDetails() {
       link.download = `${invoice_id}.pdf`;
       link.click();
       setdownlaodLoading(false);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const NotOnDemand = (item: any) => {
@@ -137,7 +137,9 @@ export default function BookingDetails() {
         </div>
         <div className="flex  gap-2  items-center text-muted-foreground">
           <Calendar className="text-figma-black" size={22} />
-          <span className="text-base">{helpers.formatDate(bookings?.data?.event_date, "DD-MM-YYYY")}</span>
+          <span className="text-base">
+            {helpers.formatDate(bookings?.data?.event_date, "DD-MM-YYYY")}
+          </span>
         </div>
       </>
     );
@@ -238,7 +240,9 @@ export default function BookingDetails() {
 
           {NotOnDemand(
             <div>
-              <h5 className="text-xl font-medium">{t("quantity_of_tickets")}</h5>
+              <h5 className="text-xl font-medium">
+                {t("quantity_of_tickets")}
+              </h5>
               <h5 className="text-[#A6A996] text-xl ml-2">
                 {bookings?.data?.ticket_quantity}
               </h5>
@@ -278,9 +282,7 @@ export default function BookingDetails() {
                 ))}
               </div>
             ) : (
-              <div className="text-figma-a_gray">
-                {t("no_rating_found")}
-              </div>
+              <div className="text-figma-a_gray">{t("no_rating_found")}</div>
             )}
           </div>
         ) : (
