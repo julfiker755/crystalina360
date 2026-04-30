@@ -19,7 +19,7 @@ export function Podcast() {
         {/* Podcast Image */}
         <div>
           <ImgBox
-            src={"/podcast.jpg"}
+            src={"/podcast.png"}
             className="w-full lg:w-55 h-55 rounded-lg bg-muted overflow-hidden"
             alt="The OLISTAMI Podcast"
           />

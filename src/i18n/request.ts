@@ -12,7 +12,7 @@ const messages: any = {
 export default getRequestConfig(async () => {
   const cookieStore = await cookies();
 
-  let locale = cookieStore.get("NEXT_LOCALE")?.value || "en";
+  let locale = cookieStore.get("NEXT_LOCALE")?.value || "it";
 
   if (cookieStore.get("request-pathname")?.value === "admin") {
     locale = "en";

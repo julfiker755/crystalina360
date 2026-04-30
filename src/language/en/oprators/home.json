@@ -13,7 +13,7 @@
     "pricing_box": {
       "title": "Pricing",
       "sub_title": "Free Plan",
-      "description": "Please sign in to access the Buy button and complete your payment smoothly",
+      "description": "Please sign in to access the Buy button, view all add-ons, and complete your payment smoothly",
       "monthly": "Monthly",
       "annual": "Annual",
       "benefits_you_will_get": "Benefits you will get",
@@ -60,6 +60,7 @@
   "add_on": {
     "title": "Add on services",
     "sub_title": "Automatic 5% discount at checkout when purchasing two or more add-ons",
+    "home_sub_title": "Sign in/create an account to view them all and purchase",
     "buy_now": "Buy now",
     "more_details": "More details",
     "purchased_add_ons": "Purchased add-ons",

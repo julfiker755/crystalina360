@@ -74,6 +74,7 @@ export default function DashboardHome() {
                     start_date: helpers.formatDate(start_date, "YYYY-MM-DD"),
                   }))
                 }
+                isDisabled={false}
               />
             </div>
             <div className="flex items-center space-x-2">
@@ -85,6 +86,7 @@ export default function DashboardHome() {
                     end_date: helpers.formatDate(end_date, "YYYY-MM-DD"),
                   }))
                 }
+                isDisabled={false}
               />
             </div>
             <h1

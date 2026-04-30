@@ -13,7 +13,7 @@
     "pricing_box": {
       "title": "Prezzi",
       "sub_title": "Piano Gratuito",
-      "description": "Per accedere al pulsante Acquista e completare il pagamento senza problemi, effettua prima l'accesso",
+      "description": "Accedi per visualizzare il pulsante Acquista, vedere tutti gli add-on e completare il pagamento senza problemi",
       "monthly": "Mensile",
       "annual": "Annuale",
       "benefits_you_will_get": "Vantaggi che otterrai",
@@ -59,6 +59,7 @@
   },
   "add_on": {
     "title": "Servizi aggiuntivi",
+    "home_sub_title": "Accedi/crea account per visualizzarli tutti ed acquistare",
     "sub_title": "Sconto automatico del 5% al momento del pagamento acquistando due o più componenti aggiuntivi",
     "buy_now": "Acquista ora",
     "more_details": "Maggiori dettagli",
