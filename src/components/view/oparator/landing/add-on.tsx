@@ -9,7 +9,7 @@ import { Button } from "@/components/ui";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import Modal2 from "@/components/reuseable/modal2";
 import AuthModalController from "@/components/view/common/auth-controller";
-import { toggleIsOpen } from "@/redux/features/authSlice";
+import { setSignupRole, toggleIsOpen } from "@/redux/features/authSlice";
 
 export default function AddOn() {
   const t = useTranslations("oprator.home");
@@ -38,7 +38,10 @@ export default function AddOn() {
           <p>{t("navber.pricing_box.description")}</p>
           {user.email ? null : (
             <Button
-              onClick={() => dispatch(toggleIsOpen())}
+              onClick={() => {
+                dispatch(setSignupRole("operator"));
+                dispatch(toggleIsOpen())
+              }}
               size="lg"
               className="text-white rounded-full"
             >

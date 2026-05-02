@@ -13,7 +13,7 @@ import OnDemand from "@/components/view/user/simple/on-demand";
 import FavIcon from "@/icon/favIcon";
 import { delivary_t, event_t, fakeZoom, helpers, roleKey } from "@/lib";
 import { useSingleEventsQuery } from "@/redux/api/operator/opratorApi";
-import { toggleIsOpen } from "@/redux/features/authSlice";
+import { setSignupRole, toggleIsOpen } from "@/redux/features/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
 import { Calendar, Clock, MapPin, Tag } from "lucide-react";
@@ -220,13 +220,21 @@ export default function EventDetails() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-10">
                 <Button
                   type="button"
-                  onClick={() => dispatch(toggleIsOpen())}
+                  onClick={() => {
+                    dispatch(setSignupRole("user"))
+                    dispatch(toggleIsOpen())
+                  }}
                   className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]"
                 >
                   {t("send_message")}
                 </Button>
 
-                <Button onClick={() => dispatch(toggleIsOpen())} className="w-full">
+                <Button
+                  onClick={() => {
+                    dispatch(setSignupRole("user"))
+                    dispatch(toggleIsOpen())
+                  }}
+                  className="w-full">
                   {t("purchase_now")}
                 </Button>
               </div>
