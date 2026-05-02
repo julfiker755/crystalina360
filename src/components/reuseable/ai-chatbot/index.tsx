@@ -103,20 +103,18 @@ export default function AIChatBox() {
           className={`flex gap-2 max-w-[90%] ${isUser ? "flex-row-reverse" : ""}`}
         >
           <div
-            className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
-              isUser ? "bg-[#A68B7C] text-white" : "bg-[#F5F1ED] text-[#4A3E37]"
-            }`}
+            className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${isUser ? "bg-[#A68B7C] text-white" : "bg-[#F5F1ED] text-[#4A3E37]"
+              }`}
           >
             {isUser ? <UserRound size={16} /> : <Bot size={16} />}
           </div>
 
           <div className="flex flex-col gap-2">
             <div
-              className={`p-3 rounded-2xl text-sm ${
-                isUser
-                  ? "bg-[#A68B7C] text-white rounded-tr-none"
-                  : "bg-white border border-[#EAE2D9] text-[#4A3E37] rounded-tl-none"
-              }`}
+              className={`p-3 rounded-2xl text-sm ${isUser
+                ? "bg-[#A68B7C] text-white rounded-tr-none"
+                : "bg-white border border-[#EAE2D9] text-[#4A3E37] rounded-tl-none"
+                }`}
             >
               <div dangerouslySetInnerHTML={{ __html: msg.text }} />
             </div>

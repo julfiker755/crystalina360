@@ -18,5 +18,9 @@
   "submit": "Submit",
   "cancel": "Cancel",
   "rating_successfully_added": "Rating Successfully Added",
-  "thank_you": "Thank you! Your rating has been successfully recorded."
+  "thank_you": "Thank you! Your rating has been successfully recorded.",
+  "select_here": "Select here",
+  "select_time": "Select Time",
+  "select_date": "Select Date",
+  "coupon_is_required": "Coupon is required"
 }

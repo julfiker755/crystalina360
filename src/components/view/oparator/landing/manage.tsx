@@ -3,7 +3,7 @@ import Image from "next/image";
 import mangeImg from "@/assets/oprator/mange.jpg";
 import { Button } from "@/components/ui";
 import Modal2 from "@/components/reuseable/modal2";
-import { toggleIsOpen } from "@/redux/features/authSlice";
+import { setSignupRole, toggleIsOpen } from "@/redux/features/authSlice";
 import AuthModalController from "@/components/view/common/auth-controller";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
@@ -34,7 +34,10 @@ export default function Manage() {
             <h1 className="text-left text-white">{t("oprator_hero.title")}</h1>
             <p className="text-white">{t("oprator_hero.description")}</p>
             <Button
-              onClick={() => dispatch(toggleIsOpen())}
+              onClick={() => {
+                dispatch(setSignupRole("operator"));
+                dispatch(toggleIsOpen())
+              }}
               size="lg"
               className="text-primary bg-white rounded-full"
             >

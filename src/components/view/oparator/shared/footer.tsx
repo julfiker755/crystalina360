@@ -17,7 +17,7 @@ export default function Footer() {
   ];
 
   return (
-    <div className="bg-figma-black py-16 *:text-white">
+    <div className="bg-figma-black pt-10 lg:pt-16 *:text-white">
       <div className="container">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-50">
           <div className="space-y-4">
@@ -36,7 +36,7 @@ export default function Footer() {
             <h3 className="text-xl font-semibold mb-3 text-white">
               {t("quick.quick_links")}
             </h3>
-            {}
+            { }
             {user?.email ? (
               <ul className="space-y-1">
                 <li>
@@ -98,6 +98,9 @@ export default function Footer() {
               <AppStore />
             </div>
           </div>
+        </div>
+        <div className="mt-16 pb-1 pt-1 text-center border-t border-white/10">
+          © 2026 | Copyright Olistami S.r.l. | P.IVA 04261130134
         </div>
       </div>
     </div>

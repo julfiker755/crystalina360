@@ -13,7 +13,7 @@ export default function Footer() {
   ];
 
   return (
-    <div className="bg-figma-black py-10 lg:py-16 *:text-white">
+    <div className="bg-figma-black pt-10 lg:pt-16 *:text-white">
       <div className="container">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
           <div className="space-y-4">
@@ -69,7 +69,11 @@ export default function Footer() {
             </div>
           </div>
         </div>
+        <div className="mt-16 pb-1 pt-1 text-center border-t border-white/10">
+          © 2026 | Copyright Olistami S.r.l. | P.IVA 04261130134
+        </div>
       </div>
+
     </div>
   );
 }

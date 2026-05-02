@@ -18,5 +18,9 @@
   "submit": "Invia",
   "cancel": "Annulla",
   "rating_successfully_added": "Valutazione aggiunta con successo",
-  "thank_you": "Grazie! La tua valutazione è stata registrata con successo."
+  "thank_you": "Grazie! La tua valutazione è stata registrata con successo.",
+  "select_here": "Seleziona qui",
+  "select_time": "Seleziona orario",
+  "select_date": "Seleziona data",
+  "coupon_is_required": "Il coupon è obbligatorio"
 }

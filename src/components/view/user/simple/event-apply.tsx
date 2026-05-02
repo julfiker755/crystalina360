@@ -49,7 +49,7 @@ export default function EventApply({
     setCouponValid(true);
     try {
       const isValid = from.validateFields({
-        coupon: "Coupon is required",
+        coupon: t("coupon_is_required"),
       });
       if (!isValid) return;
 
@@ -138,11 +138,13 @@ export default function EventApply({
     }
   };
 
+
+
   return (
     <div className="space-y-5 pt-10">
       <div className="w-full">
         <Label className="mb-2 block text-base">
-          {isDate ? "Select Date" : "Select Time"}
+          {isDate ? t("select_date") : t("select_time")}
         </Label>
         <div
           className={clsx(
@@ -156,7 +158,7 @@ export default function EventApply({
             <span className="text-sm text-foreground">
               {isBooking?.date?.includes(":")
                 ? helpers.planTime(isBooking.date)
-                : isBooking?.date || "Select here"}
+                : isBooking?.date || t("select_here")}
             </span>
             <ChevronDown
               className={clsx(
