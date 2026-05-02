@@ -103,7 +103,7 @@ const renderCustomizedLabel = ({
         fill={color}
         className="font-medium text-sm"
       >
-        {`$${value.toFixed(1)}`}
+        {`€${value.toFixed(1)}`}
       </text>
     </g>
   );
@@ -141,7 +141,7 @@ export function PieCharts({ data }: PieChartsProps) {
               );
             })}
             <Label
-              value={`$${totalValue?.toFixed(1)}`}
+              value={`€${totalValue?.toFixed(1)}`}
               position="center"
               className="fill-foreground text-3xl font-bold"
             />

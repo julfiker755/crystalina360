@@ -1,7 +1,7 @@
 "use client";
 import Modal2 from "@/components/reuseable/modal2";
 import { Button } from "@/components/ui";
-import { CalendarDays, Lock } from "lucide-react";
+import { CalendarDays, Lock, Mail } from "lucide-react";
 import { CloseIcon } from "../../common/btn-modal";
 import { useGlobalState } from "@/hooks";
 import {
@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { AppState } from "@/redux/store";
 import { useAppSelector } from "@/redux/hooks";
 import { useTranslations } from "next-intl";
+import { useRequestCodeMutation } from "@/redux/api/admin/addonApi";
 
 interface AddOnCardProps {
   item: any;
@@ -38,6 +39,7 @@ export default function AddOnCard({
     slug,
     isAvailable,
   } = item || {};
+  const [requestCode] = useRequestCodeMutation();
   const router = useRouter();
   const [global, updateGlobal] = useGlobalState({
     show: false,
@@ -66,6 +68,16 @@ export default function AddOnCard({
       sonner.success(t("alert_title"), t("alert_message"), "bottom-right");
     }
   };
+
+  const SubmitRequestCode = async () => {
+    console.log("Request a quote submitted for item ID:", id);
+    const res = await requestCode({});
+    if (res?.data?.status) {
+      sonner.success(t("request_title"), t("request_message"), "bottom-right");
+    }
+  };
+
+  // slug === "custom-solutions"
 
   return (
     <>
@@ -98,7 +110,18 @@ export default function AddOnCard({
             </div>
             {user?.email ? (
               buy ? (
-                isAvailable ? (
+                slug === "custom-solutions" ? (
+                  <Button
+                    onClick={() => SubmitRequestCode()}
+                    style={{
+                      backgroundColor: primary_color,
+                    }}
+                    className="rounded-full text-white"
+                  >
+                    <Mail className="w-7 h-7 mr-1" />
+                    {t("request_a_quote")}
+                  </Button>
+                ) : isAvailable ? (
                   <Button
                     style={{
                       backgroundColor: primary_color,
@@ -246,8 +269,18 @@ export default function AddOnCard({
           </ul>
         </div>
         {user?.email ? (
-          buy &&
-          (isAvailable ? (
+          buy && global?.data?.slug === "custom-solutions" ? (
+            <Button
+              style={{
+                backgroundColor: global?.data?.primaryColor,
+              }}
+              onClick={() => SubmitRequestCode()}
+              className="rounded-full w-full text-white"
+            >
+              <Mail className="w-7 h-7 mr-1" />
+              {t("request_a_quote")}
+            </Button>
+          ) : isAvailable ? (
             <Button
               style={{
                 backgroundColor: global?.data?.primaryColor,
@@ -266,7 +299,7 @@ export default function AddOnCard({
             >
               {t("not_available")}
             </Button>
-          ))
+          )
         ) : (
           <Button
             style={{

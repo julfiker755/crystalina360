@@ -86,7 +86,7 @@ export default function AddOnQuestion() {
     const newErrors: FormErrors = {};
 
     if (!formData.first_name.trim()) {
-      newErrors.first_name = t("right.frist_name_error")
+      newErrors.first_name = t("right.frist_name_error");
     }
 
     if (!formData.surname.trim()) {
@@ -217,7 +217,6 @@ export default function AddOnQuestion() {
                 <span className="font-medium text-primary italic">
                   {t("left.olistami")}
                 </span>
-
               </h1>
               <p className="text-lg text-stone-500 mt-5 leading-relaxed text-center">
                 {t("left.text")}
@@ -417,8 +416,9 @@ export default function AddOnQuestion() {
                       </div>
 
                       <label
-                        className={`leading-relaxed cursor-pointer select-none ${errors.terms ? "text-red-400" : "text-stone-500"
-                          }`}
+                        className={`leading-relaxed cursor-pointer select-none ${
+                          errors.terms ? "text-red-400" : "text-stone-500"
+                        }`}
                       >
                         {t("right.terms_title")}{" "}
                       </label>
@@ -555,8 +555,9 @@ const FormField = ({
                         onSelect={() => handleSelect(item.value)}
                       >
                         <Check
-                          className={`mr-2 h-4 w-4 ${value === item.value ? "opacity-100" : "opacity-0"
-                            }`}
+                          className={`mr-2 h-4 w-4 ${
+                            value === item.value ? "opacity-100" : "opacity-0"
+                          }`}
                         />
                         {item.label}
                       </CommandItem>

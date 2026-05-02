@@ -69,7 +69,10 @@
     "purchased": "Purchased",
     "key_benefits": "Key benefits",
     "alert_title": "Payment Successful",
-    "alert_message": "Your add-on is ready. Time to enJay!"
+    "alert_message": "Your add-on is ready. Time to enJay!",
+    "request_a_quote": "Request a Quote",
+    "request_title": "Quote Request Submitted Successfully",
+    "request_message": "Your quote request has been submitted successfully. We will get back to you shortly."
   },
   "privacy_policy": {
     "title": "Privacy Policy",

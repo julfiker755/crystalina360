@@ -70,11 +70,12 @@ export default function EventDetails() {
 
   return (
     <div className="container">
-      {isLoading ? (<div>
-        <BackBtn2 label={t("back")} className="my-6 mt-10" />
-        <EventDetailsSkeleton />
-
-      </div>) : (
+      {isLoading ? (
+        <div>
+          <BackBtn2 label={t("back")} className="my-6 mt-10" />
+          <EventDetailsSkeleton />
+        </div>
+      ) : (
         <>
           <BackBtn2 label={t("back")} className="my-6 mt-10" />
 
@@ -192,7 +193,8 @@ export default function EventDetails() {
             </div>
             {user.role == roleKey.user ? (
               <>
-                {has_video_access === false && ShowOnDemand(<OnDemand id={id} />)}
+                {has_video_access === false &&
+                  ShowOnDemand(<OnDemand id={id} />)}
 
                 {NotOnDemand(
                   ticket_status == "available" && (
@@ -218,10 +220,7 @@ export default function EventDetails() {
                   {t("send_message")}
                 </Button>
 
-                <Button
-                  disabled={true}
-                  className="w-full"
-                >
+                <Button disabled={true} className="w-full">
                   {t("purchase_now")}
                 </Button>
               </div>
@@ -231,14 +230,12 @@ export default function EventDetails() {
         </>
       )}
     </div>
-  )
+  );
 }
-
 
 function EventDetailsSkeleton() {
   return (
     <div className="bg-[#FBFBFB] p-10">
-
       <Skeleton className="sm:w-full mx-auto xl:w-[70%] h-[200px] lg:h-[500px]" />
       <div className="flex items-center justify-between my-10">
         <div className="flex gap-2 items-center">
@@ -258,7 +255,6 @@ function EventDetailsSkeleton() {
         <Skeleton className="w-[40%] h-4 rounded-md!" />
         <Skeleton className="w-[30%] h-4 rounded-md!" />
         <Skeleton className="w-[20%] h-4 rounded-md!" />
-
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-10 mb-10">
         <Skeleton className="w-full h-10" />

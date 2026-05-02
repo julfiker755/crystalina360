@@ -41,8 +41,8 @@ export default function PricingBox({ order }: { order?: string }) {
     }
   };
 
-  const Ids = profile?.data?.user?.subscribed_plans?.status === "active"
-  const slgId = profile?.data?.user?.subscribed_plans?.subscription_id
+  const Ids = profile?.data?.user?.subscribed_plans?.status === "active";
+  const slgId = profile?.data?.user?.subscribed_plans?.subscription_id;
   // const isPlan = profile?.data?.user?.subscribed_plans?.status === "cancelled"
 
   const cancelSubscription = async () => {
@@ -87,15 +87,17 @@ export default function PricingBox({ order }: { order?: string }) {
         <div className="flex justify-center mt-5 mx-auto space-x-3 bg-figma-gray1 w-fit rounded-full">
           <button
             onClick={() => setIsTab("MONTH")}
-            className={`py-2 px-7 ${isTab == "MONTH" && "bg-figma-primary  text-white!"
-              } rounded-full text-figma-black cursor-pointer`}
+            className={`py-2 px-7 ${
+              isTab == "MONTH" && "bg-figma-primary  text-white!"
+            } rounded-full text-figma-black cursor-pointer`}
           >
             {t("pricing_box.monthly")}
           </button>
           <button
             onClick={() => setIsTab("YEAR")}
-            className={`py-2 px-7 ${isTab === "YEAR" && "bg-figma-primary  text-white!"
-              } rounded-full text-figma-black cursor-pointer`}
+            className={`py-2 px-7 ${
+              isTab === "YEAR" && "bg-figma-primary  text-white!"
+            } rounded-full text-figma-black cursor-pointer`}
           >
             {t("pricing_box.annual")}
           </button>
@@ -307,7 +309,14 @@ const PaidButton = ({
           variant="primary"
           className="w-fit px-10!  bg-[#f46666] disabled:opacity-75 cursor-pointer border-5 pricingShadow border-white py-6! rounded-full"
         >
-          {isCancelLoading ? <> <Spinner /> {t("pricing_box.canceling_plan")}</> : t("pricing_box.cancel_plan")}
+          {isCancelLoading ? (
+            <>
+              {" "}
+              <Spinner /> {t("pricing_box.canceling_plan")}
+            </>
+          ) : (
+            t("pricing_box.cancel_plan")
+          )}
         </Button>
       </div>
     ) : (

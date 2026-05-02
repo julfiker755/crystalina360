@@ -69,7 +69,10 @@
     "purchased": "Acquistato",
     "key_benefits": "Vantagg i princi pali",
     "alert_title": "Pagamento riuscito",
-    "alert_message": "Il tuo componente aggiuntivo è pronto. È il momento di divertirti!"
+    "alert_message": "Il tuo componente aggiuntivo è pronto. È il momento di divertirti!",
+    "request_a_quote": "Richiedi un preventivo",
+    "request_title": "Richiesta di preventivo inviata con successo",
+    "request_message": "La tua richiesta di preventivo è stata inviata con successo. Ti contatteremo a breve."
   },
   "privacy_policy": {
     "title": "Informativa sulla privacy",

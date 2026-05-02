@@ -11,7 +11,13 @@ import { cn, helpers } from "@/lib";
 import { CalendarDays } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-export function SingleCalendar({ onChange, className, placeholderText, defaultDate, isDisabled = true, }: any) {
+export function SingleCalendar({
+  onChange,
+  className,
+  placeholderText,
+  defaultDate,
+  isDisabled = true,
+}: any) {
   const t = useTranslations("oprator.dashboard");
   const [open, setOpen] = React.useState(false);
   const [startDate, setStartDate] = React.useState<Date | undefined>(undefined);
@@ -66,10 +72,9 @@ export function SingleCalendar({ onChange, className, placeholderText, defaultDa
             disabled={
               isDisabled
                 ? (date: Date) =>
-                  date.getTime() < new Date().setHours(0, 0, 0, 0)
+                    date.getTime() < new Date().setHours(0, 0, 0, 0)
                 : false
             }
-
           />
         </PopoverContent>
       </Popover>

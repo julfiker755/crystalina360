@@ -11,7 +11,6 @@ import Link from "next/link";
 export function Partnership({ action }: { action?: string }) {
   const t = useTranslations("user.resources");
 
-
   const [questionSend, { isLoading }] = useQuestionSendMutation();
 
   const intQuestion = () => [
@@ -85,13 +84,11 @@ export function Partnership({ action }: { action?: string }) {
                 <Button
                   size="lg"
                   className="bg-white m-auto text-primary rounded-md"
-
                 >
                   {t("partner_text.contact_us")}
                 </Button>
               </Link>
             )}
-
           </div>
         </div>
       </div>

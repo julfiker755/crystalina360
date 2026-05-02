@@ -28,6 +28,6 @@ export default {
     dashboard: opratorsDashboard,
     profile: opratorsProfile,
     evStoreAll: evStoreAll,
-    question: questionAddon
+    question: questionAddon,
   },
 };

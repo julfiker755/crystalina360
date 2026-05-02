@@ -12,7 +12,6 @@ import opratorsProfile from "./oprators/profile.json";
 import evStoreAll from "./oprators/ev-store-all.json";
 import questionAddon from "./oprators/addon-question.json";
 
-
 export default {
   common,
   user: {
@@ -29,6 +28,6 @@ export default {
     dashboard: opratorsDashboard,
     profile: opratorsProfile,
     evStoreAll: evStoreAll,
-    question: questionAddon
+    question: questionAddon,
   },
 };

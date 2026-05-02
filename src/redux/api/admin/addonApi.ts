@@ -50,6 +50,12 @@ export const addonApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.a_add_on_get],
     }),
+    requestCode: build.mutation({
+      query: () => ({
+        url: `/custom-solutions`,
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -59,4 +65,5 @@ export const {
   useStoreAddOnMutation,
   useUpdateAddonMutation,
   useAddOnToggleMutation,
+  useRequestCodeMutation,
 } = addonApi;

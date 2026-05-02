@@ -175,7 +175,7 @@ export default function Promotions() {
             </div>
           ))
         )}
-        { }
+        {}
       </div>
       {data?.promo?.meta?.total > 10 && (
         <ul className="flex items-center flex-wrap justify-between py-3">
@@ -341,7 +341,9 @@ const StoreBanner = ({ setState }: any) => {
               from.setValue("date", helpers.formatDate(v, "YYYY-MM-DD"));
             }}
             className="h-10 rounded-xl px-3! text-black!"
-            placeholderText={<span className="text-muted-foreground">Expiry date</span>}
+            placeholderText={
+              <span className="text-muted-foreground">Expiry date</span>
+            }
           />
           {from.watch("date") === "" && from?.formState?.errors?.date && (
             <p className="text-reds justify-end flex items-center text-red-400 gap-1 text-sm">
