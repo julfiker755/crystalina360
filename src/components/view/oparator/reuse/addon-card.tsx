@@ -70,7 +70,6 @@ export default function AddOnCard({
   };
 
   const SubmitRequestCode = async () => {
-    console.log("Request a quote submitted for item ID:", id);
     const res = await requestCode({});
     if (res?.data?.status) {
       sonner.success(t("request_title"), t("request_message"), "bottom-right");
@@ -272,7 +271,7 @@ export default function AddOnCard({
           buy && global?.data?.slug === "custom-solutions" ? (
             <Button
               style={{
-                backgroundColor: global?.data?.primaryColor,
+                backgroundColor: global?.data?.primary_color,
               }}
               onClick={() => SubmitRequestCode()}
               className="rounded-full w-full text-white"
@@ -283,7 +282,7 @@ export default function AddOnCard({
           ) : isAvailable ? (
             <Button
               style={{
-                backgroundColor: global?.data?.primaryColor,
+                backgroundColor: global?.data?.primary_color,
               }}
               onClick={() => router.push(href)}
               className="rounded-full w-full text-white"

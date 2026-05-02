@@ -30,14 +30,14 @@ export default function EventCard({ item }: any) {
   let elementShow: any;
 
   if (event_type === event_t.onetoone || event_type == event_t.retreat) {
-    elementShow = (
+    elementShow = delivery_type != delivary_t.ondemand && (
       <div className="flex  gap-2  items-center text-muted-foreground">
         <Calendar className="size-5 text-primary" />
         <span className="text-base text-primary">{event_date?.[0]}</span>
       </div>
     );
   } else if (event_type === event_t.group) {
-    elementShow = (
+    elementShow = delivery_type != delivary_t.ondemand && (
       <div className="flex  gap-2  items-center text-muted-foreground">
         <FavIcon className="size-5" name="ongoing_events" />
         <span className="text-base text-primary">
@@ -117,12 +117,10 @@ export default function EventCard({ item }: any) {
           </div>
           <div className="[&_div]:flex  [&_div]:gap-2  [&_div]:items-center [&_div]:text-muted-foreground flex flex-col lg:flex-row lg:justify-between">
             {elementShow}
-            {NotOnDemand(
-              <div className="flex  gap-2  items-center text-muted-foreground">
-                <FavIcon className="size-5" name="price22" />
-                <span className="text-base text-primary">{price}</span>
-              </div>,
-            )}
+            <div className="flex  gap-2  items-center text-muted-foreground">
+              <FavIcon className="size-5" name="price22" />
+              <span className="text-base text-primary">{price}</span>
+            </div>
           </div>
         </div>
       </div>
