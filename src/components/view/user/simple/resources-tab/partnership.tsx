@@ -14,10 +14,11 @@ export function Partnership({ action }: { action?: string }) {
   const [questionSend, { isLoading }] = useQuestionSendMutation();
 
   const intQuestion = () => [
-    { question: t("partner_text.question1"), answer: "" },
-    { question: t("partner_text.question2"), answer: "" },
-    { question: t("partner_text.question3"), answer: "" },
-    { question: t("partner_text.question4"), answer: "" },
+    { question: t("partner_text.email"), answer: "", type: "email", placeholder: t("partner_text.email_placeholder") },
+    { question: t("partner_text.question1"), answer: "", type: "text", placeholder: t("partner_text.placeholder") },
+    { question: t("partner_text.question2"), answer: "", type: "text", placeholder: t("partner_text.placeholder") },
+    { question: t("partner_text.question3"), answer: "", type: "text", placeholder: t("partner_text.placeholder") },
+    { question: t("partner_text.question4"), answer: "", type: "text", placeholder: t("partner_text.placeholder") },
   ];
 
   const [question, setQuestion] = useState(intQuestion());
@@ -26,11 +27,18 @@ export function Partnership({ action }: { action?: string }) {
     setQuestion(intQuestion());
   }, [t]);
 
+
+
   const handleQuestion = async (e: React.FormEvent) => {
     e.preventDefault();
+    const mainData = question.map((item => ({
+      question: item.question,
+      answer: item.answer
+    })))
     const data = helpers.fromData({
-      answer: question,
+      answer: mainData,
     });
+    console.log(mainData)
     try {
       await questionSend(data).unwrap();
       setQuestion(intQuestion);
@@ -97,16 +105,17 @@ export function Partnership({ action }: { action?: string }) {
           <div className="space-y-2" key={index}>
             <Label className="text-lg">{item.question}</Label>
             <Input
-              placeholder={t("partner_text.placeholder")}
+              placeholder={item.placeholder}
               className="border-none bg-[#F4F4F4]"
               value={item.answer}
               onChange={(e) => handleAnswerChange(index, e.target.value)}
               required={true}
+              type={item.type}
             />
           </div>
         ))}
         <div className="flex justify-center mt-10">
-          <Button disabled={isLoading} className="min-w-md">
+          <Button disabled={isLoading} className="lg:min-w-md">
             {t("partner_text.submit_answer")}
           </Button>
         </div>
