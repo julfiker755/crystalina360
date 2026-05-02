@@ -1,8 +1,5 @@
 "use client";
-import Modal2 from "@/components/reuseable/modal2";
-import { toggleIsOpen } from "@/redux/features/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import AuthModalController from "../../common/auth-controller";
 import EventCard, {
   SkeletonEventCard,
 } from "@/components/reuseable/event-card";
@@ -30,38 +27,19 @@ export default function ExploreEvents() {
           </Repeat>
         ) : (
           eventsItem?.data?.slice(0, 6)?.map((item: any) => (
-            <Link key={item.id} href={user.email ? `/events/${item?.id}` : "#"}>
+            <Link key={item.id} href={`/events/${item?.id}`}>
               <EventCard key={item.id} wish={false} item={item} />
             </Link>
           ))
         )}
       </div>
       <div className="flex justify-center">
-        {user.role == roleKey.user ? (
-          <Link href="/events">
-            <Button size="lg" className="mt-10">
-              {t("ex_events.btn_more")}
-            </Button>
-          </Link>
-        ) : (
-          <Button
-            onClick={() => dispatch(toggleIsOpen())}
-            size="lg"
-            className="mt-10"
-          >
-            {t("ex_events.btn_account")}
+        <Link href="/events">
+          <Button size="lg" className="mt-10">
+            {t("ex_events.btn_more")}
           </Button>
-        )}
+        </Link>
       </div>
-      {/*  ==============  sign up form ============== */}
-      <Modal2
-        open={isOpen}
-        setIsOpen={(v) => dispatch(toggleIsOpen(v))}
-        mainStyle="!p-0"
-        className="sm:max-w-xl"
-      >
-        <AuthModalController title={t("navber.sign_as_user")} />
-      </Modal2>
     </div>
   );
 }

@@ -6,10 +6,11 @@ import { helpers } from "@/lib";
 import sonner from "@/components/reuseable/sonner";
 import { useQuestionSendMutation } from "@/redux/api/user/contactApi";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 
-export function Partnership() {
+export function Partnership({ action }: { action?: string }) {
   const t = useTranslations("user.resources");
-  const [isShow, setIsShow] = useState(false);
+
 
   const [questionSend, { isLoading }] = useQuestionSendMutation();
 
@@ -70,37 +71,50 @@ export function Partnership() {
             {t("partner_text.text")}
           </p>
           <div className="flex justify-center">
-            <Button
-              size="lg"
-              className="bg-white m-auto text-primary rounded-md"
-              onClick={() => setIsShow(!isShow)}
-            >
-              {t("partner_text.contact_us")}
-            </Button>
+            {action === "partnership" ? (
+              <Link href="/#contact-us">
+                <Button
+                  size="lg"
+                  className="bg-white m-auto text-primary rounded-md"
+                >
+                  {t("partner_text.contact_us")}
+                </Button>
+              </Link>
+            ) : (
+              <Link href={"/contact-us"}>
+                <Button
+                  size="lg"
+                  className="bg-white m-auto text-primary rounded-md"
+
+                >
+                  {t("partner_text.contact_us")}
+                </Button>
+              </Link>
+            )}
+
           </div>
         </div>
       </div>
-      {isShow && (
-        <form onSubmit={handleQuestion} className="space-y-6 py-10">
-          {question.map((item, index) => (
-            <div className="space-y-2" key={index}>
-              <Label className="text-lg">{item.question}</Label>
-              <Input
-                placeholder={t("partner_text.placeholder")}
-                className="border-none bg-[#F4F4F4]"
-                value={item.answer}
-                onChange={(e) => handleAnswerChange(index, e.target.value)}
-                required={true}
-              />
-            </div>
-          ))}
-          <div className="flex justify-center mt-10">
-            <Button disabled={isLoading} className="min-w-md">
-              {t("partner_text.submit_answer")}
-            </Button>
+      <form onSubmit={handleQuestion} className="space-y-6 py-10">
+        {question.map((item, index) => (
+          <div className="space-y-2" key={index}>
+            <Label className="text-lg">{item.question}</Label>
+            <Input
+              placeholder={t("partner_text.placeholder")}
+              className="border-none bg-[#F4F4F4]"
+              value={item.answer}
+              onChange={(e) => handleAnswerChange(index, e.target.value)}
+              required={true}
+            />
           </div>
-        </form>
-      )}
+        ))}
+        <div className="flex justify-center mt-10">
+          <Button disabled={isLoading} className="min-w-md">
+            {t("partner_text.submit_answer")}
+          </Button>
+        </div>
+      </form>
+
       <AppAlert />
     </div>
   );
