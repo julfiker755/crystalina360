@@ -87,17 +87,15 @@ export default function PricingBox({ order }: { order?: string }) {
         <div className="flex justify-center mt-5 mx-auto space-x-3 bg-figma-gray1 w-fit rounded-full">
           <button
             onClick={() => setIsTab("MONTH")}
-            className={`py-2 px-7 ${
-              isTab == "MONTH" && "bg-figma-primary  text-white!"
-            } rounded-full text-figma-black cursor-pointer`}
+            className={`py-2 px-7 ${isTab == "MONTH" && "bg-figma-primary  text-white!"
+              } rounded-full text-figma-black cursor-pointer`}
           >
             {t("pricing_box.monthly")}
           </button>
           <button
             onClick={() => setIsTab("YEAR")}
-            className={`py-2 px-7 ${
-              isTab === "YEAR" && "bg-figma-primary  text-white!"
-            } rounded-full text-figma-black cursor-pointer`}
+            className={`py-2 px-7 ${isTab === "YEAR" && "bg-figma-primary  text-white!"
+              } rounded-full text-figma-black cursor-pointer`}
           >
             {t("pricing_box.annual")}
           </button>

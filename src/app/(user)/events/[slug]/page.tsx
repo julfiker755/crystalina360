@@ -2,16 +2,19 @@
 import Avatars from "@/components/reuseable/avater";
 import { BackBtn2 } from "@/components/reuseable/back-btn";
 import CopyBox from "@/components/reuseable/copy-box";
+import Modal2 from "@/components/reuseable/modal2";
 import VideoPlayer from "@/components/reuseable/player";
 import { OlistamiLabel, StarBadge } from "@/components/reuseable/star-badge";
 import { Button, Skeleton } from "@/components/ui";
+import AuthModalController from "@/components/view/common/auth-controller";
 import { AppAlert } from "@/components/view/user/reuse";
 import EventApply from "@/components/view/user/simple/event-apply";
 import OnDemand from "@/components/view/user/simple/on-demand";
 import FavIcon from "@/icon/favIcon";
 import { delivary_t, event_t, fakeZoom, helpers, roleKey } from "@/lib";
 import { useSingleEventsQuery } from "@/redux/api/operator/opratorApi";
-import { useAppSelector } from "@/redux/hooks";
+import { toggleIsOpen } from "@/redux/features/authSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { AppState } from "@/redux/store";
 import { Calendar, Clock, MapPin, Tag } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -19,9 +22,12 @@ import { useParams } from "next/navigation";
 
 export default function EventDetails() {
   const t = useTranslations("user.details");
-  const { user } = useAppSelector((state: AppState) => state.auth);
+  const t1 = useTranslations("user.home");
+  const dispatch = useAppDispatch()
+  const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
   const { slug } = useParams();
   const { data: events_all, isLoading } = useSingleEventsQuery(slug);
+
   const {
     id,
     img,
@@ -162,7 +168,7 @@ export default function EventDetails() {
               <div className="flex gap-2 items-center text-muted-foreground">
                 <Tag className="text-figma-black" size={23} />
                 <span className="text-base text-[#A6A996] font-medium">
-                  {price}
+                  €{price}
                 </span>
               </div>
               {delivery_type === delivary_t.online ? (
@@ -214,13 +220,13 @@ export default function EventDetails() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-10">
                 <Button
                   type="button"
-                  disabled={true}
+                  onClick={() => dispatch(toggleIsOpen())}
                   className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]"
                 >
                   {t("send_message")}
                 </Button>
 
-                <Button disabled={true} className="w-full">
+                <Button onClick={() => dispatch(toggleIsOpen())} className="w-full">
                   {t("purchase_now")}
                 </Button>
               </div>
@@ -229,6 +235,16 @@ export default function EventDetails() {
           <AppAlert className="mb-10" />
         </>
       )}
+      {/*  auth modal */}
+
+      <Modal2
+        open={isOpen}
+        setIsOpen={(v) => dispatch(toggleIsOpen(v))}
+        mainStyle="!p-0"
+        className="sm:max-w-xl"
+      >
+        <AuthModalController title={t1("navber.sign_as_user")} />
+      </Modal2>
     </div>
   );
 }

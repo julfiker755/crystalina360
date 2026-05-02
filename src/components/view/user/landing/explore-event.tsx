@@ -1,20 +1,15 @@
 "use client";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import EventCard, {
   SkeletonEventCard,
 } from "@/components/reuseable/event-card";
 import { Button } from "@/components/ui";
 import { useGetPublicEventsQuery } from "@/redux/api/user/userEventsApi";
 import { Repeat } from "@/components/reuseable/repeat";
-import { AppState } from "@/redux/store";
 import Link from "next/link";
-import { roleKey } from "@/lib";
 import { useTranslations } from "next-intl";
 
 export default function ExploreEvents() {
   const t = useTranslations("user.home");
-  const dispatch = useAppDispatch();
-  const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
   const { data: eventsItem, isLoading } = useGetPublicEventsQuery({});
 
   return (

@@ -226,7 +226,7 @@ export default function EventApply({
           </ul>
         </div>
         <h5 className="font-medium text-base">
-          {t("total_price")}:{total}
+          {t("total_price")}: €{total}
         </h5>
       </div>
 
