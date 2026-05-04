@@ -29,5 +29,6 @@
   "additional_fee": "Additional Fee",
   "fixed": "Fixed",
   "coupon_applied": "Coupon Applied",
-  "tax": "Tax"
+  "tax": "Tax",
+  "vat": "VAT"
 }

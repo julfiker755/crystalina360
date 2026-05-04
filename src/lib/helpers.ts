@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 dayjs.extend(relativeTime);
 
 type dateFormat = "DD-MM-YYYY" | "YYYY-MM-DD" | "DD MMM YYYY" | "DD/MM/YYYY";
-// -- example --|--01-01-2023--|--2023-01-01--|--01 Jan 2023
+// -- example --|--01-01-2023--|--2023-01-01--|--01 Jan 2023 --- YYYY-MM-DD
 
 export class helpers {
   // ===== Cookies =====

@@ -519,7 +519,7 @@ export default function EventApply({
 
           {/* VAT */}
           <div className="flex items-center justify-between">
-            <span className="font-medium text-figma-black">{t("tax")}(22% VAT)
+            <span className="font-medium text-figma-black">{t("tax")}(22% {t("vat")})
             </span>
             <span className="font-medium text-figma-black">€{taxAmount.toFixed(2)}</span>
           </div>
