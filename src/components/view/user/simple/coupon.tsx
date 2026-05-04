@@ -112,9 +112,8 @@ export default function CouponBox() {
               (_, index) => (
                 <button
                   key={index}
-                  className={`h-2 rounded-full cursor-pointer transition-all duration-300 ${
-                    page === index + 1 ? "w-6 bg-primary" : "w-2 bg-gray-300"
-                  }`}
+                  className={`h-2 rounded-full cursor-pointer transition-all duration-300 ${page === index + 1 ? "w-6 bg-primary" : "w-2 bg-gray-300"
+                    }`}
                   onClick={() => handlePageChange(index + 1)}
                 />
               ),

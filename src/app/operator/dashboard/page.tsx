@@ -71,7 +71,7 @@ export default function DashboardHome() {
                 onChange={(start_date: any) =>
                   setTempDate((prev) => ({
                     ...prev,
-                    start_date: helpers.formatDate(start_date, "YYYY-MM-DD"),
+                    start_date: helpers.formatDate(start_date),
                   }))
                 }
                 isDisabled={false}
@@ -83,7 +83,7 @@ export default function DashboardHome() {
                 onChange={(end_date: any) =>
                   setTempDate((prev) => ({
                     ...prev,
-                    end_date: helpers.formatDate(end_date, "YYYY-MM-DD"),
+                    end_date: helpers.formatDate(end_date),
                   }))
                 }
                 isDisabled={false}

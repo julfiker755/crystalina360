@@ -175,7 +175,7 @@ export default function Promotions() {
             </div>
           ))
         )}
-        {}
+        { }
       </div>
       {data?.promo?.meta?.total > 10 && (
         <ul className="flex items-center flex-wrap justify-between py-3">
@@ -338,7 +338,7 @@ const StoreBanner = ({ setState }: any) => {
         <div>
           <SingleCalendar
             onChange={(v: any) => {
-              from.setValue("date", helpers.formatDate(v, "YYYY-MM-DD"));
+              from.setValue("date", helpers.formatDate(v));
             }}
             className="h-10 rounded-xl px-3! text-black!"
             placeholderText={
@@ -482,7 +482,7 @@ const UpdateBanner = ({ setState, details }: any) => {
           <SingleCalendar
             defaultDate={details.expire_date}
             onChange={(v: any) => {
-              from.setValue("date", helpers.formatDate(v, "YYYY-MM-DD"));
+              from.setValue("date", helpers.formatDate(v));
             }}
             className="h-10 rounded-xl px-3! text-black!"
           />

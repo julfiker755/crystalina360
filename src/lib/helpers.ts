@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import dayjs from "dayjs";
 dayjs.extend(relativeTime);
 
-type dateFormat = "DD-MM-YYYY" | "YYYY-MM-DD" | "DD MMM YYYY" | "DD/MM/YYYY";
+type dateFormat = "DD/MM/YYYY" | "DD-MM-YYYY" | "DD MMM YYYY"
 // -- example --|--01-01-2023--|--2023-01-01--|--01 Jan 2023 --- YYYY-MM-DD
 
 export class helpers {

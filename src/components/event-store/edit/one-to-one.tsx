@@ -284,10 +284,9 @@ export default function OnetoOneEdit({
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                     type="button"
                   >
                     {item.label}
@@ -571,7 +570,7 @@ const SingleDateBox = ({ from }: any) => {
       <SingleCalendar
         defaultDate={val}
         onChange={(value: any) => {
-          from.setValue("event_date", helpers.formatDate(value, "YYYY-MM-DD"));
+          from.setValue("event_date", helpers.formatDate(value));
         }}
         className="h-10 text-black"
       />

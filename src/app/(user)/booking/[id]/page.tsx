@@ -107,7 +107,7 @@ export default function BookingDetails() {
       link.download = `${invoice_id}.pdf`;
       link.click();
       setdownlaodLoading(false);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const NotOnDemand = (item: any) => {
@@ -138,7 +138,7 @@ export default function BookingDetails() {
         <div className="flex  gap-2  items-center text-muted-foreground">
           <Calendar className="text-figma-black" size={22} />
           <span className="text-base">
-            {helpers.formatDate(bookings?.data?.event_date, "DD-MM-YYYY")}
+            {helpers.formatDate(bookings?.data?.event_date)}
           </span>
         </div>
       </>

@@ -45,7 +45,7 @@ export function SingleCalendar({
           >
             <span>
               {startDate
-                ? helpers.formatDate(startDate, "YYYY-MM-DD")
+                ? helpers.formatDate(startDate)
                 : defaultDate || placeholderText || t("select_date")}
             </span>
             <span className="bg-white p-1.5  rounded-full ml-2 lg:ml-10">
@@ -72,7 +72,7 @@ export function SingleCalendar({
             disabled={
               isDisabled
                 ? (date: Date) =>
-                    date.getTime() < new Date().setHours(0, 0, 0, 0)
+                  date.getTime() < new Date().setHours(0, 0, 0, 0)
                 : false
             }
           />

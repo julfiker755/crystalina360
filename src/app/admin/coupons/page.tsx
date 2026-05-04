@@ -184,7 +184,7 @@ const CouponStore = ({ setState }: any) => {
         from.reset();
         setState("isStore", false);
       }
-    } catch (err) {}
+    } catch (err) { }
   };
 
   return (
@@ -226,7 +226,7 @@ const CouponStore = ({ setState }: any) => {
         <div>
           <SingleCalendar
             onChange={(v: any) => {
-              from.setValue("date", helpers.formatDate(v, "YYYY-MM-DD"));
+              from.setValue("date", helpers.formatDate(v, "DD/MM/YYYY"));
             }}
             className="h-10 rounded-xl px-3! text-black!"
           />
@@ -294,7 +294,7 @@ const CouponUpdate = ({ isDetails, setState }: any) => {
         from.reset();
         setState("isUpdate", false);
       }
-    } catch (err) {}
+    } catch (err) { }
   };
 
   const type = from.watch("coupon_type") || "flat";

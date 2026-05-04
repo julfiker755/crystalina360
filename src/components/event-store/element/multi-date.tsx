@@ -41,7 +41,7 @@ export default function MultiDate({
   };
 
   const handleDateChange = (value: any) => {
-    const formattedDate = helpers.formatDate(value, "YYYY-MM-DD");
+    const formattedDate = helpers.formatDate(value);
     setNewDate(formattedDate);
     setError(""); // Clear error if date is selected
   };

@@ -278,11 +278,11 @@ export default function EventFilter() {
                 onChange={(date: any) => {
                   from.setValue(
                     "to_date",
-                    helpers.formatDate(date?.startDate, "YYYY-MM-DD"),
+                    helpers.formatDate(date?.startDate),
                   );
                   from.setValue(
                     "from_date",
-                    helpers.formatDate(date?.endDate, "YYYY-MM-DD"),
+                    helpers.formatDate(date?.endDate),
                   );
                 }}
               />
