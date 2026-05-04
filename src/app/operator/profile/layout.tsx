@@ -140,11 +140,11 @@ export default function OperatorsProfileLayout({ children }: childrenProps) {
                 {profile?.data?.user?.profile_status?.missing_fields?.includes(
                   "paypal_merchant_id",
                 ) && (
-                  <p className="text-sm text-[#FF4E4E] backdrop-blur-md mt-1">
-                    The PayPal account is not connected. Please ensure that a
-                    PayPal account is connected
-                  </p>
-                )}
+                    <p className="text-sm text-[#FF4E4E] backdrop-blur-md mt-1">
+                      The PayPal account is not connected. Please ensure that a
+                      PayPal account is connected
+                    </p>
+                  )}
               </div>
             )}
         </div>

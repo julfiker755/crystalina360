@@ -22,5 +22,12 @@
   "select_here": "Select here",
   "select_time": "Select Time",
   "select_date": "Select Date",
-  "coupon_is_required": "Coupon is required"
+  "coupon_is_required": "Coupon is required",
+  "ticket_quantity": "Ticket Quantity",
+  "sub_total": "Sub Total",
+  "booking_fee": "Booking Fee",
+  "additional_fee": "Additional Fee",
+  "fixed": "Fixed",
+  "coupon_applied": "Coupon Applied",
+  "tax": "Tax"
 }

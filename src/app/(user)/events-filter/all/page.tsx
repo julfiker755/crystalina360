@@ -153,10 +153,9 @@ export default function EventFilter() {
                       size="lg"
                       variant="secondary"
                       type="button"
-                      className={`${
-                        get("event_type") == item.value &&
+                      className={`${get("event_type") == item.value &&
                         "shadow-filter bg-white"
-                      }`}
+                        }`}
                       key={idx}
                       onClick={() => from.setValue("event_type", item.value)}
                     >
@@ -176,10 +175,9 @@ export default function EventFilter() {
                       size="lg"
                       variant="secondary"
                       type="button"
-                      className={`${
-                        get("delivery_type") == item.value &&
+                      className={`${get("delivery_type") == item.value &&
                         "shadow-filter bg-white"
-                      }`}
+                        }`}
                       key={idx}
                       onClick={() => from.setValue("delivery_type", item.value)}
                     >
@@ -199,10 +197,9 @@ export default function EventFilter() {
                       size="lg"
                       variant="secondary"
                       type="button"
-                      className={`${
-                        get("event_purpose") == item.value &&
+                      className={`${get("event_purpose") == item.value &&
                         "shadow-filter bg-white"
-                      }`}
+                        }`}
                       key={idx}
                       onClick={() => from.setValue("event_purpose", item.value)}
                     >
