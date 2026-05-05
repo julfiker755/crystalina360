@@ -18,7 +18,7 @@ export default function AddOn() {
   const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
 
   return (
-    <div id="add-ons" className="py-16 container px-10">
+    <div id="add-ons" className="py-16 container lg:px-10">
       <h1 className="mb-10">{t("add_on.title")}</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {isLoading ? (

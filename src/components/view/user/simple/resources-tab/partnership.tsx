@@ -61,7 +61,7 @@ export function Partnership({ action }: { action?: string }) {
 
   return (
     <div>
-      <div className="bg-[url('/partnership.jpg')] flex flex-col items-center justify-center rounded-lg bg-cover bg-no-repeat bg-center h-[500px] w-full relative">
+      <div className="bg-[url('/partnership.jpg')] flex flex-col items-center justify-center rounded-lg bg-cover bg-no-repeat bg-center h-[400px] md:h-[500px] w-full relative">
         <div
           className="absolute inset-0"
           style={{
@@ -102,11 +102,11 @@ export function Partnership({ action }: { action?: string }) {
       </div>
       <form onSubmit={handleQuestion} className="space-y-6 py-10">
         {question.map((item, index) => (
-          <div className="space-y-2" key={index}>
+          <div className="space-y-1.5" key={index}>
             <Label className="text-lg">{item.question}</Label>
             <Input
               placeholder={item.placeholder}
-              className="border-none bg-[#F4F4F4]"
+              className="border-none h-11 bg-[#F4F4F4]"
               value={item.answer}
               onChange={(e) => handleAnswerChange(index, e.target.value)}
               required={true}

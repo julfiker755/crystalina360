@@ -132,11 +132,11 @@ export default function MusicCard({ id, title, audio_file }: MusicCardProps) {
         <p className="text-muted-foreground text-sm">OLISTAMI Podcast</p>
       </div>
 
-      <div className="flex relative items-center gap-4">
+      <div className="relative grid grid-cols-[40px_1fr] items-center gap-4">
         {/* Play Button */}
         <div
           onClick={togglePlay}
-          className="w-12 h-11 rounded-full cursor-pointer flex items-center justify-center bg-primary"
+          className="size-11 rounded-full cursor-pointer flex items-center justify-center bg-primary"
         >
           {isPlaying ? (
             <FavIcon className="size-8" name="u_plase" />

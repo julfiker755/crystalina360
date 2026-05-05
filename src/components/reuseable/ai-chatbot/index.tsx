@@ -5,7 +5,6 @@ import {
   Send,
   X,
   Bot,
-  User,
   ExternalLink,
   UserRound,
 } from "lucide-react";
@@ -43,7 +42,7 @@ export default function AIChatBox() {
     },
   ]);
 
-  console.log("messages", messages);
+
   const [isTyping, setIsTyping] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const [aiChat] = useAiChatMutation();
@@ -172,14 +171,17 @@ export default function AIChatBox() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    // className="fixed bottom-6 mg:right-6 z-50"
+    <div className={`fixed ${isChatOpen && "inset-0 md:inset-auto"}  z-50 md:bottom-6 md:right-6`}>
       <AnimatePresence>
         {isChatOpen && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            className="bg-white rounded-2xl shadow-2xl border border-[#EAE2D9] w-[350px] sm:w-[450px] h-[600px] flex flex-col overflow-hidden mb-4"
+            className="bg-white md:rounded-2xl shadow-2xl md:border border-[#EAE2D9] flex flex-col overflow-hidden mb-4
+            w-full h-full
+            md:w-[350px] md:h-[360px] lg:w-[360px] lg:h-[400px] xl:w-[450px] xl:h-[500px] 2xl:h-[600px]"
           >
             {/* Header */}
             <div className="bg-primary p-4 flex items-center justify-between text-white">

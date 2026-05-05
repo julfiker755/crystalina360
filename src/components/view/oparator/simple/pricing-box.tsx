@@ -106,7 +106,7 @@ export default function PricingBox({ order }: { order?: string }) {
           <div className="grid md:grid-cols-2 gap-6 mb-12 w-11/12 lg:max-w-4xl mx-auto">
             {/*  ===================== free plan =============== */}
             <div
-              className={`rounded-2xl p-8  flex flex-col relative bg-[#EDEDED]`}
+              className={`rounded-2xl p-8 mb-10 lg:mb-0  flex flex-col relative bg-[#EDEDED]`}
             >
               <h2 className="text-2xl text-figma-black font-bold mb-4 text-center">
                 {freePlan.title}

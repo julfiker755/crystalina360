@@ -81,7 +81,7 @@ export default function AddOnCard({
   return (
     <>
       <div
-        className="rounded-xl flex flex-col justify-between border-t-4  bg-white p-8 shadow-md"
+        className="rounded-xl flex flex-col justify-between border-t-4  bg-white p-6 2xl:p-8 shadow-md"
         style={{
           borderColor: primary_color,
         }}
@@ -267,49 +267,51 @@ export default function AddOnCard({
             ))}
           </ul>
         </div>
-        {user?.email ? (
-          buy && global?.data?.slug === "custom-solutions" ? (
+        {buy && (
+          user?.email ? (
+            global?.data?.slug === "custom-solutions" ? (
+              <Button
+                style={{
+                  backgroundColor: global?.data?.primary_color,
+                }}
+                onClick={() => SubmitRequestCode()}
+                className="rounded-full w-full text-white"
+              >
+                <Mail className="w-7 h-7 mr-1" />
+                {t("request_a_quote")}
+              </Button>
+            ) : isAvailable ? (
+              <Button
+                style={{
+                  backgroundColor: global?.data?.primary_color,
+                }}
+                onClick={() => router.push(href)}
+                className="rounded-full w-full text-white"
+              >
+                <Lock className="w-4 h-4 mr-2" />
+                {t("buy_now")}
+              </Button>
+            ) : (
+              <Button
+                variant="secondary"
+                className="opacity-60 rounded-full  w-full cursor-not-allowed"
+                disabled
+              >
+                {t("not_available")}
+              </Button>
+            )
+          ) : (
             <Button
               style={{
-                backgroundColor: global?.data?.primary_color,
+                backgroundColor: global?.data?.primaryColor,
               }}
-              onClick={() => SubmitRequestCode()}
-              className="rounded-full w-full text-white"
-            >
-              <Mail className="w-7 h-7 mr-1" />
-              {t("request_a_quote")}
-            </Button>
-          ) : isAvailable ? (
-            <Button
-              style={{
-                backgroundColor: global?.data?.primary_color,
-              }}
-              onClick={() => router.push(href)}
+              disabled={true}
               className="rounded-full w-full text-white"
             >
               <Lock className="w-4 h-4 mr-2" />
               {t("buy_now")}
             </Button>
-          ) : (
-            <Button
-              variant="secondary"
-              className="opacity-60 rounded-full  w-full cursor-not-allowed"
-              disabled
-            >
-              {t("not_available")}
-            </Button>
           )
-        ) : (
-          <Button
-            style={{
-              backgroundColor: global?.data?.primaryColor,
-            }}
-            disabled={true}
-            className="rounded-full w-full text-white"
-          >
-            <Lock className="w-4 h-4 mr-2" />
-            {t("buy_now")}
-          </Button>
         )}
       </Modal2>
     </>
