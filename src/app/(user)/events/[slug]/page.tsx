@@ -158,7 +158,7 @@ export default function EventDetails() {
                     </span>
                   </div>
                   <span className="text-[#DD1938] font-medium ml-2">
-                    Almost sold out
+                    {t("almost_sold_out")}
                   </span>
                 </div>
               )}
@@ -186,7 +186,7 @@ export default function EventDetails() {
                   <div className="flex gap-2 items-center text-muted-foreground">
                     <FavIcon className="size-5" name="user_ticket_sold" />
                     <span className="text-base">
-                      Available:{" "}
+                      {t("available")}:{" "}
                       {
                         <span className="font-medium text-primary">
                           {available_tickets}

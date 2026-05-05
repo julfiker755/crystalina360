@@ -70,7 +70,7 @@ export default function ForgetPassword() {
           <li className="opacity-0">0</li>
         </ul>
       </div>
-      <div className="p-4">
+      <div className="p-4 pb-6">
         <div className="pb-5">
           <h5 className="size-10 rounded-md mx-auto border grid place-items-center">
             <FavIcon name="forget" />

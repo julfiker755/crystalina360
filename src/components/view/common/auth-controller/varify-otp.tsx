@@ -101,7 +101,7 @@ export default function VarifyOtp() {
           <li className="opacity-0">0</li>
         </ul>
       </div>
-      <div className="p-4">
+      <div className="p-4 pb-5">
         <div className="pb-5">
           <h5 className="size-12 rounded-md mx-auto border grid place-items-center">
             <FavIcon name="varify" className="size-6" />

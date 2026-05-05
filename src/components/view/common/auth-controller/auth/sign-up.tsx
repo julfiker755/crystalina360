@@ -69,7 +69,7 @@ export default function SignUp() {
   };
 
   return (
-    <div>
+    <div className="pb-2">
       <Form className="space-y-4" from={from} onSubmit={handleSubmit}>
         {pathname?.includes(routeName) ? (
           // == oprator ==
