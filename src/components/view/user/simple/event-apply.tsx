@@ -296,9 +296,8 @@ import { useTranslations } from "next-intl";
 const calcBreakdown = (unitPrice: number, quantity: number) => {
   const basePrice = Math.round(unitPrice * quantity * 100) / 100;
   const platformFee = Math.round((basePrice * 0.025 + 0.79) * 100) / 100;
-  const taxAmount = Math.round((basePrice + platformFee) * 0.22 * 100) / 100;
-  const totalPrice = Math.round((basePrice + platformFee + taxAmount) * 100) / 100;
-  return { basePrice, platformFee, taxAmount, totalPrice };
+  const totalPrice = Math.round((basePrice + platformFee) * 100) / 100;
+  return { basePrice, platformFee, totalPrice };
 };
 
 export default function EventApply({
@@ -331,7 +330,7 @@ export default function EventApply({
 
   // ── Derived price breakdown ────────────────────────────────────
   const unitPrice = discountedBase !== null ? discountedBase : parseFloat(price);
-  const { basePrice, platformFee, taxAmount, totalPrice } = calcBreakdown(
+  const { basePrice, platformFee, totalPrice } = calcBreakdown(
     unitPrice,
     isBooking.quantity
   );
@@ -516,14 +515,6 @@ export default function EventApply({
             </span>
             <span className="font-medium text-figma-black">€{platformFee.toFixed(2)}</span>
           </div>
-
-          {/* VAT */}
-          <div className="flex items-center justify-between">
-            <span className="font-medium text-figma-black">{t("tax")}(22% {t("vat")})
-            </span>
-            <span className="font-medium text-figma-black">€{taxAmount.toFixed(2)}</span>
-          </div>
-
         </div>
 
         {/* Total footer */}
