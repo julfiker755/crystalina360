@@ -511,7 +511,7 @@ export default function EventApply({
           {/* Platform / Booking Fee — 2.5% + €0.79 */}
           <div className="flex items-center justify-between">
             <span className="font-medium text-figma-black">
-              {t("booking_fee")}(2.5% + €0.79)
+              {t("booking_fee")}
             </span>
             <span className="font-medium text-figma-black">€{platformFee.toFixed(2)}</span>
           </div>

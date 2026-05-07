@@ -27,7 +27,7 @@
   "coupon_is_required": "Coupon is required",
   "ticket_quantity": "Ticket Quantity",
   "sub_total": "Sub Total",
-  "booking_fee": "Booking Fee",
+  "booking_fee": "Booking Fee (VAT included, 2.5% + €0.79)",
   "additional_fee": "Additional Fee",
   "fixed": "Fixed",
   "coupon_applied": "Coupon Applied",
