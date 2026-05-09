@@ -14,6 +14,7 @@ interface MultiSelectGridProps {
   className?: string;
   name: string;
   translationKey: any;
+  select?: string
 }
 
 export function MultiSelectGrid({
@@ -22,6 +23,7 @@ export function MultiSelectGrid({
   name,
   className,
   translationKey,
+  select = "Select"
 }: MultiSelectGridProps) {
   const t1 = useTranslations("common");
   const [isOpen, setIsOpen] = useState(false);
@@ -62,7 +64,7 @@ export function MultiSelectGrid({
                 <div className="flex-1 overflow-hidden">
                   {selected?.length === 0 ? (
                     <span className="text-muted-foreground py-1 block">
-                      Select
+                      {select}
                     </span>
                   ) : (
                     <div className="flex overflow-hidden truncate gap-2 py-1">

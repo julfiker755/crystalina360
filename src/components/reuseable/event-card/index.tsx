@@ -7,6 +7,8 @@ import Avatars from "../avater";
 import CopyBox from "../copy-box";
 import { StarBadge } from "../star-badge";
 import Image from "next/image";
+import { useAppSelector } from "@/redux/hooks";
+import { AppState } from "@/redux/store";
 
 interface EventCardProps {
   item: any;
@@ -39,7 +41,7 @@ export default function EventCard({
     has_video_access,
     link,
   } = item || {};
-
+  const { user } = useAppSelector((state: AppState) => state.auth);
   const [wishEvents, { isLoading }] = useWishEventsMutation();
   let elementShow: any;
   if (event_type === event_t.onetoone || event_type == event_t.retreat) {
@@ -70,6 +72,9 @@ export default function EventCard({
     }
   };
 
+
+
+
   return (
     <div className="overflow-hidden  transition-shadow bg-figma-gray rounded-lg p-3">
       <div className="relative h-60 overflow-hidden rounded-md ">
@@ -94,7 +99,7 @@ export default function EventCard({
             </video>
           ) : (
             <img
-              src={"/videoImg.png"}
+              src={"/videoImg.jpg"}
               alt={"title"}
               className="w-full h-full object-cover"
             />
@@ -109,16 +114,19 @@ export default function EventCard({
           </div>
         )}
         {wish && (
-          <div
-            onClick={(e) => submitWish(e)}
-            className="size-10 grid place-items-center cursor-pointer absolute right-3 top-3 rounded-full bg-white"
-          >
-            {is_loved_by_user ? (
-              <FavIcon name="u_loves_true" />
-            ) : (
-              <FavIcon name="love" />
-            )}
-          </div>
+          user?.email && (
+            <div
+              onClick={(e) => submitWish(e)}
+              className="size-10 grid place-items-center cursor-pointer absolute right-3 top-3 rounded-full bg-white"
+            >
+              {is_loved_by_user ? (
+                <FavIcon name="u_loves_true" />
+              ) : (
+                <FavIcon name="love" />
+              )}
+            </div>
+          )
+
         )}
       </div>
       <div className="pt-5">
@@ -170,7 +178,7 @@ export default function EventCard({
             {elementShow}
             <div className="flex  gap-2  items-center text-muted-foreground">
               <Tag size={20} />
-              <span className="text-base">{price}</span>
+              <span className="text-base">€{price}</span>
             </div>
           </div>
         </div>

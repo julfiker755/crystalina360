@@ -273,8 +273,11 @@ export default function EventFilter() {
               <Label className="text-blacks text-base mb-2 font-medium">
                 {t("date_range")}
               </Label>
+
               <MultipleCalendar
                 className="border-none bg-[#F4F4F4] text-figma-black hover:text-figma-black rounded-md"
+                start_date_place={t("start_date")}
+                end_date_place={t("end_date")}
                 onChange={(date: any) => {
                   from.setValue(
                     "to_date",
@@ -316,7 +319,7 @@ export default function EventFilter() {
                 <div className="flex-1 overflow-hidden">
                   {get("holistic_discipline").length === 0 ? (
                     <span className="text-muted-foreground py-1 block">
-                      Select
+                      {t("select")}
                     </span>
                   ) : (
                     <div className="flex overflow-hidden truncate gap-2 py-1">
@@ -352,12 +355,14 @@ export default function EventFilter() {
               name="accessibility"
               options={accessibilityItem}
               translationKey="accessibility"
+              select={t("select")}
             />
             <MultiSelectGrid
               translationKey="tags"
               label={t("tags")}
               name="tags"
               options={tagsOptions}
+              select={t("select")}
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">

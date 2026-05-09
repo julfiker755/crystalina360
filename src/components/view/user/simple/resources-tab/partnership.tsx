@@ -62,14 +62,14 @@ export function Partnership({ action }: { action?: string }) {
   return (
     <div>
       <div className="bg-[url('/partnership.jpg')] flex flex-col items-center justify-center rounded-lg bg-cover bg-no-repeat bg-center h-[400px] md:h-[500px] w-full relative">
-        <div
+        {/* <div
           className="absolute inset-0"
           style={{
             borderRadius: "18px",
             background:
               "linear-gradient(0deg, rgba(0, 0, 0, 0.40) 0%, rgba(0, 0, 0, 0.40) 100%)",
           }}
-        ></div>
+        ></div> */}
         <div className="space-y-4 z-10">
           <h1 className="text-white text-xl lg:text-4xl text-center">
             {t("partner_text.title")}

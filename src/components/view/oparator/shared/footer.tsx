@@ -11,10 +11,22 @@ export default function Footer() {
   const user = useAppSelector((state) => state.auth.user);
 
   const socialMedia = [
-    { name: "facebook", icon: "facebook" },
-    { name: "youtube", icon: "youtube" },
-    { name: "instagram", icon: "instagram" },
-  ];
+    {
+      name: "linkedin",
+      icon: <FavIcon name="linkdin33" className="size-5" />,
+      href: "https://www.linkedin.com/in/olistami-srl-478583407"
+    },
+    {
+      name: "youtube",
+      icon: <FavIcon name="youtube" className="size-6" />,
+      href: "https://www.youtube.com/channel/UClsVfBgG270wJ13WdT-3osw"
+    },
+    {
+      name: "instagram",
+      icon: <FavIcon name="instagram" className="size-6" />,
+      href: "https://www.instagram.com/olista_mi?igsh=bWZ6MDVqbjA3cWRk&utm_source=qr"
+    },
+  ];;
 
   return (
     <div className="bg-figma-black pt-10 lg:pt-16 *:text-white">
@@ -89,9 +101,14 @@ export default function Footer() {
                   socialMedia.map((item) => (
                     <li
                       key={item.name}
-                      className="bg-[#FFFFFF]/20 size-12 rounded-md grid place-items-center"
+
                     >
-                      <FavIcon name={item.icon as any} className="size-6" />
+                      <a
+                        className="bg-[#FFFFFF]/20 size-12 rounded-md grid place-items-center"
+                        href={item.href} target="_blank">
+                        {item.icon}
+
+                      </a>
                     </li>
                   ))}
               </ul>

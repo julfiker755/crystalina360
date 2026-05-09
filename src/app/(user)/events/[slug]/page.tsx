@@ -97,7 +97,7 @@ export default function EventDetails() {
                 ) : (
                   <div className="relative h-100 max-w-4xl mx-auto overflow-hidden rounded-md ">
                     <img
-                      src={"/videoImg.png"}
+                      src={"/videoImg.jpg"}
                       alt={event_title}
                       className="w-full h-full object-cover"
                     />

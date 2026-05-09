@@ -5,9 +5,10 @@ import { ImgBox } from "@/components/reuseable/Img-box";
 import MusicCard from "../../reuse/music-card";
 import { useGetPodcastQuery } from "@/redux/api/admin/podcastApi";
 import { Repeat } from "@/components/reuseable/repeat";
-import { Skeleton } from "@/components/ui";
+import { Button, Skeleton } from "@/components/ui";
 import { Pagination } from "@/components/reuseable/pagination";
 import { useTranslations } from "next-intl";
+import FavIcon from "@/icon/favIcon";
 
 export function Podcast() {
   const t = useTranslations("user.home.podcast");
@@ -31,6 +32,19 @@ export function Podcast() {
           <p className="text-muted-foreground leading-relaxed mb-6 max-w-2xl text-balance">
             {t("description")}
           </p>
+          <div className="space-x-2">
+            <a href="https://podcasts.apple.com/it/podcast/olistoria-storiepratiche-e-scienze-dal-mondo-olistico/id1835702572" target="_blank">
+              <Button className="bg-[#A345DA] rounded-sm">
+                <FavIcon className="size-5" name="apple_padcast" />{t("apple_podcast")}
+              </Button>
+
+            </a>
+            <a href="https://open.spotify.com/show/0G0eJbQ4pLxpvcIrSWXiSh" target="_blank">
+              <Button className="bg-[#242938] rounded-sm">
+                <FavIcon className="size-5" name="spotify_padcast" />{t("spotify")}
+              </Button>
+            </a>
+          </div>
         </div>
       </div>
       <div className="space-y-8 pt-8">

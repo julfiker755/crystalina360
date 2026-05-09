@@ -10,7 +10,7 @@ import {
 import { cn, helpers } from "@/lib";
 import { CalendarDays } from "lucide-react";
 
-export function MultipleCalendar({ onChange, className }: any) {
+export function MultipleCalendar({ onChange, className, start_date_place = "Start Date", end_date_place = "End Date" }: any) {
   const [open, setOpen] = React.useState(false);
   const [startDate, setStartDate] = React.useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = React.useState<Date | undefined>(undefined);
@@ -64,8 +64,8 @@ export function MultipleCalendar({ onChange, className }: any) {
               className,
             )}
           >
-            {startDate ? `${helpers.formatDate(startDate)}` : "Start Date"} -{" "}
-            {endDate ? `${helpers.formatDate(endDate)}` : "End Date"}
+            {startDate ? `${helpers.formatDate(startDate)}` : start_date_place} -{" "}
+            {endDate ? `${helpers.formatDate(endDate)}` : end_date_place}
             <span className="p-1.5  rounded-full ml-2 lg:ml-10">
               <CalendarDays className="text-primary size-5" />
             </span>

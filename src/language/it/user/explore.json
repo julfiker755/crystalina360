@@ -17,8 +17,8 @@
     "explore_OLISTAMI_events": "Esplora gli eventi OLISTAMI",
     "no_event": "Nessun evento trovato. Prova a modificare la ricerca o i filtri",
     "filter_for_events": "Filtra gli eventi",
-    "partitioner's_name": "Nome del praticante",
-    "partitioner's_placeholder": "Scrivi il nome del praticante",
+    "partitioner's_name": "Nome dell’operatore",
+    "partitioner's_placeholder": "Scrivi il nome dell’operatore",
     "event_type": "Tipo di evento",
     "event_item": {
       "1:1": "1:1",
@@ -62,12 +62,15 @@
     "select_here": "Seleziona qui",
     "near_me": "Vicino a me",
     "date_range": "Intervallo di date",
+    "start_date": "Data inizio",
+    "end_date": " Data fine",
     "date_option": {
       "today": "Oggi",
       "tomorrow": "Domani",
       "this_month": "Questo mese",
       "next_month": "Il prossimo mese"
     },
+    "select": "Seleziona",
     "holistic_discipline": "Disciplina olistica",
     "select_holistic_discipline": "Seleziona disciplina olistica",
     "accessibility": "Accessibilità",

@@ -68,6 +68,9 @@
       "this_month": "This Month",
       "next_month": "Next Month"
     },
+    "select": "Select",
+    "start_date": "Start Date",
+    "end_date": "End Date",
     "holistic_discipline": "Holistic Discipline",
     "select_holistic_discipline": "Select Holistic Discipline",
     "accessibility": "Accessibility",
