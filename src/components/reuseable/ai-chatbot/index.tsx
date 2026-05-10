@@ -42,7 +42,6 @@ export default function AIChatBox() {
     },
   ]);
 
-
   const [isTyping, setIsTyping] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const [aiChat] = useAiChatMutation();
@@ -102,18 +101,20 @@ export default function AIChatBox() {
           className={`flex gap-2 max-w-[90%] ${isUser ? "flex-row-reverse" : ""}`}
         >
           <div
-            className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${isUser ? "bg-[#A68B7C] text-white" : "bg-[#F5F1ED] text-[#4A3E37]"
-              }`}
+            className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+              isUser ? "bg-[#A68B7C] text-white" : "bg-[#F5F1ED] text-[#4A3E37]"
+            }`}
           >
             {isUser ? <UserRound size={16} /> : <Bot size={16} />}
           </div>
 
           <div className="flex flex-col gap-2">
             <div
-              className={`p-3 rounded-2xl text-sm ${isUser
-                ? "bg-[#A68B7C] text-white rounded-tr-none"
-                : "bg-white border border-[#EAE2D9] text-[#4A3E37] rounded-tl-none"
-                }`}
+              className={`p-3 rounded-2xl text-sm ${
+                isUser
+                  ? "bg-[#A68B7C] text-white rounded-tr-none"
+                  : "bg-white border border-[#EAE2D9] text-[#4A3E37] rounded-tl-none"
+              }`}
             >
               <div dangerouslySetInnerHTML={{ __html: msg.text }} />
             </div>
@@ -172,7 +173,9 @@ export default function AIChatBox() {
 
   return (
     // className="fixed bottom-6 mg:right-6 z-50"
-    <div className={`fixed ${isChatOpen && "inset-0 md:inset-auto"}  z-50 md:bottom-6 md:right-6`}>
+    <div
+      className={`fixed ${isChatOpen && "inset-0 md:inset-auto"}  z-50 md:bottom-6 md:right-6`}
+    >
       <AnimatePresence>
         {isChatOpen && (
           <motion.div

@@ -23,7 +23,7 @@ import { useParams } from "next/navigation";
 export default function EventDetails() {
   const t = useTranslations("user.details");
   const t1 = useTranslations("user.home");
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const { isOpen, user } = useAppSelector((state: AppState) => state.auth);
   const { slug } = useParams();
   const { data: events_all, isLoading } = useSingleEventsQuery(slug);
@@ -221,8 +221,8 @@ export default function EventDetails() {
                 <Button
                   type="button"
                   onClick={() => {
-                    dispatch(setSignupRole("user"))
-                    dispatch(toggleIsOpen())
+                    dispatch(setSignupRole("user"));
+                    dispatch(toggleIsOpen());
                   }}
                   className="bg-transparent  w-full border border-[#ECE8E8] text-[#C4ACA4]"
                 >
@@ -231,10 +231,11 @@ export default function EventDetails() {
 
                 <Button
                   onClick={() => {
-                    dispatch(setSignupRole("user"))
-                    dispatch(toggleIsOpen())
+                    dispatch(setSignupRole("user"));
+                    dispatch(toggleIsOpen());
                   }}
-                  className="w-full">
+                  className="w-full"
+                >
                   {t("purchase_now")}
                 </Button>
               </div>

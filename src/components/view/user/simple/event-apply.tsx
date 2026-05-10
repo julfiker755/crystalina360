@@ -138,8 +138,6 @@
 //     }
 //   };
 
-
-
 //   return (
 //     <div className="space-y-5 pt-10">
 //       <div className="w-full">
@@ -292,7 +290,6 @@ import clsx from "clsx";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
-
 const calcBreakdown = (unitPrice: number, quantity: number) => {
   const basePrice = Math.round(unitPrice * quantity * 100) / 100;
   const platformFee = Math.round((basePrice * 0.025 + 0.79) * 100) / 100;
@@ -329,10 +326,11 @@ export default function EventApply({
   });
 
   // ── Derived price breakdown ────────────────────────────────────
-  const unitPrice = discountedBase !== null ? discountedBase : parseFloat(price);
+  const unitPrice =
+    discountedBase !== null ? discountedBase : parseFloat(price);
   const { basePrice, platformFee, totalPrice } = calcBreakdown(
     unitPrice,
-    isBooking.quantity
+    isBooking.quantity,
   );
 
   // ── Populate date/time items by event type ─────────────────────
@@ -352,8 +350,12 @@ export default function EventApply({
       ...prev,
       quantity:
         type === "plus"
-          ? prev.quantity < available_tickets ? prev.quantity + 1 : prev.quantity
-          : prev.quantity > 1 ? prev.quantity - 1 : 1,
+          ? prev.quantity < available_tickets
+            ? prev.quantity + 1
+            : prev.quantity
+          : prev.quantity > 1
+            ? prev.quantity - 1
+            : 1,
     }));
   };
 
@@ -378,7 +380,10 @@ export default function EventApply({
           setDiscountedBase(unit - (unit * amount) / 100);
         }
 
-        setIsBooking((prev) => ({ ...prev, coupon_code: res.data.coupon_code }));
+        setIsBooking((prev) => ({
+          ...prev,
+          coupon_code: res.data.coupon_code,
+        }));
         from.reset();
         setCouponValid(true);
       }
@@ -394,13 +399,17 @@ export default function EventApply({
     try {
       const data = {
         event_id: id,
-        ...(isDate ? { event_date: isBooking.date } : { event_time: isBooking.date }),
+        ...(isDate
+          ? { event_date: isBooking.date }
+          : { event_time: isBooking.date }),
         coupon_id: isBooking?.coupon_code,
         quantity: isBooking.quantity,
       };
       const res = await purchaseStore(data).unwrap();
       if (res.status) {
-        const res2 = await paymentInit({ invoice_no: res?.data.invoice_no }).unwrap();
+        const res2 = await paymentInit({
+          invoice_no: res?.data.invoice_no,
+        }).unwrap();
         window.location.href = res2.data?.link;
       }
     } finally {
@@ -410,7 +419,6 @@ export default function EventApply({
 
   return (
     <div className="space-y-5 pt-10">
-
       {/* ── Date / Time selector ────────────────────────────────── */}
       <div className="w-full">
         <Label className="mb-2 block text-base">
@@ -429,14 +437,14 @@ export default function EventApply({
             <ChevronDown
               className={clsx(
                 "w-5 h-5 text-muted-foreground transition-transform",
-                isOpen && "rotate-180"
+                isOpen && "rotate-180",
               )}
             />
           </div>
           <div
             className={clsx(
               "overflow-hidden transition-all duration-300",
-              isOpen ? "max-h-60 mt-3 border-t" : "max-h-0"
+              isOpen ? "max-h-60 mt-3 border-t" : "max-h-0",
             )}
           >
             <ul className="space-y-2">
@@ -491,13 +499,15 @@ export default function EventApply({
 
       {/* ── Price Breakdown ──────────────────────────────────────── */}
       <div className="rounded-md  overflow-hidden text-sm">
-
         <div className="space-y-2 pb-2">
-
           {/* Ticket Quantity */}
           <div className="flex items-center justify-between">
-            <span className="font-medium text-figma-black">{t("ticket_quantity")}</span>
-            <span className="font-medium text-figma-black">{isBooking.quantity}</span>
+            <span className="font-medium text-figma-black">
+              {t("ticket_quantity")}
+            </span>
+            <span className="font-medium text-figma-black">
+              {isBooking.quantity}
+            </span>
           </div>
 
           {/* Sub Total / Base Price */}
@@ -505,7 +515,9 @@ export default function EventApply({
             <span className="font-medium text-figma-black">
               {t("sub_total")}
             </span>
-            <span className="font-medium text-figma-black">€{basePrice.toFixed(2)}</span>
+            <span className="font-medium text-figma-black">
+              €{basePrice.toFixed(2)}
+            </span>
           </div>
 
           {/* Platform / Booking Fee — 2.5% + €0.79 */}
@@ -513,14 +525,20 @@ export default function EventApply({
             <span className="font-medium text-figma-black">
               {t("booking_fee")}
             </span>
-            <span className="font-medium text-figma-black">€{platformFee.toFixed(2)}</span>
+            <span className="font-medium text-figma-black">
+              €{platformFee.toFixed(2)}
+            </span>
           </div>
         </div>
 
         {/* Total footer */}
         <div className="py-3  border-t border-border/60 flex items-center justify-between">
-          <span className="font-semibold text-base text-figma-black">{t("total_price")}</span>
-          <span className="font-bold text-base text-primary">€{totalPrice.toFixed(2)}</span>
+          <span className="font-semibold text-base text-figma-black">
+            {t("total_price")}
+          </span>
+          <span className="font-bold text-base text-primary">
+            €{totalPrice.toFixed(2)}
+          </span>
         </div>
       </div>
 
@@ -568,7 +586,6 @@ export default function EventApply({
           {paymentLoading ? t("waiting_for_payment") : t("purchase_now")}
         </Button>
       </div>
-
     </div>
   );
 }

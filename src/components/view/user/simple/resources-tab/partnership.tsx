@@ -14,11 +14,36 @@ export function Partnership({ action }: { action?: string }) {
   const [questionSend, { isLoading }] = useQuestionSendMutation();
 
   const intQuestion = () => [
-    { question: t("partner_text.email"), answer: "", type: "email", placeholder: t("partner_text.email_placeholder") },
-    { question: t("partner_text.question1"), answer: "", type: "text", placeholder: t("partner_text.placeholder") },
-    { question: t("partner_text.question2"), answer: "", type: "text", placeholder: t("partner_text.placeholder") },
-    { question: t("partner_text.question3"), answer: "", type: "text", placeholder: t("partner_text.placeholder") },
-    { question: t("partner_text.question4"), answer: "", type: "text", placeholder: t("partner_text.placeholder") },
+    {
+      question: t("partner_text.email"),
+      answer: "",
+      type: "email",
+      placeholder: t("partner_text.email_placeholder"),
+    },
+    {
+      question: t("partner_text.question1"),
+      answer: "",
+      type: "text",
+      placeholder: t("partner_text.placeholder"),
+    },
+    {
+      question: t("partner_text.question2"),
+      answer: "",
+      type: "text",
+      placeholder: t("partner_text.placeholder"),
+    },
+    {
+      question: t("partner_text.question3"),
+      answer: "",
+      type: "text",
+      placeholder: t("partner_text.placeholder"),
+    },
+    {
+      question: t("partner_text.question4"),
+      answer: "",
+      type: "text",
+      placeholder: t("partner_text.placeholder"),
+    },
   ];
 
   const [question, setQuestion] = useState(intQuestion());
@@ -27,18 +52,16 @@ export function Partnership({ action }: { action?: string }) {
     setQuestion(intQuestion());
   }, [t]);
 
-
-
   const handleQuestion = async (e: React.FormEvent) => {
     e.preventDefault();
-    const mainData = question.map((item => ({
+    const mainData = question.map((item) => ({
       question: item.question,
-      answer: item.answer
-    })))
+      answer: item.answer,
+    }));
     const data = helpers.fromData({
       answer: mainData,
     });
-    console.log(mainData)
+    console.log(mainData);
     try {
       await questionSend(data).unwrap();
       setQuestion(intQuestion);

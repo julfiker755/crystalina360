@@ -267,8 +267,8 @@ export default function AddOnCard({
             ))}
           </ul>
         </div>
-        {buy && (
-          user?.email ? (
+        {buy &&
+          (user?.email ? (
             global?.data?.slug === "custom-solutions" ? (
               <Button
                 style={{
@@ -311,8 +311,7 @@ export default function AddOnCard({
               <Lock className="w-4 h-4 mr-2" />
               {t("buy_now")}
             </Button>
-          )
-        )}
+          ))}
       </Modal2>
     </>
   );

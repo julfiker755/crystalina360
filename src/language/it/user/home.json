@@ -25,36 +25,66 @@
   "key_features": {
     "title": "Caratteristiche principali",
     "btn_learn": "Scopri di più",
+    "slg_title": "Olistami è un luogo di connessione tra chi cerca e chi crea esperienze olistiche autentiche",
+    "slg_text": "Non è solo una piattaforma: è uno spazio in cui puoi orientarti e scegliere con consapevolezza ciò di cui hai bisogno.",
+    "action_watch_text": "Non sai da dove iniziare? Puoi seguire le guide passo passo:",
+    "action_watch_btn": "Guarda ora",
+    "action_operator_text": "Lavori nel mondo olistico? Proponi le tue esperienze su Olistami.",
+    "action_operator_btn": "Scopri come",
     "features": {
       "profile": {
         "title": "Profilo personale",
         "text": "Crea un profilo per vivere esperienze olistiche",
-        "description": "Crea il tuo account e aggiungi dettagli personali per personalizzare la tua esperienza. Aggiorna il tuo profilo in qualsiasi momento, mantieni le tue informazioni al sicuro e gestisci facilmente le tue preferenze. Il tuo profilo è il punto di partenza per esplorare e prenotare eventi su misura per te."
+        "description": [
+          "Crea il tuo profilo e inizia a costruire uno spazio che ti rappresenti davvero. Inserire i tuoi dati e le tue preferenze non è solo una formalità: permette alla piattaforma di suggerirti eventi, pratiche ed esperienze in linea con ciò che stai cercando in questo momento",
+          "Inoltre, grazie al concierge AI integrato, puoi ricevere suggerimenti personalizzati e orientarti più facilmente tra le esperienze disponibili, anche quando non sai esattamente da dove partire",
+          "Puoi aggiornare le informazioni in qualsiasi momento, mantenendo il controllo su ciò che desideri condividere. Il tuo profilo diventa così il punto di partenza per esplorare eventi selezionati, prenotare in modo consapevole e ritrovare facilmente le esperienze che hai vissuto."
+        ],
+        "href_text": "Crea subito il tuo profilo"
       },
       "discovery": {
         "title": "Scoperta eventi",
-        "text": "Crea un profilo per vivere esperienze olistiche",
-        "description": "Esplora un'ampia gamma di eventi — dai workshop online alle conferenze in presenza. Utilizza filtri avanzati come posizione, tipo e fascia di prezzo per trovare rapidamente ciò che cerchi. Salva i tuoi eventi preferiti e non perdere mai le opportunità più importanti per te."
+        "text": "Esplora eventi e percorsi di benessere",
+        "description": [
+          "Esplora una selezione curata di esperienze olistiche pensate per accompagnarti, non solo intrattenerti. Dai workshop online agli incontri in presenza, ogni evento è scelto per offrire qualità, profondità e coerenza con i valori della piattaforma",
+          "Grazie ai filtri avanzati puoi orientarti con semplicità tra tipologie di pratiche, luoghi e fasce di prezzo. Se hai bisogno di un aiuto più intuitivo, puoi affidarti anche al concierge AI, che ti accompagna nella scoperta proponendo esperienze in linea con ciò che stai cercando, passo dopo passo.",
+          "Che tu stia cercando un momento di pausa, crescita o connessione, puoi costruire un percorso su misura, in modo semplice e gu idato."
+        ],
+        "href_text": "Esplora qui gli eventi di benessere"
       },
       "booking": {
         "title": "Biglietti e prenotazioni",
-        "text": "Crea un profilo per vivere esperienze olistiche",
-        "description": "Prenota i biglietti in modo semplice con un processo di pagamento sicuro e affidabile. Una volta completata la prenotazione, riceverai conferme e ricevute automatiche. Stai tranquillo sapendo che i tuoi biglietti sono salvati nel tuo account e accessibili in qualsiasi momento."
+        "text": "Acquista e gestisci biglietti e prenotazioni",
+        "description": [
+          "Prenotare un evento è semplice e trasparente: segui un processo guidato e sicuro che ti accompagna fino alla conferma finale. Una volta completata la prenotazione,riceverai tutte le informazioni necessarie per vivere l’esperienza senza pensieri.",
+          "I tuoi biglietti e le ricevute rimangono sempre disponibili all’interno del tuo account, così puoi accedervi in qualsiasi momento e tenere traccia del tuo percorso.Ogni passaggio è pensato per offrirti chiarezza e affidabilità."
+        ],
+        "href_text": ""
       },
       "rating": {
         "title": "Recensioni e valutazioni",
-        "text": "Crea un profilo per vivere esperienze olistiche",
-        "description": "Dopo aver partecipato agli eventi, condividi il tuo feedback onesto tramite recensioni e valutazioni. Il tuo contributo aiuta a migliorare la piattaforma e guida altri utenti nella scelta dei migliori eventi. Costruisci una comunità basata sulla fiducia condividendo la tua esperienza e i tuoi consigli."
+        "text": "Consulta e lascia recensioni sugli eventi",
+        "description": [
+          "Dopo aver partecipato a un evento, puoi condividere la tua esperienza attraverso recensioni e valutazioni autentiche. Il tuo contributo non serve solo agli altri utenti, ma aiuta anche a mantenere alta la qualità degli eventi presenti sulla piattaforma",
+          "Le recensioni sono uno spazio di fiducia e responsabilità condivisa: un modo semplice per restituire ciò che hai ricevuto e orientare chi arriverà dopo di te nella scelta delle esperienze più adatte."
+        ],
+        "href_text": ""
       },
       "payment": {
         "title": "Pagamenti e fatture",
-        "text": "Crea un profilo per vivere esperienze olistiche",
-        "description": "Gestisci tutti i tuoi pagamenti relativi agli eventi in un unico posto comodo. Accedi a fatture dettagliate, monitora la cronologia delle prenotazioni e scarica le ricevute quando ne hai bisogno. Goditi trasparenza e chiarezza in ogni transazione."
+        "text": "Controlla pagamenti, ricevute e transazioni",
+        "description": [
+          "Gestisci in un unico spazio tutti i tuoi pagamenti legati agli eventi. Puoi visualizzare lo storico delle prenotazioni, accedere alle ricevute e consultare le informazioni di pagamento in modo chiaro e ordinato.La piattaforma è progettata per garantire trasparenza in ogni fase: sai sempre cosa stai pagando e per quale esperienza. Questo ti permette di concentrarti su ciò che conta davvero, senza incertezze o passaggi complessi."
+        ],
+        "href_text": "Scopri le esperienze di benessere"
       },
       "subscription": {
         "title": "Abbonamenti",
-        "text": "Crea un profilo per vivere esperienze olistiche",
-        "description": "Rimani aggiornato iscrivendoti a newsletter e notifiche sugli eventi. Scegli i tipi di aggiornamenti che desideri ricevere — dai concerti imminenti ai seminari professionali. Con abbonamenti personalizzati, sarai sempre informato senza contenuti inutili."
+        "text": "Crea un abbonamento e accedi ai vantaggi",
+        "description": [
+          "Scegli come rimanere in contatto con ciò che ti interessa davvero. Attraverso notifiche e aggiornamenti personalizzati puoi ricevere solo contenuti rilevanti, senza essere sommerso da informazioni inutili. Gli abbonamenti ti permettono di seguire temi, pratiche o tipologie di eventi specifici, mentre il concierge AI può affinare ulteriormente i suggerimenti nel tempo, aiutandoti a scoprire nuove esperienze in linea con il  tuo percorso.In questo modo, la piattaforma si adatta a te, non il contrario."
+        ],
+        "href_text": "Chiedi alla guida Olistami"
       }
     }
   },

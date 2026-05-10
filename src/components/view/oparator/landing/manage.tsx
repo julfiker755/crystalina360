@@ -36,7 +36,7 @@ export default function Manage() {
             <Button
               onClick={() => {
                 dispatch(setSignupRole("operator"));
-                dispatch(toggleIsOpen())
+                dispatch(toggleIsOpen());
               }}
               size="lg"
               className="text-primary bg-white rounded-full"

@@ -33,15 +33,22 @@ export function Podcast() {
             {t("description")}
           </p>
           <div className="space-x-2">
-            <a href="https://podcasts.apple.com/it/podcast/olistoria-storiepratiche-e-scienze-dal-mondo-olistico/id1835702572" target="_blank">
+            <a
+              href="https://podcasts.apple.com/it/podcast/olistoria-storiepratiche-e-scienze-dal-mondo-olistico/id1835702572"
+              target="_blank"
+            >
               <Button className="bg-[#A345DA] rounded-sm">
-                <FavIcon className="size-5" name="apple_padcast" />{t("apple_podcast")}
+                <FavIcon className="size-5" name="apple_padcast" />
+                {t("apple_podcast")}
               </Button>
-
             </a>
-            <a href="https://open.spotify.com/show/0G0eJbQ4pLxpvcIrSWXiSh" target="_blank">
+            <a
+              href="https://open.spotify.com/show/0G0eJbQ4pLxpvcIrSWXiSh"
+              target="_blank"
+            >
               <Button className="bg-[#242938] rounded-sm">
-                <FavIcon className="size-5" name="spotify_padcast" />{t("spotify")}
+                <FavIcon className="size-5" name="spotify_padcast" />
+                {t("spotify")}
               </Button>
             </a>
           </div>

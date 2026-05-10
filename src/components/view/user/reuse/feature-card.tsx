@@ -1,3 +1,6 @@
+"use client";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 export default function FeatureCard({
@@ -8,6 +11,11 @@ export default function FeatureCard({
   icon,
   text,
   isText = true,
+  href,
+  btn,
+  subDescription,
+  handleOpenModal,
+  btnColor,
 }: any) {
   return (
     <div
@@ -30,7 +38,44 @@ export default function FeatureCard({
       {isText ? (
         <p className="text-article">{text}</p>
       ) : (
-        <p className="text-article">{description}</p>
+        <>
+          {Array.isArray(description) &&
+            description.map((item: string, index: number) => (
+              <p key={index} className="text-article mt-1.5">
+                {item}
+              </p>
+            ))}
+          <p className="text-article mt-1">
+            {/* {subDescription} */}
+            <span>
+              {btn === "link" ? (
+                <button
+                  className="py-1 rounded-full text-figma-black/90 hover:underline"
+                  style={{
+                    color: btnColor
+                  }}
+                >
+                  <Link href={href} className="flex items-center">
+                    {subDescription} <ArrowRight className="w-4 mt-px h-4" />
+                  </Link>
+                </button>
+              ) : (
+                btn === "click" && (
+                  <button
+                    className="py-1 cursor-pointer flex items-center rounded-full text-figma-black/90 hover:underline"
+                    style={{
+                      color: btnColor
+                    }}
+                    onClick={handleOpenModal}
+                  >
+                    {subDescription}
+                    <ArrowRight className="w-4 mt-px h-4" />
+                  </button>
+                )
+              )}
+            </span>
+          </p>
+        </>
       )}
     </div>
   );

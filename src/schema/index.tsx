@@ -15,7 +15,6 @@ export const contact_us = z.object({
   description: z.string().nonempty("La descrizione è obbligatoria"),
 });
 
-
 // == missing_sc ==
 export const missing_sc = z.object({
   gender: z.string().nonempty("Il genere è obbligatorio"),
@@ -68,12 +67,8 @@ export const new_Pass = z
 // === change_Pass ===
 export const change_Pass = z
   .object({
-    current_password: z
-      .string()
-      .nonempty("La password attuale è obbligatoria"),
-    new_password: z
-      .string()
-      .nonempty("La nuova password è obbligatoria"),
+    current_password: z.string().nonempty("La password attuale è obbligatoria"),
+    new_password: z.string().nonempty("La nuova password è obbligatoria"),
     c_password: z
       .string()
       .nonempty("La conferma della password è obbligatoria"),
@@ -176,11 +171,15 @@ export const event = z.object({
   event_title: z.string().nonempty("Il titolo è obbligatorio"),
   event_description: z.string().nonempty("La descrizione è obbligatoria"),
   min_person: z.string().nonempty("Il numero minimo di persone è obbligatorio"),
-  max_person: z.string().nonempty("Il numero massimo di persone è obbligatorio"),
+  max_person: z
+    .string()
+    .nonempty("Il numero massimo di persone è obbligatorio"),
   price: z.string().nonempty("Il prezzo è obbligatorio"),
   event_duration: z.string().optional(),
   tags: z.array(z.string()).nonempty("I tag sono obbligatori"),
-  ticket_quantity: z.string().nonempty("La quantità di biglietti è obbligatoria"),
+  ticket_quantity: z
+    .string()
+    .nonempty("La quantità di biglietti è obbligatoria"),
   accessibility: z.array(z.string()).optional(),
 });
 

@@ -72,9 +72,6 @@ export default function EventCard({
     }
   };
 
-
-
-
   return (
     <div className="overflow-hidden  transition-shadow bg-figma-gray rounded-lg p-3">
       <div className="relative h-60 overflow-hidden rounded-md ">
@@ -113,20 +110,17 @@ export default function EventCard({
             />
           </div>
         )}
-        {wish && (
-          user?.email && (
-            <div
-              onClick={(e) => submitWish(e)}
-              className="size-10 grid place-items-center cursor-pointer absolute right-3 top-3 rounded-full bg-white"
-            >
-              {is_loved_by_user ? (
-                <FavIcon name="u_loves_true" />
-              ) : (
-                <FavIcon name="love" />
-              )}
-            </div>
-          )
-
+        {wish && user?.email && (
+          <div
+            onClick={(e) => submitWish(e)}
+            className="size-10 grid place-items-center cursor-pointer absolute right-3 top-3 rounded-full bg-white"
+          >
+            {is_loved_by_user ? (
+              <FavIcon name="u_loves_true" />
+            ) : (
+              <FavIcon name="love" />
+            )}
+          </div>
         )}
       </div>
       <div className="pt-5">

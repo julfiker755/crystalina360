@@ -153,9 +153,10 @@ export default function EventFilter() {
                       size="lg"
                       variant="secondary"
                       type="button"
-                      className={`${get("event_type") == item.value &&
+                      className={`${
+                        get("event_type") == item.value &&
                         "shadow-filter bg-white"
-                        }`}
+                      }`}
                       key={idx}
                       onClick={() => from.setValue("event_type", item.value)}
                     >
@@ -175,9 +176,10 @@ export default function EventFilter() {
                       size="lg"
                       variant="secondary"
                       type="button"
-                      className={`${get("delivery_type") == item.value &&
+                      className={`${
+                        get("delivery_type") == item.value &&
                         "shadow-filter bg-white"
-                        }`}
+                      }`}
                       key={idx}
                       onClick={() => from.setValue("delivery_type", item.value)}
                     >
@@ -197,9 +199,10 @@ export default function EventFilter() {
                       size="lg"
                       variant="secondary"
                       type="button"
-                      className={`${get("event_purpose") == item.value &&
+                      className={`${
+                        get("event_purpose") == item.value &&
                         "shadow-filter bg-white"
-                        }`}
+                      }`}
                       key={idx}
                       onClick={() => from.setValue("event_purpose", item.value)}
                     >
@@ -279,14 +282,8 @@ export default function EventFilter() {
                 start_date_place={t("start_date")}
                 end_date_place={t("end_date")}
                 onChange={(date: any) => {
-                  from.setValue(
-                    "to_date",
-                    helpers.formatDate(date?.startDate),
-                  );
-                  from.setValue(
-                    "from_date",
-                    helpers.formatDate(date?.endDate),
-                  );
+                  from.setValue("to_date", helpers.formatDate(date?.startDate));
+                  from.setValue("from_date", helpers.formatDate(date?.endDate));
                 }}
               />
               <div className="flex flex-wrap gap-4 mt-2">

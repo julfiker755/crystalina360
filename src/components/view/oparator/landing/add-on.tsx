@@ -40,7 +40,7 @@ export default function AddOn() {
             <Button
               onClick={() => {
                 dispatch(setSignupRole("operator"));
-                dispatch(toggleIsOpen())
+                dispatch(toggleIsOpen());
               }}
               size="lg"
               className="text-white rounded-full"

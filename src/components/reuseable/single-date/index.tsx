@@ -72,7 +72,7 @@ export function SingleCalendar({
             disabled={
               isDisabled
                 ? (date: Date) =>
-                  date.getTime() < new Date().setHours(0, 0, 0, 0)
+                    date.getTime() < new Date().setHours(0, 0, 0, 0)
                 : false
             }
           />

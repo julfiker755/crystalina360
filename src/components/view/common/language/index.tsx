@@ -36,7 +36,11 @@ export const LanguageSwitcher = () => {
   const { toggle, isPending } = useLangSwitch();
 
   return (
-    <Button variant="none" onClick={toggle} className="cursor-pointer hidden md:block">
+    <Button
+      variant="none"
+      onClick={toggle}
+      className="cursor-pointer hidden md:block"
+    >
       <FavIcon className="size-7" name="language" />
     </Button>
   );

@@ -7,6 +7,8 @@ export const featuresData = [
     key: "profile",
     icon: assets.feature.profile,
     bgColor: "#F7FAFF",
+    btn: "click",
+    btnColor: "rgba(34, 117, 255)",
     shadow:
       "0 2px 4px 0 rgba(34, 117, 255, 0.25), 0 -2px 4px 0 rgba(34, 117, 255, 0.25), 2px 0 4px 0 rgba(34, 117, 255, 0.25), -2px 0 4px 0 rgba(34, 117, 255, 0.25)",
   },
@@ -16,14 +18,19 @@ export const featuresData = [
     icon: assets.feature.discovery,
     bgColor: "#FFF5F6",
     iconBgColor: "bg-pink-100",
+    btn: "link",
+    href: "/events",
+    btnColor: "rgba(255, 18, 56,0.60)",
     shadow:
       "0 2px 4px 0 rgba(255, 18, 56, 0.25), 0 -2px 4px 0 rgba(255, 18, 56, 0.25), 2px 0 4px 0 rgba(255, 18, 56, 0.25), -2px 0 4px 0 rgba(255, 18, 56, 0.25)",
   },
+
   {
     id: 3,
     key: "booking",
     icon: assets.feature.booking,
     bgColor: "#FDF6FF",
+    btnColor: "rgba(204, 25, 255, 0.25)",
     shadow:
       " 0 2px 4px 0 rgba(204, 25, 255, 0.25), 0 -2px 4px 0 rgba(204, 25, 255, 0.25), 2px 0 4px 0 rgba(204, 25, 255, 0.25), -2px 0 4px 0 rgba(204, 25, 255, 0.25)",
   },
@@ -32,6 +39,7 @@ export const featuresData = [
     key: "rating",
     icon: assets.feature.rating,
     bgColor: "#FFFDF1",
+    btnColor: "rgba(255, 221, 14, 0.25)",
     shadow:
       "0 2px 4px 0 rgba(255, 221, 14, 0.25), 0 -2px 4px 0 rgba(255, 221, 14, 0.25), 2px 0 4px 0 rgba(255, 221, 14, 0.25), -2px 0 4px 0 rgba(255, 221, 14, 0.25)",
   },
@@ -40,6 +48,9 @@ export const featuresData = [
     key: "payment",
     icon: assets.feature.payment,
     bgColor: "#F4FCFF",
+    btn: "link",
+    href: "/events",
+    btnColor: "rgba(18, 190, 255)",
     shadow:
       " 0 2px 4px 0 rgba(18, 190, 255, 0.25), 0 -2px 4px 0 rgba(18, 190, 255, 0.25), 2px 0 4px 0 rgba(18, 190, 255, 0.25), -2px 0 4px 0 rgba(18, 190, 255, 0.25)",
   },
@@ -48,6 +59,9 @@ export const featuresData = [
     key: "subscription",
     icon: assets.feature.subscrit,
     bgColor: "#F9FFEE",
+    btn: "link",
+    href: "/ask-olistami",
+    btnColor: "rgba(171, 255, 16)",
     shadow:
       " 0 2px 4px 0 rgba(171, 255, 16, 0.25), 0 -2px 4px 0 rgba(171, 255, 16, 0.25), 2px 0 4px 0 rgba(171, 255, 16, 0.25), -2px 0 4px 0 rgba(171, 255, 16, 0.25)",
   },

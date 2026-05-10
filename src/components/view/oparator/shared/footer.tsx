@@ -14,19 +14,19 @@ export default function Footer() {
     {
       name: "linkedin",
       icon: <FavIcon name="linkdin33" className="size-5" />,
-      href: "https://www.linkedin.com/in/olistami-srl-478583407"
+      href: "https://www.linkedin.com/in/olistami-srl-478583407",
     },
     {
       name: "youtube",
       icon: <FavIcon name="youtube" className="size-6" />,
-      href: "https://www.youtube.com/channel/UClsVfBgG270wJ13WdT-3osw"
+      href: "https://www.youtube.com/channel/UClsVfBgG270wJ13WdT-3osw",
     },
     {
       name: "instagram",
       icon: <FavIcon name="instagram" className="size-6" />,
-      href: "https://www.instagram.com/olista_mi?igsh=bWZ6MDVqbjA3cWRk&utm_source=qr"
+      href: "https://www.instagram.com/olista_mi?igsh=bWZ6MDVqbjA3cWRk&utm_source=qr",
     },
-  ];;
+  ];
 
   return (
     <div className="bg-figma-black pt-10 lg:pt-16 *:text-white">
@@ -48,7 +48,7 @@ export default function Footer() {
             <h3 className="text-xl font-semibold mb-3 text-white">
               {t("quick.quick_links")}
             </h3>
-            { }
+            {}
             {user?.email ? (
               <ul className="space-y-1">
                 <li>
@@ -99,15 +99,13 @@ export default function Footer() {
               <ul className="flex items-center  space-x-3">
                 {socialMedia &&
                   socialMedia.map((item) => (
-                    <li
-                      key={item.name}
-
-                    >
+                    <li key={item.name}>
                       <a
                         className="bg-[#FFFFFF]/20 size-12 rounded-md grid place-items-center"
-                        href={item.href} target="_blank">
+                        href={item.href}
+                        target="_blank"
+                      >
                         {item.icon}
-
                       </a>
                     </li>
                   ))}

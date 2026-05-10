@@ -1,11 +1,10 @@
 import { Button } from "@/components/ui";
 import Link from "next/link";
 import FeatureCard from "../reuse/feature-card";
-import { roleKey } from "@/lib";
 import { featuresData } from "@/components/dummy-data";
 import { useTranslations } from "next-intl";
 
-export default function KeyFeature({ role }: any) {
+export default function KeyFeature() {
   const t = useTranslations("user.home.key_features");
 
   return (
@@ -24,15 +23,13 @@ export default function KeyFeature({ role }: any) {
           />
         ))}
       </div>
-      {role == roleKey.user && (
-        <div className="flex justify-center">
-          <Link href="/feature">
-            <Button size="lg" className="mt-10">
-              {t("btn_learn")}
-            </Button>
-          </Link>
-        </div>
-      )}
+      <div className="flex justify-center">
+        <Link href="/feature">
+          <Button size="lg" className="mt-10">
+            {t("btn_learn")}
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }

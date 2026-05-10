@@ -57,8 +57,9 @@ export default function UserOpratorNofi() {
             noti?.data?.map((item: any, index: any) => (
               <div
                 key={index}
-                className={`flex  items-center ${item.is_read && "bg-[#FBFBFB]"
-                  }  py-2 px-2 rounded-md justify-between space-x-2`}
+                className={`flex  items-center ${
+                  item.is_read && "bg-[#FBFBFB]"
+                }  py-2 px-2 rounded-md justify-between space-x-2`}
                 onClick={() => {
                   if (!markloading) {
                     handleRead(item.id);
@@ -72,15 +73,17 @@ export default function UserOpratorNofi() {
                     alt={item.username}
                   />
                   <p
-                    className={`text-article ${item?.active && "text-figma-black"
-                      }`}
+                    className={`text-article ${
+                      item?.active && "text-figma-black"
+                    }`}
                   >
                     {item?.data?.title}
                   </p>
                 </div>
                 <p
-                  className={`text-article hidden md:block ${item?.is_read && "text-figma-black"
-                    }`}
+                  className={`text-article hidden md:block ${
+                    item?.is_read && "text-figma-black"
+                  }`}
                 >
                   {helpers.formatDate(item?.created_at)}
                 </p>
