@@ -18,9 +18,9 @@ jobs:
           script: |
             set -e
             echo "Deployment started on server..."
+            cd /var/www/crystalina360
             rm -rf .next
             git stash
-            cd /var/www/crystalina360
             git pull
             npm install
             npm run build
