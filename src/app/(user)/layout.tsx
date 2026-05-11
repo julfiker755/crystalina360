@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 export default function Userlayout({ children }: childrenProps) {
   const pathname = usePathname();
 
+
   return (
     <>
       <MissingInfo path={`/profile/update`} />
