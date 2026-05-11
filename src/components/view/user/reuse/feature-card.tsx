@@ -6,20 +6,6 @@ import React from "react";
 
 
 
-type FeatureCardProps = {
-  bgColor: string;
-  shadow: string;
-  title: string;
-  description?: string[];
-  icon: any;
-  text?: string;
-  isText?: boolean;
-  href?: any;
-  btn?: string;
-  subDescription?: string;
-  handleOpenModal?: () => void;
-  btnColor?: string;
-};
 
 
 
@@ -36,7 +22,7 @@ export default function FeatureCard({
   subDescription,
   handleOpenModal,
   btnColor,
-}: FeatureCardProps) {
+}: any) {
   return (
     <div
       className={`${bgColor} p-4 rounded-lg transition-transform`}
