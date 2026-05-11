@@ -3,6 +3,26 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
+
+
+
+type FeatureCardProps = {
+  bgColor: string;
+  shadow: string;
+  title: string;
+  description?: string[];
+  icon: any;
+  text?: string;
+  isText?: boolean;
+  href?: any;
+  btn?: string;
+  subDescription?: string;
+  handleOpenModal?: () => void;
+  btnColor?: string;
+};
+
+
+
 export default function FeatureCard({
   bgColor,
   shadow,
@@ -16,7 +36,7 @@ export default function FeatureCard({
   subDescription,
   handleOpenModal,
   btnColor,
-}: any) {
+}: FeatureCardProps) {
   return (
     <div
       className={`${bgColor} p-4 rounded-lg transition-transform`}

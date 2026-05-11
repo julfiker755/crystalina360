@@ -94,11 +94,10 @@ const ActionCard = ({
   herf: string;
 }) => (
   <div
-    className={`flex items-center flex-wrap justify-between p-8 rounded-3xl  ${
-      variant === "primary"
-        ? "bg-rose-50/50 border-rose-100"
-        : "bg-blue-50/50 border-blue-100"
-    }`}
+    className={`flex items-center flex-wrap justify-between p-8 rounded-3xl  ${variant === "primary"
+      ? "bg-rose-50/50 border-rose-100"
+      : "bg-blue-50/50 border-blue-100"
+      }`}
   >
     <div>
       <h4 className="font-serif text-xl font-medium text-gray-800 leading-snug max-w-xs">
