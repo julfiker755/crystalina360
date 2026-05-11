@@ -1,0 +1,28 @@
+name: Deploy Frontend
+ 
+on:
+  push:
+    branches:
+      - main
+ 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            echo "Deployment started on server..."
+            rm -rf .next
+            git stash
+            cd /var/www/crystalina360
+            git pull
+            npm install
+            npm run build
+            pm2 restart crystalina360
+            echo "Deployment finished successfully."
