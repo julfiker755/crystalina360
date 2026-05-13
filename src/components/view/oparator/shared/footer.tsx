@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 
 export default function Footer() {
   const t = useTranslations("oprator.home.footer");
+  const t1 = useTranslations("user.home.footer");
   const user = useAppSelector((state) => state.auth.user);
 
   const socialMedia = [
@@ -31,7 +32,7 @@ export default function Footer() {
   return (
     <div className="bg-figma-black pt-10 lg:pt-16 *:text-white">
       <div className="container">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-50">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-50">
           <div className="space-y-4">
             <div>
               <picture>
@@ -90,6 +91,32 @@ export default function Footer() {
                 </li>
               </ul>
             )}
+          </div>
+          <div className="lg:ml-5">
+
+            <h3 className="text-xl font-semibold text-white mb-3">
+              {t1("legal.title")}
+            </h3>
+            <ul className="space-y-1">
+              <li>
+                <Link href="/olistami/note-legail"> {t1("legal.legal_notice")}</Link>
+              </li>
+              <li>
+                <Link href="/olistami/condizioni-di-utilizzo"> {t1("legal.terms_of_use")}</Link>
+              </li>
+              <li>
+                <Link href="/olistami/cookies-e-preferenze"> {t1("legal.cookies_policy")}</Link>
+              </li>
+              <li>
+                <Link href="/olistami/privacy"> {t1("legal.privacy_policy")}</Link>
+              </li>
+              <li>
+                <Link href="/olistami/codice-etico"> {t1("legal.code_of_ethics")}</Link>
+              </li>
+              <li>
+                <Link href="/olistami/modello-231"> {t1("legal.legislative_decree")}</Link>
+              </li>
+            </ul>
           </div>
           <div>
             <h3 className="text-xl font-semibold text-white mb-3">
