@@ -40,7 +40,7 @@ export default function Testimonial() {
 function TestimonialCard({ id, name, img, average_rating, comment }: any) {
   return (
     <div className="flex flex-col items-center text-center p-6 bg-[#FBFBFB] rounded-lg">
-      <ImgBox src={img} className="size-20 rounded-full" alt="img" />
+      <ImgBox src={img} className="size-20 rounded-full" alt={name || "testimonial-img"} />
       <h3 className="font-semibold text-figma-black text-lg mb-2 mt-3">
         {name}
       </h3>

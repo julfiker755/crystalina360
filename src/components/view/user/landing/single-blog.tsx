@@ -18,7 +18,7 @@ export default function SingleBlog() {
       <ImgBox
         src={img || "/not.png"}
         className="h-60 lg:h-100 w-full  rounded-lg bg-muted overflow-hidden"
-        alt={"img box fldjk"}
+        alt={title?.toString() || "img"}
       />
       <div className="py-4 px-3">
         <span className="text-sm text-article pb-5">

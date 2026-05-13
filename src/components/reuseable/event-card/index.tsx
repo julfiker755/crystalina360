@@ -97,7 +97,7 @@ export default function EventCard({
           ) : (
             <img
               src={"/videoImg.jpg"}
-              alt={"title"}
+              alt={event_title?.slice(0, 100)?.toString() + "..." || "event_img"}
               className="w-full h-full object-cover"
             />
           )
@@ -105,7 +105,7 @@ export default function EventCard({
           <div>
             <img
               src={img || "/not.png"}
-              alt={"title"}
+              alt={event_title?.slice(0, 100)?.toString() + "..." || "event_img"}
               className="w-full h-full object-cover"
             />
           </div>
