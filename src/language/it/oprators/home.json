@@ -104,5 +104,20 @@
       "play_store": "Play Store",
       "app_store": "App Store"
     }
+  },
+  "organizer": {
+    "title": {
+      "first": "Non sei un organizzatore?",
+      "second": "Esplora gli eventi",
+      "third": "come utente"
+    },
+    "text": "Se stai cercando eventi entusiasmanti a cui partecipare, puoi continuare come utente normale. Sfoglia migliaia di eventi, prenota i biglietti istantaneamente e gestisci la tua partecipazione tutto in un unico posto.",
+    "secure_ticket_booking_payments": "Prenotazione e pagamenti dei biglietti sicuri",
+    "personalized_event_recommendations": "Raccomandazioni di eventi personalizzate",
+    "easy_attendance_management": "Gestione semplice della partecipazione",
+    "standard_user_access": "Accesso utente standard",
+    "text1": "Ottieni accesso immediato al nostro marketplace di eventi. Nessuna lunga registrazione necessaria per esplorare. Il tuo viaggio inizia qui.",
+    "btn_text": "Continua come utente",
+    "btn_sub": "Scelto da oltre 50.000 partecipanti"
   }
 }

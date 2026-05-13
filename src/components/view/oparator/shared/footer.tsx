@@ -14,7 +14,7 @@ export default function Footer() {
     {
       name: "linkedin",
       icon: <FavIcon name="linkdin33" className="size-5" />,
-      href: "https://www.linkedin.com/in/olistami-srl-478583407",
+      href: "https://www.linkedin.com/company/olistami-srl",
     },
     {
       name: "youtube",
@@ -48,7 +48,7 @@ export default function Footer() {
             <h3 className="text-xl font-semibold mb-3 text-white">
               {t("quick.quick_links")}
             </h3>
-            {}
+            { }
             {user?.email ? (
               <ul className="space-y-1">
                 <li>

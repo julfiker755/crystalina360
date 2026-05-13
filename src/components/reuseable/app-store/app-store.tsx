@@ -47,7 +47,7 @@ const AppStore = ({ className, titleStyle, mainStyle }: AppStoreProps) => {
                 strokeLinecap="round"
               />
             </svg>
-            <h1 className="text-base sm:text-lg font-bold text-white ml-3">
+            <h1 className="text-base font-bold text-white ml-3">
               {t("social.play_store")}
             </h1>
           </div>
@@ -74,7 +74,7 @@ const AppStore = ({ className, titleStyle, mainStyle }: AppStoreProps) => {
               />
             </svg>
 
-            <h1 className="text-base sm:text-lg font-bold text-white ml-3">
+            <h1 className="text-base font-bold text-white ml-3">
               {t("social.app_store")}
             </h1>
           </div>

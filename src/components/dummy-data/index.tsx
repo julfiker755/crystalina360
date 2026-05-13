@@ -59,8 +59,8 @@ export const featuresData = [
     key: "subscription",
     icon: assets.feature.subscrit,
     bgColor: "#F9FFEE",
-    btn: "link",
-    href: "/ask-olistami",
+    // btn: "link",
+    // href: "/ask-olistami",
     btnColor: "rgba(171, 255, 16)",
     shadow:
       " 0 2px 4px 0 rgba(171, 255, 16, 0.25), 0 -2px 4px 0 rgba(171, 255, 16, 0.25), 2px 0 4px 0 rgba(171, 255, 16, 0.25), -2px 0 4px 0 rgba(171, 255, 16, 0.25)",

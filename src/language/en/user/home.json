@@ -138,7 +138,17 @@
       "explore": "Explore",
       "blog": "Blog",
       "podcast": "Podcast",
-      "contact_us": "Contact Us"
+      "contact_us": "Contact Us",
+      "partnership": "Partnership"
+    },
+    "legal": {
+      "title": "Legal & Policies",
+      "legal_notice": "Legal Notice",
+      "terms_of_use": "Terms of Use",
+      "cookies_policy": "Cookies",
+      "privacy_policy": "Privacy Policy",
+      "code_of_ethics": "Code of Ethics",
+      "legislative_decree": "Legislative Decree 231"
     },
     "social": {
       "follow_us_on": "Follow us on",
@@ -148,12 +158,14 @@
     }
   },
   "ai": {
-    "title": "Chat with AI",
+    "title": "Ask AI",
     "header": {
       "title": "Olistami AI Assistant",
       "text": "Online and ready to help"
     },
-    "placeholder": "Ask me anything..."
+    "placeholder": "Ask me anything...",
+    "view_details": "View Details",
+    "sign_in_access": "Sign in to access"
   },
   "podcast": {
     "title": "The OLISTAMI Podcast",

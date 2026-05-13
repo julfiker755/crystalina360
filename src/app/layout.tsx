@@ -4,6 +4,7 @@ import "./style/globals.css";
 import Provider from "@/provider";
 import { envs } from "@/lib";
 import { NextIntlClientProvider } from "next-intl";
+import Script from "next/script";
 
 // Apply Montserrat font
 const montserrat = Montserrat({

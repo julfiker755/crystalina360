@@ -10,7 +10,7 @@ export default function Footer() {
     {
       name: "linkedin",
       icon: <FavIcon name="linkdin33" className="size-5" />,
-      href: "https://www.linkedin.com/in/olistami-srl-478583407",
+      href: "https://www.linkedin.com/company/olistami-srl",
     },
     {
       name: "youtube",
@@ -27,7 +27,7 @@ export default function Footer() {
   return (
     <div className="bg-figma-black pt-10 lg:pt-16 *:text-white">
       <div className="container">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16">
           <div className="space-y-4">
             <div>
               <picture>
@@ -58,6 +58,35 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/#contact-us">{t("quick.contact_us")}</Link>
+              </li>
+              <li>
+                <Link href="/partnership">{t("quick.partnership")}</Link>
+              </li>
+            </ul>
+          </div>
+          <div className="lg:ml-5">
+
+            <h3 className="text-xl font-semibold text-white mb-3">
+              {t("legal.title")}
+            </h3>
+            <ul className="space-y-1">
+              <li>
+                <Link href="/olistami/note-legail"> {t("legal.legal_notice")}</Link>
+              </li>
+              <li>
+                <Link href="/olistami/condizioni-di-utilizzo"> {t("legal.terms_of_use")}</Link>
+              </li>
+              <li>
+                <Link href="/olistami/cookies-e-preferenze"> {t("legal.cookies_policy")}</Link>
+              </li>
+              <li>
+                <Link href="/olistami/privacy"> {t("legal.privacy_policy")}</Link>
+              </li>
+              <li>
+                <Link href="/olistami/codice-etico"> {t("legal.code_of_ethics")}</Link>
+              </li>
+              <li>
+                <Link href="/olistami/modello-231"> {t("legal.legislative_decree")}</Link>
               </li>
             </ul>
           </div>

@@ -104,5 +104,20 @@
       "play_store": "Play Store",
       "app_store": "App Store"
     }
+  },
+  "organizer": {
+    "title": {
+      "first": "Not an organizer?",
+      "second": "Explore events",
+      "third": "as a user"
+    },
+    "text": "If you're looking for exciting events to attend, you can continue as a regular user. Browse through thousands of events, book tickets instantly, and manage your attendance all in one place.",
+    "secure_ticket_booking_payments": "Secure ticket booking & payments",
+    "personalized_event_recommendations": "Personalized event recommendations",
+    "easy_attendance_management": "Easy attendance management",
+    "standard_user_access": "Standard User Access",
+    "text1": "Gain instant access to our event marketplace. No long registration needed to browse. Your journey starts here.",
+    "btn_text": "Continue as user",
+    "btn_sub": "Trusted by 50,000+ attendees"
   }
 }

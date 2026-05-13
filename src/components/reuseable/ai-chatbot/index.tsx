@@ -37,7 +37,7 @@ export default function AIChatBox() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "model",
-      text: "Hello! I am your Olistami AI assistant. How can I help you today?",
+      text: "Ciao, sono la tua guida al benessere Olistami. Dimmi di cosa hai bisogno in questo momento?",
       data: [],
     },
   ]);
@@ -110,8 +110,8 @@ export default function AIChatBox() {
           <div className="flex flex-col gap-2">
             <div
               className={`p-3 rounded-2xl text-sm ${isUser
-                  ? "bg-[#A68B7C] text-white rounded-tr-none"
-                  : "bg-white border border-[#EAE2D9] text-[#4A3E37] rounded-tl-none"
+                ? "bg-[#A68B7C] text-white rounded-tr-none"
+                : "bg-white border border-[#EAE2D9] text-[#4A3E37] rounded-tl-none"
                 }`}
             >
               <div dangerouslySetInnerHTML={{ __html: msg.text }} />
@@ -150,12 +150,12 @@ export default function AIChatBox() {
                           rel="noopener noreferrer"
                           className="flex items-center justify-center gap-2 w-full border border-border/40 text-[#4A3E37] py-2 rounded-lg text-xs font-bold  transition-colors"
                         >
-                          View Details
+                          {t("view_details")}
                           <ExternalLink size={12} />
                         </Link>
                       ) : (
                         <button className="flex items-center justify-center gap-2 w-full border border-border/40  text-[#4A3E37] py-2 rounded-lg text-xs font-bold  transition-colors">
-                          Sign in to access
+                          {t("sign_in_access")}
                         </button>
                       )}
                     </div>
@@ -172,7 +172,7 @@ export default function AIChatBox() {
   return (
     // className="fixed bottom-6 mg:right-6 z-50"
     <div
-      className={`fixed ${isChatOpen && "inset-0 md:inset-auto"}  z-50 md:bottom-6 md:right-6`}
+      className={`fixed ${isChatOpen && "inset-0 md:inset-auto"}  z-99999 md:bottom-6 md:right-6`}
     >
       <AnimatePresence>
         {isChatOpen && (

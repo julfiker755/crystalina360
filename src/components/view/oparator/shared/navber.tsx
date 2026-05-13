@@ -69,9 +69,8 @@ export default function Navber({ className }: any) {
               {navItems.map((item) => (
                 <li
                   key={item.name}
-                  className={`py-2 text-base!  font-medium ${
-                    pathname == item?.href ? "text-white! bg-primary" : ""
-                  }   text-figma-black rounded-md  px-10`}
+                  className={`py-2 text-base!  font-medium ${pathname == item?.href ? "text-white! bg-primary" : ""
+                    }   text-figma-black rounded-md  px-10`}
                 >
                   <Link href={item.href} className="transition-colors">
                     {item.name}
@@ -213,14 +212,14 @@ function SignInButton() {
       ) : (
         // not Sign In User
         <>
-          <Link href="/">
+          {/* <Link href="/">
             <Button
               size="lg"
               className="hidden md:block border bg-white text-figma-black"
             >
               {t("continue_as_user")}
             </Button>
-          </Link>
+          </Link> */}
           <Button
             onClick={() => handleOpenModal()}
             size="lg"

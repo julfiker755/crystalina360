@@ -6,6 +6,8 @@ import Navber from "@/components/view/user/shared/navber";
 import { childrenProps } from "@/types";
 import { usePathname } from "next/navigation";
 
+
+
 export default function Userlayout({ children }: childrenProps) {
   const pathname = usePathname();
 
@@ -17,6 +19,7 @@ export default function Userlayout({ children }: childrenProps) {
       {children}
       <Footer />
       <AIChatBox />
+
     </>
   );
 }
