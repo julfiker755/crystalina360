@@ -32,7 +32,7 @@ export default function Footer() {
   return (
     <div className="bg-figma-black pt-10 lg:pt-16 *:text-white">
       <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-50">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-14 ">
           <div className="space-y-4">
             <div>
               <picture>
@@ -45,7 +45,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div>
+          <div className="lg:ml-13">
             <h3 className="text-xl font-semibold mb-3 text-white">
               {t("quick.quick_links")}
             </h3>
