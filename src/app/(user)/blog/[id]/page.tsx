@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: IdParams): Promise<any> {
   const id = parsedId(slug)
   const blogItem = await fetchBlog(id);
 
-  const { title, description: text, image } = blogItem || {};
+  const { title, description: text, img: image } = blogItem || {};
   const description = text
     ?.replace(/<[^>]+>/g, "")
     ?.replace(/\s+/g, " ")
@@ -65,8 +65,11 @@ export default async function Blog({ params }: IdParams) {
   const blogItem = await fetchBlog(id);
 
   const {
-    title, description: text, image, created_at, updated_at
+    title, description, img: image, created_at, updated_at
   } = blogItem || {};
+  const text = description?.replace(/<[^>]+>/g, "")
+    ?.replace(/\s+/g, " ")
+    ?.trim()?.slice(0, 160);
   const app_url = `${envs.app_url}/blog/${slug}`;
   const publisherLogo = `${envs.app_url}/google/olistami.png`;
 
