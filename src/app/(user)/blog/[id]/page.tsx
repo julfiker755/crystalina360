@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: IdParams): Promise<any> {
       index: true,
       follow: true,
     },
-  };
+  }
 }
 
 export default async function Blog({ params }: IdParams) {
