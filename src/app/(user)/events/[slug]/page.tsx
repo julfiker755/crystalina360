@@ -50,7 +50,10 @@ export async function generateMetadata({ params }: SlugParams): Promise<any> {
       title,
       description,
       url,
-      images: [{ url: image, width: 800, height: 600, alt: title }],
+      images: [{
+        url: image, width: 1200,
+        height: 630, alt: title
+      }],
       type: "website",
       siteName: "Olistami",
     },
