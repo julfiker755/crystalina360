@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: IdParams): Promise<any> {
   const description = text
     ?.replace(/<[^>]+>/g, "")
     ?.replace(/\s+/g, " ")
-    ?.trim();
+    ?.trim()?.slice(0, 160);
 
   const baseUrl = envs.app_url;
   const url = `${baseUrl}/blog/${slug}`;
@@ -35,8 +35,10 @@ export async function generateMetadata({ params }: IdParams): Promise<any> {
 
   return {
     title,
-    keywords: tags.join(", "),
-    canonical: url,
+    keywords: tags?.join(", "),
+    alternates: {
+      canonical: url,
+    },
     description,
     openGraph: {
       title,
@@ -49,6 +51,10 @@ export async function generateMetadata({ params }: IdParams): Promise<any> {
     other: {
       facebook: ["website", url, title, description, image],
       linkedin: [url, title, description, image],
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   };
 }

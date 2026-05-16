@@ -4,7 +4,7 @@ import FavIcon from "@/icon/favIcon";
 import { useTranslations } from "next-intl";
 import React from "react";
 
-export default function TicketQuantity({ from }: any) {
+export default function TicketQuantity({ readOnly = false, from }: any) {
   const t = useTranslations("oprator.evStoreAll.store");
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -20,6 +20,7 @@ export default function TicketQuantity({ from }: any) {
             type="number"
             placeholder={t("quantity_hare")}
             err={false}
+            readOnly={readOnly}
           />
         </div>
         <ErrorInput

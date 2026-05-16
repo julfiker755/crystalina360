@@ -126,6 +126,9 @@ export default function OnetoOneStore({
     const valuedata = cleanObject(values);
     const data = helpers.fromData({
       event_type: "onetoone",
+      min_person: "1",
+      max_person: "2",
+      ticket_quantity: "2",
       ...valuedata,
     });
 
@@ -205,10 +208,9 @@ export default function OnetoOneStore({
                       from.setValue("delivery_type", item.value);
                     }}
                     type="button"
-                    className={`font-normal transition-colors border bg-transparent text-figma-black ${
-                      item.value === get("delivery_type") &&
+                    className={`font-normal transition-colors border bg-transparent text-figma-black ${item.value === get("delivery_type") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                   >
                     <FavIcon
                       color={
@@ -233,10 +235,9 @@ export default function OnetoOneStore({
                     onClick={() => {
                       from.setValue("event_purpose", item.value);
                     }}
-                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${
-                      item.value == get("event_purpose") &&
+                    className={`font-normal transition-colors trans border bg-transparent text-figma-black ${item.value == get("event_purpose") &&
                       "bg-primary text-white"
-                    }`}
+                      }`}
                     type="button"
                   >
                     {t(`event_purpose.${item.value}`)}
@@ -313,8 +314,8 @@ export default function OnetoOneStore({
                   <SingleDateBox from={from} />
                   <MultipleTime from={from} setState={setState} />
                 </div>
-                <PersonLimit />
-                <TicketQuantity from={from} />
+                <PersonLimit readOnly={true} />
+                <TicketQuantity readOnly={true} from={from} />
                 <FromSelect2
                   items={durationOptions}
                   name="event_duration"
@@ -335,8 +336,8 @@ export default function OnetoOneStore({
                   <SingleDateBox from={from} />
                   <MultipleTime from={from} setState={setState} />
                 </div>
-                <PersonLimit />
-                <TicketQuantity from={from} />
+                <PersonLimit readOnly={true} />
+                <TicketQuantity readOnly={true} from={from} />
                 <FromTagInput name="tags" label={t("tags")} className="py-2" />
               </>
             ) : (

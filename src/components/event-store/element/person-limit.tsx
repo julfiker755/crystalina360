@@ -2,7 +2,7 @@ import { PersionLimit } from "@/components/reuseable/porson-limit";
 import { useTranslations } from "next-intl";
 import React from "react";
 
-export default function PersonLimit() {
+export default function PersonLimit({ readOnly = false }: any) {
   const t = useTranslations("oprator.evStoreAll.store.person_limit");
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -11,12 +11,15 @@ export default function PersonLimit() {
         type="number"
         placeholder={t("min_person_placeholder")}
         label={t("min_person_limit")}
+        readOnly={readOnly}
+
       />
       <PersionLimit
         name="max_person"
         type="number"
         placeholder={t("max_person_placeholder")}
         label={t("max_person_limit")}
+        readOnly={readOnly}
       />
     </div>
   );

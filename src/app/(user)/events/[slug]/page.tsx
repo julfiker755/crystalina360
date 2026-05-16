@@ -19,8 +19,10 @@ export async function generateMetadata({ params }: SlugParams): Promise<any> {
   const events = await fetchSlgEvent(id);
 
   const { event_title: title,
-    event_description: description,
+    event_description,
     img, delivery_type } = events || {};
+
+  const description = (event_description ?? "")?.slice(0, 160)
 
 
   let image;
@@ -34,13 +36,15 @@ export async function generateMetadata({ params }: SlugParams): Promise<any> {
 
   const tags = title
     ?.split(/[,\s]+/)
-    ?.filter((word: string) => word.length > 2)
-    ?.map((word: string) => word.toLowerCase());
+    ?.filter((word: string) => word?.length > 2)
+    ?.map((word: string) => word?.toLowerCase());
 
   return {
     title,
     keywords: tags?.join(", "),
-    canonical: url,
+    alternates: {
+      canonical: url,
+    },
     description,
     openGraph: {
       title,
@@ -54,44 +58,66 @@ export async function generateMetadata({ params }: SlugParams): Promise<any> {
       facebook: ["website", url, title, description, image],
       linkedin: [url, title, description, image],
     },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 
-export default async function Blog({ params }: SlugParams) {
+export default async function EventSingle({ params }: SlugParams) {
   const { slug: slugItem } = await params;
   const id = parsedId(slugItem)
   const events = await fetchSlgEvent(id);
 
-  const { event_title: title,
-    event_description: description,
-    img, organizer, delivery_type } = events || {};
 
   const url = `${envs.app_url}/events/${slugItem}`;
+  const description = (events.event_description ?? "")?.slice(0, 155)
 
 
   let image;
-  if (delivery_type == delivary_t.ondemand) {
+  if (events.delivery_type == delivary_t.ondemand) {
     image = `${envs.app_url}/videoImg.jpg`;
   } else {
-    image = `${img}`;
+    image = `${events.img}`;
   }
 
   const schema = {
     "@context": "https://schema.org",
-    "@type": "Olistami",
-    headline: title,
+    "@type": "Event",
+    name: events.event_title,
     description: description,
-    url: url,
     image: image,
-    publisher: {
-      "@type": "Organization",
-      name: organizer?.name,
-      logo: {
-        "@type": "ImageObject",
-        url: organizer?.img,
+    url: url,
+
+    organizer: events.organizer?.name
+      ? {
+        "@type": "Organization",
+        name: events.organizer.name,
+        logo: events.organizer?.img
+          ? {
+            "@type": "ImageObject",
+            url: events.organizer.img,
+          }
+          : undefined,
+      }
+      : undefined,
+
+    location: {
+      "@type": "Place",
+      name: `${events.city || ""} ${events.region || ""} ${events.province || ""} ${events.country || ""}`.trim(),
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: events.city,
+        addressRegion: events.region,
+        addressCountry: events.country,
       },
     },
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode:
+      "https://schema.org/OfflineEventAttendanceMode",
     mainEntityOfPage: url,
+    inLanguage: "en",
   };
   return (
     <>

@@ -28,9 +28,9 @@ export const getValuesOne = (type: string) => {
       city: "",
       event_date: "",
       event_time: [],
-      min_person: "",
-      max_person: "",
-      ticket_quantity: "",
+      min_person: "1",
+      max_person: "2",
+      ticket_quantity: "2",
       price: "",
       event_duration: "less_than_30_minutes",
       accessibility: [],
@@ -68,11 +68,11 @@ export const getValuesOne = (type: string) => {
       event_description: "",
       event_date: "",
       event_time: [],
-      min_person: "",
-      max_person: "",
+      min_person: "1",
+      max_person: "2",
+      ticket_quantity: "2",
       price: "",
       tags: [],
-      ticket_quantity: "",
     };
   } else if (type == "ondemand") {
     return {
