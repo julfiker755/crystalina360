@@ -40,6 +40,7 @@ export async function generateMetadata({ params }: SlugParams): Promise<any> {
     ?.map((word: string) => word?.toLowerCase());
 
   return {
+    metadataBase: new URL(envs.app_url as string),
     title,
     keywords: tags?.join(", "),
     alternates: {
@@ -50,16 +51,19 @@ export async function generateMetadata({ params }: SlugParams): Promise<any> {
       title,
       description,
       url,
+      type: "website",
+      siteName: "Olistami",
       images: [{
         url: image, width: 1200,
         height: 630, alt: title
       }],
-      type: "website",
-      siteName: "Olistami",
+
     },
-    other: {
-      facebook: ["website", url, title, description, image],
-      linkedin: [url, title, description, image],
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
     },
     robots: {
       index: true,
