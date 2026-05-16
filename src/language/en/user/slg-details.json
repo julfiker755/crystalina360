@@ -24,6 +24,8 @@
   "select_here": "Select here",
   "select_time": "Select Time",
   "select_date": "Select Date",
+  "please_select_time": "Please select Time",
+  "please_select_date": "Please select Date",
   "coupon_is_required": "Coupon is required",
   "ticket_quantity": "Ticket Quantity",
   "sub_total": "Sub Total",

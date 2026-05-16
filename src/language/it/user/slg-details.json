@@ -24,6 +24,8 @@
   "select_here": "Seleziona qui",
   "select_time": "Seleziona orario",
   "select_date": "Seleziona data",
+  "please_select_time": "Seleziona l'orario",
+  "please_select_date": "Seleziona la data",
   "coupon_is_required": "Il coupon è obbligatorio",
   "ticket_quantity": "Quantità biglietti",
   "sub_total": "Subtotale",

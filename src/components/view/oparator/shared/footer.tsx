@@ -79,7 +79,7 @@ export default function Footer() {
                   <Link href="/operator/#pricing">{t("quick.pricing")}</Link>
                 </li>
                 <li>
-                  <Link href="/operator/#add-on">{t("quick.add_on")}</Link>
+                  <Link href="/operator/#add-ons">{t("quick.add_on")}</Link>
                 </li>
                 <li>
                   <Link href="/operator/#privacy-Policy">

@@ -33,7 +33,7 @@ export default function FavoriteEvents() {
           </Repeat>
         ) : wishItems?.data?.length > 0 ? (
           wishItems?.data?.map((item: any) => (
-            <Link key={item.id} href={`/events/${item?.id}`}>
+            <Link key={item.id} href={`/events/${item?.slug}`}>
               <EventCard wish={true} item={item} />
             </Link>
           ))

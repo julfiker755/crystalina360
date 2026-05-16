@@ -1,28 +1,32 @@
 import SingleBlog from "@/components/view/user/landing/single-blog";
-import { authKey, envs } from "@/lib";
+import { envs, parsedId } from "@/lib";
 import { IdParams } from "@/types";
-import { cookies } from "next/headers";
+import Script from "next/script";
 import React from "react";
 
-export async function generateMetadata({ params }: IdParams): Promise<any> {
-  const { id } = await params;
-  const token = (await cookies())?.get(authKey)?.value;
+
+const fetchBlog = async (id: string) => {
   const res = await fetch(`${envs.api_url}/blogs/${id}`, {
     cache: "no-store",
-    headers: {
-      ...(token && { Authorization: `Bearer ${token}` }),
-    },
   });
   const data = await res.json();
+  return data?.data || {};
+};
 
-  const { title, description: text, image } = data?.data || {};
+
+export async function generateMetadata({ params }: IdParams): Promise<any> {
+  const { id: slug } = await params;
+  const id = parsedId(slug)
+  const blogItem = await fetchBlog(id);
+
+  const { title, description: text, image } = blogItem || {};
   const description = text
     ?.replace(/<[^>]+>/g, "")
     ?.replace(/\s+/g, " ")
     ?.trim();
 
   const baseUrl = envs.app_url;
-  const url = `${baseUrl}/blogs/${id}`;
+  const url = `${baseUrl}/blog/${slug}`;
 
   const tags = title
     ?.split(/[,\s]+/)
@@ -32,6 +36,7 @@ export async function generateMetadata({ params }: IdParams): Promise<any> {
   return {
     title,
     keywords: tags.join(", "),
+    canonical: url,
     description,
     openGraph: {
       title,
@@ -39,7 +44,7 @@ export async function generateMetadata({ params }: IdParams): Promise<any> {
       url,
       images: [{ url: image, width: 800, height: 600, alt: title }],
       type: "website",
-      siteName: "MY TSV",
+      siteName: "Olistami",
     },
     other: {
       facebook: ["website", url, title, description, image],
@@ -49,9 +54,43 @@ export async function generateMetadata({ params }: IdParams): Promise<any> {
 }
 
 export default async function Blog({ params }: IdParams) {
+  const { id: slug } = await params;
+  const id = parsedId(slug)
+  const blogItem = await fetchBlog(id);
+
+  const {
+    title, description: text, image, created_at, updated_at
+  } = blogItem || {};
+  const app_url = `${envs.app_url}/blog/${slug}`;
+  const publisherLogo = `${envs.app_url}/google/olistami.png`;
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Olistami",
+    headline: title,
+    description: text,
+    url: app_url,
+    image: image,
+    datePublished: new Date(created_at).toISOString(),
+    dateModified: new Date(updated_at).toISOString(),
+    publisher: {
+      "@type": "Organization",
+      name: "Olistami",
+      logo: {
+        "@type": "ImageObject",
+        url: publisherLogo,
+      },
+    },
+    mainEntityOfPage: app_url,
+  };
   return (
-    <div>
+    <>
+      <Script
+        id="blog-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
       <SingleBlog />
-    </div>
+    </>
   );
 }

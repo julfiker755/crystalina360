@@ -306,7 +306,7 @@ export default function EventApply({
   price,
 }: any) {
   const t = useTranslations("user.details");
-
+  const [errDate, setErrDate] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<any>([]);
   const [isDate, setIsDate] = useState(false);
@@ -395,6 +395,12 @@ export default function EventApply({
 
   // ── Purchase ───────────────────────────────────────────────────
   const handlePurchase = async () => {
+    if (!isBooking?.date?.length) {
+      setErrDate(isDate ?
+        t("please_select_date") :
+        t("please_select_time"));
+      return
+    }
     setPaymentLoading(true);
     try {
       const data = {
@@ -441,6 +447,7 @@ export default function EventApply({
               )}
             />
           </div>
+
           <div
             className={clsx(
               "overflow-hidden transition-all duration-300",
@@ -454,6 +461,7 @@ export default function EventApply({
                   onClick={() => {
                     setIsBooking((prev) => ({ ...prev, date: item }));
                     setIsOpen(false);
+                    setErrDate("");
                   }}
                   className="p-2 rounded-md hover:bg-primary/10 cursor-pointer text-sm"
                 >
@@ -465,6 +473,9 @@ export default function EventApply({
             </ul>
           </div>
         </div>
+        {errDate && (
+          <p className="text-red-500">{errDate}</p>
+        )}
       </div>
 
       {/* ── Quantity ─────────────────────────────────────────────── */}
@@ -579,7 +590,6 @@ export default function EventApply({
           </Button>
         </Link>
         <Button
-          disabled={!isBooking?.date?.length}
           onClick={handlePurchase}
           className="w-full"
         >

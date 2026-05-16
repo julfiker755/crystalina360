@@ -5,6 +5,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const parsedId = (value: any) => {
+  return value?.toString()?.split("-")[0];
+};
+
 export const PlaceholderImg = (
   width: number = 600,
   height: number = 400,

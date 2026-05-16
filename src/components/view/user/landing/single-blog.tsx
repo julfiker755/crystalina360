@@ -5,19 +5,22 @@ import { AppAlert } from "@/components/view/user/reuse";
 import { useSlgBlogQuery } from "@/redux/api/admin/blogApi";
 import { QuillText } from "@/components/reuseable/text-editor";
 import { useParams } from "next/navigation";
-import { helpers } from "@/lib";
+import { helpers, parsedId } from "@/lib";
+import { useTranslations } from "next-intl";
 
 export default function SingleBlog() {
-  const { id } = useParams();
+  const t = useTranslations("user.details");
+  const { id: slug } = useParams();
+  const id = parsedId(slug)
   const { data: blog } = useSlgBlogQuery(id);
   const { img, description, title, created_at } = blog?.data || {};
 
   return (
     <div className="container pt-5">
-      <BackBtn2 className="mb-2" />
+      <BackBtn2 label={t("back")} className="mb-2" />
       <ImgBox
         src={img || "/not.png"}
-        className="h-60 lg:h-100 w-full  rounded-lg bg-muted overflow-hidden"
+        className="w-full h-80 max-w-5xl 2xl:h-[450px] md:mt-10 md:mb-5 mx-auto  rounded-lg bg-muted overflow-hidden"
         alt={title?.toString() || "img"}
       />
       <div className="py-4 px-3">

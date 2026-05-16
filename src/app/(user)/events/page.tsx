@@ -72,7 +72,7 @@ export default function ExploreAll() {
           </Repeat>
         ) : eventsItem?.data?.length > 0 ? (
           eventsItem?.data?.map((item: any) => (
-            <Link key={item.id} href={`/events/${item?.id}`}>
+            <Link key={item.id} href={`/events/${item?.slug}`}>
               <EventCard wish={true} item={item} />
             </Link>
           ))

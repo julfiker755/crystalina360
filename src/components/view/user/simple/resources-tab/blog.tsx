@@ -22,7 +22,7 @@ export function Blogs() {
           </Repeat>
         ) : (
           blog?.data?.map((item: any, index: any) => (
-            <Link key={index} href={`/blog/${item?.id}`}>
+            <Link key={index} href={`/blog/${item?.slug}`}>
               <BlogCard item={item} />
             </Link>
           ))
